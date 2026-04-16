@@ -4,6 +4,7 @@ Layer 1 — scheduled task definitions.
 All tasks are pure async functions that accept explicit dependencies
 (no global state). The daemon wires them up as asyncio tasks.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -42,19 +43,24 @@ async def daily_summary_task(
         active = await db.count_active_positions(cfg.bot_id, cfg.env.value)
 
         await db.write_event(
-            cfg.bot_id, session_id, cfg.env.value,
-            "INFO", "system",
+            cfg.bot_id,
+            session_id,
+            cfg.env.value,
+            "INFO",
+            "system",
             "daily_summary",
             {"net_pnl_usdt": net_pnl, "active_positions": active},
         )
 
         if notify_fn:
-            await notify_fn.daily_summary({
-                "total_trades": 0,  # pulled from DB by caller if needed
-                "win_rate": 0.0,
-                "net_pnl_usdt": net_pnl,
-                "bucket_states": f"{active} active",
-            })
+            await notify_fn.daily_summary(
+                {
+                    "total_trades": 0,  # pulled from DB by caller if needed
+                    "win_rate": 0.0,
+                    "net_pnl_usdt": net_pnl,
+                    "bucket_states": f"{active} active",
+                }
+            )
 
 
 async def cleanup_task(cfg: AppConfig, session_id: str) -> None:
@@ -73,6 +79,7 @@ async def cleanup_task(cfg: AppConfig, session_id: str) -> None:
         ts_30d = int((time.time() - 30 * 86400) * 1000)
 
         from src.db.connection import acquire
+
         async with acquire() as conn:
             # Candles not in trade_context older than 90d
             await conn.execute(
@@ -93,7 +100,11 @@ async def cleanup_task(cfg: AppConfig, session_id: str) -> None:
             await conn.execute("VACUUM ANALYZE events")
 
         await db.write_event(
-            cfg.bot_id, session_id, cfg.env.value,
-            "INFO", "system", "retention_cleanup_complete",
+            cfg.bot_id,
+            session_id,
+            cfg.env.value,
+            "INFO",
+            "system",
+            "retention_cleanup_complete",
             {"ts_90d": ts_90d, "ts_60d": ts_60d, "ts_30d": ts_30d},
         )

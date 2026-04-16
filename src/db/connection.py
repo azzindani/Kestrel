@@ -2,9 +2,9 @@
 Layer 3 boundary — PostgreSQL async connection pool.
 All DB I/O is funnelled through this module.
 """
+
 from __future__ import annotations
 
-import asyncio
 from contextlib import asynccontextmanager
 from typing import AsyncIterator, Optional
 
@@ -18,10 +18,7 @@ _pool: Optional[asyncpg.Pool] = None
 async def init_pool(cfg: AppConfig) -> asyncpg.Pool:
     """Create and store the global connection pool. Call once at startup."""
     global _pool
-    dsn = (
-        f"postgresql://{cfg.db_user}:{cfg.db_password}"
-        f"@{cfg.db_host}:{cfg.db_port}/{cfg.db_name}"
-    )
+    dsn = f"postgresql://{cfg.db_user}:{cfg.db_password}@{cfg.db_host}:{cfg.db_port}/{cfg.db_name}"
     _pool = await asyncpg.create_pool(
         dsn=dsn,
         min_size=2,

@@ -6,6 +6,7 @@ Also performs heartbeat checks every 60 seconds (CLAUDE.md §16).
 
 The watchdog runs as a separate OS process, started by start.sh.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -15,10 +16,9 @@ import subprocess
 import sys
 import time
 
-
 _RESTART_DELAY = 10  # seconds after crash before restart (CLAUDE.md §16)
 _HEARTBEAT_INTERVAL = 60  # seconds
-_HEARTBEAT_TIMEOUT = 90   # seconds since last heartbeat before considered dead
+_HEARTBEAT_TIMEOUT = 90  # seconds since last heartbeat before considered dead
 
 
 def run_watchdog(main_cmd: list[str], db_url: str, bot_id: str) -> None:
@@ -43,9 +43,7 @@ def run_watchdog(main_cmd: list[str], db_url: str, bot_id: str) -> None:
         try:
             conn = await asyncpg.connect(dsn=db_url, command_timeout=5)
             try:
-                row = await conn.fetchrow(
-                    "SELECT ts FROM heartbeats WHERE bot_id = $1", bot_id
-                )
+                row = await conn.fetchrow("SELECT ts FROM heartbeats WHERE bot_id = $1", bot_id)
                 if row is None:
                     return False
                 elapsed = time.time() - row["ts"] / 1000.0
@@ -81,8 +79,7 @@ def run_watchdog(main_cmd: list[str], db_url: str, bot_id: str) -> None:
                 # Crash — restart
                 elapsed = time.time() - start_time
                 print(  # watchdog itself may print — not the daemon
-                    f"[watchdog] main process exited (rc={rc}) after {elapsed:.0f}s. "
-                    f"Restarting in {_RESTART_DELAY}s.",
+                    f"[watchdog] main process exited (rc={rc}) after {elapsed:.0f}s. Restarting in {_RESTART_DELAY}s.",
                     flush=True,
                 )
                 time.sleep(_RESTART_DELAY)

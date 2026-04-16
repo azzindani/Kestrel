@@ -4,17 +4,16 @@ Layer 1 — regime classification.
 Public function:
     classify_regime(candles, params) -> RegimeResult | Rejection
 """
+
 from __future__ import annotations
 
 from typing import Sequence, Union
 
-from src.config import Candle, Direction, Params, Regime, RegimeResult, Rejection
-from src.signal.indicators import compute_atr, compute_adx
+from src.config import Candle, Params, Regime, RegimeResult, Rejection
+from src.signal.indicators import compute_adx, compute_atr
 
 
-def classify_regime(
-    candles: Sequence[Candle], params: Params
-) -> Union[RegimeResult, Rejection]:
+def classify_regime(candles: Sequence[Candle], params: Params) -> Union[RegimeResult, Rejection]:
     """Classify market regime from candle history.
 
     Returns RegimeResult on success, or Rejection with reason 'quiet_regime'
@@ -70,8 +69,10 @@ def classify_regime(
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _ema_from_closes(candles: Sequence[Candle], period: int) -> float:
     from src.signal.indicators import compute_ema
+
     closes = [c.close for c in candles]
     return compute_ema(closes, period)
 
@@ -81,7 +82,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
     _allowed: dict[Regime, frozenset[str]] = {
         Regime.TRENDING: frozenset({"impulse_retracement", "momentum_continuation"}),
         Regime.VOLATILE: frozenset({"compression_breakout", "anomaly_fade"}),
-        Regime.RANGING:  frozenset({"wick_rejection", "anomaly_fade"}),
-        Regime.QUIET:    frozenset(),
+        Regime.RANGING: frozenset({"wick_rejection", "anomaly_fade"}),
+        Regime.QUIET: frozenset(),
     }
     return pattern in _allowed.get(regime, frozenset())

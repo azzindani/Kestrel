@@ -7,6 +7,7 @@ Events that trigger alerts are defined in CLAUDE.md §27.
 All messages use pre-formatted text (MarkdownV2 escaping).
 Uses httpx async client; never blocks the event loop.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -74,7 +75,7 @@ class TelegramNotifier:
             except Exception:
                 if attempt == _MAX_RETRIES - 1:
                     return  # silently fail — Telegram must never crash daemon
-                await asyncio.sleep(2 ** attempt)
+                await asyncio.sleep(2**attempt)
 
     # -----------------------------------------------------------------------
     # Structured alert helpers (CLAUDE.md §27)
@@ -124,25 +125,18 @@ class TelegramNotifier:
         await self.send(msg, "WARN")
 
     async def regime_change(self, regime: str, pairs: list[str]) -> None:
-        msg = (
-            f"<b>REGIME CHANGE</b> → {regime}\n"
-            f"Pairs: {', '.join(pairs)}"
-        )
+        msg = f"<b>REGIME CHANGE</b> → {regime}\nPairs: {', '.join(pairs)}"
         await self.send(msg, "INFO")
 
     async def daily_summary(self, summary: dict[str, Any]) -> None:
         msg = (
             f"<b>DAILY SUMMARY</b>\n"
-            f"Trades: {summary['total_trades']} | Win rate: {summary['win_rate']*100:.1f}%\n"
+            f"Trades: {summary['total_trades']} | Win rate: {summary['win_rate'] * 100:.1f}%\n"
             f"Net PnL: ${summary['net_pnl_usdt']:.4f}\n"
             f"Bucket states: {summary.get('bucket_states', '-')}"
         )
         await self.send(msg, "INFO")
 
     async def system_error(self, error: str, bot_id: str, ts: int) -> None:
-        msg = (
-            f"<b>🚨 SYSTEM ERROR</b>\n"
-            f"{error}\n"
-            f"Bot: {bot_id} | ts: {ts}"
-        )
+        msg = f"<b>🚨 SYSTEM ERROR</b>\n{error}\nBot: {bot_id} | ts: {ts}"
         await self.send(msg, "CRITICAL")
