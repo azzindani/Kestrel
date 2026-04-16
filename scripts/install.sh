@@ -89,7 +89,7 @@ async def run():
     await ex.fetch_balance()
     await ex.close()
 asyncio.run(run())
-" 2>&1 | grep -q "Error\|error\|Exception" && fail "Exchange credential verification failed" || true
+" || fail "Exchange credential verification failed"
 pass "Exchange credentials valid"
 
 # ── 7. Telegram reachable ────────────────────────────────────────────────────

@@ -156,7 +156,22 @@ class Params:
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
-        """Construct Params from the params.json value-dict (extracts 'value' keys)."""
+        """Construct Params from the params.json value-dict (extracts 'value' keys).
+
+        Raises ValueError listing all missing keys rather than a bare KeyError.
+        """
+        required_keys = [
+            "ema_fast", "ema_slow", "rsi_low", "rsi_high", "volume_ratio_min",
+            "tp_atr_multiplier", "sl_atr_multiplier", "min_confidence", "adx_trend_min",
+            "bb_width_threshold", "max_hold_candles", "max_active_buckets", "body_ratio_min",
+            "wick_ratio_min", "compression_factor", "ema_spread_threshold",
+            "atr_volatile_multiplier", "atr_quiet_multiplier", "retracement_min",
+            "retracement_max", "anomaly_volume_stddev", "anomaly_price_atr",
+            "momentum_acceleration_candles",
+        ]
+        missing = [k for k in required_keys if k not in d]
+        if missing:
+            raise ValueError(f"params.json missing keys: {', '.join(missing)}")
         return cls(
             ema_fast=int(d["ema_fast"]["value"]),
             ema_slow=int(d["ema_slow"]["value"]),

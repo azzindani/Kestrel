@@ -20,7 +20,6 @@ from datetime import datetime, timezone
 from typing import Any, Optional
 
 from rich.console import Console
-from rich.layout import Layout
 from rich.live import Live
 from rich.panel import Panel
 from rich.table import Table
@@ -160,10 +159,6 @@ class Dashboard:
             f"{'─'*60}\n"
             f"RECENT EVENTS (last 20 from events table)"
         )
-
-        from rich.columns import Columns
-        from rich import box as rich_box
-        layout_text = Text.from_markup(body)
 
         content = Text.from_markup(body)
 

@@ -32,8 +32,8 @@ class SimulationExecution(ExecutionInterface):
 
     def __init__(self, cfg: AppConfig) -> None:
         self.cfg = cfg
-        # pair → position dict
         self._positions: dict[str, dict[str, Any]] = {}
+        self._prices: dict[str, float] = {}
 
     # -----------------------------------------------------------------------
     # place_order
@@ -150,11 +150,6 @@ class SimulationExecution(ExecutionInterface):
     # -----------------------------------------------------------------------
     # Helpers
     # -----------------------------------------------------------------------
-
-    def __init__(self, cfg: AppConfig) -> None:  # noqa: F811
-        self.cfg = cfg
-        self._positions: dict[str, dict[str, Any]] = {}
-        self._prices: dict[str, float] = {}
 
     def update_price(self, pair: str, price: float) -> None:
         """Record current market price for simulated TP/SL/close calculations."""
