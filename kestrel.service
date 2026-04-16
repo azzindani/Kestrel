@@ -1,0 +1,28 @@
+[Unit]
+Description=Kestrel real-time signal detection and execution daemon
+After=network.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kestrel
+WorkingDirectory=/opt/kestrel
+EnvironmentFile=/opt/kestrel/.env
+ExecStart=/opt/kestrel/venv/bin/python -m src.engine.watchdog \
+    --db-url postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME} \
+    --bot-id ${BOT_ID} \
+    /opt/kestrel/venv/bin/python -m src.engine.daemon
+ExecStop=/opt/kestrel/scripts/stop.sh
+Restart=on-failure
+RestartSec=10s
+TimeoutStopSec=60s
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=kestrel
+
+# Resource limits for 1 vCPU / 1 GB RAM VPS
+MemoryLimit=800M
+CPUQuota=90%
+
+[Install]
+WantedBy=multi-user.target
