@@ -95,10 +95,11 @@ def _pattern_scan(
     pattern_memories: dict[str, dict | None],
     session: TradingSession,
     session_conf_multiplier: float,
-) -> tuple[str, ...] | Rejection:  # returns sorted candidate list or Rejection
+) -> tuple["PatternResult", float] | Rejection:
     """
-    Run all permitted patterns through the registry. Return the best PatternResult
-    that aligns with the trend direction, or Rejection if nothing fires.
+    Run all permitted patterns through the registry. Return (PatternResult, confidence)
+    for the highest-confidence match that aligns with trend_direction, or Rejection if
+    nothing fires.
     """
     candidates = []
     for name, fn in registry.items():
@@ -243,12 +244,8 @@ def evaluate(
         tp_price = entry - atr * params.tp_atr_multiplier
         sl_price = entry + atr * params.sl_atr_multiplier
 
-    # Size from confidence band (CLAUDE.md §22)
-    if adjusted_confidence >= 0.75:
-        size_usdt = params.max_active_buckets * 10.0  # full bucket
-    else:
-        size_usdt = (params.max_active_buckets * 10.0) * 0.5  # half bucket
-    # Actual bucket size is fixed at $10 per CLAUDE.md §13
+    # Size from confidence band (CLAUDE.md §22):
+    #   ≥ 0.75 → full bucket ($10) · 0.55–0.74 → half bucket ($5)
     size_usdt = 10.0 if adjusted_confidence >= 0.75 else 5.0
 
     signal = Signal(
