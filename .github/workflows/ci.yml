@@ -125,7 +125,7 @@ jobs:
 
       - name: Run unit tests with coverage
         run: |
-          python -m pytest tests/unit/ \
+          python -m pytest tests/unit/ tests/integration/ \
             --cov=src \
             --cov-config=pyproject.toml \
             --cov-report=term-missing \
