@@ -7,15 +7,13 @@ objects with precomputed geometry and indicators.
 Maintains an in-memory rolling buffer (bootstrapped from DB on startup) used
 for indicator computation. The authoritative store is always the DB.
 """
+
 from __future__ import annotations
 
-import asyncio
 from collections import deque
 from typing import Callable, Optional, Sequence
 
-from src.config import (
-    AppConfig, Candle, Params, compute_candle_geometry
-)
+from src.config import Candle, Params, compute_candle_geometry
 from src.signal.indicators import compute_all_indicators
 
 # Minimum candle history for reliable indicator computation

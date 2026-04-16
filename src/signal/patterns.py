@@ -9,6 +9,7 @@ Public API:
     registry: dict[str, PatternFn]
     register(name) -> decorator
 """
+
 from __future__ import annotations
 
 from typing import Callable, Optional, Sequence
@@ -27,15 +28,18 @@ registry: dict[str, PatternFn] = {}
 
 def register(name: str) -> Callable[[PatternFn], PatternFn]:
     """Decorator that registers a pattern function into the registry."""
+
     def wrap(fn: PatternFn) -> PatternFn:
         registry[name] = fn
         return fn
+
     return wrap
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _direction_from_candle(candle: Candle) -> Optional[Direction]:
     if candle.direction == "bullish":
@@ -59,8 +63,7 @@ def _total_range(c: Candle) -> float:
 
 def _body_ratio(c: Candle) -> float:
     tr = _total_range(c)
-    return (c.body_ratio if c.body_ratio is not None
-            else (_body_size(c) / tr if tr > 0 else 0.0))
+    return c.body_ratio if c.body_ratio is not None else (_body_size(c) / tr if tr > 0 else 0.0)
 
 
 def _upper_wick(c: Candle) -> float:
@@ -81,10 +84,9 @@ def _vol_ratio(c: Candle, volume_ma: float) -> float:
 # Pattern: impulse_retracement (CLAUDE.md §23)
 # ---------------------------------------------------------------------------
 
+
 @register("impulse_retracement")
-def detect_impulse_retracement(
-    candles: Sequence[Candle], params: Params
-) -> Optional[PatternResult]:
+def detect_impulse_retracement(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
     """
     Trigger: body_ratio > body_ratio_min · volume_ratio > volume_ratio_min
     Next:    retracement 30–50% of trigger body · lower volume · ✗ close below trigger open (long)
@@ -155,10 +157,9 @@ def detect_impulse_retracement(
 # Pattern: wick_rejection (CLAUDE.md §23)
 # ---------------------------------------------------------------------------
 
+
 @register("wick_rejection")
-def detect_wick_rejection(
-    candles: Sequence[Candle], params: Params
-) -> Optional[PatternResult]:
+def detect_wick_rejection(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
     """
     Trigger: lower_wick > wick_ratio_min × body · close in top 30% of range · within 1 ATR of support
     Long only (price rejecting lower boundary).
@@ -220,10 +221,9 @@ def detect_wick_rejection(
 # Pattern: compression_breakout (CLAUDE.md §23)
 # ---------------------------------------------------------------------------
 
+
 @register("compression_breakout")
-def detect_compression_breakout(
-    candles: Sequence[Candle], params: Params
-) -> Optional[PatternResult]:
+def detect_compression_breakout(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
     """
     Setup:   ATR(5) < ATR(20) × compression_factor · BB width declining 3+ candles · volume declining
     Trigger: close outside BB boundary · volume > volume_ma20 × 1.5
@@ -293,10 +293,9 @@ def detect_compression_breakout(
 # Pattern: momentum_continuation (CLAUDE.md §23)
 # ---------------------------------------------------------------------------
 
+
 @register("momentum_continuation")
-def detect_momentum_continuation(
-    candles: Sequence[Candle], params: Params
-) -> Optional[PatternResult]:
+def detect_momentum_continuation(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
     """
     Setup:   N consecutive same-direction candles · each body ≥ previous (acceleration) · volume increasing
     Trigger: (N+1)th candle is small retracement · body < 40% of Nth · lower volume
@@ -308,7 +307,7 @@ def detect_momentum_continuation(
         return None
 
     # The N acceleration candles (excluding the current retracement candle)
-    setup_candles = list(candles[-(n + 1):-1])
+    setup_candles = list(candles[-(n + 1) : -1])
     retrace = candles[-1]
 
     # All must be same direction
@@ -343,6 +342,9 @@ def detect_momentum_continuation(
     if retrace_dir == direction:
         return None
 
+    if direction is None:
+        return None
+
     avg_body_growth = bodies[-1] / bodies[0] if bodies[0] > 0 else 1.0
     confidence = min(0.50 + avg_body_growth * 0.05 + n * 0.03, 0.95)
 
@@ -362,10 +364,9 @@ def detect_momentum_continuation(
 # Pattern: anomaly_fade (CLAUDE.md §23)
 # ---------------------------------------------------------------------------
 
+
 @register("anomaly_fade")
-def detect_anomaly_fade(
-    candles: Sequence[Candle], params: Params
-) -> Optional[PatternResult]:
+def detect_anomaly_fade(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
     """
     Trigger: volume > vol_ma20 + stddev_multiplier × vol_stddev
              AND price move > ATR × anomaly_price_atr in single candle

@@ -15,12 +15,12 @@ Six hard validation rules (CLAUDE.md §24):
     5. session_net_pnl > -5.00 USDT (resets 00:00 UTC)
     6. last_ws_reconnect > 60s ago (or never reconnected)
 """
+
 from __future__ import annotations
 
 from src.config import (
     AppConfig,
     BucketState,
-    Direction,
     Signal,
     ValidationResult,
     compute_liquidation_price,

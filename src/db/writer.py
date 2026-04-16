@@ -7,6 +7,7 @@ Public API (module §8):
     write_trade(trade_dict) -> int
     write_event(bot_id, session_id, env, level, category, message, payload, trade_id) -> None
 """
+
 from __future__ import annotations
 
 import json
@@ -64,13 +65,32 @@ async def write_candle(candle: Candle) -> int:
                 direction    = EXCLUDED.direction
             RETURNING id
             """,
-            candle.bot_id, candle.ts, candle.pair, candle.timeframe,
-            candle.open, candle.high, candle.low, candle.close, candle.volume,
-            candle.ema9, candle.ema21, candle.rsi14, candle.atr14,
-            candle.bb_upper, candle.bb_lower, candle.bb_width,
-            candle.adx, candle.volume_ma20, candle.volume_ratio, candle.regime,
-            candle.body_size, candle.total_range, candle.body_ratio,
-            candle.upper_wick, candle.lower_wick, candle.direction,
+            candle.bot_id,
+            candle.ts,
+            candle.pair,
+            candle.timeframe,
+            candle.open,
+            candle.high,
+            candle.low,
+            candle.close,
+            candle.volume,
+            candle.ema9,
+            candle.ema21,
+            candle.rsi14,
+            candle.atr14,
+            candle.bb_upper,
+            candle.bb_lower,
+            candle.bb_width,
+            candle.adx,
+            candle.volume_ma20,
+            candle.volume_ratio,
+            candle.regime,
+            candle.body_size,
+            candle.total_range,
+            candle.body_ratio,
+            candle.upper_wick,
+            candle.lower_wick,
+            candle.direction,
             "dev" if candle.bot_id.startswith("dev") else "prod",
         )
         return row["id"]
@@ -98,12 +118,25 @@ async def write_signal(
                 $17, $18, $19
             ) RETURNING id
             """,
-            signal.bot_id, signal.session_id, signal.env, signal.ts,
-            signal.pair, signal.timeframe, signal.candle_ts,
-            signal.pattern, signal.direction.value, signal.confidence, signal.regime,
-            signal.layer_regime, signal.layer_trend, signal.layer_momentum,
-            signal.layer_volume, signal.layers_passed,
-            outcome.value, reject_reason, trade_id,
+            signal.bot_id,
+            signal.session_id,
+            signal.env,
+            signal.ts,
+            signal.pair,
+            signal.timeframe,
+            signal.candle_ts,
+            signal.pattern,
+            signal.direction.value,
+            signal.confidence,
+            signal.regime,
+            signal.layer_regime,
+            signal.layer_trend,
+            signal.layer_momentum,
+            signal.layer_volume,
+            signal.layers_passed,
+            outcome.value,
+            reject_reason,
+            trade_id,
         )
         return row["id"]
 
@@ -125,12 +158,23 @@ async def write_trade(trade: dict[str, Any]) -> int:
                 $17, $18
             ) RETURNING id
             """,
-            trade["bot_id"], trade["session_id"], trade["env"],
-            trade["pair"], trade["timeframe"], trade["direction"], trade["pattern"],
-            trade["entry_ts"], trade["entry_price"], trade["tp_price"],
-            trade["sl_price"], trade["liquidation_price"],
-            trade["bucket_id"], trade["size_usdt"], trade["leverage"],
-            trade["notional_usdt"], trade["fee_entry_usdt"],
+            trade["bot_id"],
+            trade["session_id"],
+            trade["env"],
+            trade["pair"],
+            trade["timeframe"],
+            trade["direction"],
+            trade["pattern"],
+            trade["entry_ts"],
+            trade["entry_price"],
+            trade["tp_price"],
+            trade["sl_price"],
+            trade["liquidation_price"],
+            trade["bucket_id"],
+            trade["size_usdt"],
+            trade["leverage"],
+            trade["notional_usdt"],
+            trade["fee_entry_usdt"],
             trade["bucket_balance_before"],
         )
         return row["id"]
@@ -154,9 +198,15 @@ async def close_trade(trade_id: int, close: dict[str, Any]) -> None:
             WHERE id = $1
             """,
             trade_id,
-            close["exit_ts"], close["exit_price"], close["hold_candles"],
-            close["close_reason"], close["pnl_gross_usdt"], close["fee_exit_usdt"],
-            close["pnl_net_usdt"], close["pnl_pct"], close["bucket_balance_after"],
+            close["exit_ts"],
+            close["exit_price"],
+            close["hold_candles"],
+            close["close_reason"],
+            close["pnl_gross_usdt"],
+            close["fee_exit_usdt"],
+            close["pnl_net_usdt"],
+            close["pnl_pct"],
+            close["bucket_balance_after"],
         )
 
 
@@ -178,7 +228,13 @@ async def write_event(
             INSERT INTO events (bot_id, session_id, env, ts, level, category, message, payload, trade_id)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
             """,
-            bot_id, session_id, env, ts, level, category, message,
+            bot_id,
+            session_id,
+            env,
+            ts,
+            level,
+            category,
+            message,
             json.dumps(payload) if payload else None,
             trade_id,
         )
@@ -195,7 +251,11 @@ async def write_heartbeat(bot_id: str, ts: int, pid: int, status: str, note: Opt
                 ts = EXCLUDED.ts, pid = EXCLUDED.pid,
                 status = EXCLUDED.status, note = EXCLUDED.note
             """,
-            bot_id, ts, pid, status, note,
+            bot_id,
+            ts,
+            pid,
+            status,
+            note,
         )
 
 
@@ -215,7 +275,12 @@ async def link_trade_context(
             VALUES ($1, $2, $3, $4, $5, $6)
             ON CONFLICT (trade_id, candle_id) DO NOTHING
             """,
-            trade_id, candle_id, candle_ts, offset_candles, offset_hours, window,
+            trade_id,
+            candle_id,
+            candle_ts,
+            offset_candles,
+            offset_hours,
+            window,
         )
 
 
@@ -228,9 +293,7 @@ async def mark_context_post_complete(trade_id: int) -> None:
         )
 
 
-async def load_recent_candles(
-    bot_id: str, pair: str, timeframe: str, limit: int
-) -> list[dict]:
+async def load_recent_candles(bot_id: str, pair: str, timeframe: str, limit: int) -> list[dict]:
     """Load the N most recent candles for a pair/timeframe (used to bootstrap indicators)."""
     async with acquire() as conn:
         rows = await conn.fetch(
@@ -239,14 +302,15 @@ async def load_recent_candles(
             WHERE bot_id = $1 AND pair = $2 AND timeframe = $3
             ORDER BY ts DESC LIMIT $4
             """,
-            bot_id, pair, timeframe, limit,
+            bot_id,
+            pair,
+            timeframe,
+            limit,
         )
         return [dict(r) for r in reversed(rows)]
 
 
-async def load_pattern_memory(
-    pattern: str, direction: str, session: str, regime: str
-) -> Optional[dict]:
+async def load_pattern_memory(pattern: str, direction: str, session: str, regime: str) -> Optional[dict]:
     """Load a pattern_memory row or return None if not found."""
     async with acquire() as conn:
         row = await conn.fetchrow(
@@ -254,15 +318,24 @@ async def load_pattern_memory(
             SELECT * FROM pattern_memory
             WHERE pattern = $1 AND direction = $2 AND session = $3 AND regime = $4
             """,
-            pattern, direction, session, regime,
+            pattern,
+            direction,
+            session,
+            regime,
         )
         return dict(row) if row else None
 
 
 async def upsert_pattern_memory(
-    pattern: str, direction: str, session: str, regime: str,
-    sample_count: int, win_count: int, win_rate: float,
-    avg_pnl_pct: float, last_updated: int,
+    pattern: str,
+    direction: str,
+    session: str,
+    regime: str,
+    sample_count: int,
+    win_count: int,
+    win_rate: float,
+    avg_pnl_pct: float,
+    last_updated: int,
 ) -> None:
     """Upsert pattern performance statistics."""
     async with acquire() as conn:
@@ -278,8 +351,15 @@ async def upsert_pattern_memory(
                 avg_pnl_pct  = EXCLUDED.avg_pnl_pct,
                 last_updated = EXCLUDED.last_updated
             """,
-            pattern, direction, session, regime,
-            sample_count, win_count, win_rate, avg_pnl_pct, last_updated,
+            pattern,
+            direction,
+            session,
+            regime,
+            sample_count,
+            win_count,
+            win_rate,
+            avg_pnl_pct,
+            last_updated,
         )
 
 
@@ -292,7 +372,9 @@ async def get_session_pnl(bot_id: str, env: str, since_ts: int) -> float:
             FROM trades
             WHERE bot_id = $1 AND env = $2 AND exit_ts >= $3 AND pnl_net_usdt IS NOT NULL
             """,
-            bot_id, env, since_ts,
+            bot_id,
+            env,
+            since_ts,
         )
         return float(row["total"])
 
@@ -302,6 +384,7 @@ async def count_active_positions(bot_id: str, env: str) -> int:
     async with acquire() as conn:
         row = await conn.fetchrow(
             "SELECT COUNT(*) AS cnt FROM trades WHERE bot_id = $1 AND env = $2 AND exit_ts IS NULL",
-            bot_id, env,
+            bot_id,
+            env,
         )
         return int(row["cnt"])

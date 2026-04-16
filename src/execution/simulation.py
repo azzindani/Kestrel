@@ -7,6 +7,7 @@ as specified in CLAUDE.md §13, §17, §29.
 
 Injected by the daemon when ENV=dev. Never touches a real exchange.
 """
+
 from __future__ import annotations
 
 import time
@@ -14,13 +15,15 @@ import uuid
 from typing import Any, Optional
 
 from src.config import (
-    AppConfig, Direction, Signal,
-    compute_liquidation_price, round_trip_fee_pct,
+    AppConfig,
+    Direction,
+    Signal,
+    compute_liquidation_price,
 )
 from src.execution.interface import ExecutionError, ExecutionInterface
 
-_TAKER_FEE_PCT = 0.04 / 100.0   # 0.04% per side
-_SLIPPAGE_PCT = 0.05 / 100.0     # 0.05% per side
+_TAKER_FEE_PCT = 0.04 / 100.0  # 0.04% per side
+_SLIPPAGE_PCT = 0.05 / 100.0  # 0.05% per side
 
 
 class SimulationExecution(ExecutionInterface):
@@ -108,7 +111,6 @@ class SimulationExecution(ExecutionInterface):
         direction = pos["direction"]
         entry = pos["entry_price"]
         size = pos["size_usdt"]
-        leverage = pos["leverage"]
         notional = pos["notional_usdt"]
 
         slip = _SLIPPAGE_PCT

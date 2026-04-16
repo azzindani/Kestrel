@@ -11,6 +11,7 @@ Public API (CLAUDE.md §8):
     get_position(pair) -> dict | None
     close_position(pair, reason) -> dict
 """
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod

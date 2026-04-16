@@ -9,6 +9,7 @@ Reconnection policy (CLAUDE.md §10, §16):
     - Max 5 retries before sending CRITICAL Telegram alert and waiting
     - Tracks last reconnect timestamp for the stale-data guard in risk/manager
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -69,8 +70,7 @@ class MarketFeed:
                 retry_count += 1
                 if retry_count > _MAX_RETRIES:
                     msg = (
-                        f"WS feed {self.pair}/{self.timeframe} exceeded max retries "
-                        f"({_MAX_RETRIES}). Last error: {exc}"
+                        f"WS feed {self.pair}/{self.timeframe} exceeded max retries ({_MAX_RETRIES}). Last error: {exc}"
                     )
                     if self._notify:
                         self._notify("CRITICAL", msg)
@@ -79,7 +79,7 @@ class MarketFeed:
                     retry_count = 0
                     continue
 
-                delay = _BACKOFF_BASE ** retry_count
+                delay = _BACKOFF_BASE**retry_count
                 if self._notify:
                     self._notify(
                         "WARN",
@@ -93,10 +93,12 @@ class MarketFeed:
         import ccxt.pro as ccxtpro  # deferred import — not available in all envs
 
         exchange_cls = getattr(ccxtpro, self.cfg.exchange)
-        exchange = exchange_cls({
-            "apiKey": self.cfg.api_key,
-            "secret": self.cfg.api_secret,
-        })
+        exchange = exchange_cls(
+            {
+                "apiKey": self.cfg.api_key,
+                "secret": self.cfg.api_secret,
+            }
+        )
 
         if self.cfg.testnet:
             exchange.set_sandbox_mode(True)

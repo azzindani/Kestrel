@@ -12,17 +12,21 @@ Usage:
     results = run_backtest(candles, params, cfg)
     metrics = compute_metrics(results["trades"])
 """
+
 from __future__ import annotations
 
-import time
 from typing import Any, Sequence
 
 from src.config import (
-    AppConfig, BucketState, Candle, Direction, Params,
-    compute_liquidation_price, round_trip_fee_pct,
+    AppConfig,
+    BucketState,
+    Candle,
+    Direction,
+    Params,
+    compute_liquidation_price,
 )
-from src.signal.detector import evaluate
 from src.risk.manager import validate
+from src.signal.detector import evaluate
 
 _TAKER_FEE_PCT = 0.04 / 100.0
 _SLIPPAGE_PCT = 0.05 / 100.0
@@ -66,7 +70,7 @@ def run_backtest(
 
     for i in range(min_candles_warmup, len(candles)):
         candle = candles[i]
-        window = list(candles[max(0, i - 119): i + 1])
+        window = list(candles[max(0, i - 119) : i + 1])
 
         # Reset daily session PnL at UTC midnight
         midnight = _utc_midnight_ms(candle.ts)
@@ -103,24 +107,31 @@ def run_backtest(
             current_ts=candle.ts,
         )
 
-        signal, rejection = evaluate(
-            window, params, bot_id, session_id, cfg.env.value
-        )
+        signal, rejection = evaluate(window, params, bot_id, session_id, cfg.env.value)
 
         if rejection is not None:
-            signals.append({
-                "ts": candle.ts, "outcome": "rejected", "reason": rejection.reason,
-                "stage": rejection.stage,
-            })
+            signals.append(
+                {
+                    "ts": candle.ts,
+                    "outcome": "rejected",
+                    "reason": rejection.reason,
+                    "stage": rejection.stage,
+                }
+            )
             equity_curve.append(equity)
             continue
 
+        assert signal is not None  # guaranteed: evaluate returns exactly one of signal/rejection
         validation = validate(signal, state, cfg)
         if not validation.passed:
-            signals.append({
-                "ts": candle.ts, "outcome": "rejected", "reason": validation.reason,
-                "stage": "risk",
-            })
+            signals.append(
+                {
+                    "ts": candle.ts,
+                    "outcome": "rejected",
+                    "reason": validation.reason,
+                    "stage": "risk",
+                }
+            )
             equity_curve.append(equity)
             continue
 
@@ -157,11 +168,15 @@ def run_backtest(
         }
         candle_hold_count = 0
 
-        signals.append({
-            "ts": candle.ts, "outcome": "fired",
-            "pattern": signal.pattern, "direction": signal.direction.value,
-            "confidence": signal.confidence,
-        })
+        signals.append(
+            {
+                "ts": candle.ts,
+                "outcome": "fired",
+                "pattern": signal.pattern,
+                "direction": signal.direction.value,
+                "confidence": signal.confidence,
+            }
+        )
         equity_curve.append(equity)
 
     # Close any remaining open trade at last candle
@@ -212,6 +227,7 @@ def walk_forward(
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
+
 
 def _check_exit(trade: dict, candle: Candle) -> str | None:
     """Return close reason if TP/SL/liquidation is hit, else None."""
@@ -264,9 +280,9 @@ def _simulate_close(trade: dict, candle: Candle, reason: str) -> dict:
     pnl_net = pnl_gross - total_fee
     pnl_pct = pnl_net / size * 100.0
 
-    hold_candles = int((candle.ts - trade["entry_ts"]) // (
-        300_000 if "5m" in trade.get("timeframe", "5m") else 900_000
-    ))
+    hold_candles = int(
+        (candle.ts - trade["entry_ts"]) // (300_000 if "5m" in trade.get("timeframe", "5m") else 900_000)
+    )
 
     return {
         "exit_ts": candle.ts,

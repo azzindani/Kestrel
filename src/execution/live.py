@@ -7,6 +7,7 @@ Layer 3 boundary — live execution engine.
 Implements ExecutionInterface for production trading (ENV=prod).
 Uses ccxt to place real orders on the configured exchange.
 """
+
 from __future__ import annotations
 
 import time
@@ -31,11 +32,13 @@ class LiveExecution(ExecutionInterface):
     def __init__(self, cfg: AppConfig) -> None:
         self.cfg = cfg
         exchange_cls = getattr(ccxt, cfg.exchange)
-        self._exchange = exchange_cls({
-            "apiKey": cfg.api_key,
-            "secret": cfg.api_secret,
-            "options": {"defaultType": "margin"},
-        })
+        self._exchange = exchange_cls(
+            {
+                "apiKey": cfg.api_key,
+                "secret": cfg.api_secret,
+                "options": {"defaultType": "margin"},
+            }
+        )
         if cfg.testnet:
             self._exchange.set_sandbox_mode(True)
 

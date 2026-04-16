@@ -4,6 +4,7 @@ Layer 1 — backtest metrics computation.
 Pure functions: trade list in → metrics dict out. No I/O.
 Fee + slippage must already be applied before calling these functions.
 """
+
 from __future__ import annotations
 
 import math
@@ -40,9 +41,7 @@ def compute_metrics(trades: Sequence[dict]) -> dict:
     avg_win = sum(t["pnl_net_usdt"] for t in wins) / win_count if wins else 0.0
     avg_loss = sum(t["pnl_net_usdt"] for t in losses) / len(losses) if losses else 0.0
     profit_factor = (
-        abs(avg_win * win_count) / abs(avg_loss * len(losses))
-        if losses and avg_loss != 0.0
-        else float("inf")
+        abs(avg_win * win_count) / abs(avg_loss * len(losses)) if losses and avg_loss != 0.0 else float("inf")
     )
 
     # Sharpe ratio (annualised, assuming 5m candles)
@@ -137,7 +136,7 @@ def compare_metrics(baseline: dict, candidate: dict, threshold: float = 0.05) ->
     A metric regresses if it worsens by more than threshold (5%).
     """
     key_metrics = [
-        ("win_rate", True),           # higher is better
+        ("win_rate", True),  # higher is better
         ("total_pnl_usdt", True),
         ("sharpe_ratio", True),
         ("max_drawdown_pct", False),  # lower is better

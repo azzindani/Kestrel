@@ -5,6 +5,7 @@ All functions are stateless transforms: data in → value out. No I/O.
 Indicators computed here are stored in the candles table at candle close.
 They are NOT recomputed later — read from DB when needed.
 """
+
 from __future__ import annotations
 
 import math
@@ -12,10 +13,10 @@ from typing import Sequence
 
 from src.config import Candle
 
-
 # ---------------------------------------------------------------------------
 # EMA
 # ---------------------------------------------------------------------------
+
 
 def compute_ema(prices: Sequence[float], period: int) -> float:
     """Compute the EMA of the last element given a price series.
@@ -38,6 +39,7 @@ def compute_ema(prices: Sequence[float], period: int) -> float:
 # ---------------------------------------------------------------------------
 # RSI
 # ---------------------------------------------------------------------------
+
 
 def compute_rsi(closes: Sequence[float], period: int = 14) -> float:
     """Compute RSI(period) for the last value in the close series.
@@ -71,9 +73,8 @@ def compute_rsi(closes: Sequence[float], period: int = 14) -> float:
 # Bollinger Bands
 # ---------------------------------------------------------------------------
 
-def compute_bb(
-    closes: Sequence[float], period: int = 20, std_dev: float = 2.0
-) -> tuple[float, float, float]:
+
+def compute_bb(closes: Sequence[float], period: int = 20, std_dev: float = 2.0) -> tuple[float, float, float]:
     """Return (upper, lower, width) Bollinger Bands for the last value.
 
     width = (upper - lower) / middle  (normalised BB width)
@@ -97,6 +98,7 @@ def compute_bb(
 # ---------------------------------------------------------------------------
 # ATR
 # ---------------------------------------------------------------------------
+
 
 def compute_atr(candles: Sequence[Candle], period: int = 14) -> float:
     """Compute ATR(period) using Wilder's smoothing.
@@ -131,6 +133,7 @@ def compute_atr(candles: Sequence[Candle], period: int = 14) -> float:
 # ---------------------------------------------------------------------------
 # ADX
 # ---------------------------------------------------------------------------
+
 
 def compute_adx(candles: Sequence[Candle], period: int = 14) -> float:
     """Compute ADX(period) using Wilder's smoothing.
@@ -209,6 +212,7 @@ def compute_adx(candles: Sequence[Candle], period: int = 14) -> float:
 # Volume MA and ratio
 # ---------------------------------------------------------------------------
 
+
 def compute_volume_ma(volumes: Sequence[float], period: int = 20) -> float:
     """Compute simple moving average of volume over `period` bars."""
     if not volumes:
@@ -230,6 +234,7 @@ def compute_volume_stddev(volumes: Sequence[float], period: int = 20) -> float:
 # ---------------------------------------------------------------------------
 # Aggregate — compute all indicators for the latest candle
 # ---------------------------------------------------------------------------
+
 
 def compute_all_indicators(
     candles: Sequence[Candle],

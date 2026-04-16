@@ -8,6 +8,7 @@ and called by the engine layer, which passes the data in here.
 The only allowed adjustment is a gentle confidence penalty/boost based on
 historical win rate for this pattern × direction × session × regime combination.
 """
+
 from __future__ import annotations
 
 from typing import Optional

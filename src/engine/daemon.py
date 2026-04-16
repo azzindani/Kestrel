@@ -13,12 +13,12 @@ DI at startup:
     ENV=dev  → SimulationExecution
     ENV=prod → LiveExecution
 """
+
 from __future__ import annotations
 
 import asyncio
 import os
 import signal
-import sys
 import time
 import uuid
 from typing import Optional
@@ -85,8 +85,12 @@ class Daemon:
         await db_conn.init_pool(self.cfg)
         await db_schema.apply_schema()
         await db.write_event(
-            self.cfg.bot_id, self.session_id, self.cfg.env.value,
-            "INFO", "system", "daemon_start",
+            self.cfg.bot_id,
+            self.session_id,
+            self.cfg.env.value,
+            "INFO",
+            "system",
+            "daemon_start",
             {"session_id": self.session_id, "env": self.cfg.env.value},
         )
 
@@ -95,13 +99,12 @@ class Daemon:
 
         # 4. Bootstrap candle builder from DB history
         builder = CandleBuilder(
-            self.cfg.bot_id, self.cfg.pair,
-            self.cfg.timeframe_entry, self.params,
+            self.cfg.bot_id,
+            self.cfg.pair,
+            self.cfg.timeframe_entry,
+            self.params,
         )
-        historical = await db.load_recent_candles(
-            self.cfg.bot_id, self.cfg.pair, self.cfg.timeframe_entry, limit=120
-        )
-        from src.config import Candle as CandleType
+        historical = await db.load_recent_candles(self.cfg.bot_id, self.cfg.pair, self.cfg.timeframe_entry, limit=120)
         hist_candles = [_row_to_candle(row) for row in historical]
         builder.bootstrap(hist_candles)
         builder.set_emitter(lambda c: self._candle_queue.put_nowait(c))
@@ -127,16 +130,12 @@ class Daemon:
         self._tasks = [
             asyncio.create_task(feed.run(), name="ws_feed"),
             asyncio.create_task(self._candle_processor(), name="candle_processor"),
-            asyncio.create_task(
-                heartbeat_task(self.cfg, self.session_id), name="heartbeat"
-            ),
+            asyncio.create_task(heartbeat_task(self.cfg, self.session_id), name="heartbeat"),
             asyncio.create_task(
                 daily_summary_task(self.cfg, self.session_id, self.notifier),
                 name="daily_summary",
             ),
-            asyncio.create_task(
-                cleanup_task(self.cfg, self.session_id), name="cleanup"
-            ),
+            asyncio.create_task(cleanup_task(self.cfg, self.session_id), name="cleanup"),
         ]
 
         # Install SIGTERM handler
@@ -144,8 +143,12 @@ class Daemon:
         loop.add_signal_handler(signal.SIGTERM, lambda: asyncio.create_task(self.stop()))
 
         await db.write_event(
-            self.cfg.bot_id, self.session_id, self.cfg.env.value,
-            "INFO", "system", "daemon_ready",
+            self.cfg.bot_id,
+            self.session_id,
+            self.cfg.env.value,
+            "INFO",
+            "system",
+            "daemon_ready",
             {"pair": self.cfg.pair, "timeframe": self.cfg.timeframe_entry},
         )
 
@@ -156,8 +159,12 @@ class Daemon:
             pass
         except Exception as exc:
             await db.write_event(
-                self.cfg.bot_id, self.session_id, self.cfg.env.value,
-                "CRITICAL", "system", "daemon_crash",
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                "CRITICAL",
+                "system",
+                "daemon_crash",
                 {"error": str(exc)},
             )
             await self.notifier.system_error(str(exc), self.cfg.bot_id, int(time.time() * 1000))
@@ -170,8 +177,13 @@ class Daemon:
         self._running = False
 
         await db.write_event(
-            self.cfg.bot_id, self.session_id, self.cfg.env.value,
-            "INFO", "system", "daemon_stop_initiated", {},
+            self.cfg.bot_id,
+            self.session_id,
+            self.cfg.env.value,
+            "INFO",
+            "system",
+            "daemon_stop_initiated",
+            {},
         )
 
         # Close all open positions
@@ -180,14 +192,22 @@ class Daemon:
             for pos in positions:
                 await self.execution.close_position(pos["pair"], "manual")
                 await db.write_event(
-                    self.cfg.bot_id, self.session_id, self.cfg.env.value,
-                    "INFO", "position", "position_closed_on_stop",
+                    self.cfg.bot_id,
+                    self.session_id,
+                    self.cfg.env.value,
+                    "INFO",
+                    "position",
+                    "position_closed_on_stop",
                     {"pair": pos["pair"]},
                 )
         except Exception as exc:
             await db.write_event(
-                self.cfg.bot_id, self.session_id, self.cfg.env.value,
-                "ERROR", "position", "position_close_failed_on_stop",
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                "ERROR",
+                "position",
+                "position_close_failed_on_stop",
                 {"error": str(exc)},
             )
 
@@ -203,8 +223,13 @@ class Daemon:
         await db_conn.close_pool()
 
         await db.write_event(
-            self.cfg.bot_id, self.session_id, self.cfg.env.value,
-            "INFO", "system", "daemon_stopped", {},
+            self.cfg.bot_id,
+            self.session_id,
+            self.cfg.env.value,
+            "INFO",
+            "system",
+            "daemon_stopped",
+            {},
         )
 
     # -----------------------------------------------------------------------
@@ -223,8 +248,12 @@ class Daemon:
                 await self._process_candle(candle)
             except Exception as exc:
                 await db.write_event(
-                    self.cfg.bot_id, self.session_id, self.cfg.env.value,
-                    "ERROR", "system", "candle_processor_error",
+                    self.cfg.bot_id,
+                    self.session_id,
+                    self.cfg.env.value,
+                    "ERROR",
+                    "system",
+                    "candle_processor_error",
                     {"error": str(exc), "candle_ts": candle.ts},
                 )
             finally:
@@ -267,22 +296,22 @@ class Daemon:
         # Load candle buffer from candle builder (passed via closure)
         # The builder emitter sends us the candle — we need the full buffer
         # We reconstruct by loading from DB
-        history = await db.load_recent_candles(
-            self.cfg.bot_id, candle.pair, candle.timeframe, limit=120
-        )
+        history = await db.load_recent_candles(self.cfg.bot_id, candle.pair, candle.timeframe, limit=120)
         candle_window = [_row_to_candle(r) for r in history]
 
         if not candle_window:
             return
 
-        signal, rejection = evaluate(
-            candle_window, self.params, self.cfg.bot_id, self.session_id, self.cfg.env.value
-        )
+        signal, rejection = evaluate(candle_window, self.params, self.cfg.bot_id, self.session_id, self.cfg.env.value)
 
         if rejection is not None:
             await db.write_event(
-                self.cfg.bot_id, self.session_id, self.cfg.env.value,
-                "INFO", "signal", f"signal_rejected:{rejection.reason}",
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                "INFO",
+                "signal",
+                f"signal_rejected:{rejection.reason}",
                 {"stage": rejection.stage, "reason": rejection.reason, "candle_ts": candle.ts},
             )
             return
@@ -292,8 +321,12 @@ class Daemon:
         if not validation.passed:
             await db.write_signal(signal, SignalOutcome.REJECTED, validation.reason)
             await db.write_event(
-                self.cfg.bot_id, self.session_id, self.cfg.env.value,
-                "INFO", "risk", f"risk_rejected:{validation.reason}",
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                "INFO",
+                "risk",
+                f"risk_rejected:{validation.reason}",
                 {"reason": validation.reason, "candle_ts": candle.ts},
             )
             return
@@ -303,57 +336,72 @@ class Daemon:
             order = await self.execution.place_order(signal)
         except ExecutionError as exc:
             await db.write_event(
-                self.cfg.bot_id, self.session_id, self.cfg.env.value,
-                "ERROR", "order", "order_placement_failed",
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                "ERROR",
+                "order",
+                "order_placement_failed",
                 {"error": str(exc), "pair": signal.pair},
             )
             return
 
         # Write trade record
-        trade_id = await db.write_trade({
-            "bot_id": self.cfg.bot_id,
-            "session_id": self.session_id,
-            "env": self.cfg.env.value,
-            "pair": signal.pair,
-            "timeframe": signal.timeframe,
-            "direction": signal.direction.value,
-            "pattern": signal.pattern,
-            "entry_ts": order["ts"],
-            "entry_price": order["entry_price"],
-            "tp_price": order["tp_price"],
-            "sl_price": order["sl_price"],
-            "liquidation_price": order["liquidation_price"],
-            "bucket_id": 1,
-            "size_usdt": order["size_usdt"],
-            "leverage": order["leverage"],
-            "notional_usdt": order["notional_usdt"],
-            "fee_entry_usdt": order["fee_usdt"],
-            "bucket_balance_before": 10.0,
-        })
+        trade_id = await db.write_trade(
+            {
+                "bot_id": self.cfg.bot_id,
+                "session_id": self.session_id,
+                "env": self.cfg.env.value,
+                "pair": signal.pair,
+                "timeframe": signal.timeframe,
+                "direction": signal.direction.value,
+                "pattern": signal.pattern,
+                "entry_ts": order["ts"],
+                "entry_price": order["entry_price"],
+                "tp_price": order["tp_price"],
+                "sl_price": order["sl_price"],
+                "liquidation_price": order["liquidation_price"],
+                "bucket_id": 1,
+                "size_usdt": order["size_usdt"],
+                "leverage": order["leverage"],
+                "notional_usdt": order["notional_usdt"],
+                "fee_entry_usdt": order["fee_usdt"],
+                "bucket_balance_before": 10.0,
+            }
+        )
 
         await db.write_signal(signal, SignalOutcome.FIRED, trade_id=trade_id)
         await db.write_event(
-            self.cfg.bot_id, self.session_id, self.cfg.env.value,
-            "INFO", "order", "order_placed",
+            self.cfg.bot_id,
+            self.session_id,
+            self.cfg.env.value,
+            "INFO",
+            "order",
+            "order_placed",
             {
-                "pair": signal.pair, "direction": signal.direction.value,
-                "entry": order["entry_price"], "tp": order["tp_price"],
-                "sl": order["sl_price"], "size_usdt": order["size_usdt"],
+                "pair": signal.pair,
+                "direction": signal.direction.value,
+                "entry": order["entry_price"],
+                "tp": order["tp_price"],
+                "sl": order["sl_price"],
+                "size_usdt": order["size_usdt"],
                 "trade_id": trade_id,
             },
             trade_id=trade_id,
         )
 
-        await self.notifier.signal_fired({
-            "pattern": signal.pattern,
-            "direction": signal.direction.value,
-            "pair": signal.pair,
-            "confidence": signal.confidence,
-            "entry_price": order["entry_price"],
-            "tp_price": order["tp_price"],
-            "sl_price": order["sl_price"],
-            "regime": signal.regime,
-        })
+        await self.notifier.signal_fired(
+            {
+                "pattern": signal.pattern,
+                "direction": signal.direction.value,
+                "pair": signal.pair,
+                "confidence": signal.confidence,
+                "entry_price": order["entry_price"],
+                "tp_price": order["tp_price"],
+                "sl_price": order["sl_price"],
+                "regime": signal.regime,
+            }
+        )
 
     async def _close_position(self, pair: str, reason: str, candle) -> None:
         """Close a position and update DB records."""
@@ -361,8 +409,12 @@ class Daemon:
             result = await self.execution.close_position(pair, reason)
         except ExecutionError as exc:
             await db.write_event(
-                self.cfg.bot_id, self.session_id, self.cfg.env.value,
-                "ERROR", "position", "close_position_failed",
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                "ERROR",
+                "position",
+                "close_position_failed",
                 {"error": str(exc), "pair": pair, "reason": reason},
             )
             return
@@ -370,18 +422,25 @@ class Daemon:
         self._session_pnl += result["pnl_net_usdt"]
 
         await db.write_event(
-            self.cfg.bot_id, self.session_id, self.cfg.env.value,
-            "INFO", "position", f"position_closed:{reason}",
+            self.cfg.bot_id,
+            self.session_id,
+            self.cfg.env.value,
+            "INFO",
+            "position",
+            f"position_closed:{reason}",
             {
-                "pair": pair, "exit_price": result["exit_price"],
+                "pair": pair,
+                "exit_price": result["exit_price"],
                 "pnl_net_usdt": result["pnl_net_usdt"],
-                "pnl_pct": result["pnl_pct"], "reason": reason,
+                "pnl_pct": result["pnl_pct"],
+                "reason": reason,
             },
         )
 
         # Notify
         notify_data = {
-            "pair": pair, "direction": "—",
+            "pair": pair,
+            "direction": "—",
             "exit_price": result["exit_price"],
             "pnl_net_usdt": result["pnl_net_usdt"],
             "pnl_pct": result["pnl_pct"],
@@ -403,8 +462,12 @@ class Daemon:
         """Reconcile exchange positions vs DB on startup."""
         positions = await self.execution.reconcile()
         await db.write_event(
-            self.cfg.bot_id, self.session_id, self.cfg.env.value,
-            "INFO", "system", "position_reconcile",
+            self.cfg.bot_id,
+            self.session_id,
+            self.cfg.env.value,
+            "INFO",
+            "system",
+            "position_reconcile",
             {"open_count": len(positions), "positions": [p["pair"] for p in positions]},
         )
 
@@ -420,8 +483,10 @@ class Daemon:
 # Entry point
 # ---------------------------------------------------------------------------
 
+
 def _row_to_candle(row: dict):
     from src.config import Candle
+
     return Candle(
         bot_id=row["bot_id"],
         ts=row["ts"],
@@ -470,6 +535,7 @@ async def main() -> None:
         execution: ExecutionInterface = SimulationExecution(cfg)
     else:
         from src.execution.live import LiveExecution
+
         execution = LiveExecution(cfg)
 
     daemon = Daemon(cfg, params, execution, notifier)

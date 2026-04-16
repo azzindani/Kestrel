@@ -12,9 +12,9 @@ Layout:
     │ Events: rolling 20 from events table                        │
     └─────────────────────────────────────────────────────────────┘
 """
+
 from __future__ import annotations
 
-import asyncio
 import time
 from datetime import datetime, timezone
 from typing import Any, Optional
@@ -126,7 +126,7 @@ class Dashboard:
         pnl_color = "green" if s["session_pnl"] >= 0 else "red"
         session_str = (
             f"PnL: [{pnl_color}]${s['session_pnl']:+.4f}[/{pnl_color}]  │  "
-            f"Trades: {s['win_count']}W {s['trade_count']-s['win_count']}L  │  "
+            f"Trades: {s['win_count']}W {s['trade_count'] - s['win_count']}L  │  "
             f"Win: {win_pct:.0f}%"
         )
 
@@ -139,8 +139,12 @@ class Dashboard:
         for ev in s["events"][-20:]:
             ts_str = datetime.fromtimestamp(ev["ts"] / 1000, tz=timezone.utc).strftime("%H:%M:%S")
             cat_abbr = {
-                "signal": "SIG", "order": "ORD", "position": "POS",
-                "risk": "RSK", "connection": "CON", "system": "SYS",
+                "signal": "SIG",
+                "order": "ORD",
+                "position": "POS",
+                "risk": "RSK",
+                "connection": "CON",
+                "system": "SYS",
             }.get(ev.get("category", ""), "---")
             level_color = {"INFO": "white", "WARN": "yellow", "ERROR": "red", "CRITICAL": "red bold"}.get(
                 ev.get("level", "INFO"), "white"
@@ -153,10 +157,10 @@ class Dashboard:
 
         body = (
             f"{market}\n"
-            f"{'─'*60}\n"
+            f"{'─' * 60}\n"
             f"BUCKET 1  │  $10.00  │  {bucket_str}\n"
             f"SESSION   │  {session_str}\n"
-            f"{'─'*60}\n"
+            f"{'─' * 60}\n"
             f"RECENT EVENTS (last 20 from events table)"
         )
 

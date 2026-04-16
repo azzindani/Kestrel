@@ -15,29 +15,37 @@ Pipeline (CLAUDE.md §22):
 Each stage returns a typed result or a typed Rejection.
 Rejections are returned to the caller for logging; no exceptions for flow control.
 """
+
 from __future__ import annotations
 
 import time
 from typing import Optional, Sequence
 
 from src.config import (
-    BucketState, Candle, Direction, Params, PatternType, Rejection,
-    RegimeResult, Signal, TradingSession, TrendResult, VolumeResult,
-    get_trading_session, session_confidence_multiplier, session_volume_multiplier,
+    Candle,
+    Direction,
+    Params,
+    PatternResult,
+    Rejection,
+    Signal,
+    TradingSession,
+    TrendResult,
+    VolumeResult,
+    get_trading_session,
+    session_confidence_multiplier,
+    session_volume_multiplier,
 )
 from src.signal.indicators import compute_ema, compute_rsi
 from src.signal.memory import adjust_confidence, should_suppress
 from src.signal.patterns import registry
 from src.signal.regime import classify_regime, regime_permits_pattern
 
-
 # ---------------------------------------------------------------------------
 # Pipeline stage: trend filter
 # ---------------------------------------------------------------------------
 
-def _trend_filter(
-    candles: Sequence[Candle], params: Params
-) -> TrendResult | Rejection:
+
+def _trend_filter(candles: Sequence[Candle], params: Params) -> TrendResult | Rejection:
     """EMA cross + RSI check. Returns direction of the trend or Rejection."""
     if len(candles) < params.ema_slow + 1:
         return Rejection(stage="trend", reason="insufficient_candles")
@@ -63,9 +71,8 @@ def _trend_filter(
 # Pipeline stage: volume confirm
 # ---------------------------------------------------------------------------
 
-def _volume_confirm(
-    candle: Candle, params: Params, session_vol_multiplier: float
-) -> VolumeResult | Rejection:
+
+def _volume_confirm(candle: Candle, params: Params, session_vol_multiplier: float) -> VolumeResult | Rejection:
     """Volume must exceed the session-adjusted threshold."""
     vol_ratio = candle.volume_ratio
     vol_ma20 = candle.volume_ma20
@@ -87,6 +94,7 @@ def _volume_confirm(
 # Pipeline stage: pattern scan
 # ---------------------------------------------------------------------------
 
+
 def _pattern_scan(
     candles: Sequence[Candle],
     params: Params,
@@ -95,7 +103,7 @@ def _pattern_scan(
     pattern_memories: dict[str, dict | None],
     session: TradingSession,
     session_conf_multiplier: float,
-) -> tuple["PatternResult", float] | Rejection:
+) -> tuple[PatternResult, float] | Rejection:
     """
     Run all permitted patterns through the registry. Return (PatternResult, confidence)
     for the highest-confidence match that aligns with trend_direction, or Rejection if
@@ -135,6 +143,7 @@ def _pattern_scan(
 # ---------------------------------------------------------------------------
 # Public: evaluate
 # ---------------------------------------------------------------------------
+
 
 def evaluate(
     candles: Sequence[Candle],
@@ -183,15 +192,8 @@ def evaluate(
     layer_regime = 1
 
     # Combine session and regime pattern restrictions
-    regime_patterns = frozenset(
-        p for p in registry
-        if regime_permits_pattern(regime_result.regime, p)
-    )
-    permitted = (
-        session_permitted & regime_patterns
-        if session_permitted is not None
-        else regime_patterns
-    )
+    regime_patterns = frozenset(p for p in registry if regime_permits_pattern(regime_result.regime, p))
+    permitted = session_permitted & regime_patterns if session_permitted is not None else regime_patterns
 
     # --- Stage 2: Trend ---
     trend_result = _trend_filter(candles, params)
@@ -202,10 +204,13 @@ def evaluate(
 
     # --- Stage 3: Pattern scan ---
     scan_result = _pattern_scan(
-        candles, params, permitted,
+        candles,
+        params,
+        permitted,
         trend_result.direction,
         pattern_memories or {},
-        session, session_conf_mult,
+        session,
+        session_conf_mult,
     )
     if isinstance(scan_result, Rejection):
         return None, scan_result

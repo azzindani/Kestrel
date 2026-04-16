@@ -2,9 +2,8 @@
 Layer 3 boundary — database schema DDL.
 apply_schema() is idempotent: safe to run on every startup.
 """
-from __future__ import annotations
 
-import asyncpg
+from __future__ import annotations
 
 from src.db.connection import acquire
 
@@ -51,7 +50,6 @@ _DDL = [
     """,
     "CREATE INDEX IF NOT EXISTS idx_candles_lookup ON candles (pair, timeframe, ts DESC)",
     "CREATE INDEX IF NOT EXISTS idx_candles_bot    ON candles (bot_id, ts DESC)",
-
     # ------------------------------------------------------------------
     # trades (referenced by signals — create before signals)
     # ------------------------------------------------------------------
@@ -92,7 +90,6 @@ _DDL = [
     "CREATE INDEX IF NOT EXISTS idx_trades_entry   ON trades (entry_ts DESC)",
     "CREATE INDEX IF NOT EXISTS idx_trades_bot     ON trades (bot_id, env, entry_ts DESC)",
     "CREATE INDEX IF NOT EXISTS idx_trades_outcome ON trades (close_reason, env)",
-
     # ------------------------------------------------------------------
     # signals
     # ------------------------------------------------------------------
@@ -123,7 +120,6 @@ _DDL = [
     "CREATE INDEX IF NOT EXISTS idx_signals_ts      ON signals (ts DESC)",
     "CREATE INDEX IF NOT EXISTS idx_signals_pattern ON signals (pattern, outcome)",
     "CREATE INDEX IF NOT EXISTS idx_signals_bot     ON signals (bot_id, ts DESC)",
-
     # ------------------------------------------------------------------
     # trade_context
     # ------------------------------------------------------------------
@@ -139,7 +135,6 @@ _DDL = [
     )
     """,
     "CREATE INDEX IF NOT EXISTS idx_context_trade ON trade_context (trade_id, window, offset_hours)",
-
     # ------------------------------------------------------------------
     # events
     # ------------------------------------------------------------------
@@ -161,7 +156,6 @@ _DDL = [
     "CREATE INDEX IF NOT EXISTS idx_events_cat   ON events (category, ts DESC)",
     "CREATE INDEX IF NOT EXISTS idx_events_bot   ON events (bot_id, ts DESC)",
     "CREATE INDEX IF NOT EXISTS idx_events_trade ON events (trade_id)",
-
     # ------------------------------------------------------------------
     # heartbeats
     # ------------------------------------------------------------------
@@ -174,7 +168,6 @@ _DDL = [
         note    TEXT
     )
     """,
-
     # ------------------------------------------------------------------
     # pattern_memory
     # ------------------------------------------------------------------

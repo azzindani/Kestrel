@@ -2,17 +2,18 @@
 Layer 0 — types, enums, constants, pure utilities.
 No I/O of any kind. All other layers depend on this module.
 """
+
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Mapping, Optional
-
 
 # ---------------------------------------------------------------------------
 # Enums
 # ---------------------------------------------------------------------------
+
 
 class Env(str, Enum):
     DEV = "dev"
@@ -80,13 +81,14 @@ class TradingSession(str, Enum):
 # Candle (domain object — populated by data layer, read by signal layer)
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Candle:
     """Completed OHLCV candle with precomputed indicators and geometry."""
 
     # identity
     bot_id: str
-    ts: int               # unix ms — candle open time
+    ts: int  # unix ms — candle open time
     pair: str
     timeframe: str
 
@@ -126,6 +128,7 @@ class Candle:
 # Params (loaded from params.json — schema only, no I/O here)
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Params:
     """Tunable strategy parameters. Loaded from params.json by the startup layer."""
@@ -161,12 +164,28 @@ class Params:
         Raises ValueError listing all missing keys rather than a bare KeyError.
         """
         required_keys = [
-            "ema_fast", "ema_slow", "rsi_low", "rsi_high", "volume_ratio_min",
-            "tp_atr_multiplier", "sl_atr_multiplier", "min_confidence", "adx_trend_min",
-            "bb_width_threshold", "max_hold_candles", "max_active_buckets", "body_ratio_min",
-            "wick_ratio_min", "compression_factor", "ema_spread_threshold",
-            "atr_volatile_multiplier", "atr_quiet_multiplier", "retracement_min",
-            "retracement_max", "anomaly_volume_stddev", "anomaly_price_atr",
+            "ema_fast",
+            "ema_slow",
+            "rsi_low",
+            "rsi_high",
+            "volume_ratio_min",
+            "tp_atr_multiplier",
+            "sl_atr_multiplier",
+            "min_confidence",
+            "adx_trend_min",
+            "bb_width_threshold",
+            "max_hold_candles",
+            "max_active_buckets",
+            "body_ratio_min",
+            "wick_ratio_min",
+            "compression_factor",
+            "ema_spread_threshold",
+            "atr_volatile_multiplier",
+            "atr_quiet_multiplier",
+            "retracement_min",
+            "retracement_max",
+            "anomaly_volume_stddev",
+            "anomaly_price_atr",
             "momentum_acceleration_candles",
         ]
         missing = [k for k in required_keys if k not in d]
@@ -203,10 +222,12 @@ class Params:
 # Signal pipeline typed results and rejections
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Rejection:
     """Typed rejection returned by any pipeline stage."""
-    stage: str    # 'regime' | 'trend' | 'pattern' | 'volume' | 'risk'
+
+    stage: str  # 'regime' | 'trend' | 'pattern' | 'volume' | 'risk'
     reason: str
 
 
@@ -245,6 +266,7 @@ class VolumeResult:
 # Signal — the output of the signal pipeline
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Signal:
     """Fully constructed signal ready for risk validation and execution."""
@@ -252,10 +274,10 @@ class Signal:
     bot_id: str
     session_id: str
     env: str
-    ts: int              # unix ms — signal creation time
+    ts: int  # unix ms — signal creation time
     pair: str
     timeframe: str
-    candle_ts: int       # unix ms — candle that triggered signal
+    candle_ts: int  # unix ms — candle that triggered signal
 
     pattern: str
     direction: Direction
@@ -282,13 +304,15 @@ class Signal:
 # Risk
 # ---------------------------------------------------------------------------
 
+
 @dataclass
 class BucketState:
     """Runtime state passed to the risk manager for validation."""
+
     active_positions: int
-    last_ws_reconnect_ts: Optional[int]   # unix ms; None = never reconnected
-    session_net_pnl: float                # resets 00:00 UTC
-    current_ts: int                       # unix ms
+    last_ws_reconnect_ts: Optional[int]  # unix ms; None = never reconnected
+    session_net_pnl: float  # resets 00:00 UTC
+    current_ts: int  # unix ms
 
 
 @dataclass(frozen=True)
@@ -300,6 +324,7 @@ class ValidationResult:
 # ---------------------------------------------------------------------------
 # App configuration (schema only — populated by startup layer from os.environ)
 # ---------------------------------------------------------------------------
+
 
 @dataclass(frozen=True)
 class AppConfig:
@@ -336,11 +361,26 @@ class AppConfig:
         Raises ValueError for missing or invalid keys.
         """
         required = [
-            "ENV", "BOT_ID", "EXCHANGE", "API_KEY", "API_SECRET", "TESTNET",
-            "DB_HOST", "DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD",
-            "PAIR", "TIMEFRAME_ENTRY", "TIMEFRAME_REGIME",
-            "LEVERAGE", "BUCKET_SIZE_USDT", "MAX_ACTIVE_BUCKETS",
-            "TELEGRAM_TOKEN", "TELEGRAM_CHAT_ID", "LOG_LEVEL",
+            "ENV",
+            "BOT_ID",
+            "EXCHANGE",
+            "API_KEY",
+            "API_SECRET",
+            "TESTNET",
+            "DB_HOST",
+            "DB_PORT",
+            "DB_NAME",
+            "DB_USER",
+            "DB_PASSWORD",
+            "PAIR",
+            "TIMEFRAME_ENTRY",
+            "TIMEFRAME_REGIME",
+            "LEVERAGE",
+            "BUCKET_SIZE_USDT",
+            "MAX_ACTIVE_BUCKETS",
+            "TELEGRAM_TOKEN",
+            "TELEGRAM_CHAT_ID",
+            "LOG_LEVEL",
         ]
         missing = [k for k in required if not m.get(k)]
         if missing:
@@ -374,6 +414,7 @@ class AppConfig:
 # Pure utilities
 # ---------------------------------------------------------------------------
 
+
 def get_trading_session(ts_ms: int) -> TradingSession:
     """Return the trading session for a given Unix millisecond timestamp (UTC hour)."""
     hour = (ts_ms // 3_600_000) % 24
@@ -406,9 +447,7 @@ def session_confidence_multiplier(session: TradingSession) -> float:
     }[session]
 
 
-def compute_candle_geometry(
-    open_: float, high: float, low: float, close: float
-) -> dict[str, float | str]:
+def compute_candle_geometry(open_: float, high: float, low: float, close: float) -> dict[str, float | str]:
     """Compute precomputed geometry fields for a completed candle. Pure function."""
     body_size = abs(close - open_)
     total_range = high - low
@@ -427,7 +466,9 @@ def compute_candle_geometry(
 
 
 def compute_liquidation_price(
-    entry: float, direction: Direction, leverage: int,
+    entry: float,
+    direction: Direction,
+    leverage: int,
     maintenance_margin_rate: float = 0.005,
 ) -> float:
     """Compute liquidation price per CLAUDE.md §17 formula."""
