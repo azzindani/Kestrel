@@ -1,0 +1,163 @@
+{
+  "ema_fast": {
+    "value": 9,
+    "type": "int",
+    "range": [5, 20],
+    "description": "Fast EMA period for trend direction and momentum detection",
+    "impact": "lower = more responsive but more noise in signal"
+  },
+  "ema_slow": {
+    "value": 21,
+    "type": "int",
+    "range": [15, 50],
+    "description": "Slow EMA period for trend baseline",
+    "impact": "higher = smoother trend signal but more lag at inflections"
+  },
+  "rsi_low": {
+    "value": 45.0,
+    "type": "float",
+    "range": [30.0, 55.0],
+    "description": "RSI minimum threshold for long entry filter",
+    "impact": "higher = fewer long entries, only higher-momentum setups qualify"
+  },
+  "rsi_high": {
+    "value": 55.0,
+    "type": "float",
+    "range": [45.0, 70.0],
+    "description": "RSI maximum threshold for short entry filter",
+    "impact": "lower = fewer short entries, only higher-momentum setups qualify"
+  },
+  "volume_ratio_min": {
+    "value": 1.3,
+    "type": "float",
+    "range": [1.1, 2.5],
+    "description": "Volume must exceed 20-period MA by this multiple for confirmation",
+    "impact": "higher = fewer signals, higher volume conviction required per entry"
+  },
+  "tp_atr_multiplier": {
+    "value": 1.6,
+    "type": "float",
+    "range": [0.8, 3.0],
+    "description": "Take-profit distance expressed as ATR14 multiples from entry",
+    "impact": "higher = larger TP targets, lower win rate but higher avg win per trade"
+  },
+  "sl_atr_multiplier": {
+    "value": 1.0,
+    "type": "float",
+    "range": [0.5, 2.0],
+    "description": "Stop-loss distance expressed as ATR14 multiples from entry",
+    "impact": "lower = tighter SL, more frequent SL hits but smaller individual losses"
+  },
+  "min_confidence": {
+    "value": 0.55,
+    "type": "float",
+    "range": [0.4, 0.8],
+    "description": "Minimum signal confidence score required to fire an order",
+    "impact": "higher = fewer but higher-quality signals, lower throughput"
+  },
+  "adx_trend_min": {
+    "value": 20.0,
+    "type": "float",
+    "range": [15.0, 30.0],
+    "description": "ADX threshold above which market is classified as TRENDING regime",
+    "impact": "higher = stricter trending definition, more signals fall into RANGING"
+  },
+  "bb_width_threshold": {
+    "value": 0.02,
+    "type": "float",
+    "range": [0.01, 0.05],
+    "description": "Bollinger Band width threshold below which market is classified as RANGING",
+    "impact": "lower = stricter RANGING definition, fewer RANGING-eligible signals"
+  },
+  "max_hold_candles": {
+    "value": 4,
+    "type": "int",
+    "range": [2, 8],
+    "description": "Maximum candles to hold a position before forced timeout exit",
+    "impact": "higher = more time for TP to hit, but more exposure to adverse moves"
+  },
+  "max_active_buckets": {
+    "value": 1,
+    "type": "int",
+    "range": [1, 5],
+    "description": "Maximum number of concurrent open positions across all pairs",
+    "impact": "higher = more simultaneous trades, more total capital at risk"
+  },
+  "body_ratio_min": {
+    "value": 0.6,
+    "type": "float",
+    "range": [0.4, 0.8],
+    "description": "Minimum body-to-range ratio for impulse candle qualification",
+    "impact": "higher = only strong conviction impulse candles qualify, fewer signals"
+  },
+  "wick_ratio_min": {
+    "value": 2.0,
+    "type": "float",
+    "range": [1.5, 4.0],
+    "description": "Minimum wick-to-body ratio for wick rejection pattern qualification",
+    "impact": "higher = only long wick rejections qualify, fewer but stronger reversals"
+  },
+  "compression_factor": {
+    "value": 0.5,
+    "type": "float",
+    "range": [0.3, 0.7],
+    "description": "ATR(5)/ATR(20) ratio threshold below which compression squeeze is detected",
+    "impact": "lower = stricter compression requirement, fewer but cleaner breakouts"
+  },
+  "ema_spread_threshold": {
+    "value": 0.001,
+    "type": "float",
+    "range": [0.0005, 0.005],
+    "description": "Minimum EMA fast/slow spread as fraction of price to confirm trending regime",
+    "impact": "higher = stricter trending definition, prevents weak trend misclassification"
+  },
+  "atr_volatile_multiplier": {
+    "value": 1.5,
+    "type": "float",
+    "range": [1.2, 2.5],
+    "description": "ATR14/ATR50 ratio above which regime is classified as VOLATILE",
+    "impact": "lower = more VOLATILE periods, higher = only extreme volatility qualifies"
+  },
+  "atr_quiet_multiplier": {
+    "value": 0.5,
+    "type": "float",
+    "range": [0.3, 0.7],
+    "description": "ATR14/ATR50 ratio below which regime is QUIET (all signals blocked)",
+    "impact": "higher = more periods blocked as QUIET, fewer total signals fired"
+  },
+  "retracement_min": {
+    "value": 0.30,
+    "type": "float",
+    "range": [0.20, 0.50],
+    "description": "Minimum retracement fraction of trigger body for impulse_retracement pattern",
+    "impact": "lower = shallower retracements accepted, more signals but weaker setups"
+  },
+  "retracement_max": {
+    "value": 0.50,
+    "type": "float",
+    "range": [0.30, 0.70],
+    "description": "Maximum retracement fraction of trigger body for impulse_retracement pattern",
+    "impact": "higher = deeper retracements accepted, higher risk of trend invalidation"
+  },
+  "anomaly_volume_stddev": {
+    "value": 2.5,
+    "type": "float",
+    "range": [1.5, 4.0],
+    "description": "Volume standard deviations above mean required for anomaly_fade qualification",
+    "impact": "higher = only extreme volume spikes qualify, fewer but more reliable fades"
+  },
+  "anomaly_price_atr": {
+    "value": 2.5,
+    "type": "float",
+    "range": [1.5, 4.0],
+    "description": "ATR multiples of single-candle move required for anomaly_fade qualification",
+    "impact": "higher = only extreme price moves qualify, fewer anomaly fade entries"
+  },
+  "momentum_acceleration_candles": {
+    "value": 3,
+    "type": "int",
+    "range": [2, 5],
+    "description": "Consecutive same-direction accelerating candles required for momentum_continuation setup",
+    "impact": "higher = stronger momentum confirmation required before entry"
+  }
+}
