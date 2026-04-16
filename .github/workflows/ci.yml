@@ -1,0 +1,246 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "claude/**"]
+  pull_request:
+    branches: ["main"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # ──────────────────────────────────────────────────────────────────────────
+  # Stage 1: Lint  (target: < 2 min)
+  # ──────────────────────────────────────────────────────────────────────────
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-dev-${{ hashFiles('requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-dev-
+
+      - name: Install lint dependencies
+        run: pip install ruff mypy
+
+      - name: ruff format check
+        run: python -m ruff format --check src/ tests/
+
+      - name: ruff lint check
+        run: python -m ruff check src/ tests/
+
+      - name: mypy type check
+        run: python -m mypy src/ --ignore-missing-imports --no-error-summary
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Stage 2: Build  (target: < 3 min)
+  # ──────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip (runtime)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-runtime-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-runtime-
+
+      - name: Install runtime dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify core imports resolve
+        run: |
+          python -c "from src.config import AppConfig, Candle, Signal, BucketState, Params"
+          python -c "from src.signal.detector import evaluate"
+          python -c "from src.risk.manager import validate"
+          python -c "from src.backtest.runner import run_backtest, walk_forward"
+          python -c "from src.backtest.metrics import compute_metrics, compare_metrics"
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Stage 3: Unit tests  (target: < 3 min)
+  # ──────────────────────────────────────────────────────────────────────────
+  unit-test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [lint, build]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip (dev)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-dev-${{ hashFiles('requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-dev-
+
+      - name: Cache pip (runtime)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-runtime-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-runtime-
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Run unit tests with coverage
+        run: |
+          python -m pytest tests/unit/ tests/integration/ \
+            --cov=src \
+            --cov-config=pyproject.toml \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --junitxml=test-results/unit.xml \
+            -q
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage.xml
+          retention-days: 7
+
+      - name: Upload unit test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-test-results
+          path: test-results/unit.xml
+          retention-days: 7
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Stage 4: Integration tests  (PR → main and pushes to main only)
+  # Target: < 5 min
+  # ──────────────────────────────────────────────────────────────────────────
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [unit-test]
+    if: >
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip (dev)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-dev-${{ hashFiles('requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-dev-
+
+      - name: Cache pip (runtime)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-runtime-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-runtime-
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Run integration tests
+        run: |
+          python -m pytest tests/integration/ \
+            --junitxml=test-results/integration.xml \
+            -q
+
+      - name: Upload integration test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-test-results
+          path: test-results/integration.xml
+          retention-days: 7
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # Stage 5: Security  (PR → main and pushes to main only)
+  # Target: < 3 min
+  # ──────────────────────────────────────────────────────────────────────────
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    needs: [lint, build]
+    if: >
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip (security tools)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-security-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-security-
+
+      - name: Install security tools
+        run: pip install pip-audit detect-secrets
+
+      - name: Audit dependencies for known vulnerabilities
+        run: pip-audit -r requirements.txt --progress-spinner off
+
+      - name: Scan for secrets
+        run: |
+          detect-secrets scan --baseline .secrets.baseline
+          detect-secrets audit .secrets.baseline --report || true
