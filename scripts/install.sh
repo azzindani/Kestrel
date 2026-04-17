@@ -13,6 +13,23 @@ RED='\033[0;31m'; GREEN='\033[0;32m'; NC='\033[0m'
 fail() { echo -e "${RED}[NO-GO]${NC} $1"; exit 1; }
 pass() { echo -e "${GREEN}[GO]${NC} $1"; }
 
+# ── 0. System dependencies ───────────────────────────────────────────────────
+# Runs on apt-based systems (Ubuntu/Debian/Colab). Safe to skip elsewhere.
+if command -v apt-get >/dev/null 2>&1; then
+    echo "Installing system packages..."
+    SUDO=""
+    [[ "$(id -u)" != "0" ]] && command -v sudo >/dev/null 2>&1 && SUDO="sudo"
+    $SUDO apt-get install -y -q python3-venv postgresql-client 2>/dev/null \
+        || true  # non-fatal: may already be installed
+    pass "System packages (python3-venv, postgresql-client)"
+fi
+
+# Python packages used by notebook monitoring cells (system Python, not venv).
+echo "Installing notebook monitoring packages..."
+python3 -m pip install --quiet asyncpg python-dotenv ccxt matplotlib numpy 2>/dev/null \
+    || true  # non-fatal: pip may not be available on all systems
+pass "Monitoring packages (asyncpg, ccxt, matplotlib)"
+
 # ── 1. Python ≥ 3.11 ────────────────────────────────────────────────────────
 echo "Checking Python version..."
 PYTHON=$(command -v python3.11 || command -v python3 || fail "python3 not found")
