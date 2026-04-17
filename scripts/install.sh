@@ -13,8 +13,7 @@ RED='\033[0;31m'; GREEN='\033[0;32m'; NC='\033[0m'
 fail() { echo -e "${RED}[NO-GO]${NC} $1"; exit 1; }
 pass() { echo -e "${GREEN}[GO]${NC} $1"; }
 
-# ── 0. System dependencies ───────────────────────────────────────────────────
-# Runs on apt-based systems (Ubuntu/Debian/Colab). Safe to skip elsewhere.
+# ── 0. System packages (apt-based systems only) ──────────────────────────────
 if command -v apt-get >/dev/null 2>&1; then
     echo "Installing system packages..."
     SUDO=""
@@ -23,12 +22,6 @@ if command -v apt-get >/dev/null 2>&1; then
         || true  # non-fatal: may already be installed
     pass "System packages (python3-venv, postgresql-client)"
 fi
-
-# Python packages used by notebook monitoring cells (system Python, not venv).
-echo "Installing notebook monitoring packages..."
-python3 -m pip install --quiet asyncpg python-dotenv ccxt matplotlib numpy 2>/dev/null \
-    || true  # non-fatal: pip may not be available on all systems
-pass "Monitoring packages (asyncpg, ccxt, matplotlib)"
 
 # ── 1. Python ≥ 3.11 ────────────────────────────────────────────────────────
 echo "Checking Python version..."
@@ -46,10 +39,15 @@ fi
 source "$ROOT/venv/bin/activate"
 
 # ── 3. Dependencies ──────────────────────────────────────────────────────────
-echo "Installing dependencies..."
+echo "Installing dependencies (venv)..."
 pip install --quiet --upgrade pip
 pip install --quiet -r "$ROOT/requirements.txt" || fail "pip install failed"
-pass "Dependencies installed"
+pass "Dependencies installed (venv)"
+
+# Also install into system Python so Colab notebook cells can import directly.
+echo "Installing dependencies (system Python)..."
+python3 -m pip install --quiet -r "$ROOT/requirements.txt" 2>/dev/null || true
+pass "Dependencies installed (system Python)"
 
 # ── 4. .env complete ─────────────────────────────────────────────────────────
 echo "Checking .env..."
