@@ -52,8 +52,10 @@ pip install --quiet -r "$ROOT/requirements.txt" || fail "pip install failed"
 pass "Dependencies installed (venv)"
 
 # Also install into system Python so Colab notebook cells can import directly.
+# Must use $PYTHON (path captured before venv activation) — after activation
+# 'python3' resolves to the venv interpreter, not the system one.
 echo "Installing dependencies (system Python)..."
-python3 -m pip install --quiet -r "$ROOT/requirements.txt" 2>/dev/null || true
+"$PYTHON" -m pip install --quiet -r "$ROOT/requirements.txt" 2>/dev/null || true
 pass "Dependencies installed (system Python)"
 
 if $DEPS_ONLY; then
