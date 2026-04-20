@@ -18,7 +18,6 @@ Rejections are returned to the caller for logging; no exceptions for flow contro
 
 from __future__ import annotations
 
-import time
 from typing import Optional, Sequence
 
 from src.config import (
@@ -173,7 +172,10 @@ def evaluate(
         return None, Rejection(stage="regime", reason="no_candles")
 
     latest = candles[-1]
-    ts_now = int(time.time() * 1000)
+    # Use the candle's own timestamp for session detection so backtests
+    # evaluate each historical candle in its correct trading session rather
+    # than pinning every evaluation to the wall-clock session at run time.
+    ts_now = latest.ts
     session = get_trading_session(ts_now)
     session_vol_mult = session_volume_multiplier(session)
     session_conf_mult = session_confidence_multiplier(session)
