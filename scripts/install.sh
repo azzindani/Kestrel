@@ -18,23 +18,25 @@ pass() { echo -e "${GREEN}[GO]${NC} $1"; }
 DEPS_ONLY=false
 for _arg in "$@"; do [[ "$_arg" == "--deps-only" ]] && DEPS_ONLY=true; done
 
-# ── 0. System packages (apt-based systems only) ──────────────────────────────
-if command -v apt-get >/dev/null 2>&1; then
-    echo "Installing system packages..."
-    SUDO=""
-    [[ "$(id -u)" != "0" ]] && command -v sudo >/dev/null 2>&1 && SUDO="sudo"
-    $SUDO apt-get install -y -q python3-venv postgresql-client 2>/dev/null \
-        || true  # non-fatal: may already be installed
-    pass "System packages (python3-venv, postgresql-client)"
-fi
-
 # ── 1. Python ≥ 3.11 ────────────────────────────────────────────────────────
+# Detect early so Step 0 can install the version-specific venv package.
 echo "Checking Python version..."
 PYTHON=$(command -v python3.11 || command -v python3 || fail "python3 not found")
 PY_VER=$("$PYTHON" -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
 MAJOR="${PY_VER%%.*}"; MINOR="${PY_VER##*.}"
 [[ "$MAJOR" -ge 3 && "$MINOR" -ge 11 ]] || fail "Python ≥ 3.11 required (found $PY_VER)"
 pass "Python $PY_VER"
+
+# ── 0. System packages (apt-based systems only) ──────────────────────────────
+if command -v apt-get >/dev/null 2>&1; then
+    echo "Installing system packages..."
+    SUDO=""
+    [[ "$(id -u)" != "0" ]] && command -v sudo >/dev/null 2>&1 && SUDO="sudo"
+    # Install the versioned venv package matching the detected Python (e.g. python3.12-venv).
+    $SUDO apt-get install -y -q "python${PY_VER}-venv" postgresql-client 2>/dev/null \
+        || true  # non-fatal: may already be installed
+    pass "System packages (python${PY_VER}-venv, postgresql-client)"
+fi
 
 # ── 2. Virtual environment ───────────────────────────────────────────────────
 echo "Setting up venv..."
