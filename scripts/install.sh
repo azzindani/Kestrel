@@ -13,6 +13,11 @@ RED='\033[0;31m'; GREEN='\033[0;32m'; NC='\033[0m'
 fail() { echo -e "${RED}[NO-GO]${NC} $1"; exit 1; }
 pass() { echo -e "${GREEN}[GO]${NC} $1"; }
 
+# ── Flags ────────────────────────────────────────────────────────────────────
+# --deps-only  install system packages + Python deps only (skip .env/DB/exchange/Telegram)
+DEPS_ONLY=false
+for _arg in "$@"; do [[ "$_arg" == "--deps-only" ]] && DEPS_ONLY=true; done
+
 # ── 0. System packages (apt-based systems only) ──────────────────────────────
 if command -v apt-get >/dev/null 2>&1; then
     echo "Installing system packages..."
@@ -48,6 +53,12 @@ pass "Dependencies installed (venv)"
 echo "Installing dependencies (system Python)..."
 python3 -m pip install --quiet -r "$ROOT/requirements.txt" 2>/dev/null || true
 pass "Dependencies installed (system Python)"
+
+if $DEPS_ONLY; then
+    echo ""
+    echo -e "${GREEN}[GO] — dependencies ready (--deps-only mode).${NC}"
+    exit 0
+fi
 
 # ── 4. .env complete ─────────────────────────────────────────────────────────
 echo "Checking .env..."
