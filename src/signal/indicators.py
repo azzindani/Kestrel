@@ -26,6 +26,8 @@ def compute_ema(prices: Sequence[float], period: int) -> float:
 
     Requires len(prices) >= period.
     """
+    if not prices:
+        return 0.0
     if len(prices) < period:
         return sum(prices) / len(prices)
 
