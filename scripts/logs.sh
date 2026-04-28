@@ -28,6 +28,7 @@ while [[ $# -gt 0 ]]; do
         --last)     LAST="$2";     shift 2 ;;
         --export)   EXPORT=true; FOLLOW=false; shift ;;
         --no-follow) FOLLOW=false; shift ;;
+        --follow)   FOLLOW=true; shift ;;
         *) echo "Unknown option: $1"; exit 1 ;;
     esac
 done
@@ -52,7 +53,11 @@ def parse_duration(s):
 
 async def run():
     dsn = f\"postgresql://{os.environ['DB_USER']}:{os.environ['DB_PASSWORD']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}/{os.environ['DB_NAME']}\"
-    conn = await asyncpg.connect(dsn=dsn)
+    try:
+        conn = await asyncpg.connect(dsn=dsn)
+    except Exception as exc:
+        print(f'[WARN]  DB unreachable — cannot stream events ({exc.__class__.__name__}: {exc})')
+        return
 
     since_ts = int((time.time() - parse_duration(LAST)) * 1000)
     last_id = 0
