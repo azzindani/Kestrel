@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-kestrel}
+      POSTGRES_USER: ${DB_USER:-kestrel}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-kestrel} -d ${DB_NAME:-kestrel}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  kestrel:
+    build: .
+    env_file: .env
+    environment:
+      # Override so the app connects to the postgres service, not localhost.
+      DB_HOST: postgres
+      DB_PORT: "5432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      # Live-reload params without rebuilding the image.
+      - ./params.json:/app/params.json:ro
+
+volumes:
+  pgdata:
