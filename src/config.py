@@ -156,6 +156,8 @@ class Params:
     anomaly_volume_stddev: float
     anomaly_price_atr: float
     momentum_acceleration_candles: int
+    rsi_long_max: float
+    rsi_short_min: float
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
@@ -187,6 +189,8 @@ class Params:
             "anomaly_volume_stddev",
             "anomaly_price_atr",
             "momentum_acceleration_candles",
+            "rsi_long_max",
+            "rsi_short_min",
         ]
         missing = [k for k in required_keys if k not in d]
         if missing:
@@ -215,6 +219,8 @@ class Params:
             anomaly_volume_stddev=float(d["anomaly_volume_stddev"]["value"]),
             anomaly_price_atr=float(d["anomaly_price_atr"]["value"]),
             momentum_acceleration_candles=int(d["momentum_acceleration_candles"]["value"]),
+            rsi_long_max=float(d["rsi_long_max"]["value"]),
+            rsi_short_min=float(d["rsi_short_min"]["value"]),
         )
 
 

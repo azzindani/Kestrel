@@ -45,7 +45,7 @@ from src.signal.regime import classify_regime, regime_permits_pattern
 
 
 def _trend_filter(candles: Sequence[Candle], params: Params) -> TrendResult | Rejection:
-    """EMA cross + RSI check. Returns direction of the trend or Rejection."""
+    """EMA cross + RSI band + EMA streak. Returns direction of the trend or Rejection."""
     if len(candles) < params.ema_slow + 1:
         return Rejection(stage="trend", reason="insufficient_candles")
 
@@ -56,12 +56,23 @@ def _trend_filter(candles: Sequence[Candle], params: Params) -> TrendResult | Re
     ema_slow = latest.ema21 if latest.ema21 is not None else compute_ema(closes, params.ema_slow)
     rsi = latest.rsi14 if latest.rsi14 is not None else compute_rsi(closes, 14)
 
-    if ema_fast > ema_slow and rsi >= params.rsi_low:
+    # RSI must be in momentum zone: not overbought for LONG, not oversold for SHORT
+    if ema_fast > ema_slow and params.rsi_low <= rsi <= params.rsi_long_max:
         direction = Direction.LONG
-    elif ema_fast < ema_slow and rsi <= params.rsi_high:
+    elif ema_fast < ema_slow and params.rsi_short_min <= rsi <= params.rsi_high:
         direction = Direction.SHORT
     else:
         return Rejection(stage="trend", reason="no_trend_alignment")
+
+    # EMA trend must be established for at least 3 prior candles (prevents fresh-cross entries)
+    if len(candles) >= 4:
+        recent = candles[-4:-1]
+        ema_pairs = [(c.ema9, c.ema21) for c in recent if c.ema9 is not None and c.ema21 is not None]
+        if len(ema_pairs) >= 2:
+            if direction is Direction.LONG and not all(e9 > e21 for e9, e21 in ema_pairs):
+                return Rejection(stage="trend", reason="no_trend_streak")
+            if direction is Direction.SHORT and not all(e9 < e21 for e9, e21 in ema_pairs):
+                return Rejection(stage="trend", reason="no_trend_streak")
 
     return TrendResult(direction=direction, ema_fast=ema_fast, ema_slow=ema_slow, rsi=rsi)
 
