@@ -128,6 +128,13 @@ def detect_impulse_retracement(candles: Sequence[Candle], params: Params) -> Opt
     if retrace.volume >= trigger.volume:
         return None
 
+    # Retracement candle must actually move against trigger (genuine pullback, not continuation)
+    retrace_dir = _direction_from_candle(retrace)
+    if direction is Direction.LONG and retrace_dir is Direction.LONG:
+        return None
+    if direction is Direction.SHORT and retrace_dir is Direction.SHORT:
+        return None
+
     # For long: retrace candle must not close below trigger open
     if direction is Direction.LONG and retrace.close < trigger.open:
         return None
@@ -161,8 +168,9 @@ def detect_impulse_retracement(candles: Sequence[Candle], params: Params) -> Opt
 @register("wick_rejection")
 def detect_wick_rejection(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
     """
-    Trigger: lower_wick > wick_ratio_min × body · close in top 30% of range · within 1 ATR of support
-    Long only (price rejecting lower boundary).
+    Long:  lower_wick > wick_ratio_min × body · close in top 30% of range · within 1 ATR of support
+    Short: upper_wick > wick_ratio_min × body · close in bottom 30% of range · within 1 ATR of resistance
+    Returns whichever direction qualifies (long checked first).
     """
     if len(candles) < 3:
         return None
@@ -173,48 +181,50 @@ def detect_wick_rejection(candles: Sequence[Candle], params: Params) -> Optional
         return None
 
     body = _body_size(c)
-    lower = _lower_wick(c)
     total = _total_range(c)
 
-    if body == 0.0:
+    if body == 0.0 or total == 0.0:
         return None
 
-    wick_ratio = lower / body
-    if wick_ratio < params.wick_ratio_min:
-        return None
+    close_pos = (c.close - c.low) / total  # 0.0 = bottom, 1.0 = top
 
-    if total == 0.0:
-        return None
+    # --- Long: lower wick rejection at support ---
+    lower = _lower_wick(c)
+    lower_wick_ratio = lower / body
+    if lower_wick_ratio >= params.wick_ratio_min and close_pos >= 0.70:
+        recent_lows = [x.low for x in candles[-11:-1]]
+        if recent_lows and abs(c.low - min(recent_lows)) <= atr:
+            confidence = min(0.45 + (lower_wick_ratio - params.wick_ratio_min) * 0.1 + close_pos * 0.15, 1.0)
+            return PatternResult(
+                pattern=PatternType.WICK_REJECTION,
+                direction=Direction.LONG,
+                confidence=round(confidence, 3),
+                details={
+                    "wick_ratio": round(lower_wick_ratio, 3),
+                    "close_position": round(close_pos, 3),
+                    "level": round(min(recent_lows), 2),
+                },
+            )
 
-    # Close in top 30% of candle range
-    close_position = (c.close - c.low) / total
-    if close_position < 0.70:
-        return None
+    # --- Short: upper wick rejection at resistance ---
+    upper = _upper_wick(c)
+    upper_wick_ratio = upper / body
+    if upper_wick_ratio >= params.wick_ratio_min and close_pos <= 0.30:
+        recent_highs = [x.high for x in candles[-11:-1]]
+        if recent_highs and abs(c.high - max(recent_highs)) <= atr:
+            confidence = min(0.45 + (upper_wick_ratio - params.wick_ratio_min) * 0.1 + (1.0 - close_pos) * 0.15, 1.0)
+            return PatternResult(
+                pattern=PatternType.WICK_REJECTION,
+                direction=Direction.SHORT,
+                confidence=round(confidence, 3),
+                details={
+                    "wick_ratio": round(upper_wick_ratio, 3),
+                    "close_position": round(close_pos, 3),
+                    "level": round(max(recent_highs), 2),
+                },
+            )
 
-    # Find approximate support: lowest close in last 10 candles (excluding current)
-    recent_lows = [x.low for x in candles[-11:-1]]
-    if not recent_lows:
-        return None
-    support = min(recent_lows)
-    if abs(c.low - support) > atr:
-        return None
-
-    # Short wick rejection is the inverse — upper wick at resistance
-    # Here we implement the long version only; registry could hold "wick_rejection_short" separately
-    direction = Direction.LONG
-
-    confidence = min(0.45 + (wick_ratio - params.wick_ratio_min) * 0.1 + close_position * 0.15, 1.0)
-
-    return PatternResult(
-        pattern=PatternType.WICK_REJECTION,
-        direction=direction,
-        confidence=round(confidence, 3),
-        details={
-            "wick_ratio": round(wick_ratio, 3),
-            "close_position": round(close_position, 3),
-            "support": round(support, 2),
-        },
-    )
+    return None
 
 
 # ---------------------------------------------------------------------------

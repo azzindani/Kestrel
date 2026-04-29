@@ -14,28 +14,42 @@
     "impact": "higher = smoother trend signal but more lag at inflections"
   },
   "rsi_low": {
-    "value": 40.0,
+    "value": 45.0,
     "type": "float",
     "range": [30.0, 55.0],
     "description": "RSI minimum threshold for long entry filter",
     "impact": "higher = fewer long entries, only higher-momentum setups qualify"
   },
   "rsi_high": {
-    "value": 60.0,
+    "value": 55.0,
     "type": "float",
     "range": [45.0, 70.0],
     "description": "RSI maximum threshold for short entry filter",
     "impact": "lower = fewer short entries, only higher-momentum setups qualify"
   },
+  "rsi_long_max": {
+    "value": 75.0,
+    "type": "float",
+    "range": [60.0, 90.0],
+    "description": "RSI ceiling for long entries — prevents chasing overbought conditions",
+    "impact": "lower = more conservative, blocks entries at extended overbought RSI levels"
+  },
+  "rsi_short_min": {
+    "value": 25.0,
+    "type": "float",
+    "range": [10.0, 40.0],
+    "description": "RSI floor for short entries — prevents fading deeply oversold conditions",
+    "impact": "higher = more conservative, blocks short entries at extreme oversold RSI levels"
+  },
   "volume_ratio_min": {
-    "value": 1.1,
+    "value": 1.3,
     "type": "float",
     "range": [1.1, 2.5],
     "description": "Volume must exceed 20-period MA by this multiple for confirmation",
     "impact": "higher = fewer signals, higher volume conviction required per entry"
   },
   "tp_atr_multiplier": {
-    "value": 1.4,
+    "value": 1.6,
     "type": "float",
     "range": [0.8, 3.0],
     "description": "Take-profit distance expressed as ATR14 multiples from entry",
@@ -49,14 +63,14 @@
     "impact": "lower = tighter SL, more frequent SL hits but smaller individual losses"
   },
   "min_confidence": {
-    "value": 0.45,
+    "value": 0.55,
     "type": "float",
     "range": [0.4, 0.8],
     "description": "Minimum signal confidence score required to fire an order",
     "impact": "higher = fewer but higher-quality signals, lower throughput"
   },
   "adx_trend_min": {
-    "value": 20.0,
+    "value": 25.0,
     "type": "float",
     "range": [15.0, 30.0],
     "description": "ADX threshold above which market is classified as TRENDING regime",
@@ -70,7 +84,7 @@
     "impact": "lower = stricter RANGING definition, fewer RANGING-eligible signals"
   },
   "max_hold_candles": {
-    "value": 6,
+    "value": 4,
     "type": "int",
     "range": [2, 8],
     "description": "Maximum candles to hold a position before forced timeout exit",
@@ -84,14 +98,14 @@
     "impact": "higher = more simultaneous trades, more total capital at risk"
   },
   "body_ratio_min": {
-    "value": 0.45,
+    "value": 0.55,
     "type": "float",
     "range": [0.4, 0.8],
     "description": "Minimum body-to-range ratio for impulse candle qualification",
     "impact": "higher = only strong conviction impulse candles qualify, fewer signals"
   },
   "wick_ratio_min": {
-    "value": 1.6,
+    "value": 2.0,
     "type": "float",
     "range": [1.5, 4.0],
     "description": "Minimum wick-to-body ratio for wick rejection pattern qualification",
@@ -126,14 +140,14 @@
     "impact": "higher = more periods blocked as QUIET, fewer total signals fired"
   },
   "retracement_min": {
-    "value": 0.20,
+    "value": 0.30,
     "type": "float",
     "range": [0.20, 0.50],
     "description": "Minimum retracement fraction of trigger body for impulse_retracement pattern",
     "impact": "lower = shallower retracements accepted, more signals but weaker setups"
   },
   "retracement_max": {
-    "value": 0.60,
+    "value": 0.50,
     "type": "float",
     "range": [0.30, 0.70],
     "description": "Maximum retracement fraction of trigger body for impulse_retracement pattern",
