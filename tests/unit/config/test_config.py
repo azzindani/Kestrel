@@ -234,6 +234,8 @@ class TestParamsFromDict:
                 ("anomaly_volume_stddev", 2.5),
                 ("anomaly_price_atr", 2.5),
                 ("momentum_acceleration_candles", 3),
+                ("rsi_long_max", 75.0),
+                ("rsi_short_min", 25.0),
             ]
         }
 
