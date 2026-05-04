@@ -1,0 +1,113 @@
+"""
+Layer 3 boundary — execution provider registry.
+
+Selects the correct execution backend at startup based on cfg.exchange and cfg.env,
+following the registration model in CLAUDE.md §9.
+
+Public API:
+    register_execution(name)      — decorator to register a provider factory
+    get_execution_provider(cfg)   — factory returning an ExecutionInterface
+
+Adding a new provider (e.g. OANDA forex, Alpaca stocks, IBKR multi-market):
+    1. Create src/execution/providers/<name>.py
+    2. Implement a class that subclasses ExecutionInterface
+    3. Decorate it (or a factory function) with @register_execution("name")
+    4. Set EXCHANGE=<name> in .env
+
+Crypto exchanges supported by ccxt are pre-registered and route through the
+existing LiveExecution module without further work.
+"""
+
+from __future__ import annotations
+
+import importlib
+import pkgutil
+from pathlib import Path
+from typing import Callable
+
+from src.config import AppConfig, Env
+from src.execution.interface import ExecutionInterface
+
+# ---------------------------------------------------------------------------
+# Registry
+# ---------------------------------------------------------------------------
+
+ProviderFactory = Callable[[AppConfig], ExecutionInterface]
+_REGISTRY: dict[str, ProviderFactory] = {}
+
+
+def register_execution(name: str) -> Callable[[ProviderFactory], ProviderFactory]:
+    """Decorator: register a factory under the given exchange name (lowercase)."""
+
+    def wrap(factory: ProviderFactory) -> ProviderFactory:
+        _REGISTRY[name.lower()] = factory
+        return factory
+
+    return wrap
+
+
+def registered_providers() -> list[str]:
+    return sorted(_REGISTRY.keys())
+
+
+def get_execution_provider(cfg: AppConfig) -> ExecutionInterface:
+    """Resolve the execution backend for the current environment.
+
+    DI rules (CLAUDE.md §14):
+        ENV=dev  → SimulationExecution (paper trading, no exchange)
+        ENV=prod → real provider selected by cfg.exchange
+    """
+    if cfg.env is Env.DEV:
+        from src.execution.simulation import SimulationExecution
+
+        return SimulationExecution(cfg)
+
+    name = cfg.exchange.lower()
+    if name not in _REGISTRY:
+        raise ValueError(
+            f"Unknown execution provider: '{cfg.exchange}'. "
+            f"Registered providers: {registered_providers()}. "
+            f"Add a new file under src/execution/providers/ that calls "
+            f"@register_execution('{cfg.exchange}') to add support."
+        )
+    return _REGISTRY[name](cfg)
+
+
+# ---------------------------------------------------------------------------
+# Pre-registration: ccxt-supported crypto exchanges
+# ---------------------------------------------------------------------------
+# LiveExecution uses getattr(ccxt, cfg.exchange) — anything ccxt supports
+# routes through the same code path. New non-ccxt providers (oanda, alpaca,
+# ibkr, …) live in their own module under this package.
+
+
+def _ccxt_factory(cfg: AppConfig) -> ExecutionInterface:
+    from src.execution.live import LiveExecution
+
+    return LiveExecution(cfg)
+
+
+for _ccxt_name in (
+    "bybit",
+    "binance",
+    "okx",
+    "kucoin",
+    "kraken",
+    "gate",
+    "mexc",
+    "bitget",
+    "bingx",
+    "huobi",
+):
+    _REGISTRY[_ccxt_name] = _ccxt_factory
+
+
+# ---------------------------------------------------------------------------
+# Auto-import submodules so @register_execution decorators run at package load
+# ---------------------------------------------------------------------------
+
+_pkg_path = Path(__file__).parent
+for _mod in pkgutil.iter_modules([str(_pkg_path)]):
+    if _mod.name.startswith("_"):
+        continue
+    importlib.import_module(f"{__name__}.{_mod.name}")
