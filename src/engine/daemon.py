@@ -27,12 +27,13 @@ from dotenv import load_dotenv
 
 from src.config import AppConfig, BucketState, Env, Params, SignalOutcome, load_params
 from src.data.candle_builder import CandleBuilder
-from src.data.feed import MarketFeed
+from src.data.providers import get_data_feed
 from src.db import connection as db_conn
 from src.db import schema as db_schema
 from src.db import writer as db
 from src.engine.scheduler import cleanup_task, daily_summary_task, heartbeat_task
 from src.execution.interface import ExecutionError, ExecutionInterface
+from src.execution.providers import get_execution_provider
 from src.execution.simulation import SimulationExecution
 from src.notify.telegram import TelegramNotifier
 from src.risk import manager as risk
@@ -112,8 +113,8 @@ class Daemon:
         # 5. Reconcile open positions
         await self._reconcile()
 
-        # 6. Start WebSocket feed
-        feed = MarketFeed(
+        # 6. Start WebSocket feed (provider selected by cfg.exchange)
+        feed = get_data_feed(
             cfg=self.cfg,
             pair=self.cfg.pair,
             timeframe=self.cfg.timeframe_entry,
@@ -530,13 +531,7 @@ async def main() -> None:
     params = load_params("params.json")
 
     notifier = TelegramNotifier(cfg)
-
-    if cfg.env is Env.DEV:
-        execution: ExecutionInterface = SimulationExecution(cfg)
-    else:
-        from src.execution.live import LiveExecution
-
-        execution = LiveExecution(cfg)
+    execution: ExecutionInterface = get_execution_provider(cfg)
 
     daemon = Daemon(cfg, params, execution, notifier)
     await daemon.start()
