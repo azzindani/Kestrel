@@ -496,3 +496,52 @@ def load_params(path: str) -> Params:
     with open(path) as fh:
         raw = json.load(fh)
     return Params.from_dict(raw)
+
+
+def load_bot_configs(path: str, base: "AppConfig") -> "list[AppConfig]":
+    """Load bots.json and return one AppConfig per bot entry.
+
+    Falls back to [base] if bots.json is absent or empty (single-bot mode).
+    Each entry must have 'bot_id' and 'pair'; all other fields are optional
+    and inherit from base.
+
+    Per-bot overridable fields:
+        bot_id, pair, timeframe_entry, timeframe_regime, max_active_buckets
+
+    Shared fields (inherited from base .env for every bot):
+        exchange, api_key, api_secret, testnet, db_*, leverage,
+        bucket_size_usdt, telegram_*, log_level, env
+
+    Raises ValueError if an entry is missing 'bot_id' or 'pair'.
+    """
+    import dataclasses
+
+    try:
+        with open(path) as fh:
+            entries = json.load(fh)
+    except FileNotFoundError:
+        return [base]
+
+    if not isinstance(entries, list) or not entries:
+        return [base]
+
+    configs: list[AppConfig] = []
+    for i, entry in enumerate(entries):
+        missing = [k for k in ("bot_id", "pair") if not entry.get(k)]
+        if missing:
+            raise ValueError(
+                f"bots.json entry {i} missing required fields: {', '.join(missing)}"
+            )
+        configs.append(
+            dataclasses.replace(
+                base,
+                bot_id=entry["bot_id"],
+                pair=entry["pair"],
+                timeframe_entry=entry.get("timeframe_entry", base.timeframe_entry),
+                timeframe_regime=entry.get("timeframe_regime", base.timeframe_regime),
+                max_active_buckets=int(
+                    entry.get("max_active_buckets", base.max_active_buckets)
+                ),
+            )
+        )
+    return configs

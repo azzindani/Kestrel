@@ -79,12 +79,14 @@ class Daemon:
     # -----------------------------------------------------------------------
 
     async def start(self) -> None:
-        """Execute startup sequence and enter event loop."""
+        """Execute startup sequence and enter event loop.
+
+        DB pool, schema, notifier, and SIGTERM handler must be initialised
+        by the caller (main) before this coroutine is awaited.  This design
+        allows multiple Daemon instances to share a single pool and notifier.
+        """
         self._running = True
 
-        # 2. Connect PostgreSQL
-        await db_conn.init_pool(self.cfg)
-        await db_schema.apply_schema()
         await db.write_event(
             self.cfg.bot_id,
             self.session_id,
@@ -95,10 +97,7 @@ class Daemon:
             {"session_id": self.session_id, "env": self.cfg.env.value},
         )
 
-        # 3. Notifier
-        await self.notifier.start()
-
-        # 4. Bootstrap candle builder from DB history
+        # Bootstrap candle builder from DB history
         builder = CandleBuilder(
             self.cfg.bot_id,
             self.cfg.pair,
@@ -138,10 +137,6 @@ class Daemon:
             ),
             asyncio.create_task(cleanup_task(self.cfg, self.session_id), name="cleanup"),
         ]
-
-        # Install SIGTERM handler
-        loop = asyncio.get_running_loop()
-        loop.add_signal_handler(signal.SIGTERM, lambda: asyncio.create_task(self.stop()))
 
         await db.write_event(
             self.cfg.bot_id,
@@ -216,12 +211,8 @@ class Daemon:
         for task in self._tasks:
             task.cancel()
 
-        await self.notifier.stop()
-
         if self._dashboard:
             self._dashboard.stop()
-
-        await db_conn.close_pool()
 
         await db.write_event(
             self.cfg.bot_id,
@@ -524,17 +515,52 @@ def _utc_midnight_ms(ts_ms: int) -> int:
 
 
 async def main() -> None:
-    """Daemon entry point. Called by start.sh."""
+    """Daemon entry point — single-bot or multi-bot.
+
+    Single-bot mode (default): reads .env, runs one Daemon.
+    Multi-bot mode: if bots.json exists, runs one Daemon per entry
+    concurrently in the same event loop, sharing the DB pool and notifier.
+    """
     load_dotenv()
+
+    from src.config import load_bot_configs
 
     cfg = AppConfig.from_mapping(os.environ)
     params = load_params("params.json")
 
-    notifier = TelegramNotifier(cfg)
-    execution: ExecutionInterface = get_execution_provider(cfg)
+    bot_cfgs = load_bot_configs("bots.json", cfg)
+    multi = len(bot_cfgs) > 1
 
-    daemon = Daemon(cfg, params, execution, notifier)
-    await daemon.start()
+    # ── Shared infrastructure (initialised once for all bots) ──────────────
+    await db_conn.init_pool(cfg)
+    await db_schema.apply_schema()
+
+    notifier = TelegramNotifier(cfg)
+    await notifier.start()
+
+    # ── Build daemon instances ─────────────────────────────────────────────
+    daemons: list[Daemon] = []
+    for bot_cfg in bot_cfgs:
+        execution: ExecutionInterface = get_execution_provider(bot_cfg)
+        d = Daemon(bot_cfg, params, execution, notifier)
+        if multi:
+            d._dashboard = None  # terminal can only show one dashboard
+        daemons.append(d)
+
+    # ── SIGTERM: gracefully stop all bots ──────────────────────────────────
+    loop = asyncio.get_running_loop()
+
+    async def _stop_all() -> None:
+        await asyncio.gather(*[d.stop() for d in daemons], return_exceptions=True)
+
+    loop.add_signal_handler(signal.SIGTERM, lambda: asyncio.create_task(_stop_all()))
+
+    # ── Run all bots concurrently ──────────────────────────────────────────
+    try:
+        await asyncio.gather(*[d.start() for d in daemons])
+    finally:
+        await notifier.stop()
+        await db_conn.close_pool()
 
 
 if __name__ == "__main__":
