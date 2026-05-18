@@ -22,7 +22,7 @@ async def init_pool(cfg: AppConfig) -> asyncpg.Pool:
     _pool = await asyncpg.create_pool(
         dsn=dsn,
         min_size=2,
-        max_size=10,
+        max_size=4,
         command_timeout=30,
     )
     return _pool

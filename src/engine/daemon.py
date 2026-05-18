@@ -548,9 +548,19 @@ async def main() -> None:
         daemons.append(d)
 
     # ── SIGTERM: gracefully stop all bots ──────────────────────────────────
+    # Stop shared feeds first so the streamer exits via its stop_event rather
+    # than via cancellation mid-await.  Provider modules can register shared
+    # feed instances; we drain them all here.
     loop = asyncio.get_running_loop()
 
     async def _stop_all() -> None:
+        from src.data.providers import _SHARED_INSTANCES
+
+        for feed in list(_SHARED_INSTANCES.values()):
+            try:
+                feed.stop()
+            except Exception:
+                pass
         await asyncio.gather(*[d.stop() for d in daemons], return_exceptions=True)
 
     loop.add_signal_handler(signal.SIGTERM, lambda: asyncio.create_task(_stop_all()))
@@ -564,4 +574,10 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    try:
+        import uvloop
+
+        uvloop.install()
+    except ImportError:
+        pass
     asyncio.run(main())
