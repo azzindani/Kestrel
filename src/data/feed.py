@@ -108,6 +108,15 @@ class MarketFeed:
     # ------------------------------------------------------------------
 
     async def _stream_all(self) -> None:
+        """Run streaming for all registered subscriptions on one shared client.
+
+        Subscriptions are observed dynamically: when multiple daemons in the
+        same process each call ``feed.subscribe()`` from inside their own
+        ``start()`` coroutines, the first caller of ``feed.run()`` may begin
+        before later daemons have registered.  We poll ``self._subscriptions``
+        until ``_stop_event`` fires, spawning a stream task for any
+        (pair, timeframe) pair we haven't started yet.
+        """
         import ccxt.pro as ccxtpro  # deferred import — not available in all envs
 
         exchange_cls = getattr(ccxtpro, self.cfg.exchange)
@@ -117,22 +126,29 @@ class MarketFeed:
         if self.cfg.testnet:
             exchange.set_sandbox_mode(True)
 
+        spawned: set[tuple[str, str]] = set()
+        tasks: list[asyncio.Task] = []
         try:
-            tasks = [
-                asyncio.create_task(
-                    self._stream_one(exchange, sub),
-                    name=f"ws:{sub.pair}/{sub.timeframe}",
-                )
-                for sub in self._subscriptions
-            ]
-            stop_wait = asyncio.create_task(self._stop_event.wait(), name="ws:stop")
-            done, pending = await asyncio.wait(
-                [stop_wait, *tasks], return_when=asyncio.FIRST_COMPLETED
-            )
+            while not self._stop_event.is_set():
+                for sub in list(self._subscriptions):
+                    key = (sub.pair, sub.timeframe)
+                    if key not in spawned:
+                        spawned.add(key)
+                        tasks.append(
+                            asyncio.create_task(
+                                self._stream_one(exchange, sub),
+                                name=f"ws:{sub.pair}/{sub.timeframe}",
+                            )
+                        )
+                # Wait a short tick before re-checking; exit immediately if stop fires.
+                try:
+                    await asyncio.wait_for(self._stop_event.wait(), timeout=0.5)
+                    break
+                except asyncio.TimeoutError:
+                    continue
             for t in tasks:
                 t.cancel()
-            stop_wait.cancel()
-            await asyncio.gather(*tasks, stop_wait, return_exceptions=True)
+            await asyncio.gather(*tasks, return_exceptions=True)
         finally:
             await exchange.close()
 
@@ -167,19 +183,42 @@ class MarketFeed:
                 await asyncio.sleep(delay)
 
     async def _stream_inner(self, exchange, sub: _Subscription, retry_count: int) -> None:
+        """Per-subscription streaming loop.
+
+        ccxt.pro exchanges differ in how they push candles:
+            - Some (binance, bybit) return batches where the final entry is the
+              partial/open candle and earlier entries are already-closed.
+            - Others (okx) push single-row updates of the *current* open candle
+              as ticks land; the close event is implicit in the timestamp
+              rolling forward to the next period.
+
+        Handle both: any entry that is NOT the most recent timestamp we have
+        seen is closed; the most recent is tracked locally and only emitted
+        as closed when its timestamp is superseded by a later one.
+        """
         if retry_count > 0:
             ts_ms = int(time.time() * 1000)
             self._last_reconnect_ts = ts_ms
             if sub.on_reconnect:
                 sub.on_reconnect(ts_ms)
 
+        last_open: Optional[list] = None
         while not self._stop_event.is_set():
             ohlcvs = await asyncio.wait_for(
                 exchange.watch_ohlcv(sub.pair, sub.timeframe),
                 timeout=90,
             )
+            if not ohlcvs:
+                continue
             for ohlcv in ohlcvs:
-                is_last = ohlcv is ohlcvs[-1]
-                sub.builder.process_ohlcv(ohlcv, is_closed=not is_last)
-            if len(ohlcvs) >= 2:
-                sub.builder.process_ohlcv(ohlcvs[-2], is_closed=True)
+                is_latest = ohlcv is ohlcvs[-1]
+                if not is_latest:
+                    # Older entries in a multi-row batch are guaranteed closed.
+                    sub.builder.process_ohlcv(ohlcv, is_closed=True)
+                    continue
+                # ohlcv is the most recent entry in this batch.
+                if last_open is not None and ohlcv[0] > last_open[0]:
+                    # Timestamp advanced → the previous one we were tracking
+                    # has now closed (a new period began).
+                    sub.builder.process_ohlcv(last_open, is_closed=True)
+                last_open = ohlcv

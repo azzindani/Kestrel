@@ -1,14 +1,14 @@
 [
   {
     "bot_id": "dev-BTCUSDT-5m-01",
-    "pair": "BTCUSDT",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1
   },
   {
     "bot_id": "dev-ETHUSDT-5m-01",
-    "pair": "ETHUSDT",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1
