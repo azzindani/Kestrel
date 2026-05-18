@@ -13,6 +13,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+    networks:
+      - kestrel_net
 
   kestrel:
     build: .
@@ -28,6 +30,38 @@ services:
     volumes:
       # Live-reload params without rebuilding the image.
       - ./params.json:/app/params.json:ro
+      - ./bots.json:/app/bots.json:ro
+    networks:
+      - kestrel_net
+
+  grafana:
+    image: grafana/grafana:11.3.0
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_SERVER_ROOT_URL: "https://kestrel.casava.space"
+      # Passed through to provisioning templates so the datasource can
+      # reach postgres with the same credentials as the daemon.
+      DB_NAME: ${DB_NAME:-kestrel}
+      DB_USER: ${DB_USER:-kestrel}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/grafana/dashboards:/etc/grafana/dashboards:ro
+    networks:
+      - kestrel_net
+
+networks:
+  kestrel_net:
+    name: kestrel_net
 
 volumes:
   pgdata:
+  grafana_data:
