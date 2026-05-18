@@ -271,7 +271,7 @@ async def link_trade_context(
     async with acquire() as conn:
         await conn.execute(
             """
-            INSERT INTO trade_context (trade_id, candle_id, candle_ts, offset_candles, offset_hours, window)
+            INSERT INTO trade_context (trade_id, candle_id, candle_ts, offset_candles, offset_hours, "window")
             VALUES ($1, $2, $3, $4, $5, $6)
             ON CONFLICT (trade_id, candle_id) DO NOTHING
             """,
