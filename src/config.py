@@ -82,7 +82,7 @@ class TradingSession(str, Enum):
 # ---------------------------------------------------------------------------
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Candle:
     """Completed OHLCV candle with precomputed indicators and geometry."""
 
@@ -129,7 +129,7 @@ class Candle:
 # ---------------------------------------------------------------------------
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Params:
     """Tunable strategy parameters. Loaded from params.json by the startup layer."""
 
@@ -229,7 +229,7 @@ class Params:
 # ---------------------------------------------------------------------------
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Rejection:
     """Typed rejection returned by any pipeline stage."""
 
@@ -237,7 +237,7 @@ class Rejection:
     reason: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class RegimeResult:
     regime: Regime
     adx: float
@@ -246,7 +246,7 @@ class RegimeResult:
     atr50: float
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class TrendResult:
     direction: Direction
     ema_fast: float
@@ -254,7 +254,7 @@ class TrendResult:
     rsi: float
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class PatternResult:
     pattern: PatternType
     direction: Direction
@@ -262,7 +262,7 @@ class PatternResult:
     details: dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class VolumeResult:
     volume_ratio: float
     volume_ma20: float
@@ -273,7 +273,7 @@ class VolumeResult:
 # ---------------------------------------------------------------------------
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Signal:
     """Fully constructed signal ready for risk validation and execution."""
 
@@ -311,7 +311,7 @@ class Signal:
 # ---------------------------------------------------------------------------
 
 
-@dataclass
+@dataclass(slots=True)
 class BucketState:
     """Runtime state passed to the risk manager for validation."""
 
@@ -321,7 +321,7 @@ class BucketState:
     current_ts: int  # unix ms
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class ValidationResult:
     passed: bool
     reason: Optional[str]  # None when passed
@@ -332,7 +332,7 @@ class ValidationResult:
 # ---------------------------------------------------------------------------
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class AppConfig:
     """Full application configuration. Constructed by startup layer; never modified."""
 

@@ -9,6 +9,14 @@ Public API:
     register_feed(name)          — decorator to register a feed factory
     get_data_feed(cfg, ...)      — factory returning a feed instance
 
+Shared vs per-bot feeds:
+    Pre-registered ccxt.pro exchanges share a single MarketFeed instance per
+    exchange — one ccxt client and one set of WS state serves every bot
+    trading on that exchange.  Subscriptions accumulate via feed.subscribe().
+
+    OANDA/Alpaca/IBKR providers remain per-bot (one feed instance per call):
+    their venue protocols don't benefit from connection sharing the same way.
+
 Adding a new feed provider (e.g. OANDA, Alpaca, IBKR):
     1. Create src/data/providers/<name>.py
     2. Implement a class with `async def run()` and `last_reconnect_ts: int | None`
@@ -16,7 +24,7 @@ Adding a new feed provider (e.g. OANDA, Alpaca, IBKR):
     4. Set EXCHANGE=<name> in .env
 
 Crypto exchanges supported by ccxt.pro are pre-registered and route through
-the existing MarketFeed without further work.
+the shared MarketFeed without further work.
 """
 
 from __future__ import annotations
@@ -53,10 +61,12 @@ ReconnectFn = Callable[[int], None]
 FeedFactory = Callable[..., FeedProtocol]
 
 _REGISTRY: dict[str, FeedFactory] = {}
+_SHARED_EXCHANGES: set[str] = set()
+_SHARED_INSTANCES: dict[str, FeedProtocol] = {}
 
 
 def register_feed(name: str) -> Callable[[FeedFactory], FeedFactory]:
-    """Decorator: register a feed factory under the given exchange name."""
+    """Decorator: register a per-bot feed factory under the given exchange name."""
 
     def wrap(factory: FeedFactory) -> FeedFactory:
         _REGISTRY[name.lower()] = factory
@@ -69,6 +79,11 @@ def registered_feeds() -> list[str]:
     return sorted(_REGISTRY.keys())
 
 
+def reset_shared_feeds() -> None:
+    """Drop any cached shared feed instances (tests / restart helper)."""
+    _SHARED_INSTANCES.clear()
+
+
 def get_data_feed(
     cfg: AppConfig,
     pair: str,
@@ -77,7 +92,13 @@ def get_data_feed(
     on_reconnect: Optional[ReconnectFn] = None,
     notify: Optional[NotifyFn] = None,
 ) -> FeedProtocol:
-    """Resolve the streaming feed for cfg.exchange."""
+    """Resolve the streaming feed for cfg.exchange.
+
+    For shared (ccxt) exchanges, the same MarketFeed instance is returned for
+    every call with the same exchange name; ``feed.subscribe(...)`` is invoked
+    on the caller's behalf to register this (pair, timeframe).  The first
+    ``feed.run()`` caller drives streaming; the rest no-op until stop.
+    """
     name = cfg.exchange.lower()
     if name not in _REGISTRY:
         raise ValueError(
@@ -86,6 +107,15 @@ def get_data_feed(
             f"Add a new file under src/data/providers/ that calls "
             f"@register_feed('{cfg.exchange}') to add support."
         )
+
+    if name in _SHARED_EXCHANGES:
+        feed = _SHARED_INSTANCES.get(name)
+        if feed is None:
+            feed = _REGISTRY[name](cfg=cfg)
+            _SHARED_INSTANCES[name] = feed
+        feed.subscribe(pair, timeframe, builder, on_reconnect, notify)
+        return feed
+
     return _REGISTRY[name](
         cfg=cfg,
         pair=pair,
@@ -97,14 +127,14 @@ def get_data_feed(
 
 
 # ---------------------------------------------------------------------------
-# Pre-registration: ccxt.pro-supported crypto exchanges
+# Pre-registration: ccxt.pro-supported crypto exchanges (shared instances)
 # ---------------------------------------------------------------------------
 
 
-def _ccxt_feed_factory(**kwargs: Any) -> FeedProtocol:
+def _ccxt_feed_factory(cfg: AppConfig, **_: Any) -> FeedProtocol:
     from src.data.feed import MarketFeed
 
-    return MarketFeed(**kwargs)
+    return MarketFeed(cfg)
 
 
 for _ccxt_name in (
@@ -120,6 +150,7 @@ for _ccxt_name in (
     "huobi",
 ):
     _REGISTRY[_ccxt_name] = _ccxt_feed_factory
+    _SHARED_EXCHANGES.add(_ccxt_name)
 
 
 # ---------------------------------------------------------------------------

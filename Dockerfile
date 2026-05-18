@@ -27,7 +27,11 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     postgresql-client \
     gcc \
+    libjemalloc2 \
     && rm -rf /var/lib/apt/lists/*
+
+# Preload jemalloc to cut long-running Python RSS by ~20-30%.
+ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
