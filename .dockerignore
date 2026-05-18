@@ -8,4 +8,7 @@ kestrel.pid
 kestrel.log
 *.log
 .pytest_cache/
-tests/
+# NOTE: tests/ is NOT ignored — the builder stage runs pytest against it.
+# The runtime stage doesn't copy tests/ from the builder (Dockerfile stage 2
+# only COPYs src/, params.json, pyproject.toml, scripts/), so tests never
+# ship in the final image.

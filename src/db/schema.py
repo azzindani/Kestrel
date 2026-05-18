@@ -130,11 +130,11 @@ _DDL = [
         candle_ts       BIGINT    NOT NULL,
         offset_candles  INTEGER   NOT NULL,
         offset_hours    NUMERIC   NOT NULL,
-        window          TEXT      NOT NULL,
+        "window"        TEXT      NOT NULL,
         PRIMARY KEY (trade_id, candle_id)
     )
     """,
-    "CREATE INDEX IF NOT EXISTS idx_context_trade ON trade_context (trade_id, window, offset_hours)",
+    'CREATE INDEX IF NOT EXISTS idx_context_trade ON trade_context (trade_id, "window", offset_hours)',
     # ------------------------------------------------------------------
     # events
     # ------------------------------------------------------------------
