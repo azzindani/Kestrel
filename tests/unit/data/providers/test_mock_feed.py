@@ -166,4 +166,4 @@ class TestMockFeedFiresSignals:
 
         # Empirically the regime-aware mock fires ~4 signals per 1000 candles
         # under default params. Require ≥1 so the dashboard sees activity.
-        assert fires >= 1, f"mock produced 0 fires across 1000 candles — pipeline broken?"
+        assert fires >= 1, "mock produced 0 fires across 1000 candles — pipeline broken?"
