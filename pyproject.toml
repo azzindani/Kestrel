@@ -32,6 +32,9 @@ addopts = ["--tb=short", "-q"]
 
 [tool.coverage.run]
 source = ["src"]
+# Layer 3 boundary modules and external-API providers — pure I/O, exercised
+# via integration tests against real venues, not unit tests. Matches the
+# CLAUDE.md §7 layer model (boundary code stays thin; logic moves inward).
 omit = [
     "src/db/*",
     "src/engine/*",
@@ -39,6 +42,9 @@ omit = [
     "src/notify/*",
     "src/viz/*",
     "src/execution/live.py",
+    "src/execution/providers/alpaca.py",
+    "src/execution/providers/ibkr.py",
+    "src/execution/providers/oanda.py",
 ]
 
 [tool.coverage.report]
