@@ -97,7 +97,7 @@ class AlpacaFeed:
                     retry_count = 0
                     continue
 
-                delay = _BACKOFF_BASE ** retry_count
+                delay = _BACKOFF_BASE**retry_count
                 if self._notify:
                     self._notify(
                         "WARN",
@@ -112,10 +112,7 @@ class AlpacaFeed:
         try:
             from alpaca.data.live import CryptoDataStream, StockDataStream
         except ImportError as exc:
-            raise ImportError(
-                "alpaca-py is required for the Alpaca feed. "
-                "Install with: pip install alpaca-py"
-            ) from exc
+            raise ImportError("alpaca-py is required for the Alpaca feed. Install with: pip install alpaca-py") from exc
 
         if retry_count > 0:
             ts_ms = int(time.time() * 1000)

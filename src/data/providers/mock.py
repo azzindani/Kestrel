@@ -44,8 +44,14 @@ ReconnectFn = Callable[[int], None]
 
 # Map timeframe strings → seconds
 _TIMEFRAME_SECONDS: dict[str, int] = {
-    "1m": 60, "3m": 180, "5m": 300, "15m": 900,
-    "30m": 1800, "1h": 3600, "4h": 14400, "1d": 86400,
+    "1m": 60,
+    "3m": 180,
+    "5m": 300,
+    "15m": 900,
+    "30m": 1800,
+    "1h": 3600,
+    "4h": 14400,
+    "1d": 86400,
 }
 
 
@@ -88,9 +94,7 @@ class MockFeed:
         self.last_reconnect_ts = None
 
         # Pacing
-        self._seconds_per_candle = float(
-            os.environ.get("MOCK_SECONDS_PER_CANDLE", "1.0")
-        )
+        self._seconds_per_candle = float(os.environ.get("MOCK_SECONDS_PER_CANDLE", "1.0"))
         self._base_seed = int(os.environ.get("MOCK_SEED", "42"))
         self._start_price = float(os.environ.get("MOCK_START_PRICE", "77000.0"))
 
@@ -156,11 +160,7 @@ class MockFeed:
                     if key in spawned:
                         continue
                     spawned.add(key)
-                    tasks.append(
-                        asyncio.create_task(
-                            self._stream_one(sub), name=f"mock:{key[0]}/{key[1]}"
-                        )
-                    )
+                    tasks.append(asyncio.create_task(self._stream_one(sub), name=f"mock:{key[0]}/{key[1]}"))
                 try:
                     await asyncio.wait_for(self._stop_event.wait(), timeout=0.5)
                     break
@@ -214,9 +214,7 @@ class MockFeed:
             ohlcv = self._next_candle(sub, ts)
             sub.builder.process_ohlcv(ohlcv, is_closed=True)
             try:
-                await asyncio.wait_for(
-                    self._stop_event.wait(), timeout=self._seconds_per_candle
-                )
+                await asyncio.wait_for(self._stop_event.wait(), timeout=self._seconds_per_candle)
                 return
             except asyncio.TimeoutError:
                 pass

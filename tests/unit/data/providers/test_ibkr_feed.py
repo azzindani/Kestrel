@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import pytest
-
 from src.data.providers import _REGISTRY, registered_feeds
-from src.data.providers.ibkr import _parse_host_port, _INTERVAL_MAP, _IB_BARSIZE
+from src.data.providers.ibkr import _IB_BARSIZE, _parse_host_port
 
 
 class TestIBKRFeedRegistration:
@@ -45,9 +43,10 @@ class TestIBKRFeedClientIdOffset:
     """Feed client ID must be execution client ID + 1 to avoid conflicts."""
 
     def test_feed_client_id_offset(self):
-        from tests.helpers.factories import make_app_config
-        from src.data.providers.ibkr import IBKRFeed
         from unittest.mock import MagicMock
+
+        from src.data.providers.ibkr import IBKRFeed
+        from tests.helpers.factories import make_app_config
 
         cfg = make_app_config(exchange="ibkr", api_key="127.0.0.1:7497", api_secret="1")
         builder = MagicMock()
@@ -56,9 +55,10 @@ class TestIBKRFeedClientIdOffset:
         assert feed._client_id == 2
 
     def test_feed_client_id_default_offset(self):
-        from tests.helpers.factories import make_app_config
-        from src.data.providers.ibkr import IBKRFeed
         from unittest.mock import MagicMock
+
+        from src.data.providers.ibkr import IBKRFeed
+        from tests.helpers.factories import make_app_config
 
         cfg = make_app_config(exchange="ibkr", api_key="127.0.0.1:7497", api_secret="3")
         builder = MagicMock()

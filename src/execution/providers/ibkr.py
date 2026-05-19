@@ -66,16 +66,40 @@ def _make_contract(pair: str):
 
     # Common crypto tickers
     crypto_symbols = {
-        "BTC", "ETH", "SOL", "ADA", "XRP", "DOGE", "LTC",
-        "BCH", "LINK", "DOT", "MATIC", "AVAX", "UNI", "ATOM",
+        "BTC",
+        "ETH",
+        "SOL",
+        "ADA",
+        "XRP",
+        "DOGE",
+        "LTC",
+        "BCH",
+        "LINK",
+        "DOT",
+        "MATIC",
+        "AVAX",
+        "UNI",
+        "ATOM",
     }
     if symbol.upper() in crypto_symbols:
         return Crypto(symbol.upper(), "PAXOS", currency.upper())
 
     # Forex pairs: both parts are currencies (3 chars each typical)
     forex_currencies = {
-        "EUR", "GBP", "JPY", "CHF", "AUD", "NZD", "CAD",
-        "SEK", "NOK", "DKK", "SGD", "HKD", "MXN", "ZAR",
+        "EUR",
+        "GBP",
+        "JPY",
+        "CHF",
+        "AUD",
+        "NZD",
+        "CAD",
+        "SEK",
+        "NOK",
+        "DKK",
+        "SGD",
+        "HKD",
+        "MXN",
+        "ZAR",
     }
     if symbol.upper() in forex_currencies:
         return Forex(symbol.upper() + currency.upper())
@@ -148,6 +172,7 @@ class IBKRExecution(ExecutionInterface):
 
         try:
             from ib_insync import MarketOrder
+
             parent = MarketOrder(action, qty)
             parent.transmit = False
 
@@ -246,10 +271,7 @@ class IBKRExecution(ExecutionInterface):
             return None
 
         for pos in positions:
-            if (
-                pos.contract.symbol == contract.symbol
-                and pos.contract.currency == contract.currency
-            ):
+            if pos.contract.symbol == contract.symbol and pos.contract.currency == contract.currency:
                 if pos.position == 0:
                     return None
                 direction = "long" if pos.position > 0 else "short"
@@ -267,9 +289,7 @@ class IBKRExecution(ExecutionInterface):
                     "ts": int(time.time() * 1000),
                     "fee_usdt": 0.0,
                     "notional_usdt": round(notional, 4),
-                    "liquidation_price": compute_liquidation_price(
-                        avg_price, Direction(direction), self.cfg.leverage
-                    ),
+                    "liquidation_price": compute_liquidation_price(avg_price, Direction(direction), self.cfg.leverage),
                 }
         return None
 
@@ -301,6 +321,7 @@ class IBKRExecution(ExecutionInterface):
 
         try:
             from ib_insync import MarketOrder
+
             close_order = ib.placeOrder(contract, MarketOrder(action, qty))
 
             for _ in range(300):
@@ -353,20 +374,20 @@ class IBKRExecution(ExecutionInterface):
             direction = "long" if pos.position > 0 else "short"
             avg_price = float(pos.avgCost)
             notional = abs(pos.position) * avg_price
-            result.append({
-                "order_id": f"{pos.contract.symbol}_{direction}",
-                "pair": f"{pos.contract.symbol}.{pos.contract.currency}",
-                "direction": direction,
-                "entry_price": avg_price,
-                "size_usdt": self.cfg.bucket_size_usdt,
-                "tp_price": 0.0,
-                "sl_price": 0.0,
-                "leverage": self.cfg.leverage,
-                "ts": int(time.time() * 1000),
-                "fee_usdt": 0.0,
-                "notional_usdt": round(notional, 4),
-                "liquidation_price": compute_liquidation_price(
-                    avg_price, Direction(direction), self.cfg.leverage
-                ),
-            })
+            result.append(
+                {
+                    "order_id": f"{pos.contract.symbol}_{direction}",
+                    "pair": f"{pos.contract.symbol}.{pos.contract.currency}",
+                    "direction": direction,
+                    "entry_price": avg_price,
+                    "size_usdt": self.cfg.bucket_size_usdt,
+                    "tp_price": 0.0,
+                    "sl_price": 0.0,
+                    "leverage": self.cfg.leverage,
+                    "ts": int(time.time() * 1000),
+                    "fee_usdt": 0.0,
+                    "notional_usdt": round(notional, 4),
+                    "liquidation_price": compute_liquidation_price(avg_price, Direction(direction), self.cfg.leverage),
+                }
+            )
         return result

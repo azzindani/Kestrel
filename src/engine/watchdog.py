@@ -69,9 +69,7 @@ def run_watchdog(main_cmd: list[str], db_url: str, bot_id: str) -> None:
             conn = await asyncpg.connect(dsn=db_url, command_timeout=5)
             try:
                 for bid in bot_ids:
-                    row = await conn.fetchrow(
-                        "SELECT ts FROM heartbeats WHERE bot_id = $1", bid
-                    )
+                    row = await conn.fetchrow("SELECT ts FROM heartbeats WHERE bot_id = $1", bid)
                     if row is None:
                         stale.append(bid)
                         continue
@@ -107,8 +105,7 @@ def run_watchdog(main_cmd: list[str], db_url: str, bot_id: str) -> None:
                     sys.exit(0)
                 elapsed = time.time() - start_time
                 print(
-                    f"[watchdog] main process exited (rc={rc}) after {elapsed:.0f}s. "
-                    f"Restarting in {_RESTART_DELAY}s.",
+                    f"[watchdog] main process exited (rc={rc}) after {elapsed:.0f}s. Restarting in {_RESTART_DELAY}s.",
                     flush=True,
                 )
                 time.sleep(_RESTART_DELAY)
@@ -117,8 +114,7 @@ def run_watchdog(main_cmd: list[str], db_url: str, bot_id: str) -> None:
             all_fresh, stale_ids = asyncio.run(_check_heartbeats())
             if not all_fresh:
                 print(
-                    f"[watchdog] Stale heartbeat(s): {stale_ids}. "
-                    f"Killing and restarting.",
+                    f"[watchdog] Stale heartbeat(s): {stale_ids}. Killing and restarting.",
                     flush=True,
                 )
                 child.kill()

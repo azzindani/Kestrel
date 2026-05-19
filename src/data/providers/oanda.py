@@ -33,19 +33,31 @@ _BACKOFF_BASE = 2
 
 # Timeframe string → interval seconds
 _INTERVAL_MAP: dict[str, int] = {
-    "M1": 60, "1m": 60,
-    "M5": 300, "5m": 300,
-    "M15": 900, "15m": 900,
-    "M30": 1800, "30m": 1800,
-    "H1": 3600, "1h": 3600,
-    "H4": 14400, "4h": 14400,
-    "D": 86400, "1d": 86400,
+    "M1": 60,
+    "1m": 60,
+    "M5": 300,
+    "5m": 300,
+    "M15": 900,
+    "15m": 900,
+    "M30": 1800,
+    "30m": 1800,
+    "H1": 3600,
+    "1h": 3600,
+    "H4": 14400,
+    "4h": 14400,
+    "D": 86400,
+    "1d": 86400,
 }
 
 # Kestrel timeframe string → OANDA granularity string
 _GRANULARITY_MAP: dict[str, str] = {
-    "1m": "M1", "5m": "M5", "15m": "M15", "30m": "M30",
-    "1h": "H1", "4h": "H4", "1d": "D",
+    "1m": "M1",
+    "5m": "M5",
+    "15m": "M15",
+    "30m": "M30",
+    "1h": "H1",
+    "4h": "H4",
+    "1d": "D",
 }
 
 
@@ -118,7 +130,7 @@ class OandaFeed:
                     retry_count = 0
                     continue
 
-                delay = _BACKOFF_BASE ** retry_count
+                delay = _BACKOFF_BASE**retry_count
                 if self._notify:
                     self._notify(
                         "WARN",
@@ -135,8 +147,7 @@ class OandaFeed:
             from oandapyV20.endpoints.instruments import InstrumentsCandles
         except ImportError as exc:
             raise ImportError(
-                "oandapyV20 is required for the OANDA feed. "
-                "Install with: pip install oandapyV20"
+                "oandapyV20 is required for the OANDA feed. Install with: pip install oandapyV20"
             ) from exc
 
         environment = "practice" if self.cfg.testnet else "live"
@@ -190,6 +201,7 @@ def _parse_oanda_ts(iso: str) -> int:
     OANDA format: "2025-04-16T14:30:00.000000000Z"
     """
     import datetime
+
     # Strip nanoseconds beyond microseconds precision
     trimmed = iso[:26].rstrip("Z").rstrip("0").rstrip(".")
     if "." not in trimmed:

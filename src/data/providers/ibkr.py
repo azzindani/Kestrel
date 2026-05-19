@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import asyncio
 import time
-from typing import Callable, Optional
+from typing import Any, Callable, Optional
 
 from src.config import AppConfig
 from src.data.candle_builder import CandleBuilder
@@ -33,14 +33,24 @@ _BACKOFF_BASE = 2
 
 # Timeframe → seconds per bar for aggregation
 _INTERVAL_MAP: dict[str, int] = {
-    "1m": 60, "5m": 300, "15m": 900, "30m": 1800,
-    "1h": 3600, "4h": 14400, "1d": 86400,
+    "1m": 60,
+    "5m": 300,
+    "15m": 900,
+    "30m": 1800,
+    "1h": 3600,
+    "4h": 14400,
+    "1d": 86400,
 }
 
 # Timeframe → IB barSizeSetting string
 _IB_BARSIZE: dict[str, str] = {
-    "1m": "1 min", "5m": "5 mins", "15m": "15 mins", "30m": "30 mins",
-    "1h": "1 hour", "4h": "4 hours", "1d": "1 day",
+    "1m": "1 min",
+    "5m": "5 mins",
+    "15m": "15 mins",
+    "30m": "30 mins",
+    "1h": "1 hour",
+    "4h": "4 hours",
+    "1d": "1 day",
 }
 
 
@@ -64,15 +74,37 @@ def _make_contract(pair: str):
         symbol, currency = pair, "USD"
 
     crypto_symbols = {
-        "BTC", "ETH", "SOL", "ADA", "XRP", "DOGE", "LTC",
-        "BCH", "LINK", "DOT", "MATIC", "AVAX", "UNI", "ATOM",
+        "BTC",
+        "ETH",
+        "SOL",
+        "ADA",
+        "XRP",
+        "DOGE",
+        "LTC",
+        "BCH",
+        "LINK",
+        "DOT",
+        "MATIC",
+        "AVAX",
+        "UNI",
+        "ATOM",
     }
     if symbol.upper() in crypto_symbols:
         return Crypto(symbol.upper(), "PAXOS", currency.upper())
 
     forex_currencies = {
-        "EUR", "GBP", "JPY", "CHF", "AUD", "NZD", "CAD",
-        "SEK", "NOK", "DKK", "SGD", "HKD",
+        "EUR",
+        "GBP",
+        "JPY",
+        "CHF",
+        "AUD",
+        "NZD",
+        "CAD",
+        "SEK",
+        "NOK",
+        "DKK",
+        "SGD",
+        "HKD",
     }
     if symbol.upper() in forex_currencies:
         return Forex(symbol.upper() + currency.upper())
@@ -147,7 +179,7 @@ class IBKRFeed:
                     retry_count = 0
                     continue
 
-                delay = _BACKOFF_BASE ** retry_count
+                delay = _BACKOFF_BASE**retry_count
                 if self._notify:
                     self._notify(
                         "WARN",
@@ -162,10 +194,7 @@ class IBKRFeed:
         try:
             from ib_insync import IB
         except ImportError as exc:
-            raise ImportError(
-                "ib_insync is required for the IBKR feed. "
-                "Install with: pip install ib_insync"
-            ) from exc
+            raise ImportError("ib_insync is required for the IBKR feed. Install with: pip install ib_insync") from exc
 
         if retry_count > 0:
             ts_ms = int(time.time() * 1000)
@@ -204,14 +233,16 @@ class IBKRFeed:
                     self.builder.process_ohlcv(ohlcv, is_closed=True)
                 # Start new candle
                 _agg.clear()
-                _agg.update({
-                    "ts": candle_ts_ms,
-                    "open": float(bar.open),
-                    "high": float(bar.high),
-                    "low": float(bar.low),
-                    "close": float(bar.close),
-                    "volume": float(bar.volume),
-                })
+                _agg.update(
+                    {
+                        "ts": candle_ts_ms,
+                        "open": float(bar.open),
+                        "high": float(bar.high),
+                        "low": float(bar.low),
+                        "close": float(bar.close),
+                        "volume": float(bar.volume),
+                    }
+                )
             else:
                 # Update running candle
                 _agg["high"] = max(_agg["high"], float(bar.high))
