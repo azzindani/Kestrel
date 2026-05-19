@@ -58,9 +58,14 @@ def get_execution_provider(cfg: AppConfig) -> ExecutionInterface:
         ENV=prod → real provider selected by cfg.exchange
     """
     if cfg.env is Env.DEV:
+        from src.config import load_params
         from src.execution.simulation import SimulationExecution
 
-        return SimulationExecution(cfg)
+        # Load strategy params so SimulationExecution knows max_hold_candles
+        # for the timeout branch in check_exits. Boundary-layer I/O is allowed
+        # here (CLAUDE.md §7).
+        params = load_params("params.json")
+        return SimulationExecution(cfg, params)
 
     name = cfg.exchange.lower()
     if name not in _REGISTRY:
