@@ -15,9 +15,13 @@ services:
       retries: 10
     networks:
       - kestrel_net
+    # On a 1GB VPS, cap postgres so it can't starve the daemon under load.
+    mem_limit: 256m
+    cpus: 0.6
 
   kestrel:
     build: .
+    image: kestrel-kestrel:${KESTREL_TAG:-latest}
     env_file: .env
     environment:
       # Override so the app connects to the postgres service, not localhost.
@@ -28,11 +32,27 @@ services:
         condition: service_healthy
     restart: unless-stopped
     volumes:
-      # Live-reload params without rebuilding the image.
+      # Live-reload params/bots config without rebuilding the image.
       - ./params.json:/app/params.json:ro
       - ./bots.json:/app/bots.json:ro
     networks:
       - kestrel_net
+    # Resource ceiling so a runaway daemon can't OOM the box.
+    mem_limit: 320m
+    cpus: 0.6
+    # Watchdog: query heartbeats table; if no row updated in the last 90s the
+    # daemon has hung — Docker restarts it (restart: unless-stopped). The
+    # heartbeat scheduler in src/engine/scheduler.py writes every 30s, so
+    # 90s is 3× the cadence — enough slack for one missed write plus a tick.
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "PGPASSWORD=$$DB_PASSWORD psql -h postgres -U $$DB_USER -d $$DB_NAME -tAc \"SELECT (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - MAX(ts) < 90000 FROM heartbeats\" 2>/dev/null | grep -q ^t || exit 1"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      # Give the daemon 90s to write its first heartbeat after a cold start.
+      start_period: 90s
 
   grafana:
     image: grafana/grafana:11.3.0
@@ -57,6 +77,34 @@ services:
       - ./infra/grafana/dashboards:/etc/grafana/dashboards:ro
     networks:
       - kestrel_net
+    mem_limit: 256m
+    cpus: 0.4
+
+  # Postgres backup sidecar — daily pg_dump to ./backups/ with 7-day rotation.
+  # First dump runs on startup so we never have an empty backup directory.
+  pg-backup:
+    image: postgres:16-alpine
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PG_HOST: postgres
+      PG_PORT: "5432"
+      PG_USER: ${DB_USER:-kestrel}
+      PG_DB: ${DB_NAME:-kestrel}
+      PGPASSWORD: ${DB_PASSWORD}
+      BACKUP_DIR: /backups
+      BACKUP_KEEP: "7"
+      BACKUP_HOUR: "3"
+    restart: unless-stopped
+    volumes:
+      - ./backups:/backups
+      - ./infra/backup/backup.sh:/usr/local/bin/backup.sh:ro
+    entrypoint: ["/bin/sh", "/usr/local/bin/backup.sh"]
+    networks:
+      - kestrel_net
+    mem_limit: 64m
+    cpus: 0.1
 
 networks:
   kestrel_net:
