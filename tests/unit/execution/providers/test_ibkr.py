@@ -65,30 +65,38 @@ class TestIBKRMakeContract:
     def test_make_contract_crypto_btc(self):
         """BTC.USD resolves to a Crypto contract (if ib_insync installed)."""
         pytest.importorskip("ib_insync")
-        from src.execution.providers.ibkr import _make_contract
         from ib_insync import Crypto
+
+        from src.execution.providers.ibkr import _make_contract
+
         contract = _make_contract("BTC.USD")
         assert isinstance(contract, Crypto)
         assert contract.symbol == "BTC"
 
     def test_make_contract_forex_eur(self):
         pytest.importorskip("ib_insync")
-        from src.execution.providers.ibkr import _make_contract
         from ib_insync import Forex
+
+        from src.execution.providers.ibkr import _make_contract
+
         contract = _make_contract("EUR.USD")
         assert isinstance(contract, Forex)
 
     def test_make_contract_stock_aapl(self):
         pytest.importorskip("ib_insync")
-        from src.execution.providers.ibkr import _make_contract
         from ib_insync import Stock
+
+        from src.execution.providers.ibkr import _make_contract
+
         contract = _make_contract("AAPL.USD")
         assert isinstance(contract, Stock)
         assert contract.symbol == "AAPL"
 
     def test_make_contract_no_dot_defaults_to_stock(self):
         pytest.importorskip("ib_insync")
-        from src.execution.providers.ibkr import _make_contract
         from ib_insync import Stock
+
+        from src.execution.providers.ibkr import _make_contract
+
         contract = _make_contract("TSLA")
         assert isinstance(contract, Stock)

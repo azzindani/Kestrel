@@ -68,9 +68,7 @@ class MarketFeed:
         notify: Optional[NotifyFn] = None,
     ) -> None:
         """Register a (pair, timeframe) stream with this shared feed."""
-        self._subscriptions.append(
-            _Subscription(pair, timeframe, builder, on_reconnect, notify)
-        )
+        self._subscriptions.append(_Subscription(pair, timeframe, builder, on_reconnect, notify))
 
     @property
     def subscriptions(self) -> list[_Subscription]:
@@ -120,9 +118,7 @@ class MarketFeed:
         import ccxt.pro as ccxtpro  # deferred import — not available in all envs
 
         exchange_cls = getattr(ccxtpro, self.cfg.exchange)
-        exchange = exchange_cls(
-            {"apiKey": self.cfg.api_key, "secret": self.cfg.api_secret}
-        )
+        exchange = exchange_cls({"apiKey": self.cfg.api_key, "secret": self.cfg.api_secret})
         if self.cfg.testnet:
             exchange.set_sandbox_mode(True)
 

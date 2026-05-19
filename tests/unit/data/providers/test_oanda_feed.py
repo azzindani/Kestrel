@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import pytest
-
 from src.data.providers import _REGISTRY, registered_feeds
-from src.data.providers.oanda import _to_granularity, _to_interval, _parse_oanda_ts
+from src.data.providers.oanda import _parse_oanda_ts, _to_granularity, _to_interval
 
 
 class TestOandaFeedRegistration:

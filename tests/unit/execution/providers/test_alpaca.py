@@ -6,7 +6,6 @@ import pytest
 
 from src.execution.providers import _REGISTRY, registered_providers
 from src.execution.providers.alpaca import _qty, _trading_client
-from src.config import Direction
 
 
 class TestAlpacaRegistration:
@@ -53,7 +52,6 @@ class TestAlpacaQty:
 class TestAlpacaClientImportError:
     def test_trading_client_raises_on_missing_alpaca(self, monkeypatch):
         """Verify helpful ImportError when alpaca-py is not installed."""
-        import sys
         import builtins
 
         original_import = builtins.__import__
@@ -66,6 +64,7 @@ class TestAlpacaClientImportError:
         monkeypatch.setattr(builtins, "__import__", mock_import)
 
         from tests.helpers.factories import make_app_config
+
         cfg = make_app_config(exchange="alpaca")
 
         with pytest.raises(ImportError, match="alpaca-py"):

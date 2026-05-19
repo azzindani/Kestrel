@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import pytest
 
+from src.config import Direction
+from src.data.providers.oanda import _parse_oanda_ts
 from src.execution.providers import _REGISTRY, registered_providers
 from src.execution.providers.oanda import _units
-from src.data.providers.oanda import _parse_oanda_ts
-from src.config import Direction
 
 
 class TestOandaRegistration:

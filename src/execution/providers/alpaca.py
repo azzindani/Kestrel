@@ -40,10 +40,7 @@ def _trading_client(cfg: AppConfig):
     try:
         from alpaca.trading.client import TradingClient
     except ImportError as exc:
-        raise ImportError(
-            "alpaca-py is required for the Alpaca provider. "
-            "Install with: pip install alpaca-py"
-        ) from exc
+        raise ImportError("alpaca-py is required for the Alpaca provider. Install with: pip install alpaca-py") from exc
 
     return TradingClient(
         api_key=cfg.api_key,
@@ -78,12 +75,12 @@ class AlpacaExecution(ExecutionInterface):
     async def place_order(self, signal: Signal) -> dict[str, Any]:
         """Place a bracket market order on Alpaca."""
         try:
+            from alpaca.trading.enums import OrderClass, OrderSide, TimeInForce
             from alpaca.trading.requests import (
                 MarketOrderRequest,
-                TakeProfitRequest,
                 StopLossRequest,
+                TakeProfitRequest,
             )
-            from alpaca.trading.enums import OrderSide, TimeInForce, OrderClass
         except ImportError as exc:
             raise ImportError("alpaca-py required: pip install alpaca-py") from exc
 
@@ -139,6 +136,7 @@ class AlpacaExecution(ExecutionInterface):
         """Cancel a pending Alpaca order."""
         try:
             import uuid
+
             self._client.cancel_order_by_id(uuid.UUID(order_id))
             return True
         except Exception:
@@ -249,21 +247,21 @@ class AlpacaExecution(ExecutionInterface):
             direction = "long" if qty > 0 else "short"
             avg_price = float(pos.avg_entry_price)
             notional = abs(qty) * avg_price
-            result.append({
-                "order_id": str(pos.asset_id),
-                "pair": pos.symbol,
-                "direction": direction,
-                "entry_price": avg_price,
-                "size_usdt": self.cfg.bucket_size_usdt,
-                "tp_price": 0.0,
-                "sl_price": 0.0,
-                "leverage": self.cfg.leverage,
-                "ts": int(time.time() * 1000),
-                "fee_usdt": 0.0,
-                "notional_usdt": round(notional, 4),
-                "liquidation_price": compute_liquidation_price(
-                    avg_price, Direction(direction), self.cfg.leverage
-                ),
-                "unrealized_pnl": float(pos.unrealized_pl),
-            })
+            result.append(
+                {
+                    "order_id": str(pos.asset_id),
+                    "pair": pos.symbol,
+                    "direction": direction,
+                    "entry_price": avg_price,
+                    "size_usdt": self.cfg.bucket_size_usdt,
+                    "tp_price": 0.0,
+                    "sl_price": 0.0,
+                    "leverage": self.cfg.leverage,
+                    "ts": int(time.time() * 1000),
+                    "fee_usdt": 0.0,
+                    "notional_usdt": round(notional, 4),
+                    "liquidation_price": compute_liquidation_price(avg_price, Direction(direction), self.cfg.leverage),
+                    "unrealized_pnl": float(pos.unrealized_pl),
+                }
+            )
         return result

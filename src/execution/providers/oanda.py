@@ -32,7 +32,7 @@ from src.execution.interface import ExecutionError, ExecutionInterface
 from src.execution.providers import register_execution
 
 _TAKER_FEE_PCT = 0.00013  # ~0.013% OANDA spread approximation as fee
-_SLIPPAGE_PCT = 0.0001    # 0.01% slippage estimate for market orders
+_SLIPPAGE_PCT = 0.0001  # 0.01% slippage estimate for market orders
 
 
 def _oanda_client(cfg: AppConfig):
@@ -41,8 +41,7 @@ def _oanda_client(cfg: AppConfig):
         from oandapyV20 import API
     except ImportError as exc:
         raise ImportError(
-            "oandapyV20 is required for the OANDA provider. "
-            "Install it with: pip install oandapyV20"
+            "oandapyV20 is required for the OANDA provider. Install it with: pip install oandapyV20"
         ) from exc
 
     environment = "practice" if cfg.testnet else "live"
@@ -83,12 +82,12 @@ class OandaExecution(ExecutionInterface):
     async def place_order(self, signal: Signal) -> dict[str, Any]:
         """Place a market order with bracket TP/SL via OANDA v20 Orders endpoint."""
         try:
-            from oandapyV20.endpoints.orders import OrderCreate
             from oandapyV20.contrib.requests import (
                 MarketOrderRequest,
-                TakeProfitDetails,
                 StopLossDetails,
+                TakeProfitDetails,
             )
+            from oandapyV20.endpoints.orders import OrderCreate
         except ImportError as exc:
             raise ImportError("oandapyV20 required: pip install oandapyV20") from exc
 
@@ -219,9 +218,7 @@ class OandaExecution(ExecutionInterface):
         if pos is None:
             raise ExecutionError(f"No open position for {pair}", {"pair": pair})
 
-        body = (
-            {"longUnits": "ALL"} if pos["direction"] == "long" else {"shortUnits": "ALL"}
-        )
+        body = {"longUnits": "ALL"} if pos["direction"] == "long" else {"shortUnits": "ALL"}
         req = PositionClose(self._account_id, pair, data=body)
         try:
             resp = self._client.request(req)

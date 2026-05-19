@@ -529,9 +529,7 @@ def load_bot_configs(path: str, base: "AppConfig") -> "list[AppConfig]":
     for i, entry in enumerate(entries):
         missing = [k for k in ("bot_id", "pair") if not entry.get(k)]
         if missing:
-            raise ValueError(
-                f"bots.json entry {i} missing required fields: {', '.join(missing)}"
-            )
+            raise ValueError(f"bots.json entry {i} missing required fields: {', '.join(missing)}")
         configs.append(
             dataclasses.replace(
                 base,
@@ -539,9 +537,7 @@ def load_bot_configs(path: str, base: "AppConfig") -> "list[AppConfig]":
                 pair=entry["pair"],
                 timeframe_entry=entry.get("timeframe_entry", base.timeframe_entry),
                 timeframe_regime=entry.get("timeframe_regime", base.timeframe_regime),
-                max_active_buckets=int(
-                    entry.get("max_active_buckets", base.max_active_buckets)
-                ),
+                max_active_buckets=int(entry.get("max_active_buckets", base.max_active_buckets)),
             )
         )
     return configs
