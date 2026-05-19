@@ -62,9 +62,19 @@ class _Subscription:
     builder: CandleBuilder
     on_reconnect: Optional[ReconnectFn]
     notify: Optional[NotifyFn]
-    # Per-subscription random walk state
+    # Per-subscription random walk + regime state
     price: float = 0.0
     rng: random.Random = field(default_factory=random.Random)
+    # Regime simulation: each subscription cycles through phases that produce
+    # candles matching one of TRENDING / RANGING / VOLATILE structurally, so
+    # the signal pipeline has material to detect.
+    phase: str = "range"  # "trend_up" | "trend_down" | "range" | "volatile"
+    phase_candles_left: int = 0
+    # Inside trend phases, alternate impulse and retracement to produce the
+    # trigger+retrace structure impulse_retracement looks for, and to keep RSI
+    # out of the overbought/oversold bands so the trend filter accepts.
+    candles_since_retrace: int = 0
+    last_was_impulse: bool = False
 
 
 @register_feed("mock")
@@ -173,16 +183,108 @@ class MockFeed:
             return
 
     def _next_candle(self, sub: _Subscription, ts_ms: int) -> list:
-        """Generate one synthetic OHLCV row for sub at timestamp ts_ms."""
+        """Generate one synthetic OHLCV row for sub at timestamp ts_ms.
+
+        Walks a regime-state machine: each subscription cycles between
+        trending, ranging, and volatile phases. Inside trend phases, an
+        impulse → retracement sub-structure alternates every 3-4 candles —
+        this both keeps RSI inside the trend-filter band (45 ≤ RSI ≤ 70)
+        and creates the exact trigger-then-retrace shape the
+        impulse_retracement pattern detects.
+
+        Phase distribution and shapes are tuned against CLAUDE.md §22 gates:
+            - trend_up / trend_down (≈70%): 15-30 candles, drift ±0.30%,
+              with retracement every 3-4 candles → builds ADX>25 + EMA
+              spread + clean impulse/retrace pairs.
+            - range (≈25%): 5-12 candles, drift ~0%, lower body_ratio,
+              moderate volatility (so quiet_regime gate doesn't trip).
+            - volatile (≈5%): 1-3 single-candle spikes with 4× normal range
+              and 3× volume — feeds VOLATILE + anomaly_fade.
+        """
+        # Phase transitions. Heavily favour range so the volume MA stays low,
+        # then short trend bursts produce trigger/retrace pairs with ratios
+        # well above volume_ratio_min when measured against the range-dominated
+        # MA(20).
+        if sub.phase_candles_left <= 0:
+            r = sub.rng.random()
+            if r < 0.12:
+                sub.phase = "trend_up"
+                sub.phase_candles_left = sub.rng.randint(8, 14)
+            elif r < 0.24:
+                sub.phase = "trend_down"
+                sub.phase_candles_left = sub.rng.randint(8, 14)
+            elif r < 0.94:
+                sub.phase = "range"
+                sub.phase_candles_left = sub.rng.randint(20, 40)
+            else:
+                sub.phase = "volatile"
+                sub.phase_candles_left = sub.rng.randint(1, 3)
+            sub.candles_since_retrace = 0
+            sub.last_was_impulse = False
+        sub.phase_candles_left -= 1
+
         open_price = sub.price
-        # Random walk with occasional momentum bursts (~5% are "anomalies").
-        drift = sub.rng.gauss(0.0, 1.0) * open_price * 0.0015
-        if sub.rng.random() < 0.05:
-            drift *= 4
-        close_price = max(open_price + drift, open_price * 0.5)
-        high = max(open_price, close_price) * (1.0 + abs(sub.rng.gauss(0.0, 0.0005)))
-        low = min(open_price, close_price) * (1.0 - abs(sub.rng.gauss(0.0, 0.0005)))
-        volume = math.exp(sub.rng.gauss(5.0, 0.6))
+        in_trend = sub.phase in ("trend_up", "trend_down")
+        trend_sign = 1 if sub.phase == "trend_up" else (-1 if sub.phase == "trend_down" else 0)
+
+        # Decide impulse vs retrace inside trend phases.
+        is_retrace = False
+        if in_trend:
+            sub.candles_since_retrace += 1
+            # After 2-3 impulses, do a retracement candle. Forced after 4.
+            if sub.last_was_impulse and (
+                sub.candles_since_retrace >= 4 or (sub.candles_since_retrace >= 2 and sub.rng.random() < 0.45)
+            ):
+                is_retrace = True
+
+        if in_trend and not is_retrace:
+            # Impulse candle: large body in trend direction, high volume —
+            # well above the range-dominated MA(20).
+            drift_pct = trend_sign * sub.rng.uniform(0.0035, 0.0060)
+            body_frac = sub.rng.uniform(0.72, 0.90)
+            vol_mean, vol_sigma = 6.5, 0.25  # ~6× range volume
+        elif in_trend and is_retrace:
+            # Retracement candle: small opposite-direction move (~35% of
+            # impulse range), volume lower than trigger but still ~2.5× the
+            # range baseline so volume_confirm passes after impulse_retracement.
+            drift_pct = -trend_sign * sub.rng.uniform(0.0010, 0.0022)
+            body_frac = sub.rng.uniform(0.40, 0.65)
+            vol_mean, vol_sigma = 5.6, 0.25
+            sub.candles_since_retrace = 0
+        elif sub.phase == "volatile":
+            direction = 1 if sub.rng.random() < 0.5 else -1
+            drift_pct = direction * sub.rng.uniform(0.010, 0.020)
+            body_frac = sub.rng.uniform(0.5, 0.75)
+            vol_mean, vol_sigma = 6.8, 0.4
+        else:  # range — low body_ratio, low volume; dominates the buffer
+            drift_pct = sub.rng.gauss(0.0, 0.0010)
+            body_frac = sub.rng.uniform(0.15, 0.40)
+            vol_mean, vol_sigma = 4.7, 0.30
+
+        sub.last_was_impulse = in_trend and not is_retrace
+
+        close_price = max(open_price * (1.0 + drift_pct), open_price * 0.5)
+
+        # Construct high/low so |close-open| / (high-low) ≈ body_frac.
+        body = abs(close_price - open_price)
+        if body == 0.0:
+            body = open_price * 0.0001
+        total_range = body / max(body_frac, 0.05)
+        wick_total = total_range - body
+        # Split wicks asymmetrically — for trend_up impulses weight the
+        # *upper* wick small (close near high); for trend_down, lower wick small.
+        if trend_sign >= 0 or (sub.phase == "volatile" and drift_pct > 0):
+            upper_wick = wick_total * sub.rng.uniform(0.1, 0.4)
+            lower_wick = wick_total - upper_wick
+        else:
+            lower_wick = wick_total * sub.rng.uniform(0.1, 0.4)
+            upper_wick = wick_total - lower_wick
+
+        high = max(open_price, close_price) + upper_wick
+        low = min(open_price, close_price) - lower_wick
+
+        volume = math.exp(sub.rng.gauss(vol_mean, vol_sigma))
+
         sub.price = close_price
         return [ts_ms, open_price, high, low, close_price, volume]
 
