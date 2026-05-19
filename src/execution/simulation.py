@@ -17,6 +17,7 @@ from typing import Any, Optional
 from src.config import (
     AppConfig,
     Direction,
+    Params,
     Signal,
     compute_liquidation_price,
 )
@@ -24,6 +25,7 @@ from src.execution.interface import ExecutionError, ExecutionInterface
 
 _TAKER_FEE_PCT = 0.04 / 100.0  # 0.04% per side
 _SLIPPAGE_PCT = 0.05 / 100.0  # 0.05% per side
+_DEFAULT_MAX_HOLD_CANDLES = 4  # fallback when params not supplied (CLAUDE.md §22)
 
 
 class SimulationExecution(ExecutionInterface):
@@ -33,8 +35,9 @@ class SimulationExecution(ExecutionInterface):
     store (written by the daemon, not here).
     """
 
-    def __init__(self, cfg: AppConfig) -> None:
+    def __init__(self, cfg: AppConfig, params: Optional[Params] = None) -> None:
         self.cfg = cfg
+        self._max_hold_candles = params.max_hold_candles if params is not None else _DEFAULT_MAX_HOLD_CANDLES
         self._positions: dict[str, dict[str, Any]] = {}
         self._prices: dict[str, float] = {}
 
@@ -76,6 +79,9 @@ class SimulationExecution(ExecutionInterface):
             "fee_usdt": round(fee_entry, 6),
             "notional_usdt": round(notional, 4),
             "liquidation_price": round(liq_price, 8),
+            # Incremented by check_exits each candle; powers the timeout branch
+            # so positions don't hang indefinitely when TP/SL never trigger.
+            "candles_held": 0,
         }
         self._positions[signal.pair] = position
         return position
@@ -158,14 +164,21 @@ class SimulationExecution(ExecutionInterface):
         self._prices[pair] = price
 
     def check_exits(self, pair: str) -> Optional[str]:
-        """Check if TP or SL has been hit for an open position.
+        """Check whether the position should close on this candle.
+
+        Called once per candle by the daemon. Returns the exit reason if any
+        of TP, SL, liquidation, or max_hold_candles timeout has hit; None to
+        keep the position open.
 
         Returns:
-            'take_profit' | 'stop_loss' | 'liquidated' | None
+            'take_profit' | 'stop_loss' | 'liquidated' | 'timeout' | None
         """
         pos = self._positions.get(pair)
         if pos is None:
             return None
+
+        # Each check_exits call corresponds to one closed candle since entry.
+        pos["candles_held"] += 1
 
         price = self._prices.get(pair)
         if price is None:
@@ -174,6 +187,8 @@ class SimulationExecution(ExecutionInterface):
         direction = pos["direction"]
         liq = pos["liquidation_price"]
 
+        # Price-based exits take priority over timeout (a TP/SL hit on the
+        # timeout candle itself should record the real reason).
         if direction == "long":
             if price >= pos["tp_price"]:
                 return "take_profit"
@@ -188,5 +203,10 @@ class SimulationExecution(ExecutionInterface):
                 return "stop_loss"
             if price >= liq:
                 return "liquidated"
+
+        # CLAUDE.md §16 / §22: force-close after max_hold_candles to prevent
+        # positions hanging indefinitely when price stays inside the band.
+        if pos["candles_held"] >= self._max_hold_candles:
+            return "timeout"
 
         return None

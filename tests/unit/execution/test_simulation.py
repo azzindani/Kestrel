@@ -260,6 +260,46 @@ class TestCheckExits:
         sim.update_price(sig.pair, sig.sl_price + 1.0)
         assert sim.check_exits(sig.pair) == "stop_loss"
 
+    def test_check_exits_timeout_after_max_hold_candles(self):
+        """CLAUDE.md §16 / §22: positions auto-close after max_hold_candles."""
+        from tests.helpers.factories import make_params
+
+        params = make_params(max_hold_candles=3)
+        sim = SimulationExecution(make_app_config(), params)
+        sig = make_signal(entry=83000.0, direction=Direction.LONG)
+        _run(sim.place_order(sig))
+        # Price stays inside TP/SL band the whole time.
+        sim.update_price(sig.pair, sig.entry_price + 10.0)
+
+        # First two checks: still open
+        assert sim.check_exits(sig.pair) is None
+        assert sim.check_exits(sig.pair) is None
+        # Third check: candles_held hits max_hold_candles=3 → timeout
+        assert sim.check_exits(sig.pair) == "timeout"
+
+    def test_check_exits_tp_takes_priority_over_timeout(self):
+        """If TP hits on the same candle that would time out, record TP."""
+        from tests.helpers.factories import make_params
+
+        params = make_params(max_hold_candles=2)
+        sim = SimulationExecution(make_app_config(), params)
+        sig = make_signal(direction=Direction.LONG)
+        _run(sim.place_order(sig))
+        sim.update_price(sig.pair, sig.entry_price + 10.0)
+        sim.check_exits(sig.pair)  # 1
+        sim.update_price(sig.pair, sig.tp_price + 1.0)
+        assert sim.check_exits(sig.pair) == "take_profit"
+
+    def test_check_exits_default_max_hold_when_no_params(self):
+        """Constructor falls back to CLAUDE.md §22 default (4) when params is None."""
+        sim = SimulationExecution(make_app_config())
+        sig = make_signal(entry=83000.0, direction=Direction.LONG)
+        _run(sim.place_order(sig))
+        sim.update_price(sig.pair, sig.entry_price + 10.0)
+        for _ in range(3):
+            assert sim.check_exits(sig.pair) is None
+        assert sim.check_exits(sig.pair) == "timeout"
+
 
 # ---------------------------------------------------------------------------
 # reconcile
