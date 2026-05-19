@@ -135,6 +135,7 @@ class SimulationExecution(ExecutionInterface):
         total_fee = pos["fee_usdt"] + fee_exit
         pnl_net = pnl_gross - total_fee
         pnl_pct = pnl_net / size * 100.0
+        hold_candles = pos.get("candles_held", 0)
 
         del self._positions[pair]
 
@@ -145,6 +146,7 @@ class SimulationExecution(ExecutionInterface):
             "pnl_net_usdt": round(pnl_net, 6),
             "pnl_pct": round(pnl_pct, 4),
             "ts": int(time.time() * 1000),
+            "hold_candles": hold_candles,
         }
 
     # -----------------------------------------------------------------------

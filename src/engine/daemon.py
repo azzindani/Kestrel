@@ -64,6 +64,9 @@ class Daemon:
         self._last_ws_reconnect_ts: Optional[int] = None
         self._session_pnl: float = 0.0
         self._session_reset_ts: int = _utc_midnight_ms(self.start_ts)
+        # pair → trade_id for in-flight positions, so _close_position can
+        # UPDATE the right trades row when the position exits.
+        self._open_trade_ids: dict[str, int] = {}
 
         # State
         self._running = False
@@ -358,9 +361,10 @@ class Daemon:
                 "leverage": order["leverage"],
                 "notional_usdt": order["notional_usdt"],
                 "fee_entry_usdt": order["fee_usdt"],
-                "bucket_balance_before": 10.0,
+                "bucket_balance_before": self.cfg.bucket_size_usdt,
             }
         )
+        self._open_trade_ids[signal.pair] = trade_id
 
         await db.write_signal(signal, SignalOutcome.FIRED, trade_id=trade_id)
         await db.write_event(
@@ -412,6 +416,27 @@ class Daemon:
             return
 
         self._session_pnl += result["pnl_net_usdt"]
+        bucket_balance_after = self.cfg.bucket_size_usdt + result["pnl_net_usdt"]
+
+        # UPDATE the trades row with exit info — without this the row stays
+        # exit_ts=NULL forever and count_active_positions over-counts on
+        # subsequent restarts, blocking future signals via bucket_limit.
+        trade_id = self._open_trade_ids.pop(pair, None)
+        if trade_id is not None:
+            await db.close_trade(
+                trade_id,
+                {
+                    "exit_ts": result["ts"],
+                    "exit_price": result["exit_price"],
+                    "hold_candles": result.get("hold_candles", 0),
+                    "close_reason": reason,
+                    "pnl_gross_usdt": result.get("pnl_gross_usdt", result["pnl_net_usdt"]),
+                    "fee_exit_usdt": result.get("fee_exit_usdt", 0.0),
+                    "pnl_net_usdt": result["pnl_net_usdt"],
+                    "pnl_pct": result["pnl_pct"],
+                    "bucket_balance_after": bucket_balance_after,
+                },
+            )
 
         await db.write_event(
             self.cfg.bot_id,
@@ -426,7 +451,9 @@ class Daemon:
                 "pnl_net_usdt": result["pnl_net_usdt"],
                 "pnl_pct": result["pnl_pct"],
                 "reason": reason,
+                "hold_candles": result.get("hold_candles", 0),
             },
+            trade_id=trade_id,
         )
 
         # Notify
@@ -437,7 +464,7 @@ class Daemon:
             "pnl_net_usdt": result["pnl_net_usdt"],
             "pnl_pct": result["pnl_pct"],
             "close_reason": reason,
-            "bucket_balance_after": 10.0 + result["pnl_net_usdt"],
+            "bucket_balance_after": bucket_balance_after,
         }
         if result["pnl_net_usdt"] >= 0:
             await self.notifier.trade_closed_profit(notify_data)
