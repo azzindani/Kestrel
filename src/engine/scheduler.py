@@ -63,6 +63,34 @@ async def daily_summary_task(
             )
 
 
+async def trade_context_post_task(env: str, interval: float = 3600.0) -> None:
+    """Link 48h-after candles for closed trades whose post-window has elapsed
+    (CLAUDE.md §21).
+
+    Runs globally (not per-bot): single sweep across all bots' trades whose
+    exit_ts is older than 48h and context_post_complete=FALSE. Idempotent
+    via ON CONFLICT in link_post_context.
+    """
+    while True:
+        await asyncio.sleep(interval)
+        try:
+            pending = await db.trades_pending_post_context(env=env)
+        except Exception:
+            continue
+        for trade in pending:
+            try:
+                await db.link_post_context(
+                    trade["id"],
+                    trade["bot_id"],
+                    trade["pair"],
+                    trade["timeframe"],
+                    trade["exit_ts"],
+                )
+            except Exception:
+                # Per-trade failure shouldn't abort the rest of the batch.
+                continue
+
+
 async def cleanup_task(cfg: AppConfig, session_id: str) -> None:
     """Run retention cleanup at 03:00 UTC daily (CLAUDE.md §15)."""
     while True:

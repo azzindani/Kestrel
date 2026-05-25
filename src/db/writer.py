@@ -293,6 +293,176 @@ async def mark_context_post_complete(trade_id: int) -> None:
         )
 
 
+# ---------------------------------------------------------------------------
+# trade_context — auto-link helpers (CLAUDE.md §21)
+# ---------------------------------------------------------------------------
+
+_CONTEXT_WINDOW_HOURS = 48
+
+
+async def link_pre_context(
+    trade_id: int,
+    bot_id: str,
+    pair: str,
+    timeframe: str,
+    entry_ts: int,
+    window_hours: int = _CONTEXT_WINDOW_HOURS,
+) -> int:
+    """Bulk-link every candle in (entry_ts - window_hours, entry_ts] as 'pre'.
+
+    Called once at trade entry. offset_candles is negative (older candles =
+    more negative); offset_hours is negative. Returns the number of rows
+    inserted (ignores ON CONFLICT duplicates).
+    """
+    start_ts = entry_ts - window_hours * 3_600_000
+    async with acquire() as conn:
+        rows = await conn.fetch(
+            """
+            SELECT id, ts FROM candles
+            WHERE bot_id = $1 AND pair = $2 AND timeframe = $3
+              AND ts >= $4 AND ts <= $5
+            ORDER BY ts
+            """,
+            bot_id,
+            pair,
+            timeframe,
+            start_ts,
+            entry_ts,
+        )
+        if not rows:
+            return 0
+        # Newest row in the window has offset_candles closest to 0.
+        total = len(rows)
+        for i, row in enumerate(rows):
+            offset_candles = -(total - 1 - i)
+            offset_hours = (row["ts"] - entry_ts) / 3_600_000.0
+            await conn.execute(
+                """
+                INSERT INTO trade_context (trade_id, candle_id, candle_ts, offset_candles, offset_hours, "window")
+                VALUES ($1, $2, $3, $4, $5, 'pre')
+                ON CONFLICT (trade_id, candle_id) DO NOTHING
+                """,
+                trade_id,
+                row["id"],
+                row["ts"],
+                offset_candles,
+                offset_hours,
+            )
+        return total
+
+
+async def link_during_context(
+    trade_id: int,
+    candle_id: int,
+    candle_ts: int,
+    entry_ts: int,
+) -> None:
+    """Link a single in-flight candle as 'during' context. Idempotent."""
+    offset_hours = (candle_ts - entry_ts) / 3_600_000.0
+    # offset_candles for during starts at 1 and counts forward; estimating
+    # via offset_hours / 5min keeps us correct for arbitrary timeframes.
+    # If timeframes differ, the consumer can still recompute from candle_ts.
+    offset_candles = max(1, round(offset_hours * 12))  # 12 candles per hour @ 5m
+    async with acquire() as conn:
+        await conn.execute(
+            """
+            INSERT INTO trade_context (trade_id, candle_id, candle_ts, offset_candles, offset_hours, "window")
+            VALUES ($1, $2, $3, $4, $5, 'during')
+            ON CONFLICT (trade_id, candle_id) DO NOTHING
+            """,
+            trade_id,
+            candle_id,
+            candle_ts,
+            offset_candles,
+            offset_hours,
+        )
+
+
+async def link_post_context(
+    trade_id: int,
+    bot_id: str,
+    pair: str,
+    timeframe: str,
+    exit_ts: int,
+    window_hours: int = _CONTEXT_WINDOW_HOURS,
+) -> int:
+    """Bulk-link every candle in (exit_ts, exit_ts + window_hours] as 'post'.
+    Marks the trade's context_post_complete=TRUE atomically with the inserts."""
+    end_ts = exit_ts + window_hours * 3_600_000
+    async with acquire() as conn:
+        async with conn.transaction():
+            rows = await conn.fetch(
+                """
+                SELECT id, ts FROM candles
+                WHERE bot_id = $1 AND pair = $2 AND timeframe = $3
+                  AND ts > $4 AND ts <= $5
+                ORDER BY ts
+                """,
+                bot_id,
+                pair,
+                timeframe,
+                exit_ts,
+                end_ts,
+            )
+            for i, row in enumerate(rows):
+                offset_hours = (row["ts"] - exit_ts) / 3_600_000.0
+                offset_candles = i + 1
+                await conn.execute(
+                    """
+                    INSERT INTO trade_context (trade_id, candle_id, candle_ts, offset_candles, offset_hours, "window")
+                    VALUES ($1, $2, $3, $4, $5, 'post')
+                    ON CONFLICT (trade_id, candle_id) DO NOTHING
+                    """,
+                    trade_id,
+                    row["id"],
+                    row["ts"],
+                    offset_candles,
+                    offset_hours,
+                )
+            await conn.execute(
+                "UPDATE trades SET context_post_complete = TRUE WHERE id = $1",
+                trade_id,
+            )
+            return len(rows)
+
+
+async def trades_pending_post_context(
+    window_hours: int = _CONTEXT_WINDOW_HOURS,
+    env: Optional[str] = None,
+) -> list[dict]:
+    """Trades whose exit_ts is older than window_hours ago AND
+    context_post_complete=FALSE — eligible for post-window linking."""
+    cutoff_ms = int(time.time() * 1000) - window_hours * 3_600_000
+    async with acquire() as conn:
+        if env is None:
+            rows = await conn.fetch(
+                """
+                SELECT id, bot_id, pair, timeframe, exit_ts
+                FROM trades
+                WHERE exit_ts IS NOT NULL
+                  AND exit_ts <= $1
+                  AND COALESCE(context_post_complete, FALSE) = FALSE
+                ORDER BY exit_ts
+                """,
+                cutoff_ms,
+            )
+        else:
+            rows = await conn.fetch(
+                """
+                SELECT id, bot_id, pair, timeframe, exit_ts
+                FROM trades
+                WHERE exit_ts IS NOT NULL
+                  AND exit_ts <= $1
+                  AND COALESCE(context_post_complete, FALSE) = FALSE
+                  AND env = $2
+                ORDER BY exit_ts
+                """,
+                cutoff_ms,
+                env,
+            )
+        return [dict(r) for r in rows]
+
+
 async def load_recent_candles(bot_id: str, pair: str, timeframe: str, limit: int) -> list[dict]:
     """Load the N most recent candles for a pair/timeframe (used to bootstrap indicators)."""
     async with acquire() as conn:
