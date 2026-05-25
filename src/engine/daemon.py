@@ -31,7 +31,7 @@ from src.data.providers import get_data_feed
 from src.db import connection as db_conn
 from src.db import schema as db_schema
 from src.db import writer as db
-from src.engine.scheduler import cleanup_task, daily_summary_task, heartbeat_task
+from src.engine.scheduler import cleanup_task, daily_summary_task, heartbeat_task, trade_context_post_task
 from src.execution.interface import ExecutionError, ExecutionInterface
 from src.execution.providers import get_execution_provider
 from src.execution.simulation import SimulationExecution
@@ -64,9 +64,10 @@ class Daemon:
         self._last_ws_reconnect_ts: Optional[int] = None
         self._session_pnl: float = 0.0
         self._session_reset_ts: int = _utc_midnight_ms(self.start_ts)
-        # pair → trade_id for in-flight positions, so _close_position can
-        # UPDATE the right trades row when the position exits.
-        self._open_trade_ids: dict[str, int] = {}
+        # pair → (trade_id, entry_ts) for in-flight positions:
+        #   - trade_id lets _close_position UPDATE the right trades row;
+        #   - entry_ts powers trade_context 'during' linking on each candle.
+        self._open_trade_ids: dict[str, tuple[int, int]] = {}
 
         # State
         self._running = False
@@ -129,7 +130,10 @@ class Daemon:
         if self._dashboard:
             self._dashboard.start()
 
-        # Schedule background tasks
+        # Schedule per-bot background tasks.
+        # NOTE: cleanup_task + trade_context_post_task are spawned once
+        # globally by main() — they DELETE / SCAN across all bots so running
+        # them N times per night for N daemons is redundant.
         self._tasks = [
             asyncio.create_task(feed.run(), name="ws_feed"),
             asyncio.create_task(self._candle_processor(), name="candle_processor"),
@@ -138,7 +142,6 @@ class Daemon:
                 daily_summary_task(self.cfg, self.session_id, self.notifier),
                 name="daily_summary",
             ),
-            asyncio.create_task(cleanup_task(self.cfg, self.session_id), name="cleanup"),
         ]
 
         await db.write_event(
@@ -262,8 +265,16 @@ class Daemon:
             self._session_pnl = 0.0
             self._session_reset_ts = midnight
 
-        # Write candle to DB
-        await db.write_candle(candle)
+        # Write candle to DB; capture id for trade_context linking below.
+        candle_id = await db.write_candle(candle)
+
+        # If a position is open for this pair, link the just-closed candle as
+        # 'during' context BEFORE checking for an exit — that way every candle
+        # the position lived through is in trade_context (CLAUDE.md §21).
+        open_trade = self._open_trade_ids.get(candle.pair)
+        if open_trade is not None:
+            trade_id, entry_ts = open_trade
+            await db.link_during_context(trade_id, candle_id, candle.ts, entry_ts)
 
         # Check if simulation needs to close any open positions (TP/SL)
         if isinstance(self.execution, SimulationExecution):
@@ -364,7 +375,29 @@ class Daemon:
                 "bucket_balance_before": self.cfg.bucket_size_usdt,
             }
         )
-        self._open_trade_ids[signal.pair] = trade_id
+        self._open_trade_ids[signal.pair] = (trade_id, order["ts"])
+
+        # Bulk-link the 48h of candles preceding this entry as 'pre' context
+        # (CLAUDE.md §21). Idempotent; cheap (~576 INSERTs once per trade).
+        try:
+            await db.link_pre_context(
+                trade_id,
+                self.cfg.bot_id,
+                signal.pair,
+                signal.timeframe,
+                order["ts"],
+            )
+        except Exception as exc:
+            # Don't let context-linking break the trade-firing path.
+            await db.write_event(
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                "WARN",
+                "system",
+                "trade_context_pre_failed",
+                {"error": str(exc), "trade_id": trade_id},
+            )
 
         await db.write_signal(signal, SignalOutcome.FIRED, trade_id=trade_id)
         await db.write_event(
@@ -421,7 +454,8 @@ class Daemon:
         # UPDATE the trades row with exit info — without this the row stays
         # exit_ts=NULL forever and count_active_positions over-counts on
         # subsequent restarts, blocking future signals via bucket_limit.
-        trade_id = self._open_trade_ids.pop(pair, None)
+        open_entry = self._open_trade_ids.pop(pair, None)
+        trade_id = open_entry[0] if open_entry is not None else None
         if trade_id is not None:
             await db.close_trade(
                 trade_id,
@@ -592,10 +626,28 @@ async def main() -> None:
 
     loop.add_signal_handler(signal.SIGTERM, lambda: asyncio.create_task(_stop_all()))
 
+    # ── Global background tasks (one instance for the whole process) ──────
+    # These scan/mutate cross-bot tables, so running them per-bot would just
+    # duplicate work (cleanup_task DELETEs all-bot data; trade_context_post
+    # links all-bot trades).
+    global_tasks = [
+        asyncio.create_task(
+            cleanup_task(cfg, f"{cfg.env.value}-global"),
+            name="cleanup_global",
+        ),
+        asyncio.create_task(
+            trade_context_post_task(cfg.env.value),
+            name="trade_context_post",
+        ),
+    ]
+
     # ── Run all bots concurrently ──────────────────────────────────────────
     try:
         await asyncio.gather(*[d.start() for d in daemons])
     finally:
+        for t in global_tasks:
+            t.cancel()
+        await asyncio.gather(*global_tasks, return_exceptions=True)
         await notifier.stop()
         await db_conn.close_pool()
 
