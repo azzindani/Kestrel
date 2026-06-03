@@ -8,6 +8,7 @@ from src.signal.patterns import (
     detect_compression_breakout,
     detect_impulse_retracement,
     detect_momentum_continuation,
+    detect_trend_momentum,
     detect_wick_rejection,
     registry,
 )
@@ -19,13 +20,14 @@ from tests.helpers.factories import make_candle, make_params
 
 
 class TestRegistry:
-    def test_registry_contains_all_five_patterns(self):
+    def test_registry_contains_all_patterns(self):
         expected = {
             "impulse_retracement",
             "wick_rejection",
             "compression_breakout",
             "momentum_continuation",
             "anomaly_fade",
+            "trend_momentum",
         }
         assert expected == set(registry.keys())
 
@@ -408,3 +410,93 @@ class TestAnomalyFade:
         result = detect_anomaly_fade(candles, params)
         assert result is not None
         assert 0.0 < result.confidence <= 1.0
+
+
+# ---------------------------------------------------------------------------
+# trend_momentum
+# ---------------------------------------------------------------------------
+
+
+class TestTrendMomentum:
+    def _trend_setup(self, direction: Direction = Direction.LONG) -> tuple:
+        """Build a candle history whose final candle confirms the EMA trend."""
+        params = make_params()
+        candles = [make_candle(close=100.0 + i * 0.1, volume=100.0, ts=i * 300_000) for i in range(30)]
+        if direction is Direction.LONG:
+            # bullish close, strong body, ema9 > ema21
+            last = make_candle(
+                close=104.0,
+                open_=100.0,
+                high=104.2,
+                low=99.9,
+                volume=120.0,
+                ts=30 * 300_000,
+                ema9=103.0,
+                ema21=101.0,
+            )
+        else:
+            # bearish close, strong body, ema9 < ema21
+            last = make_candle(
+                close=100.0,
+                open_=104.0,
+                high=104.1,
+                low=99.8,
+                volume=120.0,
+                ts=30 * 300_000,
+                ema9=101.0,
+                ema21=103.0,
+            )
+        return candles + [last], params
+
+    def test_trend_momentum_long_fires(self):
+        candles, params = self._trend_setup(Direction.LONG)
+        result = detect_trend_momentum(candles, params)
+        assert result is not None
+        assert result.direction is Direction.LONG
+        assert result.pattern is PatternType.MOMENTUM_CONTINUATION
+
+    def test_trend_momentum_short_fires(self):
+        candles, params = self._trend_setup(Direction.SHORT)
+        result = detect_trend_momentum(candles, params)
+        assert result is not None
+        assert result.direction is Direction.SHORT
+
+    def test_trend_momentum_insufficient_candles_returns_none(self):
+        params = make_params()
+        assert detect_trend_momentum([make_candle(100.0)] * 5, params) is None
+
+    def test_trend_momentum_counter_trend_close_returns_none(self):
+        """EMA bias is long but the candle closes bearish → momentum not confirmed."""
+        candles, params = self._trend_setup(Direction.LONG)
+        candles[-1] = make_candle(
+            close=99.0,
+            open_=104.0,
+            high=104.2,
+            low=98.9,
+            volume=120.0,
+            ts=candles[-1].ts,
+            ema9=103.0,
+            ema21=101.0,
+        )
+        assert detect_trend_momentum(candles, params) is None
+
+    def test_trend_momentum_small_body_returns_none(self):
+        """Body too small relative to range (body_ratio < 0.30) → no entry."""
+        candles, params = self._trend_setup(Direction.LONG)
+        candles[-1] = make_candle(
+            close=100.1,
+            open_=100.0,
+            high=105.0,
+            low=99.0,
+            volume=120.0,
+            ts=candles[-1].ts,
+            ema9=103.0,
+            ema21=101.0,
+        )
+        assert detect_trend_momentum(candles, params) is None
+
+    def test_trend_momentum_confidence_in_band(self):
+        candles, params = self._trend_setup(Direction.LONG)
+        result = detect_trend_momentum(candles, params)
+        assert result is not None
+        assert 0.55 <= result.confidence <= 0.72

@@ -139,8 +139,16 @@ class SimulationExecution(ExecutionInterface):
 
         del self._positions[pair]
 
+        # Signed price move captured ("points"): favourable = positive.
+        points = (fill_exit - entry) if direction == "long" else (entry - fill_exit)
+
         return {
             "exit_price": round(fill_exit, 8),
+            "entry_price": entry,
+            "direction": direction,
+            "leverage": pos["leverage"],
+            "notional_usdt": notional,
+            "points": round(points, 8),
             "pnl_gross_usdt": round(pnl_gross, 6),
             "fee_exit_usdt": round(fee_exit, 6),
             "pnl_net_usdt": round(pnl_net, 6),

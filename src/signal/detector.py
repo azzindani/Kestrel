@@ -162,6 +162,7 @@ def evaluate(
     session_id: str,
     env: str,
     pattern_memories: Optional[dict[str, dict | None]] = None,
+    enabled_patterns: Optional[Sequence[str]] = None,
 ) -> tuple[Signal, None] | tuple[None, Rejection]:
     """
     Run the full signal pipeline on a completed candle list.
@@ -207,6 +208,10 @@ def evaluate(
     # Combine session and regime pattern restrictions
     regime_patterns = frozenset(p for p in registry if regime_permits_pattern(regime_result.regime, p))
     permitted = session_permitted & regime_patterns if session_permitted is not None else regime_patterns
+
+    # Per-bot strategy: narrow to this bot's enabled patterns (multi-bot bake-off)
+    if enabled_patterns is not None:
+        permitted = permitted & frozenset(enabled_patterns)
 
     # --- Stage 2: Trend ---
     trend_result = _trend_filter(candles, params)
