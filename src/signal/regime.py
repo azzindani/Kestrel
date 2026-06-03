@@ -80,9 +80,9 @@ def _ema_from_closes(candles: Sequence[Candle], period: int) -> float:
 def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
     """Return True if the regime allows the given pattern (CLAUDE.md §22)."""
     _allowed: dict[Regime, frozenset[str]] = {
-        Regime.TRENDING: frozenset({"impulse_retracement", "momentum_continuation"}),
-        Regime.VOLATILE: frozenset({"compression_breakout", "anomaly_fade"}),
-        Regime.RANGING: frozenset({"wick_rejection", "anomaly_fade"}),
+        Regime.TRENDING: frozenset({"impulse_retracement", "momentum_continuation", "trend_momentum"}),
+        Regime.VOLATILE: frozenset({"compression_breakout", "anomaly_fade", "trend_momentum"}),
+        Regime.RANGING: frozenset({"wick_rejection", "anomaly_fade", "trend_momentum"}),
         Regime.QUIET: frozenset(),
     }
     return pattern in _allowed.get(regime, frozenset())

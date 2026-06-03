@@ -361,6 +361,12 @@ class AppConfig:
     telegram_chat_id: str
     log_level: str
 
+    # Per-bot strategy overrides for the multi-bot bake-off (set by
+    # load_bot_configs from bots.json; None ⇒ use the global params / all patterns).
+    params: Optional["Params"] = None
+    enabled_patterns: Optional[tuple] = None
+    strategy: str = "default"
+
     @classmethod
     def from_mapping(cls, m: Mapping[str, str]) -> "AppConfig":
         """Construct from a string→string mapping (e.g. os.environ).
@@ -498,21 +504,25 @@ def load_params(path: str) -> Params:
     return Params.from_dict(raw)
 
 
-def load_bot_configs(path: str, base: "AppConfig") -> "list[AppConfig]":
+def load_bot_configs(path: str, base: "AppConfig", base_params: "Optional[Params]" = None) -> "list[AppConfig]":
     """Load bots.json and return one AppConfig per bot entry.
 
     Falls back to [base] if bots.json is absent or empty (single-bot mode).
-    Each entry must have 'bot_id' and 'pair'; all other fields are optional
-    and inherit from base.
+    Each entry must have 'bot_id' and 'pair'; all other fields are optional.
 
     Per-bot overridable fields:
         bot_id, pair, timeframe_entry, timeframe_regime, max_active_buckets
 
-    Shared fields (inherited from base .env for every bot):
-        exchange, api_key, api_secret, testnet, db_*, leverage,
-        bucket_size_usdt, telegram_*, log_level, env
+    Per-bot strategy (multi-bot bake-off; 'params' override requires base_params):
+        strategy  — label for grouping/reporting (also encode it into bot_id)
+        patterns  — list of enabled pattern names; None ⇒ all registered patterns
+        params    — dict of params.json overrides (e.g. {"tp_atr_multiplier": 2.4})
 
-    Raises ValueError if an entry is missing 'bot_id' or 'pair'.
+    Shared fields inherited from base .env: exchange, api_*, db_*, leverage,
+    bucket_size_usdt, telegram_*, log_level, env.
+
+    Raises ValueError if an entry is missing 'bot_id'/'pair' or names an
+    unknown params override key.
     """
     import dataclasses
 
@@ -525,11 +535,30 @@ def load_bot_configs(path: str, base: "AppConfig") -> "list[AppConfig]":
     if not isinstance(entries, list) or not entries:
         return [base]
 
+    valid_param_keys = {f.name for f in dataclasses.fields(Params)}
+
     configs: list[AppConfig] = []
     for i, entry in enumerate(entries):
         missing = [k for k in ("bot_id", "pair") if not entry.get(k)]
         if missing:
             raise ValueError(f"bots.json entry {i} missing required fields: {', '.join(missing)}")
+
+        # Per-bot params: merge overrides onto the base params set.
+        bot_params: "Optional[Params]" = None
+        overrides = entry.get("params")
+        if overrides:
+            if base_params is None:
+                raise ValueError(f"bots.json entry {i} has 'params' but no base params provided")
+            bad = [k for k in overrides if k not in valid_param_keys]
+            if bad:
+                raise ValueError(f"bots.json entry {i} unknown params keys: {', '.join(bad)}")
+            bot_params = dataclasses.replace(base_params, **overrides)
+        elif base_params is not None and (entry.get("patterns") or entry.get("strategy")):
+            bot_params = base_params  # concrete params set for a strategy bot
+
+        patterns = entry.get("patterns")
+        enabled = tuple(patterns) if patterns else None
+
         configs.append(
             dataclasses.replace(
                 base,
@@ -538,6 +567,9 @@ def load_bot_configs(path: str, base: "AppConfig") -> "list[AppConfig]":
                 timeframe_entry=entry.get("timeframe_entry", base.timeframe_entry),
                 timeframe_regime=entry.get("timeframe_regime", base.timeframe_regime),
                 max_active_buckets=int(entry.get("max_active_buckets", base.max_active_buckets)),
+                params=bot_params,
+                enabled_patterns=enabled,
+                strategy=entry.get("strategy", "default"),
             )
         )
     return configs

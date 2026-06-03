@@ -431,3 +431,58 @@ def detect_anomaly_fade(candles: Sequence[Candle], params: Params) -> Optional[P
             "spike_move_atr": round(spike_move / atr, 3),
         },
     )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: trend_momentum — permissive momentum entry
+# ---------------------------------------------------------------------------
+
+
+@register("trend_momentum")
+def detect_trend_momentum(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """
+    Permissive momentum entry: take a position in the established EMA-trend
+    direction whenever the latest candle closes in that same direction with a
+    non-trivial body. A simpler, higher-frequency complement to the five strict
+    patterns (which almost never trigger on real 5m data — see signals table).
+
+    Direction is derived from the EMA relationship so it always agrees with the
+    detector's trend filter. This is a real (if unsophisticated) momentum signal,
+    NOT a forced/always-fire trigger: it still requires trend alignment, a directional
+    close, and a real body — and it remains subject to every downstream gate
+    (volume confirm, min confidence, and all six risk rules incl. fee viability).
+    """
+    if len(candles) < params.ema_slow + 1:
+        return None
+
+    c = candles[-1]
+    ema9 = c.ema9
+    ema21 = c.ema21
+    if ema9 is None or ema21 is None:
+        return None
+
+    if ema9 > ema21:
+        direction = Direction.LONG
+    elif ema9 < ema21:
+        direction = Direction.SHORT
+    else:
+        return None
+
+    # Candle must close in the trend direction (momentum confirmation, not a fade)
+    if _direction_from_candle(c) is not direction:
+        return None
+
+    body_ratio = _body_ratio(c)
+    if body_ratio < params.body_ratio_min:
+        return None
+
+    # Confidence scales with conviction (body ratio); capped below the 0.75
+    # full-size band so these size at the conservative half-bucket by default.
+    confidence = min(0.55 + body_ratio * 0.20, 0.72)
+
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=round(confidence, 3),
+        details={"variant": "trend_momentum", "body_ratio": round(body_ratio, 3)},
+    )
