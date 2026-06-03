@@ -73,27 +73,32 @@ async def run() -> None:
     base = load_params("params.json")
     bots = load_bot_configs("bots.json", cfg, base)
 
+    # Group bots by (pair, timeframe) so each pair is fetched ONCE (not per bot) —
+    # essential at lab scale where hundreds of bots share ~10 pairs.
+    groups: dict = {}
+    for bot in bots:
+        groups.setdefault((bot.pair, bot.timeframe_entry), []).append(bot)
+
     await db_conn.init_pool(cfg)
     try:
-        for bot in bots:
-            rows = fetch_quote_ohlcv(bot.pair, bot.timeframe_entry, days=1)
-            builder = CandleBuilder(bot.bot_id, bot.pair, bot.timeframe_entry, base)
-            built: list = []
-            builder.set_emitter(built.append)
-            for r in rows:
-                builder.process_ohlcv(r, is_closed=True)
-
-            wrote, skipped = 0, 0
-            for c in built:
-                try:
-                    await db.write_candle(c)
-                    wrote += 1
-                except Exception:
-                    skipped += 1
+        for (pair, tf), grp in groups.items():
+            rows = fetch_quote_ohlcv(pair, tf, days=1)
             avg_vol = sum(r[5] for r in rows) / len(rows) if rows else 0
-            print(f"{bot.bot_id} {bot.pair}: source={_FEED_EXCHANGE}(quote) "
-                  f"fetched={len(rows)} wrote={wrote} skipped={skipped} avg_vol={avg_vol:,.0f}",
-                  flush=True)
+            wrote = 0
+            for bot in grp:
+                builder = CandleBuilder(bot.bot_id, pair, tf, base)
+                built: list = []
+                builder.set_emitter(built.append)
+                for r in rows:
+                    builder.process_ohlcv(r, is_closed=True)
+                for c in built:
+                    try:
+                        await db.write_candle(c)
+                        wrote += 1
+                    except Exception:
+                        pass
+            print(f"{pair} {tf}: source={_FEED_EXCHANGE}(quote) fetched={len(rows)} "
+                  f"bots={len(grp)} candles_written={wrote} avg_vol={avg_vol:,.0f}", flush=True)
     finally:
         await db_conn.close_pool()
 

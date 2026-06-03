@@ -1,626 +1,3842 @@
 [
   {
-    "bot_id": "dev-BTCUSDT-5m-mom-01",
+    "bot_id": "dev-BTCUSDT-5m-t10s7h4-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "mom",
-    "patterns": [
-      "trend_momentum"
-    ]
-  },
-  {
-    "bot_id": "dev-BTCUSDT-5m-momwide-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momwide",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.0
-    }
-  },
-  {
-    "bot_id": "dev-BTCUSDT-5m-momtight-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momtight",
+    "strategy": "t10s7h4",
     "patterns": [
       "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 1.0,
-      "sl_atr_multiplier": 0.8
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-5m-mompatient-01",
+    "bot_id": "dev-BTCUSDT-5m-t10s7h8-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "mompatient",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-BTCUSDT-5m-momhiconf-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momhiconf",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "min_confidence": 0.7,
-      "body_ratio_min": 0.55
-    }
-  },
-  {
-    "bot_id": "dev-BTCUSDT-5m-momhivol-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momhivol",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "volume_ratio_min": 1.8
-    }
-  },
-  {
-    "bot_id": "dev-BTCUSDT-5m-multi-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "multi"
-  },
-  {
-    "bot_id": "dev-BTCUSDT-5m-classic-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "classic",
-    "patterns": [
-      "impulse_retracement",
-      "momentum_continuation"
-    ]
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-mom-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "mom",
-    "patterns": [
-      "trend_momentum"
-    ]
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-momwide-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momwide",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.0
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-momtight-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momtight",
+    "strategy": "t10s7h8",
     "patterns": [
       "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 1.0,
-      "sl_atr_multiplier": 0.8
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-mompatient-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "mompatient",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
+      "sl_atr_multiplier": 0.7,
       "max_hold_candles": 8
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-5m-momhiconf-01",
-    "pair": "ETH/USDT",
+    "bot_id": "dev-BTCUSDT-5m-t10s10h4-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "momhiconf",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "min_confidence": 0.7,
-      "body_ratio_min": 0.55
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-momhivol-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momhivol",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "volume_ratio_min": 1.8
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-multi-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "multi"
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-classic-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "classic",
-    "patterns": [
-      "impulse_retracement",
-      "momentum_continuation"
-    ]
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-mom-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "mom",
-    "patterns": [
-      "trend_momentum"
-    ]
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-momwide-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momwide",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.0
-    }
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-momtight-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momtight",
+    "strategy": "t10s10h4",
     "patterns": [
       "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 1.0,
-      "sl_atr_multiplier": 0.8
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-mompatient-01",
-    "pair": "SOL/USDT",
+    "bot_id": "dev-BTCUSDT-5m-t10s10h8-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "mompatient",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-momhiconf-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momhiconf",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "min_confidence": 0.7,
-      "body_ratio_min": 0.55
-    }
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-momhivol-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momhivol",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "volume_ratio_min": 1.8
-    }
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-multi-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "multi"
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-classic-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "classic",
-    "patterns": [
-      "impulse_retracement",
-      "momentum_continuation"
-    ]
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-mom-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "mom",
-    "patterns": [
-      "trend_momentum"
-    ]
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-momwide-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momwide",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.0
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-momtight-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momtight",
+    "strategy": "t10s10h8",
     "patterns": [
       "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 1.0,
-      "sl_atr_multiplier": 0.8
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-mompatient-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "mompatient",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
+      "sl_atr_multiplier": 1.0,
       "max_hold_candles": 8
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-5m-momhiconf-01",
-    "pair": "DOGE/USDT",
+    "bot_id": "dev-BTCUSDT-5m-t10s14h4-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "momhiconf",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "min_confidence": 0.7,
-      "body_ratio_min": 0.55
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-momhivol-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momhivol",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "volume_ratio_min": 1.8
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-multi-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "multi"
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-classic-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "classic",
-    "patterns": [
-      "impulse_retracement",
-      "momentum_continuation"
-    ]
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-mom-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "mom",
-    "patterns": [
-      "trend_momentum"
-    ]
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-momwide-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momwide",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.0
-    }
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-momtight-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momtight",
+    "strategy": "t10s14h4",
     "patterns": [
       "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 1.0,
-      "sl_atr_multiplier": 0.8
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-5m-mompatient-01",
-    "pair": "PEPE/USDT",
+    "bot_id": "dev-BTCUSDT-5m-t10s14h8-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "mompatient",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-momhiconf-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momhiconf",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "min_confidence": 0.7,
-      "body_ratio_min": 0.55
-    }
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-momhivol-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momhivol",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "volume_ratio_min": 1.8
-    }
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-multi-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "multi"
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-classic-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "classic",
-    "patterns": [
-      "impulse_retracement",
-      "momentum_continuation"
-    ]
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-mom-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "mom",
-    "patterns": [
-      "trend_momentum"
-    ]
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-momwide-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momwide",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.0
-    }
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-momtight-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "momtight",
+    "strategy": "t10s14h8",
     "patterns": [
       "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 1.0,
-      "sl_atr_multiplier": 0.8
-    }
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-mompatient-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "mompatient",
-    "patterns": [
-      "trend_momentum"
-    ],
-    "params": {
+      "sl_atr_multiplier": 1.4,
       "max_hold_candles": 8
     }
   },
   {
-    "bot_id": "dev-HYPEUSDT-5m-momhiconf-01",
-    "pair": "HYPE/USDT",
+    "bot_id": "dev-BTCUSDT-5m-t16s7h4-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "momhiconf",
+    "strategy": "t16s7h4",
     "patterns": [
       "trend_momentum"
     ],
     "params": {
-      "min_confidence": 0.7,
-      "body_ratio_min": 0.55
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
     }
   },
   {
-    "bot_id": "dev-HYPEUSDT-5m-momhivol-01",
-    "pair": "HYPE/USDT",
+    "bot_id": "dev-BTCUSDT-5m-t16s7h8-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "momhivol",
+    "strategy": "t16s7h8",
     "patterns": [
       "trend_momentum"
     ],
     "params": {
-      "volume_ratio_min": 1.8
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
     }
   },
   {
-    "bot_id": "dev-HYPEUSDT-5m-multi-01",
-    "pair": "HYPE/USDT",
+    "bot_id": "dev-BTCUSDT-5m-t16s10h4-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "multi"
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
   },
   {
-    "bot_id": "dev-HYPEUSDT-5m-classic-01",
+    "bot_id": "dev-BTCUSDT-5m-t16s10h8-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t16s14h4-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t16s14h8-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t24s7h4-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t24s7h8-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t24s10h4-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t24s10h8-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t24s14h4-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t24s14h8-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t30s7h4-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t30s7h8-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t30s10h4-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t30s10h8-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t30s14h4-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-t30s14h8-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t10s7h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t10s7h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t10s10h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t10s10h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t10s14h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t10s14h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t16s7h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t16s7h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t16s10h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t16s10h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t16s14h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t16s14h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t24s7h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t24s7h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t24s10h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t24s10h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t24s14h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t24s14h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t30s7h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t30s7h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t30s10h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t30s10h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t30s14h4-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-t30s14h8-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t10s7h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t10s7h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t10s10h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t10s10h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t10s14h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t10s14h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t16s7h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t16s7h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t16s10h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t16s10h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t16s14h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t16s14h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t24s7h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t24s7h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t24s10h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t24s10h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t24s14h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t24s14h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t30s7h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t30s7h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t30s10h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t30s10h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t30s14h4-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-t30s14h8-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t10s7h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t10s7h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t10s10h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t10s10h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t10s14h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t10s14h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t16s7h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t16s7h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t16s10h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t16s10h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t16s14h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t16s14h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t24s7h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t24s7h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t24s10h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t24s10h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t24s14h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t24s14h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t30s7h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t30s7h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t30s10h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t30s10h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t30s14h4-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-t30s14h8-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t10s7h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t10s7h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t10s10h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t10s10h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t10s14h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t10s14h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t16s7h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t16s7h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t16s10h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t16s10h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t16s14h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t16s14h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t24s7h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t24s7h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t24s10h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t24s10h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t24s14h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t24s14h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t30s7h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t30s7h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t30s10h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t30s10h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t30s14h4-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-t30s14h8-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t10s7h4-01",
     "pair": "HYPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "classic",
+    "strategy": "t10s7h4",
     "patterns": [
-      "impulse_retracement",
-      "momentum_continuation"
-    ]
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t10s7h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t10s10h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t10s10h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t10s14h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t10s14h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t16s7h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t16s7h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t16s10h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t16s10h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t16s14h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t16s14h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t24s7h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t24s7h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t24s10h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t24s10h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t24s14h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t24s14h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t30s7h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t30s7h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t30s10h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t30s10h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t30s14h4-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-t30s14h8-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t10s7h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t10s7h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t10s10h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t10s10h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t10s14h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t10s14h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t16s7h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t16s7h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t16s10h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t16s10h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t16s14h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t16s14h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t24s7h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t24s7h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t24s10h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t24s10h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t24s14h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t24s14h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t30s7h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t30s7h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t30s10h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t30s10h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t30s14h4-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-t30s14h8-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t10s7h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t10s7h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t10s10h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t10s10h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t10s14h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t10s14h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t16s7h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t16s7h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t16s10h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t16s10h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t16s14h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t16s14h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t24s7h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t24s7h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t24s10h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t24s10h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t24s14h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t24s14h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t30s7h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t30s7h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t30s10h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t30s10h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t30s14h4-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-t30s14h8-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t10s7h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t10s7h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t10s10h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t10s10h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t10s14h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t10s14h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t16s7h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t16s7h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t16s10h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t16s10h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t16s14h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t16s14h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t24s7h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t24s7h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t24s10h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t24s10h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t24s14h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t24s14h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t30s7h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t30s7h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t30s10h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t30s10h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t30s14h4-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-t30s14h8-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t10s7h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t10s7h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t10s10h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t10s10h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t10s14h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t10s14h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t10s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t16s7h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t16s7h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t16s10h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t16s10h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t16s14h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t16s14h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t16s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t24s7h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t24s7h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t24s10h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t24s10h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t24s14h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t24s14h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t24s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.4,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t30s7h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t30s7h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s7h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 0.7,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t30s10h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t30s10h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s10h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t30s14h4-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h4",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 4
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-t30s14h8-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "t30s14h8",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.4,
+      "max_hold_candles": 8
+    }
   }
 ]

@@ -39,6 +39,20 @@ _SESSION_CASE = ("CASE WHEN h>=13 AND h<16 THEN 'OVERLAP' WHEN h>=8 AND h<16 THE
 _EQUITY = "SELECT exit_ts, to_timestamp(exit_ts/1000.0) AS t, 100 + SUM(pnl_net_usdt) OVER (ORDER BY exit_ts) AS equity FROM trades WHERE exit_ts IS NOT NULL"
 _MOVE = "CASE WHEN t.direction='long' THEN (c.close - t.entry_price) ELSE (t.entry_price - c.close) END"
 _LATERAL = "LEFT JOIN LATERAL (SELECT close FROM candles WHERE pair=t.pair AND timeframe=t.timeframe ORDER BY ts DESC LIMIT 1) c ON true"
+# Per-trade path stats (MAE/MFE) — max favourable/adverse excursion during the hold,
+# from the candle high/low band between entry_ts and exit_ts. Duplicate (pair,tf,ts)
+# rows across bot_ids don't affect MAX(high)/MIN(low).
+_PX = ("LEFT JOIN LATERAL (SELECT MAX(high) AS hi, MIN(low) AS lo FROM candles "
+       "WHERE pair=t.pair AND timeframe=t.timeframe AND ts BETWEEN t.entry_ts AND t.exit_ts) px ON true")
+_MFE = ("CASE WHEN t.direction='long' THEN (px.hi - t.entry_price)/t.entry_price*100 "
+        "ELSE (t.entry_price - px.lo)/t.entry_price*100 END")
+_MAE = ("CASE WHEN t.direction='long' THEN (px.lo - t.entry_price)/t.entry_price*100 "
+        "ELSE (t.entry_price - px.hi)/t.entry_price*100 END")
+# Risk-multiple maths: planned risk = |entry-sl|; realized R = signed move / planned risk.
+_RISK = "NULLIF(ABS(t.entry_price - t.sl_price),0)"
+_REALIZED_R = ("ROUND((CASE WHEN t.direction='long' THEN t.exit_price-t.entry_price "
+               "ELSE t.entry_price-t.exit_price END)/" + _RISK + ",2)")
+_PLANNED_RR = "ROUND(ABS(t.tp_price-t.entry_price)/" + _RISK + ",2)"
 
 # ── Layout engine ────────────────────────────────────────────────────────────
 _cur = {"x": 0, "y": 0, "rowh": 0}
@@ -214,6 +228,22 @@ table("PnL by Pattern", 12, 8, "SELECT pattern, COUNT(*) FILTER (WHERE exit_ts I
       overrides=[col_override("net_pnl", "currencyUSD"), col_override("win_rate", "percent", bg=False)])
 
 # ════════════════════════════════════════════════════════════════════════════
+# Section — HP-tuning dimensions (grid lab: avg net PnL/trade per grid axis)
+# ════════════════════════════════════════════════════════════════════════════
+section("🧪 HP-Tuning Dimensions (grid lab)")
+_TOK = "split_part(bot_id,'-',4)"
+_LAB = f"exit_ts IS NOT NULL AND {_TOK} ~ '^t[0-9]+s[0-9]+h[0-9]+$'"
+bargauge("Avg net PnL/trade by TP multiple", 8, 8,
+         f"SELECT 'TP '||round((regexp_match({_TOK},'t([0-9]+)'))[1]::numeric/10,1) AS metric, ROUND(AVG(pnl_net_usdt),5) AS value FROM trades WHERE {_LAB} GROUP BY 1 ORDER BY metric",
+         "currencyUSD", TH_PNL)
+bargauge("Avg net PnL/trade by SL multiple", 8, 8,
+         f"SELECT 'SL '||round((regexp_match({_TOK},'s([0-9]+)'))[1]::numeric/10,1) AS metric, ROUND(AVG(pnl_net_usdt),5) AS value FROM trades WHERE {_LAB} GROUP BY 1 ORDER BY metric",
+         "currencyUSD", TH_PNL)
+bargauge("Avg net PnL/trade by max-hold", 8, 8,
+         f"SELECT 'hold '||(regexp_match({_TOK},'h([0-9]+)'))[1] AS metric, ROUND(AVG(pnl_net_usdt),5) AS value FROM trades WHERE {_LAB} GROUP BY 1 ORDER BY metric",
+         "currencyUSD", TH_PNL)
+
+# ════════════════════════════════════════════════════════════════════════════
 # Section 4 — Session breakdown (UTC trading sessions, CLAUDE.md §22)
 # ════════════════════════════════════════════════════════════════════════════
 section("🕑 Session Breakdown (UTC)")
@@ -225,12 +255,54 @@ bargauge("Net PnL by Session", 12, 8,
          "currencyUSD", TH_PNL)
 
 # ════════════════════════════════════════════════════════════════════════════
-# Section 5 — Trade History
+# Section — Trade Quality (risk-multiple, excursion, duration)
+# Diagnoses WHY trades win/lose: did price run our way then give it back (high MFE
+# on a timeout → TP too far)? Did we get stopped on noise (deep MAE on a win → SL
+# too tight)? Realized R puts every outcome on one comparable scale.
+# ════════════════════════════════════════════════════════════════════════════
+section("📐 Trade Quality — R-multiple, excursion, duration")
+_CLOSED = "FROM trades WHERE exit_ts IS NOT NULL"
+stat("TP-hit Rate", 4, 4, f"SELECT 100.0*AVG((close_reason='take_profit')::int) AS v {_CLOSED}", "percent", TH_WIN)
+stat("SL-hit Rate", 4, 4, f"SELECT 100.0*AVG((close_reason='stop_loss')::int) AS v {_CLOSED}", "percent", TH_BLUE)
+stat("Timeout Rate", 4, 4, f"SELECT 100.0*AVG((close_reason='timeout')::int) AS v {_CLOSED}", "percent", TH_BLUE)
+stat("Liquidation Rate", 4, 4, f"SELECT 100.0*AVG((close_reason='liquidated')::int) AS v {_CLOSED}", "percent", {"mode": "absolute", "steps": [{"color": "green", "value": None}, {"color": "red", "value": 0.001}]})
+stat("Avg Realized R (per trade)", 4, 4, f"SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v {_CLOSED}", "short", TH_PNL)
+stat("Avg Planned R/R (target)", 4, 4, f"SELECT ROUND(AVG(ABS(tp_price-entry_price)/NULLIF(ABS(entry_price-sl_price),0)),2) AS v {_CLOSED}", "short", TH_BLUE)
+stat("Avg MFE % (best excursion)", 4, 4, f"SELECT ROUND(AVG({_MFE}),3) AS v FROM trades t {_PX} WHERE t.exit_ts IS NOT NULL", "percent", {"mode": "absolute", "steps": [{"color": "green", "value": None}]})
+stat("Avg MAE % (worst excursion)", 4, 4, f"SELECT ROUND(AVG({_MAE}),3) AS v FROM trades t {_PX} WHERE t.exit_ts IS NOT NULL", "percent", {"mode": "absolute", "steps": [{"color": "red", "value": None}]})
+stat("Avg Hold (candles)", 4, 4, f"SELECT ROUND(AVG(hold_candles),2) AS v {_CLOSED}", thresholds=TH_BLUE)
+stat("Avg Hold (minutes)", 4, 4, f"SELECT ROUND(AVG((exit_ts-entry_ts)/60000.0),1) AS v {_CLOSED}", "m", TH_BLUE)
+stat("Avg Fees ($/trade)", 4, 4, f"SELECT ROUND(AVG(fee_entry_usdt+COALESCE(fee_exit_usdt,0)),4) AS v {_CLOSED}", "currencyUSD", TH_BLUE)
+stat("Avg Liq Distance %", 4, 4, f"SELECT ROUND(AVG(ABS(entry_price-liquidation_price)/entry_price*100),2) AS v {_CLOSED}", "percent", {"mode": "absolute", "steps": [{"color": "red", "value": None}, {"color": "orange", "value": 1.5}, {"color": "green", "value": 3}]})
+bargauge("Realized R-multiple Distribution (closed trades)", 12, 8,
+         f"SELECT bucket AS metric, COUNT(*) AS value FROM (SELECT CASE WHEN r<=-1 THEN '1: ≤ -1R (full stop)' WHEN r<0 THEN '2: -1..0R' WHEN r<1 THEN '3: 0..1R' WHEN r<2 THEN '4: 1..2R' ELSE '5: ≥ 2R' END AS bucket FROM (SELECT (CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0) AS r {_CLOSED}) x WHERE r IS NOT NULL) y GROUP BY bucket ORDER BY bucket")
+table("Excursion by Close Reason — did winners run / losers get stopped on noise?", 12, 8,
+      f"SELECT t.close_reason, COUNT(*) AS trades, ROUND(AVG({_MFE}),3) AS avg_mfe_pct, ROUND(AVG({_MAE}),3) AS avg_mae_pct, ROUND(AVG((CASE WHEN t.direction='long' THEN t.exit_price-t.entry_price ELSE t.entry_price-t.exit_price END)/{_RISK}),2) AS avg_realized_r FROM trades t {_PX} WHERE t.exit_ts IS NOT NULL GROUP BY t.close_reason ORDER BY trades DESC",
+      overrides=[col_override("avg_mfe_pct", "percent", bg=False), col_override("avg_mae_pct", "percent", bg=False), col_override("avg_realized_r", "short")])
+
+# ════════════════════════════════════════════════════════════════════════════
+# Section 5 — Trade History (full per-trade detail)
 # ════════════════════════════════════════════════════════════════════════════
 section("📜 Trade History")
-table("Trade History (closed) — points, move %, leverage", 24, 11,
-      "SELECT to_timestamp(entry_ts/1000.0) AS entry_time, to_timestamp(exit_ts/1000.0) AS exit_time, pair, direction, leverage, ROUND(entry_price,6) AS entry, ROUND(exit_price,6) AS exit, ROUND(CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END,6) AS points, ROUND(CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price ELSE (entry_price-exit_price)/entry_price END*100,3) AS move_pct, size_usdt AS margin, notional_usdt AS notional, ROUND(pnl_net_usdt,4) AS net_pnl, ROUND(pnl_pct,2) AS pnl_pct, close_reason, hold_candles AS hold, pattern FROM trades WHERE exit_ts IS NOT NULL ORDER BY exit_ts DESC LIMIT 200",
-      overrides=[col_override("net_pnl", "currencyUSD"), col_override("move_pct", "percent", bg=False), col_override("pnl_pct", "percent", bg=False)])
+table("Trade History (closed) — full detail: TP/SL, R-multiple, MFE/MAE, duration", 24, 12,
+      "SELECT to_timestamp(t.entry_ts/1000.0) AS entry_time, to_timestamp(t.exit_ts/1000.0) AS exit_time, "
+      "t.pair, t.direction AS dir, t.leverage AS lev, ROUND(t.entry_price,6) AS entry, ROUND(t.exit_price,6) AS exit, "
+      "ROUND(t.tp_price,6) AS tp, ROUND(t.sl_price,6) AS sl, "
+      "ROUND(CASE WHEN t.direction='long' THEN t.exit_price-t.entry_price ELSE t.entry_price-t.exit_price END,6) AS points, "
+      "ROUND(CASE WHEN t.direction='long' THEN (t.exit_price-t.entry_price)/t.entry_price ELSE (t.entry_price-t.exit_price)/t.entry_price END*100,3) AS move_pct, "
+      f"{_REALIZED_R} AS r_mult, {_PLANNED_RR} AS plan_rr, "
+      f"ROUND({_MFE},3) AS mfe_pct, ROUND({_MAE},3) AS mae_pct, "
+      "t.hold_candles AS candles, ROUND((t.exit_ts-t.entry_ts)/60000.0,0) AS dur_min, "
+      "ROUND(t.fee_entry_usdt+COALESCE(t.fee_exit_usdt,0),4) AS fees, "
+      "ROUND(t.pnl_net_usdt,4) AS net_pnl, ROUND(t.pnl_pct,2) AS pnl_pct, "
+      "ROUND(ABS(t.entry_price-t.liquidation_price)/t.entry_price*100,2) AS liq_dist_pct, "
+      "ROUND(t.bucket_balance_after,4) AS bal_after, t.close_reason AS reason, t.pattern "
+      f"FROM trades t {_PX} WHERE t.exit_ts IS NOT NULL ORDER BY t.exit_ts DESC LIMIT 200",
+      overrides=[col_override("net_pnl", "currencyUSD"), col_override("points", "short", bg=False),
+                 col_override("move_pct", "percent", bg=False), col_override("pnl_pct", "percent", bg=False),
+                 col_override("r_mult", "short"), col_override("mfe_pct", "percent", bg=False),
+                 col_override("mae_pct", "percent", bg=False), col_override("fees", "currencyUSD", bg=False),
+                 col_override("bal_after", "currencyUSD", bg=False)])
 
 # ════════════════════════════════════════════════════════════════════════════
 # Section 6 — Open Positions (live mark-to-market)
