@@ -308,7 +308,14 @@ class Daemon:
         if not candle_window:
             return
 
-        signal, rejection = evaluate(candle_window, self.params, self.cfg.bot_id, self.session_id, self.cfg.env.value)
+        signal, rejection = evaluate(
+            candle_window,
+            self.params,
+            self.cfg.bot_id,
+            self.session_id,
+            self.cfg.env.value,
+            enabled_patterns=self.cfg.enabled_patterns,
+        )
 
         if rejection is not None:
             await db.write_event(
@@ -493,10 +500,14 @@ class Daemon:
         # Notify
         notify_data = {
             "pair": pair,
-            "direction": "—",
+            "direction": result.get("direction", "—"),
+            "entry_price": result.get("entry_price"),
             "exit_price": result["exit_price"],
+            "points": result.get("points"),
+            "leverage": result.get("leverage"),
             "pnl_net_usdt": result["pnl_net_usdt"],
             "pnl_pct": result["pnl_pct"],
+            "hold_candles": result.get("hold_candles", 0),
             "close_reason": reason,
             "bucket_balance_after": bucket_balance_after,
         }
@@ -589,7 +600,7 @@ async def main() -> None:
     cfg = AppConfig.from_mapping(os.environ)
     params = load_params("params.json")
 
-    bot_cfgs = load_bot_configs("bots.json", cfg)
+    bot_cfgs = load_bot_configs("bots.json", cfg, params)
     multi = len(bot_cfgs) > 1
 
     # ── Shared infrastructure (initialised once for all bots) ──────────────
@@ -603,7 +614,7 @@ async def main() -> None:
     daemons: list[Daemon] = []
     for bot_cfg in bot_cfgs:
         execution: ExecutionInterface = get_execution_provider(bot_cfg)
-        d = Daemon(bot_cfg, params, execution, notifier)
+        d = Daemon(bot_cfg, bot_cfg.params or params, execution, notifier)
         if multi:
             d._dashboard = None  # terminal can only show one dashboard
         daemons.append(d)
