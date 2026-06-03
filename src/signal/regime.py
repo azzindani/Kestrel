@@ -82,7 +82,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
     _allowed: dict[Regime, frozenset[str]] = {
         Regime.TRENDING: frozenset({"impulse_retracement", "momentum_continuation", "trend_momentum"}),
         Regime.VOLATILE: frozenset({"compression_breakout", "anomaly_fade", "trend_momentum"}),
-        Regime.RANGING: frozenset({"wick_rejection", "anomaly_fade"}),
+        Regime.RANGING: frozenset({"wick_rejection", "anomaly_fade", "trend_momentum"}),
         Regime.QUIET: frozenset(),
     }
     return pattern in _allowed.get(regime, frozenset())

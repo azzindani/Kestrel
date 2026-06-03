@@ -84,16 +84,16 @@
     "impact": "lower = stricter RANGING definition, fewer RANGING-eligible signals"
   },
   "max_hold_candles": {
-    "value": 4,
+    "value": 6,
     "type": "int",
     "range": [2, 8],
     "description": "Maximum candles to hold a position before forced timeout exit",
     "impact": "higher = more time for TP to hit, but more exposure to adverse moves"
   },
   "max_active_buckets": {
-    "value": 5,
+    "value": 20,
     "type": "int",
-    "range": [1, 5],
+    "range": [1, 20],
     "description": "Maximum number of concurrent open positions across all pairs",
     "impact": "higher = more simultaneous trades, more total capital at risk"
   },
