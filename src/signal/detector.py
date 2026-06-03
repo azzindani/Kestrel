@@ -18,6 +18,7 @@ Rejections are returned to the caller for logging; no exceptions for flow contro
 
 from __future__ import annotations
 
+import math
 from typing import Optional, Sequence
 
 from src.config import (
@@ -38,6 +39,19 @@ from src.signal.indicators import compute_ema, compute_rsi
 from src.signal.memory import adjust_confidence, should_suppress
 from src.signal.patterns import registry
 from src.signal.regime import classify_regime, regime_permits_pattern
+
+
+def _round_price(price: float) -> float:
+    """Round a price keeping ~8 significant figures (and never fewer than 8
+    decimal places). Fixed 8-dp rounding is fine for normal prices but quantizes
+    sub-cent instruments (e.g. PEPE ~$1e-5) so coarsely that ATR-based TP/SL
+    distances — and the TP/SL distance ratio risk Rule 3 checks — get corrupted.
+    Adds precision below $1; a no-op at or above it."""
+    if price <= 0.0:
+        return round(price, 8)
+    decimals = 7 - math.floor(math.log10(price))
+    return round(price, max(decimals, 8))
+
 
 # ---------------------------------------------------------------------------
 # Pipeline stage: trend filter
@@ -288,9 +302,9 @@ def evaluate(
         layer_momentum=layer_momentum,
         layer_volume=layer_volume,
         layers_passed=4,
-        entry_price=round(entry, 8),
-        tp_price=round(tp_price, 8),
-        sl_price=round(sl_price, 8),
+        entry_price=_round_price(entry),
+        tp_price=_round_price(tp_price),
+        sl_price=_round_price(sl_price),
         size_usdt=size_usdt,
     )
 
