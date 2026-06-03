@@ -1996,6 +1996,211 @@
       },
       "id": 25,
       "panels": [],
+      "title": "\ud83e\uddea HP-Tuning Dimensions (grid lab)",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 70,
+        "w": 8,
+        "h": 8
+      },
+      "id": 26,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 'TP '||round((regexp_match(split_part(bot_id,'-',4),'t([0-9]+)'))[1]::numeric/10,1) AS metric, ROUND(AVG(pnl_net_usdt),5) AS value FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '^t[0-9]+s[0-9]+h[0-9]+$' GROUP BY 1 ORDER BY metric",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg net PnL/trade by TP multiple",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 70,
+        "w": 8,
+        "h": 8
+      },
+      "id": 27,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 'SL '||round((regexp_match(split_part(bot_id,'-',4),'s([0-9]+)'))[1]::numeric/10,1) AS metric, ROUND(AVG(pnl_net_usdt),5) AS value FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '^t[0-9]+s[0-9]+h[0-9]+$' GROUP BY 1 ORDER BY metric",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg net PnL/trade by SL multiple",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 70,
+        "w": 8,
+        "h": 8
+      },
+      "id": 28,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 'hold '||(regexp_match(split_part(bot_id,'-',4),'h([0-9]+)'))[1] AS metric, ROUND(AVG(pnl_net_usdt),5) AS value FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '^t[0-9]+s[0-9]+h[0-9]+$' GROUP BY 1 ORDER BY metric",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg net PnL/trade by max-hold",
+      "type": "bargauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 78,
+        "w": 24,
+        "h": 1
+      },
+      "id": 29,
+      "panels": [],
       "title": "\ud83d\udd51 Session Breakdown (UTC)",
       "type": "row"
     },
@@ -2136,11 +2341,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 70,
+        "y": 79,
         "w": 12,
         "h": 8
       },
-      "id": 26,
+      "id": 30,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2199,11 +2404,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 70,
+        "y": 79,
         "w": 12,
         "h": 8
       },
-      "id": 27,
+      "id": 31,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -2237,11 +2442,1007 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 78,
+        "y": 87,
         "w": 24,
         "h": 1
       },
-      "id": 28,
+      "id": 32,
+      "panels": [],
+      "title": "\ud83d\udcd0 Trade Quality \u2014 R-multiple, excursion, duration",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 55
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 88,
+        "w": 4,
+        "h": 4
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 100.0*AVG((close_reason='take_profit')::int) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "TP-hit Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 88,
+        "w": 4,
+        "h": 4
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 100.0*AVG((close_reason='stop_loss')::int) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "SL-hit Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 88,
+        "w": 4,
+        "h": 4
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 100.0*AVG((close_reason='timeout')::int) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Timeout Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.001
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 88,
+        "w": 4,
+        "h": 4
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 100.0*AVG((close_reason='liquidated')::int) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Liquidation Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 88,
+        "w": 4,
+        "h": 4
+      },
+      "id": 37,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Realized R (per trade)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 88,
+        "w": 4,
+        "h": 4
+      },
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(ABS(tp_price-entry_price)/NULLIF(ABS(entry_price-sl_price),0)),2) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Planned R/R (target)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 92,
+        "w": 4,
+        "h": 4
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(CASE WHEN t.direction='long' THEN (px.hi - t.entry_price)/t.entry_price*100 ELSE (t.entry_price - px.lo)/t.entry_price*100 END),3) AS v FROM trades t LEFT JOIN LATERAL (SELECT MAX(high) AS hi, MIN(low) AS lo FROM candles WHERE pair=t.pair AND timeframe=t.timeframe AND ts BETWEEN t.entry_ts AND t.exit_ts) px ON true WHERE t.exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg MFE % (best excursion)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 92,
+        "w": 4,
+        "h": 4
+      },
+      "id": 40,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(CASE WHEN t.direction='long' THEN (px.lo - t.entry_price)/t.entry_price*100 ELSE (t.entry_price - px.hi)/t.entry_price*100 END),3) AS v FROM trades t LEFT JOIN LATERAL (SELECT MAX(high) AS hi, MIN(low) AS lo FROM candles WHERE pair=t.pair AND timeframe=t.timeframe AND ts BETWEEN t.entry_ts AND t.exit_ts) px ON true WHERE t.exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg MAE % (worst excursion)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 92,
+        "w": 4,
+        "h": 4
+      },
+      "id": 41,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(hold_candles),2) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Hold (candles)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "m"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 92,
+        "w": 4,
+        "h": 4
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG((exit_ts-entry_ts)/60000.0),1) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Hold (minutes)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 92,
+        "w": 4,
+        "h": 4
+      },
+      "id": 43,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(fee_entry_usdt+COALESCE(fee_exit_usdt,0)),4) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Fees ($/trade)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1.5
+              },
+              {
+                "color": "green",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 92,
+        "w": 4,
+        "h": 4
+      },
+      "id": 44,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(ABS(entry_price-liquidation_price)/entry_price*100),2) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Liq Distance %",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 96,
+        "w": 12,
+        "h": 8
+      },
+      "id": 45,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT bucket AS metric, COUNT(*) AS value FROM (SELECT CASE WHEN r<=-1 THEN '1: \u2264 -1R (full stop)' WHEN r<0 THEN '2: -1..0R' WHEN r<1 THEN '3: 0..1R' WHEN r<2 THEN '4: 1..2R' ELSE '5: \u2265 2R' END AS bucket FROM (SELECT (CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0) AS r FROM trades WHERE exit_ts IS NOT NULL) x WHERE r IS NOT NULL) y GROUP BY bucket ORDER BY bucket",
+          "refId": "A"
+        }
+      ],
+      "title": "Realized R-multiple Distribution (closed trades)",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_mfe_pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_mae_pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_realized_r"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 96,
+        "w": 12,
+        "h": 8
+      },
+      "id": 46,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT t.close_reason, COUNT(*) AS trades, ROUND(AVG(CASE WHEN t.direction='long' THEN (px.hi - t.entry_price)/t.entry_price*100 ELSE (t.entry_price - px.lo)/t.entry_price*100 END),3) AS avg_mfe_pct, ROUND(AVG(CASE WHEN t.direction='long' THEN (px.lo - t.entry_price)/t.entry_price*100 ELSE (t.entry_price - px.hi)/t.entry_price*100 END),3) AS avg_mae_pct, ROUND(AVG((CASE WHEN t.direction='long' THEN t.exit_price-t.entry_price ELSE t.entry_price-t.exit_price END)/NULLIF(ABS(t.entry_price - t.sl_price),0)),2) AS avg_realized_r FROM trades t LEFT JOIN LATERAL (SELECT MAX(high) AS hi, MIN(low) AS lo FROM candles WHERE pair=t.pair AND timeframe=t.timeframe AND ts BETWEEN t.entry_ts AND t.exit_ts) px ON true WHERE t.exit_ts IS NOT NULL GROUP BY t.close_reason ORDER BY trades DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Excursion by Close Reason \u2014 did winners run / losers get stopped on noise?",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 104,
+        "w": 24,
+        "h": 1
+      },
+      "id": 47,
       "panels": [],
       "title": "\ud83d\udcdc Trade History",
       "type": "row"
@@ -2290,6 +3491,40 @@
                 "value": {
                   "mode": "gradient",
                   "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "points"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
                 }
               },
               {
@@ -2377,16 +3612,187 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "r_mult"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mfe_pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mae_pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "fees"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "bal_after"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
           }
         ]
       },
       "gridPos": {
         "x": 0,
-        "y": 79,
+        "y": 105,
         "w": 24,
-        "h": 11
+        "h": 12
       },
-      "id": 29,
+      "id": 48,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2408,22 +3814,22 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT to_timestamp(entry_ts/1000.0) AS entry_time, to_timestamp(exit_ts/1000.0) AS exit_time, pair, direction, leverage, ROUND(entry_price,6) AS entry, ROUND(exit_price,6) AS exit, ROUND(CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END,6) AS points, ROUND(CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price ELSE (entry_price-exit_price)/entry_price END*100,3) AS move_pct, size_usdt AS margin, notional_usdt AS notional, ROUND(pnl_net_usdt,4) AS net_pnl, ROUND(pnl_pct,2) AS pnl_pct, close_reason, hold_candles AS hold, pattern FROM trades WHERE exit_ts IS NOT NULL ORDER BY exit_ts DESC LIMIT 200",
+          "rawSql": "SELECT to_timestamp(t.entry_ts/1000.0) AS entry_time, to_timestamp(t.exit_ts/1000.0) AS exit_time, t.pair, t.direction AS dir, t.leverage AS lev, ROUND(t.entry_price,6) AS entry, ROUND(t.exit_price,6) AS exit, ROUND(t.tp_price,6) AS tp, ROUND(t.sl_price,6) AS sl, ROUND(CASE WHEN t.direction='long' THEN t.exit_price-t.entry_price ELSE t.entry_price-t.exit_price END,6) AS points, ROUND(CASE WHEN t.direction='long' THEN (t.exit_price-t.entry_price)/t.entry_price ELSE (t.entry_price-t.exit_price)/t.entry_price END*100,3) AS move_pct, ROUND((CASE WHEN t.direction='long' THEN t.exit_price-t.entry_price ELSE t.entry_price-t.exit_price END)/NULLIF(ABS(t.entry_price - t.sl_price),0),2) AS r_mult, ROUND(ABS(t.tp_price-t.entry_price)/NULLIF(ABS(t.entry_price - t.sl_price),0),2) AS plan_rr, ROUND(CASE WHEN t.direction='long' THEN (px.hi - t.entry_price)/t.entry_price*100 ELSE (t.entry_price - px.lo)/t.entry_price*100 END,3) AS mfe_pct, ROUND(CASE WHEN t.direction='long' THEN (px.lo - t.entry_price)/t.entry_price*100 ELSE (t.entry_price - px.hi)/t.entry_price*100 END,3) AS mae_pct, t.hold_candles AS candles, ROUND((t.exit_ts-t.entry_ts)/60000.0,0) AS dur_min, ROUND(t.fee_entry_usdt+COALESCE(t.fee_exit_usdt,0),4) AS fees, ROUND(t.pnl_net_usdt,4) AS net_pnl, ROUND(t.pnl_pct,2) AS pnl_pct, ROUND(ABS(t.entry_price-t.liquidation_price)/t.entry_price*100,2) AS liq_dist_pct, ROUND(t.bucket_balance_after,4) AS bal_after, t.close_reason AS reason, t.pattern FROM trades t LEFT JOIN LATERAL (SELECT MAX(high) AS hi, MIN(low) AS lo FROM candles WHERE pair=t.pair AND timeframe=t.timeframe AND ts BETWEEN t.entry_ts AND t.exit_ts) px ON true WHERE t.exit_ts IS NOT NULL ORDER BY t.exit_ts DESC LIMIT 200",
           "refId": "A"
         }
       ],
-      "title": "Trade History (closed) \u2014 points, move %, leverage",
+      "title": "Trade History (closed) \u2014 full detail: TP/SL, R-multiple, MFE/MAE, duration",
       "type": "table"
     },
     {
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 90,
+        "y": 117,
         "w": 24,
         "h": 1
       },
-      "id": 30,
+      "id": 49,
       "panels": [],
       "title": "\ud83d\udccc Open Positions (live)",
       "type": "row"
@@ -2530,11 +3936,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 91,
+        "y": 118,
         "w": 24,
         "h": 8
       },
-      "id": 31,
+      "id": 50,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2567,11 +3973,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 99,
+        "y": 126,
         "w": 24,
         "h": 1
       },
-      "id": 32,
+      "id": 51,
       "panels": [],
       "title": "\ud83e\ude7a Activity & Health",
       "type": "row"
@@ -2601,11 +4007,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 100,
+        "y": 127,
         "w": 12,
         "h": 8
       },
-      "id": 33,
+      "id": 52,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -2708,11 +4114,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 100,
+        "y": 127,
         "w": 12,
         "h": 8
       },
-      "id": 34,
+      "id": 53,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2808,11 +4214,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 108,
+        "y": 135,
         "w": 24,
         "h": 7
       },
-      "id": 35,
+      "id": 54,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2875,11 +4281,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 115,
+        "y": 142,
         "w": 8,
         "h": 4
       },
-      "id": 36,
+      "id": 55,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -2943,11 +4349,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 115,
+        "y": 142,
         "w": 8,
         "h": 4
       },
-      "id": 37,
+      "id": 56,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3011,11 +4417,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 115,
+        "y": 142,
         "w": 8,
         "h": 4
       },
-      "id": 38,
+      "id": 57,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
