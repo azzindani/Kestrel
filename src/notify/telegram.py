@@ -82,34 +82,46 @@ class TelegramNotifier:
     # -----------------------------------------------------------------------
 
     async def signal_fired(self, signal_data: dict[str, Any]) -> None:
+        side = "🟩 LONG" if str(signal_data["direction"]).lower() == "long" else "🟥 SHORT"
         msg = (
-            f"<b>SIGNAL FIRED</b>\n"
-            f"Pattern: {signal_data['pattern']} | Dir: {signal_data['direction'].upper()}\n"
-            f"Pair: {signal_data['pair']} | Conf: {signal_data['confidence']:.2f}\n"
-            f"Entry: {signal_data['entry_price']} | TP: {signal_data['tp_price']} | SL: {signal_data['sl_price']}\n"
-            f"Regime: {signal_data['regime']} | Session: {signal_data.get('session', '-')}"
+            f"🎯 <b>SIGNAL FIRED</b>\n"
+            f"{signal_data['pair']} · {side} · conf {signal_data['confidence']:.2f}\n"
+            f"{signal_data['pattern']} · {signal_data['regime']}\n"
+            f"Entry {signal_data['entry_price']} | TP {signal_data['tp_price']} | SL {signal_data['sl_price']}"
         )
         await self.send(msg, "INFO")
+
+    @staticmethod
+    def _format_close(t: dict[str, Any], win: bool) -> str:
+        """Build a colour-coded trade-close message (🟢 profit · 🔴 loss)."""
+        dot = "🟢" if win else "🔴"
+        arrow = "📈" if win else "📉"
+        head = "PROFIT" if win else "LOSS"
+        pnl = t["pnl_net_usdt"]
+        pnl_str = f"+${pnl:.4f}" if pnl >= 0 else f"-${abs(pnl):.4f}"
+
+        lev = t.get("leverage")
+        lev_str = f" {lev}x" if lev else ""
+        entry, pts = t.get("entry_price"), t.get("points")
+        px_line = f"Entry {entry} → Exit {t['exit_price']}" if entry is not None else f"Exit {t['exit_price']}"
+        pts_str = f"  ({pts:+.6g} pts)" if pts is not None else ""
+        dirn = str(t.get("direction", "—")).upper()
+        bal = t.get("bucket_balance_after", "?")
+        hold = t.get("hold_candles", "?")
+
+        return (
+            f"{dot} <b>{head}</b> {dot}\n"
+            f"{t['pair']} · {dirn}{lev_str}\n"
+            f"{px_line}{pts_str}\n"
+            f"{arrow} <b>{pnl_str}</b>  ({t['pnl_pct']:+.2f}%)\n"
+            f"{t['close_reason']} · {hold}c · bal ${bal}"
+        )
 
     async def trade_closed_profit(self, trade_data: dict[str, Any]) -> None:
-        msg = (
-            f"<b>TRADE CLOSED — PROFIT</b>\n"
-            f"Pair: {trade_data['pair']} | {trade_data['direction'].upper()}\n"
-            f"Exit: {trade_data['exit_price']} | PnL: +${trade_data['pnl_net_usdt']:.4f} "
-            f"({trade_data['pnl_pct']:+.2f}%)\n"
-            f"Reason: {trade_data['close_reason']}"
-        )
-        await self.send(msg, "INFO")
+        await self.send(self._format_close(trade_data, win=True), "INFO")
 
     async def trade_closed_loss(self, trade_data: dict[str, Any]) -> None:
-        msg = (
-            f"<b>TRADE CLOSED — LOSS</b>\n"
-            f"Pair: {trade_data['pair']} | {trade_data['direction'].upper()}\n"
-            f"Exit: {trade_data['exit_price']} | PnL: ${trade_data['pnl_net_usdt']:.4f} "
-            f"({trade_data['pnl_pct']:+.2f}%)\n"
-            f"Reason: {trade_data['close_reason']} | Bucket balance: ${trade_data.get('bucket_balance_after', '?')}"
-        )
-        await self.send(msg, "WARN")
+        await self.send(self._format_close(trade_data, win=False), "WARN")
 
     async def liquidation(self, trade_data: dict[str, Any]) -> None:
         msg = (
