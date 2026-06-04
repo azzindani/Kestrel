@@ -1,482 +1,5150 @@
 [
   {
-    "bot_id": "dev-BTCUSDT-5m-ride-01",
+    "bot_id": "dev-BTCUSDT-5m-ride_agg-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "ride_agg",
     "patterns": [
       "wave_ride"
     ],
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-5m-scalp-01",
+    "bot_id": "dev-BTCUSDT-5m-ride_bal-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "ride_bal",
     "patterns": [
-      "vol_burst"
+      "wave_ride"
     ],
     "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-5m-flip-01",
+    "bot_id": "dev-BTCUSDT-5m-ride_con-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-scalp_agg-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-scalp_bal-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-scalp_con-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-flip_agg-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
     "patterns": [
       "wave_flip"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-5m-ride-01",
+    "bot_id": "dev-BTCUSDT-5m-flip_bal-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-5m-flip_con-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-ride_agg-01",
     "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "ride_agg",
     "patterns": [
       "wave_ride"
     ],
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-5m-scalp-01",
+    "bot_id": "dev-ETHUSDT-5m-ride_bal-01",
     "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "ride_bal",
     "patterns": [
-      "vol_burst"
+      "wave_ride"
     ],
     "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-5m-flip-01",
+    "bot_id": "dev-ETHUSDT-5m-ride_con-01",
     "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-scalp_agg-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-scalp_bal-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-scalp_con-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-flip_agg-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
     "patterns": [
       "wave_flip"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-ride-01",
+    "bot_id": "dev-ETHUSDT-5m-flip_bal-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-flip_con-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-5m-ride_agg-01",
     "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "ride_agg",
     "patterns": [
       "wave_ride"
     ],
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-scalp-01",
+    "bot_id": "dev-SOLUSDT-5m-ride_bal-01",
     "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "ride_bal",
     "patterns": [
-      "vol_burst"
+      "wave_ride"
     ],
     "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-flip-01",
+    "bot_id": "dev-SOLUSDT-5m-ride_con-01",
     "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-ride-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "ride_con",
     "patterns": [
       "wave_ride"
     ],
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-5m-scalp-01",
-    "pair": "DOGE/USDT",
+    "bot_id": "dev-SOLUSDT-5m-scalp_agg-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "scalp_agg",
     "patterns": [
       "vol_burst"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-5m-flip-01",
-    "pair": "DOGE/USDT",
+    "bot_id": "dev-SOLUSDT-5m-scalp_bal-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-ride-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-scalp-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "scalp_bal",
     "patterns": [
       "vol_burst"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-5m-flip-01",
-    "pair": "PEPE/USDT",
+    "bot_id": "dev-SOLUSDT-5m-scalp_con-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-ride-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-scalp-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "scalp_con",
     "patterns": [
       "vol_burst"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
     }
   },
   {
-    "bot_id": "dev-HYPEUSDT-5m-flip-01",
-    "pair": "HYPE/USDT",
+    "bot_id": "dev-SOLUSDT-5m-flip_agg-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
+    "strategy": "flip_agg",
     "patterns": [
       "wave_flip"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-XRPUSDT-5m-ride-01",
-    "pair": "XRP/USDT",
+    "bot_id": "dev-SOLUSDT-5m-flip_bal-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-XRPUSDT-5m-scalp-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
-    }
-  },
-  {
-    "bot_id": "dev-XRPUSDT-5m-flip-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
+    "strategy": "flip_bal",
     "patterns": [
       "wave_flip"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
     }
   },
   {
-    "bot_id": "dev-BNBUSDT-5m-ride-01",
+    "bot_id": "dev-SOLUSDT-5m-flip_con-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-ride_agg-01",
     "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "ride_agg",
     "patterns": [
       "wave_ride"
     ],
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-BNBUSDT-5m-scalp-01",
+    "bot_id": "dev-BNBUSDT-5m-ride_bal-01",
     "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "ride_bal",
     "patterns": [
-      "vol_burst"
+      "wave_ride"
     ],
     "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
     }
   },
   {
-    "bot_id": "dev-BNBUSDT-5m-flip-01",
+    "bot_id": "dev-BNBUSDT-5m-ride_con-01",
     "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-ADAUSDT-5m-ride-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "ride_con",
     "patterns": [
       "wave_ride"
     ],
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-5m-scalp-01",
-    "pair": "ADA/USDT",
+    "bot_id": "dev-BNBUSDT-5m-scalp_agg-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "scalp_agg",
     "patterns": [
       "vol_burst"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-5m-flip-01",
-    "pair": "ADA/USDT",
+    "bot_id": "dev-BNBUSDT-5m-scalp_bal-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-scalp_con-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-flip_agg-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
     "patterns": [
       "wave_flip"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-AVAXUSDT-5m-ride-01",
-    "pair": "AVAX/USDT",
+    "bot_id": "dev-BNBUSDT-5m-flip_bal-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-flip_con-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-ride_agg-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
     "patterns": [
       "wave_ride"
     ],
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-AVAXUSDT-5m-scalp-01",
-    "pair": "AVAX/USDT",
+    "bot_id": "dev-XRPUSDT-5m-ride_bal-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "scalp",
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-ride_con-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-scalp_agg-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
     "patterns": [
       "vol_burst"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
     }
   },
   {
-    "bot_id": "dev-AVAXUSDT-5m-flip-01",
-    "pair": "AVAX/USDT",
+    "bot_id": "dev-XRPUSDT-5m-scalp_bal-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
-    "strategy": "flip",
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-scalp_con-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-flip_agg-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
     "patterns": [
       "wave_flip"
     ],
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-flip_bal-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-5m-flip_con-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-ride_agg-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-ride_bal-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-ride_con-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-scalp_agg-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-scalp_bal-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-scalp_con-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-flip_agg-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-flip_bal-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-flip_con-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-ride_agg-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-ride_bal-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-ride_con-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-scalp_agg-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-scalp_bal-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-scalp_con-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-flip_agg-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-flip_bal-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-5m-flip_con-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-ride_agg-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-ride_bal-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-ride_con-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-scalp_agg-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-scalp_bal-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-scalp_con-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-flip_agg-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-flip_bal-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-flip_con-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-ride_agg-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-ride_bal-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-ride_con-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-scalp_agg-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-scalp_bal-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-scalp_con-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-flip_agg-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-flip_bal-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-LINKUSDT-5m-flip_con-01",
+    "pair": "LINK/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-ride_agg-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-ride_bal-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-ride_con-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-scalp_agg-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-scalp_bal-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-scalp_con-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-flip_agg-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-flip_bal-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-DOTUSDT-5m-flip_con-01",
+    "pair": "DOT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-ride_agg-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-ride_bal-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-ride_con-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-scalp_agg-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-scalp_bal-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-scalp_con-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-flip_agg-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-flip_bal-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-TRXUSDT-5m-flip_con-01",
+    "pair": "TRX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-ride_agg-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-ride_bal-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-ride_con-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-scalp_agg-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-scalp_bal-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-scalp_con-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-flip_agg-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-flip_bal-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-MATICUSDT-5m-flip_con-01",
+    "pair": "MATIC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-ride_agg-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-ride_bal-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-ride_con-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-scalp_agg-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-scalp_bal-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-scalp_con-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-flip_agg-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-flip_bal-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-LTCUSDT-5m-flip_con-01",
+    "pair": "LTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-ride_agg-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-ride_bal-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-ride_con-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-scalp_agg-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-scalp_bal-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-scalp_con-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-flip_agg-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-flip_bal-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-BCHUSDT-5m-flip_con-01",
+    "pair": "BCH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-ride_agg-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-ride_bal-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-ride_con-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-scalp_agg-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-scalp_bal-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-scalp_con-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-flip_agg-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-flip_bal-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ATOMUSDT-5m-flip_con-01",
+    "pair": "ATOM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-ride_agg-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-ride_bal-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-ride_con-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-scalp_agg-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-scalp_bal-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-scalp_con-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-flip_agg-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-flip_bal-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-UNIUSDT-5m-flip_con-01",
+    "pair": "UNI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-ride_agg-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-ride_bal-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-ride_con-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-scalp_agg-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-scalp_bal-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-scalp_con-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-flip_agg-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-flip_bal-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-APTUSDT-5m-flip_con-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-ride_agg-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-ride_bal-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-ride_con-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-scalp_agg-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-scalp_bal-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-scalp_con-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-flip_agg-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-flip_bal-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-ARBUSDT-5m-flip_con-01",
+    "pair": "ARB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-ride_agg-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-ride_bal-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-ride_con-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-scalp_agg-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-scalp_bal-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-scalp_con-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-flip_agg-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-flip_bal-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-OPUSDT-5m-flip_con-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-ride_agg-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-ride_bal-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-ride_con-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-scalp_agg-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-scalp_bal-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-scalp_con-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-flip_agg-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-flip_bal-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-NEARUSDT-5m-flip_con-01",
+    "pair": "NEAR/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-ride_agg-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-ride_bal-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-ride_con-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-scalp_agg-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-scalp_bal-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-scalp_con-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-flip_agg-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-flip_bal-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-INJUSDT-5m-flip_con-01",
+    "pair": "INJ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-ride_agg-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-ride_bal-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-ride_con-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-scalp_agg-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-scalp_bal-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-scalp_con-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-flip_agg-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-flip_bal-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-SUIUSDT-5m-flip_con-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-ride_agg-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-ride_bal-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-ride_con-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-scalp_agg-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-scalp_bal-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-scalp_con-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-flip_agg-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-flip_bal-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-TONUSDT-5m-flip_con-01",
+    "pair": "TON/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-ride_agg-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-ride_bal-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-ride_con-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-scalp_agg-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-scalp_bal-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-scalp_con-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-flip_agg-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-flip_bal-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-FILUSDT-5m-flip_con-01",
+    "pair": "FIL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-ride_agg-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-ride_bal-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-ride_con-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-scalp_agg-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-scalp_bal-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-scalp_con-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-flip_agg-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-flip_bal-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-PEPEUSDT-5m-flip_con-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-ride_agg-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_agg",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-ride_bal-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_bal",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-ride_con-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_con",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-scalp_agg-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_agg",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-scalp_bal-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_bal",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-scalp_con-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_con",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-flip_agg-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_agg",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.7,
+      "drawdown_derisk_threshold": 0.3,
+      "drawdown_derisk_factor": 0.7,
+      "consec_loss_cooloff": 5,
+      "consec_loss_factor": 0.7
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-flip_bal-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_bal",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 1.0,
+      "size_fraction_half": 0.5,
+      "drawdown_derisk_threshold": 0.2,
+      "drawdown_derisk_factor": 0.5,
+      "consec_loss_cooloff": 3,
+      "consec_loss_factor": 0.5
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-flip_con-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_con",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "size_fraction_full": 0.5,
+      "size_fraction_half": 0.3,
+      "drawdown_derisk_threshold": 0.1,
+      "drawdown_derisk_factor": 0.3,
+      "consec_loss_cooloff": 2,
+      "consec_loss_factor": 0.3
     }
   }
 ]
