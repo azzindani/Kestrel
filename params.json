@@ -173,5 +173,54 @@
     "range": [2, 5],
     "description": "Consecutive same-direction accelerating candles required for momentum_continuation setup",
     "impact": "higher = stronger momentum confirmation required before entry"
+  },
+  "size_fraction_full": {
+    "value": 1.0,
+    "type": "float",
+    "range": [0.1, 1.0],
+    "description": "Fraction of current bucket equity deployed on a full-conviction (confidence>=0.75) trade — equity-scaled position sizing",
+    "impact": "higher = larger positions and faster compounding, but bigger swings"
+  },
+  "size_fraction_half": {
+    "value": 0.5,
+    "type": "float",
+    "range": [0.05, 1.0],
+    "description": "Fraction of current bucket equity deployed on a medium-conviction (0.55-0.74) trade",
+    "impact": "higher = medium-conviction trades risk more of the bucket"
+  },
+  "size_min_usdt": {
+    "value": 1.0,
+    "type": "float",
+    "range": [1.0, 50.0],
+    "description": "Minimum viable position size in USDT — below this the bucket is treated as exhausted and trading stops",
+    "impact": "higher = stops trading a bled-down bucket sooner (avoids fee-dominated dust trades)"
+  },
+  "drawdown_derisk_threshold": {
+    "value": 0.20,
+    "type": "float",
+    "range": [0.05, 0.5],
+    "description": "Equity drawdown below the bucket peak at which position size is reduced (drawdown de-risking)",
+    "impact": "lower = de-risk earlier into a losing streak, preserving capital"
+  },
+  "drawdown_derisk_factor": {
+    "value": 0.5,
+    "type": "float",
+    "range": [0.1, 1.0],
+    "description": "Multiplier applied to position size while in drawdown beyond the threshold",
+    "impact": "lower = cut size harder during drawdowns (1.0 disables de-risking)"
+  },
+  "consec_loss_cooloff": {
+    "value": 3,
+    "type": "int",
+    "range": [2, 10],
+    "description": "Number of consecutive losing trades after which position size is reduced (loss cool-off)",
+    "impact": "lower = react to losing streaks sooner"
+  },
+  "consec_loss_factor": {
+    "value": 0.5,
+    "type": "float",
+    "range": [0.1, 1.0],
+    "description": "Multiplier applied to position size after the consecutive-loss threshold is hit",
+    "impact": "lower = cut size harder after a losing streak (1.0 disables cool-off)"
   }
 }

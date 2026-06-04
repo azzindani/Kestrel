@@ -14,7 +14,7 @@ import json
 import time
 from typing import Any, Optional
 
-from src.config import Candle, Signal, SignalOutcome
+from src.config import Candle, Signal, SignalOutcome, SizingState
 from src.db.connection import acquire
 
 
@@ -558,6 +558,53 @@ async def count_active_positions(bot_id: str, env: str) -> int:
             env,
         )
         return int(row["cnt"])
+
+
+async def get_sizing_state(bot_id: str, env: str, starting_bucket: float) -> SizingState:
+    """Assemble equity-scaled sizing state for a bot from its closed trades (§11).
+
+    equity        = starting_bucket + cumulative realised PnL
+    peak_equity   = high-water mark of that equity curve (>= starting_bucket)
+    consec_losses = trailing run of losing trades (most recent first)
+    """
+    async with acquire() as conn:
+        agg = await conn.fetchrow(
+            """
+            WITH closed AS (
+                SELECT pnl_net_usdt,
+                       SUM(pnl_net_usdt) OVER (ORDER BY exit_ts, id) AS running
+                FROM trades
+                WHERE bot_id = $1 AND env = $2
+                  AND exit_ts IS NOT NULL AND pnl_net_usdt IS NOT NULL
+            )
+            SELECT COALESCE(SUM(pnl_net_usdt), 0.0) AS realized,
+                   COALESCE(MAX(running), 0.0) AS peak_running
+            FROM closed
+            """,
+            bot_id,
+            env,
+        )
+        recent = await conn.fetch(
+            """
+            SELECT pnl_net_usdt FROM trades
+            WHERE bot_id = $1 AND env = $2
+              AND exit_ts IS NOT NULL AND pnl_net_usdt IS NOT NULL
+            ORDER BY exit_ts DESC, id DESC
+            LIMIT 25
+            """,
+            bot_id,
+            env,
+        )
+    realized = float(agg["realized"])
+    equity = starting_bucket + realized
+    peak_equity = starting_bucket + max(float(agg["peak_running"]), 0.0)
+    consec = 0
+    for r in recent:
+        if float(r["pnl_net_usdt"]) <= 0.0:
+            consec += 1
+        else:
+            break
+    return SizingState(equity_usdt=equity, peak_equity_usdt=peak_equity, consec_losses=consec)
 
 
 async def get_fleet_daily_summary(env: str, since_ts: int) -> dict[str, Any]:

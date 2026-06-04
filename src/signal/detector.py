@@ -28,6 +28,7 @@ from src.config import (
     PatternResult,
     Rejection,
     Signal,
+    SizingState,
     TradingSession,
     TrendResult,
     VolumeResult,
@@ -39,6 +40,7 @@ from src.signal.indicators import compute_ema, compute_rsi
 from src.signal.memory import adjust_confidence, should_suppress
 from src.signal.patterns import COUNTER_TREND_PATTERNS, registry
 from src.signal.regime import classify_regime, regime_permits_pattern
+from src.signal.sizing import compute_position_size
 
 
 def _round_price(price: float) -> float:
@@ -184,6 +186,7 @@ def evaluate(
     env: str,
     pattern_memories: Optional[dict[str, dict | None]] = None,
     enabled_patterns: Optional[Sequence[str]] = None,
+    sizing_state: Optional[SizingState] = None,
 ) -> tuple[Signal, None] | tuple[None, Rejection]:
     """
     Run the full signal pipeline on a completed candle list.
@@ -294,9 +297,13 @@ def evaluate(
         tp_price = entry - atr * params.tp_atr_multiplier
         sl_price = entry + atr * params.sl_atr_multiplier
 
-    # Size from confidence band (CLAUDE.md §22):
-    #   ≥ 0.75 → full bucket ($10) · 0.55–0.74 → half bucket ($5)
-    size_usdt = 10.0 if adjusted_confidence >= 0.75 else 5.0
+    # Position size — equity-scaled so positions compound with realised PnL
+    # (signal/sizing.py). Confidence still sets the conviction band; sizing_state
+    # supplies live bucket equity. None ⇒ legacy fixed $10/$5 bucket.
+    # A size of 0 means the bucket is exhausted (bled below the viable floor).
+    size_usdt = compute_position_size(adjusted_confidence, sizing_state, params)
+    if size_usdt <= 0.0:
+        return None, Rejection(stage="pattern", reason="bucket_exhausted")
 
     signal = Signal(
         bot_id=bot_id,

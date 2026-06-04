@@ -1074,6 +1074,975 @@
       },
       "id": 18,
       "panels": [],
+      "title": "\ud83e\ude99 Position Sizing & Compounding (equity-scaled)",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 14,
+        "w": 4,
+        "h": 4
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(size_usdt),2) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Position Size",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 14,
+        "w": 4,
+        "h": 4
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT size_usdt AS v FROM trades WHERE exit_ts IS NOT NULL ORDER BY entry_ts DESC LIMIT 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Latest Position Size",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 14,
+        "w": 4,
+        "h": 4
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(MAX(size_usdt),0) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Largest Position Size",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 14,
+        "w": 4,
+        "h": 4
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(MIN(size_usdt),0) AS v FROM trades WHERE exit_ts IS NOT NULL AND size_usdt>0",
+          "refId": "A"
+        }
+      ],
+      "title": "Smallest Position Size",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 14,
+        "w": 4,
+        "h": 4
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(notional_usdt),2) AS v FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Notional (size\u00d7lev)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 14,
+        "w": 4,
+        "h": 4
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(eq),2) AS v FROM (SELECT DISTINCT ON (bot_id) bucket_balance_after AS eq FROM trades WHERE exit_ts IS NOT NULL ORDER BY bot_id, exit_ts DESC) x",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Bucket Equity (now)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 12,
+        "h": 8
+      },
+      "id": 25,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT to_timestamp(entry_ts/1000.0) AS \"time\", split_part(bot_id,'-',4) AS metric, AVG(size_usdt) AS size_usdt FROM trades WHERE exit_ts IS NOT NULL AND to_timestamp(entry_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1,2 ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Position Size Over Time (per strategy)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 18,
+        "w": 12,
+        "h": 8
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT to_timestamp(exit_ts/1000.0) AS \"time\", split_part(bot_id,'-',4) AS metric, AVG(bucket_balance_after) AS equity FROM trades WHERE exit_ts IS NOT NULL AND to_timestamp(exit_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1,2 ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Bucket Equity Over Time (per strategy, shows compounding)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "custom": {
+            "fillOpacity": 70,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 26,
+        "w": 8,
+        "h": 7
+      },
+      "id": 27,
+      "options": {
+        "bucketOffset": 0,
+        "combine": false,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT size_usdt FROM trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Position Size ($) \u2014 distribution",
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 26,
+        "w": 8,
+        "h": 7
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT to_timestamp(entry_ts/1000.0) AS \"time\", AVG(size_usdt) AS margin, AVG(notional_usdt) AS notional FROM trades WHERE exit_ts IS NOT NULL AND to_timestamp(entry_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1 ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Position Size vs Notional (avg over time)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_size"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "max_size"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_notional"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 26,
+        "w": 8,
+        "h": 7
+      },
+      "id": 29,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT split_part(bot_id,'-',4) AS strategy, COUNT(*) AS trades, ROUND(AVG(size_usdt),2) AS avg_size, ROUND(MAX(size_usdt),2) AS max_size, ROUND(AVG(notional_usdt),2) AS avg_notional, ROUND(AVG(leverage),1) AS leverage FROM trades WHERE exit_ts IS NOT NULL GROUP BY split_part(bot_id,'-',4) ORDER BY trades DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Per-Strategy Sizing",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 33,
+        "w": 8,
+        "h": 4
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM events WHERE category='signal' AND message LIKE 'signal_rejected:bucket_exhausted%'",
+          "refId": "A"
+        }
+      ],
+      "title": "Bucket-Exhausted Stops (size\u21920)",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 37,
+        "w": 24,
+        "h": 1
+      },
+      "id": 31,
+      "panels": [],
       "title": "\ud83d\udcc8 Equity, Drawdown & Returns",
       "type": "row"
     },
@@ -1134,11 +2103,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 14,
+        "y": 38,
         "w": 12,
         "h": 8
       },
-      "id": 19,
+      "id": 32,
       "options": {
         "legend": {
           "calcs": [
@@ -1226,11 +2195,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 14,
+        "y": 38,
         "w": 12,
         "h": 8
       },
-      "id": 20,
+      "id": 33,
       "options": {
         "legend": {
           "calcs": [
@@ -1319,11 +2288,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 22,
+        "y": 46,
         "w": 12,
         "h": 7
       },
-      "id": 21,
+      "id": 34,
       "options": {
         "legend": {
           "calcs": [
@@ -1412,11 +2381,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 22,
+        "y": 46,
         "w": 12,
         "h": 7
       },
-      "id": 22,
+      "id": 35,
       "options": {
         "legend": {
           "calcs": [
@@ -1481,11 +2450,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 29,
+        "y": 53,
         "w": 6,
         "h": 4
       },
-      "id": 23,
+      "id": 36,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1550,11 +2519,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 29,
+        "y": 53,
         "w": 6,
         "h": 4
       },
-      "id": 24,
+      "id": 37,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1611,11 +2580,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 29,
+        "y": 53,
         "w": 6,
         "h": 4
       },
-      "id": 25,
+      "id": 38,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1673,11 +2642,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 29,
+        "y": 53,
         "w": 3,
         "h": 4
       },
-      "id": 26,
+      "id": 39,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1735,11 +2704,11 @@
       },
       "gridPos": {
         "x": 21,
-        "y": 29,
+        "y": 53,
         "w": 3,
         "h": 4
       },
-      "id": 27,
+      "id": 40,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1827,11 +2796,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 33,
+        "y": 57,
         "w": 24,
         "h": 6
       },
-      "id": 28,
+      "id": 41,
       "options": {
         "legend": {
           "calcs": [
@@ -1919,11 +2888,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 39,
+        "y": 63,
         "w": 12,
         "h": 7
       },
-      "id": 29,
+      "id": 42,
       "options": {
         "legend": {
           "calcs": [
@@ -2015,11 +2984,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 39,
+        "y": 63,
         "w": 12,
         "h": 7
       },
-      "id": 30,
+      "id": 43,
       "options": {
         "legend": {
           "calcs": [
@@ -2107,11 +3076,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 46,
+        "y": 70,
         "w": 24,
         "h": 7
       },
-      "id": 31,
+      "id": 44,
       "options": {
         "legend": {
           "calcs": [
@@ -2146,11 +3115,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 53,
+        "y": 77,
         "w": 24,
         "h": 1
       },
-      "id": 32,
+      "id": 45,
       "panels": [],
       "title": "\ud83d\udcb5 PnL Distribution & Outcomes",
       "type": "row"
@@ -2196,11 +3165,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 54,
+        "y": 78,
         "w": 8,
         "h": 8
       },
-      "id": 33,
+      "id": 46,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -2272,11 +3241,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 54,
+        "y": 78,
         "w": 8,
         "h": 8
       },
-      "id": 34,
+      "id": 47,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -2347,11 +3316,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 54,
+        "y": 78,
         "w": 8,
         "h": 8
       },
-      "id": 35,
+      "id": 48,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -2407,11 +3376,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 62,
+        "y": 86,
         "w": 6,
         "h": 8
       },
-      "id": 36,
+      "id": 49,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -2475,11 +3444,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 62,
+        "y": 86,
         "w": 6,
         "h": 8
       },
-      "id": 37,
+      "id": 50,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -2541,11 +3510,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 62,
+        "y": 86,
         "w": 12,
         "h": 8
       },
-      "id": 38,
+      "id": 51,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2604,11 +3573,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 70,
+        "y": 94,
         "w": 12,
         "h": 8
       },
-      "id": 39,
+      "id": 52,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -2740,11 +3709,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 70,
+        "y": 94,
         "w": 12,
         "h": 8
       },
-      "id": 40,
+      "id": 53,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2875,11 +3844,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 78,
+        "y": 102,
         "w": 12,
         "h": 8
       },
-      "id": 41,
+      "id": 54,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2912,11 +3881,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 86,
+        "y": 110,
         "w": 24,
         "h": 1
       },
-      "id": 42,
+      "id": 55,
       "panels": [],
       "title": "\ud83c\udfaf Win-Rate Analytics",
       "type": "row"
@@ -2983,11 +3952,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 87,
+        "y": 111,
         "w": 24,
         "h": 7
       },
-      "id": 43,
+      "id": 56,
       "options": {
         "legend": {
           "calcs": [
@@ -3052,11 +4021,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 94,
+        "y": 118,
         "w": 8,
         "h": 7
       },
-      "id": 44,
+      "id": 57,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -3120,11 +4089,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 94,
+        "y": 118,
         "w": 8,
         "h": 7
       },
-      "id": 45,
+      "id": 58,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -3188,11 +4157,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 94,
+        "y": 118,
         "w": 8,
         "h": 7
       },
-      "id": 46,
+      "id": 59,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -3328,11 +4297,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 101,
+        "y": 125,
         "w": 12,
         "h": 8
       },
-      "id": 47,
+      "id": 60,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3467,11 +4436,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 101,
+        "y": 125,
         "w": 12,
         "h": 8
       },
-      "id": 48,
+      "id": 61,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3504,11 +4473,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 109,
+        "y": 133,
         "w": 24,
         "h": 1
       },
-      "id": 49,
+      "id": 62,
       "panels": [],
       "title": "\u2696\ufe0f Risk, Streaks & Expectancy",
       "type": "row"
@@ -3538,11 +4507,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 110,
+        "y": 134,
         "w": 4,
         "h": 4
       },
-      "id": 50,
+      "id": 63,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3598,11 +4567,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 110,
+        "y": 134,
         "w": 4,
         "h": 4
       },
-      "id": 51,
+      "id": 64,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3667,11 +4636,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 110,
+        "y": 134,
         "w": 4,
         "h": 4
       },
-      "id": 52,
+      "id": 65,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3736,11 +4705,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 110,
+        "y": 134,
         "w": 4,
         "h": 4
       },
-      "id": 53,
+      "id": 66,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3801,11 +4770,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 110,
+        "y": 134,
         "w": 4,
         "h": 4
       },
-      "id": 54,
+      "id": 67,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3871,11 +4840,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 110,
+        "y": 134,
         "w": 4,
         "h": 4
       },
-      "id": 55,
+      "id": 68,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3931,11 +4900,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 114,
+        "y": 138,
         "w": 12,
         "h": 8
       },
-      "id": 56,
+      "id": 69,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -4138,11 +5107,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 114,
+        "y": 138,
         "w": 12,
         "h": 8
       },
-      "id": 57,
+      "id": 70,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -4175,11 +5144,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 122,
+        "y": 146,
         "w": 24,
         "h": 1
       },
-      "id": 58,
+      "id": 71,
       "panels": [],
       "title": "\ud83d\udcd0 Trade Quality \u2014 R-multiple, excursion, duration",
       "type": "row"
@@ -4219,11 +5188,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 123,
+        "y": 147,
         "w": 4,
         "h": 4
       },
-      "id": 59,
+      "id": 72,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4281,11 +5250,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 123,
+        "y": 147,
         "w": 4,
         "h": 4
       },
-      "id": 60,
+      "id": 73,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4343,11 +5312,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 123,
+        "y": 147,
         "w": 4,
         "h": 4
       },
-      "id": 61,
+      "id": 74,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4409,11 +5378,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 123,
+        "y": 147,
         "w": 4,
         "h": 4
       },
-      "id": 62,
+      "id": 75,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4474,11 +5443,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 123,
+        "y": 147,
         "w": 4,
         "h": 4
       },
-      "id": 63,
+      "id": 76,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4535,11 +5504,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 123,
+        "y": 147,
         "w": 4,
         "h": 4
       },
-      "id": 64,
+      "id": 77,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4596,11 +5565,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 127,
+        "y": 151,
         "w": 4,
         "h": 4
       },
-      "id": 65,
+      "id": 78,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4657,11 +5626,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 127,
+        "y": 151,
         "w": 4,
         "h": 4
       },
-      "id": 66,
+      "id": 79,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4717,11 +5686,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 127,
+        "y": 151,
         "w": 4,
         "h": 4
       },
-      "id": 67,
+      "id": 80,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4778,11 +5747,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 127,
+        "y": 151,
         "w": 4,
         "h": 4
       },
-      "id": 68,
+      "id": 81,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4839,11 +5808,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 127,
+        "y": 151,
         "w": 4,
         "h": 4
       },
-      "id": 69,
+      "id": 82,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4908,11 +5877,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 127,
+        "y": 151,
         "w": 4,
         "h": 4
       },
-      "id": 70,
+      "id": 83,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4983,11 +5952,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 131,
+        "y": 155,
         "w": 8,
         "h": 7
       },
-      "id": 71,
+      "id": 84,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5059,11 +6028,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 131,
+        "y": 155,
         "w": 8,
         "h": 7
       },
-      "id": 72,
+      "id": 85,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5135,11 +6104,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 131,
+        "y": 155,
         "w": 8,
         "h": 7
       },
-      "id": 73,
+      "id": 86,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5341,11 +6310,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 138,
+        "y": 162,
         "w": 24,
         "h": 8
       },
-      "id": 74,
+      "id": 87,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -5378,11 +6347,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 146,
+        "y": 170,
         "w": 24,
         "h": 1
       },
-      "id": 75,
+      "id": 88,
       "panels": [],
       "title": "\ud83d\udd2c Signal Funnel & Rejections",
       "type": "row"
@@ -5412,11 +6381,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 147,
+        "y": 171,
         "w": 4,
         "h": 4
       },
-      "id": 76,
+      "id": 89,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5472,11 +6441,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 147,
+        "y": 171,
         "w": 4,
         "h": 4
       },
-      "id": 77,
+      "id": 90,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5532,11 +6501,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 147,
+        "y": 171,
         "w": 4,
         "h": 4
       },
-      "id": 78,
+      "id": 91,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5592,11 +6561,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 147,
+        "y": 171,
         "w": 4,
         "h": 4
       },
-      "id": 79,
+      "id": 92,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5654,11 +6623,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 147,
+        "y": 171,
         "w": 4,
         "h": 4
       },
-      "id": 80,
+      "id": 93,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5715,11 +6684,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 147,
+        "y": 171,
         "w": 4,
         "h": 4
       },
-      "id": 81,
+      "id": 94,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5775,11 +6744,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 151,
+        "y": 175,
         "w": 12,
         "h": 8
       },
-      "id": 82,
+      "id": 95,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -5834,11 +6803,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 151,
+        "y": 175,
         "w": 12,
         "h": 8
       },
-      "id": 83,
+      "id": 96,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -5925,11 +6894,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 159,
+        "y": 183,
         "w": 24,
         "h": 7
       },
-      "id": 84,
+      "id": 97,
       "options": {
         "legend": {
           "calcs": [
@@ -6023,11 +6992,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 166,
+        "y": 190,
         "w": 24,
         "h": 7
       },
-      "id": 85,
+      "id": 98,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6060,11 +7029,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 173,
+        "y": 197,
         "w": 24,
         "h": 1
       },
-      "id": 86,
+      "id": 99,
       "panels": [],
       "title": "\ud83e\udde9 Pattern Analytics",
       "type": "row"
@@ -6210,11 +7179,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 174,
+        "y": 198,
         "w": 8,
         "h": 8
       },
-      "id": 87,
+      "id": 100,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6268,11 +7237,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 174,
+        "y": 198,
         "w": 8,
         "h": 8
       },
-      "id": 88,
+      "id": 101,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -6342,11 +7311,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 174,
+        "y": 198,
         "w": 8,
         "h": 8
       },
-      "id": 89,
+      "id": 102,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -6482,11 +7451,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 182,
+        "y": 206,
         "w": 24,
         "h": 8
       },
-      "id": 90,
+      "id": 103,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6519,11 +7488,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 190,
+        "y": 214,
         "w": 24,
         "h": 1
       },
-      "id": 91,
+      "id": 104,
       "panels": [],
       "title": "\ud83c\udf0a Regime Analytics",
       "type": "row"
@@ -6553,11 +7522,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 191,
+        "y": 215,
         "w": 8,
         "h": 8
       },
-      "id": 92,
+      "id": 105,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -6626,11 +7595,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 191,
+        "y": 215,
         "w": 8,
         "h": 8
       },
-      "id": 93,
+      "id": 106,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -6801,11 +7770,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 191,
+        "y": 215,
         "w": 8,
         "h": 8
       },
-      "id": 94,
+      "id": 107,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6838,11 +7807,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 199,
+        "y": 223,
         "w": 24,
         "h": 1
       },
-      "id": 95,
+      "id": 108,
       "panels": [],
       "title": "\ud83d\udcca Market & Indicators (live, per pair)",
       "type": "row"
@@ -6956,11 +7925,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 200,
+        "y": 224,
         "w": 24,
         "h": 9
       },
-      "id": 96,
+      "id": 109,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7048,11 +8017,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 209,
+        "y": 233,
         "w": 12,
         "h": 8
       },
-      "id": 97,
+      "id": 110,
       "options": {
         "legend": {
           "calcs": [
@@ -7140,11 +8109,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 209,
+        "y": 233,
         "w": 12,
         "h": 8
       },
-      "id": 98,
+      "id": 111,
       "options": {
         "legend": {
           "calcs": [
@@ -7236,11 +8205,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 217,
+        "y": 241,
         "w": 12,
         "h": 8
       },
-      "id": 99,
+      "id": 112,
       "options": {
         "legend": {
           "calcs": [
@@ -7332,11 +8301,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 217,
+        "y": 241,
         "w": 12,
         "h": 8
       },
-      "id": 100,
+      "id": 113,
       "options": {
         "legend": {
           "calcs": [
@@ -7392,11 +8361,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 225,
+        "y": 249,
         "w": 8,
         "h": 7
       },
-      "id": 101,
+      "id": 114,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -7461,11 +8430,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 225,
+        "y": 249,
         "w": 8,
         "h": 7
       },
-      "id": 102,
+      "id": 115,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7529,11 +8498,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 225,
+        "y": 249,
         "w": 8,
         "h": 7
       },
-      "id": 103,
+      "id": 116,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7567,11 +8536,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 232,
+        "y": 256,
         "w": 24,
         "h": 1
       },
-      "id": 104,
+      "id": 117,
       "panels": [],
       "title": "\ud83e\uddea HP-Tuning Lab (grid: TP\u00d7SL\u00d7hold)",
       "type": "row"
@@ -7717,11 +8686,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 233,
+        "y": 257,
         "w": 24,
         "h": 9
       },
-      "id": 105,
+      "id": 118,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7780,11 +8749,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 242,
+        "y": 266,
         "w": 8,
         "h": 7
       },
-      "id": 106,
+      "id": 119,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7844,11 +8813,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 242,
+        "y": 266,
         "w": 8,
         "h": 7
       },
-      "id": 107,
+      "id": 120,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7908,11 +8877,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 242,
+        "y": 266,
         "w": 8,
         "h": 7
       },
-      "id": 108,
+      "id": 121,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8115,11 +9084,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 249,
+        "y": 273,
         "w": 12,
         "h": 8
       },
-      "id": 109,
+      "id": 122,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8182,11 +9151,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 249,
+        "y": 273,
         "w": 12,
         "h": 8
       },
-      "id": 110,
+      "id": 123,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8220,11 +9189,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 257,
+        "y": 281,
         "w": 24,
         "h": 1
       },
-      "id": 111,
+      "id": 124,
       "panels": [],
       "title": "\ud83c\udfc6 Per-Bot & Per-Pair Breakdown",
       "type": "row"
@@ -8335,11 +9304,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 258,
+        "y": 282,
         "w": 12,
         "h": 8
       },
-      "id": 112,
+      "id": 125,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8509,11 +9478,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 258,
+        "y": 282,
         "w": 12,
         "h": 8
       },
-      "id": 113,
+      "id": 126,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8568,11 +9537,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 266,
+        "y": 290,
         "w": 12,
         "h": 7
       },
-      "id": 114,
+      "id": 127,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8632,11 +9601,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 266,
+        "y": 290,
         "w": 12,
         "h": 7
       },
-      "id": 115,
+      "id": 128,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8670,11 +9639,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 273,
+        "y": 297,
         "w": 24,
         "h": 1
       },
-      "id": 116,
+      "id": 129,
       "panels": [],
       "title": "\ud83d\udd51 Session & Time-of-Day (UTC)",
       "type": "row"
@@ -8820,11 +9789,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 274,
+        "y": 298,
         "w": 12,
         "h": 8
       },
-      "id": 117,
+      "id": 130,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8883,11 +9852,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 274,
+        "y": 298,
         "w": 12,
         "h": 8
       },
-      "id": 118,
+      "id": 131,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8947,11 +9916,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 282,
+        "y": 306,
         "w": 12,
         "h": 7
       },
-      "id": 119,
+      "id": 132,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9007,11 +9976,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 282,
+        "y": 306,
         "w": 12,
         "h": 7
       },
-      "id": 120,
+      "id": 133,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9071,11 +10040,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 289,
+        "y": 313,
         "w": 12,
         "h": 7
       },
-      "id": 121,
+      "id": 134,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9131,11 +10100,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 289,
+        "y": 313,
         "w": 12,
         "h": 7
       },
-      "id": 122,
+      "id": 135,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9169,11 +10138,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 296,
+        "y": 320,
         "w": 24,
         "h": 1
       },
-      "id": 123,
+      "id": 136,
       "panels": [],
       "title": "\ud83d\udcb8 Fees & Costs",
       "type": "row"
@@ -9204,11 +10173,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 297,
+        "y": 321,
         "w": 4,
         "h": 4
       },
-      "id": 124,
+      "id": 137,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9265,11 +10234,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 297,
+        "y": 321,
         "w": 4,
         "h": 4
       },
-      "id": 125,
+      "id": 138,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9330,11 +10299,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 297,
+        "y": 321,
         "w": 4,
         "h": 4
       },
-      "id": 126,
+      "id": 139,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9395,11 +10364,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 297,
+        "y": 321,
         "w": 4,
         "h": 4
       },
-      "id": 127,
+      "id": 140,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9457,11 +10426,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 297,
+        "y": 321,
         "w": 4,
         "h": 4
       },
-      "id": 128,
+      "id": 141,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9519,11 +10488,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 297,
+        "y": 321,
         "w": 4,
         "h": 4
       },
-      "id": 129,
+      "id": 142,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9612,11 +10581,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 301,
+        "y": 325,
         "w": 12,
         "h": 7
       },
-      "id": 130,
+      "id": 143,
       "options": {
         "legend": {
           "calcs": [
@@ -9704,11 +10673,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 301,
+        "y": 325,
         "w": 12,
         "h": 7
       },
-      "id": 131,
+      "id": 144,
       "options": {
         "legend": {
           "calcs": [
@@ -9743,11 +10712,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 308,
+        "y": 332,
         "w": 24,
         "h": 1
       },
-      "id": 132,
+      "id": 145,
       "panels": [],
       "title": "\ud83d\udcdc Trade History",
       "type": "row"
@@ -10093,11 +11062,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 309,
+        "y": 333,
         "w": 24,
         "h": 12
       },
-      "id": 133,
+      "id": 146,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10130,11 +11099,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 321,
+        "y": 345,
         "w": 24,
         "h": 1
       },
-      "id": 134,
+      "id": 147,
       "panels": [],
       "title": "\ud83d\udccc Open Positions (live)",
       "type": "row"
@@ -10241,11 +11210,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 322,
+        "y": 346,
         "w": 24,
         "h": 8
       },
-      "id": 135,
+      "id": 148,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10278,11 +11247,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 330,
+        "y": 354,
         "w": 24,
         "h": 1
       },
-      "id": 136,
+      "id": 149,
       "panels": [],
       "title": "\ud83e\ude7a Activity & Health",
       "type": "row"
@@ -10320,11 +11289,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 331,
+        "y": 355,
         "w": 6,
         "h": 4
       },
-      "id": 137,
+      "id": 150,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10389,11 +11358,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 331,
+        "y": 355,
         "w": 6,
         "h": 4
       },
-      "id": 138,
+      "id": 151,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -10457,11 +11426,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 331,
+        "y": 355,
         "w": 6,
         "h": 4
       },
-      "id": 139,
+      "id": 152,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10525,11 +11494,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 331,
+        "y": 355,
         "w": 6,
         "h": 4
       },
-      "id": 140,
+      "id": 153,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10585,11 +11554,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 335,
+        "y": 359,
         "w": 8,
         "h": 7
       },
-      "id": 141,
+      "id": 154,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10644,11 +11613,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 335,
+        "y": 359,
         "w": 8,
         "h": 7
       },
-      "id": 142,
+      "id": 155,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -10712,11 +11681,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 335,
+        "y": 359,
         "w": 8,
         "h": 7
       },
-      "id": 143,
+      "id": 156,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10803,11 +11772,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 342,
+        "y": 366,
         "w": 24,
         "h": 7
       },
-      "id": 144,
+      "id": 157,
       "options": {
         "legend": {
           "calcs": [
@@ -10905,11 +11874,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 349,
+        "y": 373,
         "w": 24,
         "h": 8
       },
-      "id": 145,
+      "id": 158,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11011,11 +11980,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 357,
+        "y": 381,
         "w": 24,
         "h": 8
       },
-      "id": 146,
+      "id": 159,
       "options": {
         "cellHeight": "sm",
         "footer": {

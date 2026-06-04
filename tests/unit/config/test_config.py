@@ -236,6 +236,13 @@ class TestParamsFromDict:
                 ("momentum_acceleration_candles", 3),
                 ("rsi_long_max", 75.0),
                 ("rsi_short_min", 25.0),
+                ("size_fraction_full", 1.0),
+                ("size_fraction_half", 0.5),
+                ("size_min_usdt", 1.0),
+                ("drawdown_derisk_threshold", 0.20),
+                ("drawdown_derisk_factor", 0.5),
+                ("consec_loss_cooloff", 3),
+                ("consec_loss_factor", 0.5),
             ]
         }
 
