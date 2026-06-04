@@ -160,27 +160,46 @@ class MockFeed:
             self._running = False
 
     async def _drive(self) -> None:
-        """Emit one candle per subscription per tick until stopped."""
-        spawned: set[tuple[str, str]] = set()
+        """Drive ONE stream per (pair, timeframe), fanning each candle out to every
+        subscription of that pair. Re-scans so late subscriptions are picked up.
+
+        Robustness: a single failing builder (e.g. a momentarily full candle queue)
+        is skipped in _emit and never aborts the stream — this is what stops the
+        whole shared feed from dying during a multi-bot backfill burst.
+        """
+        streamed: set[tuple[str, str]] = set()
         tasks: list[asyncio.Task] = []
         try:
             while not self._stop_event.is_set():
                 for sub in list(self._subscriptions):
                     key = (sub.pair, sub.timeframe)
-                    if key in spawned:
+                    if key in streamed:
                         continue
-                    spawned.add(key)
-                    tasks.append(asyncio.create_task(self._stream_one(sub), name=f"mock:{key[0]}/{key[1]}"))
+                    streamed.add(key)
+                    tasks.append(
+                        asyncio.create_task(self._stream_group(key[0], key[1]), name=f"mock:{key[0]}/{key[1]}")
+                    )
                 try:
                     await asyncio.wait_for(self._stop_event.wait(), timeout=0.5)
                     break
                 except asyncio.TimeoutError:
                     continue
+        finally:
             for t in tasks:
                 t.cancel()
             await asyncio.gather(*tasks, return_exceptions=True)
-        finally:
-            return
+
+    def _group(self, pair: str, timeframe: str) -> list[_Subscription]:
+        return [s for s in self._subscriptions if s.pair == pair and s.timeframe == timeframe]
+
+    def _emit(self, subs: list[_Subscription], ohlcv: list) -> None:
+        """Fan one candle out to every subscription's builder. A failing builder
+        (e.g. a full queue) is skipped — never aborting the stream or the feed."""
+        for s in subs:
+            try:
+                s.builder.process_ohlcv(list(ohlcv), is_closed=True)
+            except Exception:  # noqa: BLE001 — a slow/full consumer must not kill the feed
+                continue
 
     def _next_candle(self, sub: _Subscription, ts_ms: int) -> list:
         """Generate one synthetic OHLCV row for sub at timestamp ts_ms.
@@ -288,20 +307,25 @@ class MockFeed:
         sub.price = close_price
         return [ts_ms, open_price, high, low, close_price, volume]
 
-    async def _stream_one(self, sub: _Subscription) -> None:
-        """Emit synthetic candles for this subscription.
+    async def _stream_group(self, pair: str, timeframe: str) -> None:
+        """Emit synthetic candles for ONE pair, fanned out to EVERY subscription of
+        that pair (so every bot on the pair gets the same market, not just one).
 
         Phase 1 (backfill): emit MOCK_BACKFILL_CANDLES candles whose timestamps
         cover the recent past up to the current timeframe boundary, paced at
         MOCK_SECONDS_PER_CANDLE so the dashboard fills in quickly on startup.
 
         Phase 2 (live): emit one candle per *real* timeframe interval at real
-        wall-clock timestamps so the dashboard's NOW()-based filters work
-        correctly.
+        wall-clock timestamps so the dashboard's NOW()-based filters work.
+
+        A single random-walk state (the first subscription's) drives the pair; new
+        subscriptions that arrive late are picked up via _group() on each candle.
         """
-        tf_seconds = _TIMEFRAME_SECONDS.get(sub.timeframe, 300)
+        tf_seconds = _TIMEFRAME_SECONDS.get(timeframe, 300)
         tf_ms = tf_seconds * 1000
         backfill_count = int(os.environ.get("MOCK_BACKFILL_CANDLES", "288"))  # 24h @ 5m
+
+        walk = self._group(pair, timeframe)[0]  # canonical random-walk state for this pair
 
         # Align to the most recent COMPLETED candle boundary.
         now_ms = int(time.time() * 1000)
@@ -313,8 +337,8 @@ class MockFeed:
             if self._stop_event.is_set():
                 return
             ts = backfill_start_ms + (i + 1) * tf_ms
-            ohlcv = self._next_candle(sub, ts)
-            sub.builder.process_ohlcv(ohlcv, is_closed=True)
+            ohlcv = self._next_candle(walk, ts)
+            self._emit(self._group(pair, timeframe), ohlcv)
             try:
                 await asyncio.wait_for(self._stop_event.wait(), timeout=self._seconds_per_candle)
                 return
@@ -336,6 +360,6 @@ class MockFeed:
                 pass
             # Emit the candle that just closed.
             if next_close > last_emitted:
-                ohlcv = self._next_candle(sub, next_close)
-                sub.builder.process_ohlcv(ohlcv, is_closed=True)
+                ohlcv = self._next_candle(walk, next_close)
+                self._emit(self._group(pair, timeframe), ohlcv)
                 last_emitted = next_close

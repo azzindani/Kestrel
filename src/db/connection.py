@@ -16,13 +16,21 @@ _pool: Optional[asyncpg.Pool] = None
 
 
 async def init_pool(cfg: AppConfig) -> asyncpg.Pool:
-    """Create and store the global connection pool. Call once at startup."""
+    """Create and store the global connection pool. Call once at startup.
+
+    All bots in a multi-bot process share this one pool, so the fleet closes
+    candles roughly in lockstep on each timeframe boundary (a thundering herd
+    of concurrent DB ops). max_size is sized to absorb that burst — a small
+    pool drains and acquire() blocks waiting for a free connection, which under
+    a full fleet reads as a silent feed freeze. Stays well under Postgres'
+    default max_connections (100), leaving room for backups/Grafana.
+    """
     global _pool
     dsn = f"postgresql://{cfg.db_user}:{cfg.db_password}@{cfg.db_host}:{cfg.db_port}/{cfg.db_name}"
     _pool = await asyncpg.create_pool(
         dsn=dsn,
-        min_size=2,
-        max_size=4,
+        min_size=4,
+        max_size=32,
         command_timeout=30,
     )
     return _pool

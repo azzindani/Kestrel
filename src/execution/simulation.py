@@ -38,6 +38,10 @@ class SimulationExecution(ExecutionInterface):
     def __init__(self, cfg: AppConfig, params: Optional[Params] = None) -> None:
         self.cfg = cfg
         self._max_hold_candles = params.max_hold_candles if params is not None else _DEFAULT_MAX_HOLD_CANDLES
+        # Trailing-close config (CLAUDE.md §17 capital model — let winners run).
+        self._trailing_enabled = params.trailing_enabled if params is not None else False
+        self._trail_activation_r = params.trail_activation_r if params is not None else 1.0
+        self._trail_distance_r = params.trail_distance_r if params is not None else 0.8
         self._positions: dict[str, dict[str, Any]] = {}
         self._prices: dict[str, float] = {}
 
@@ -66,6 +70,11 @@ class SimulationExecution(ExecutionInterface):
         order_id = str(uuid.uuid4())[:8]
         ts_ms = int(time.time() * 1000)
 
+        # Trailing-close geometry: the trail is measured in units of the initial
+        # stop distance R (= |entry − SL| = sl_atr_multiplier × ATR), so it scales
+        # with each pair's volatility without plumbing ATR through this layer.
+        r_unit = abs(round(fill_price, 8) - signal.sl_price)
+
         position = {
             "order_id": order_id,
             "pair": signal.pair,
@@ -82,6 +91,12 @@ class SimulationExecution(ExecutionInterface):
             # Incremented by check_exits each candle; powers the timeout branch
             # so positions don't hang indefinitely when TP/SL never trigger.
             "candles_held": 0,
+            # Trailing-close state (only consulted when trailing_enabled).
+            "trailing_enabled": self._trailing_enabled,
+            "peak_price": round(fill_price, 8),
+            "trail_stop": None,
+            "trail_activation_dist": round(self._trail_activation_r * r_unit, 8),
+            "trail_distance_dist": round(self._trail_distance_r * r_unit, 8),
         }
         self._positions[signal.pair] = position
         return position
@@ -173,15 +188,47 @@ class SimulationExecution(ExecutionInterface):
         """Record current market price for simulated TP/SL/close calculations."""
         self._prices[pair] = price
 
+    @staticmethod
+    def _advance_trail(pos: dict[str, Any], price: float) -> None:
+        """Ratchet the trailing stop toward price as unrealised profit grows.
+
+        Arms once favourable excursion ≥ trail_activation_dist, then holds the
+        stop trail_distance_dist below the running peak (above it for shorts).
+        The stop only ever tightens — it never loosens — and is floored at the
+        initial SL so trailing can't widen risk.
+        """
+        direction = pos["direction"]
+        entry = pos["entry_price"]
+        activation = pos["trail_activation_dist"]
+        distance = pos["trail_distance_dist"]
+        if direction == "long":
+            peak = max(pos["peak_price"], price)
+            pos["peak_price"] = peak
+            if peak - entry >= activation:
+                candidate = max(peak - distance, pos["sl_price"])
+                cur = pos["trail_stop"]
+                pos["trail_stop"] = candidate if cur is None else max(cur, candidate)
+        else:
+            trough = min(pos["peak_price"], price)
+            pos["peak_price"] = trough
+            if entry - trough >= activation:
+                candidate = min(trough + distance, pos["sl_price"])
+                cur = pos["trail_stop"]
+                pos["trail_stop"] = candidate if cur is None else min(cur, candidate)
+
     def check_exits(self, pair: str) -> Optional[str]:
         """Check whether the position should close on this candle.
 
         Called once per candle by the daemon. Returns the exit reason if any
-        of TP, SL, liquidation, or max_hold_candles timeout has hit; None to
-        keep the position open.
+        of trailing-stop, TP, SL, liquidation, or max_hold_candles timeout has
+        hit; None to keep the position open.
+
+        When trailing is enabled the fixed take-profit is dropped — the trailing
+        stop governs the upside so winners ride until price reverses by
+        trail_distance into the move (CLAUDE.md §17).
 
         Returns:
-            'take_profit' | 'stop_loss' | 'liquidated' | 'timeout' | None
+            'take_profit' | 'trailing_stop' | 'stop_loss' | 'liquidated' | 'timeout' | None
         """
         pos = self._positions.get(pair)
         if pos is None:
@@ -196,23 +243,37 @@ class SimulationExecution(ExecutionInterface):
 
         direction = pos["direction"]
         liq = pos["liquidation_price"]
+        trailing = pos["trailing_enabled"]
 
-        # Price-based exits take priority over timeout (a TP/SL hit on the
-        # timeout candle itself should record the real reason).
+        # Price-based exits take priority over timeout (a hit on the timeout
+        # candle itself should record the real reason).
         if direction == "long":
-            if price >= pos["tp_price"]:
+            if trailing:
+                ts = pos["trail_stop"]
+                if ts is not None and price <= ts:
+                    return "trailing_stop"
+            elif price >= pos["tp_price"]:
                 return "take_profit"
             if price <= pos["sl_price"]:
                 return "stop_loss"
             if price <= liq:
                 return "liquidated"
         else:
-            if price <= pos["tp_price"]:
+            if trailing:
+                ts = pos["trail_stop"]
+                if ts is not None and price >= ts:
+                    return "trailing_stop"
+            elif price <= pos["tp_price"]:
                 return "take_profit"
             if price >= pos["sl_price"]:
                 return "stop_loss"
             if price >= liq:
                 return "liquidated"
+
+        # No exit this candle — advance the trail for the next one (done after
+        # the exit check so the current candle can't both raise and trip the stop).
+        if trailing:
+            self._advance_trail(pos, price)
 
         # CLAUDE.md §16 / §22: force-close after max_hold_candles to prevent
         # positions hanging indefinitely when price stays inside the band.

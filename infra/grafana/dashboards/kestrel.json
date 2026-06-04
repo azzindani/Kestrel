@@ -2043,6 +2043,983 @@
       },
       "id": 31,
       "panels": [],
+      "title": "\ud83e\udea4 Trailing-Close (ratchet exit) \u2014 live A/B vs fixed TP",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 55
+              }
+            ]
+          },
+          "unit": "percent",
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 38,
+        "w": 4,
+        "h": 4
+      },
+      "id": 32,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(100.0*AVG((close_reason='trailing_stop')::int),1) AS v FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '_t$'",
+          "refId": "A"
+        }
+      ],
+      "title": "Trailing-Stop Exit Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 38,
+        "w": 4,
+        "h": 4
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '_t$'",
+          "refId": "A"
+        }
+      ],
+      "title": "Trailing Trades (closed)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 4
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 38,
+        "w": 4,
+        "h": 4
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(pnl_net_usdt),4) AS v FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '_t$'",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Net PnL \u2014 Trailing",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "decimals": 4
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 38,
+        "w": 4,
+        "h": 4
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(pnl_net_usdt),4) AS v FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) !~ '_t$'",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Net PnL \u2014 Fixed",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 38,
+        "w": 4,
+        "h": 4
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(hold_candles),1) AS v FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '_t$'",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Hold \u2014 Trailing (candles)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 38,
+        "w": 4,
+        "h": 4
+      },
+      "id": 37,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(hold_candles),1) AS v FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) !~ '_t$'",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Hold \u2014 Fixed (candles)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short",
+          "decimals": 3
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 42,
+        "w": 4,
+        "h": 4
+      },
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '_t$'",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Realized R \u2014 Trailing",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short",
+          "decimals": 3
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 42,
+        "w": 4,
+        "h": 4
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) !~ '_t$'",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Realized R \u2014 Fixed",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_net"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "net"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "win_pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "trail_exit_pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 42,
+        "w": 12,
+        "h": 8
+      },
+      "id": 40,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT regexp_replace(split_part(bot_id,'-',4),'_t$','') AS strategy, CASE WHEN split_part(bot_id,'-',4) ~ '_t$' THEN 'trailing' ELSE 'fixed' END AS exit_policy, COUNT(*) AS trades, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS win_pct, ROUND(AVG(pnl_net_usdt),4) AS avg_net, ROUND(SUM(pnl_net_usdt),3) AS net, ROUND(AVG(hold_candles),1) AS avg_hold, ROUND(100.0*AVG((close_reason='trailing_stop')::int),1) AS trail_exit_pct FROM trades WHERE exit_ts IS NOT NULL GROUP BY 1,2 ORDER BY 1,2",
+          "refId": "A"
+        }
+      ],
+      "title": "Trailing vs Fixed \u2014 by strategy (live A/B)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 50,
+        "w": 12,
+        "h": 8
+      },
+      "id": 41,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT close_reason AS metric, COUNT(*) AS value FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '_t$' GROUP BY close_reason ORDER BY value DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Close Reasons \u2014 Trailing variants",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 50,
+        "w": 12,
+        "h": 7
+      },
+      "id": 42,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT to_timestamp(exit_ts/1000.0) AS \"time\", CASE WHEN split_part(bot_id,'-',4) ~ '_t$' THEN 'trailing' ELSE 'fixed' END AS metric, AVG(pnl_net_usdt) AS avg_net FROM trades WHERE exit_ts IS NOT NULL AND to_timestamp(exit_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1,2 ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Avg Net PnL/trade Over Time \u2014 Trailing vs Fixed",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 58,
+        "w": 12,
+        "h": 7
+      },
+      "id": 43,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT to_timestamp(exit_ts/1000.0) AS \"time\", COUNT(*) FILTER (WHERE close_reason='trailing_stop') AS trailing_stops FROM trades WHERE exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '_t$' AND to_timestamp(exit_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1 ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Trailing-Stop Exits Over Time",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 65,
+        "w": 24,
+        "h": 1
+      },
+      "id": 44,
+      "panels": [],
       "title": "\ud83d\udcc8 Equity, Drawdown & Returns",
       "type": "row"
     },
@@ -2103,11 +3080,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 38,
+        "y": 66,
         "w": 12,
         "h": 8
       },
-      "id": 32,
+      "id": 45,
       "options": {
         "legend": {
           "calcs": [
@@ -2195,11 +3172,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 38,
+        "y": 66,
         "w": 12,
         "h": 8
       },
-      "id": 33,
+      "id": 46,
       "options": {
         "legend": {
           "calcs": [
@@ -2288,11 +3265,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 46,
+        "y": 74,
         "w": 12,
         "h": 7
       },
-      "id": 34,
+      "id": 47,
       "options": {
         "legend": {
           "calcs": [
@@ -2381,11 +3358,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 46,
+        "y": 74,
         "w": 12,
         "h": 7
       },
-      "id": 35,
+      "id": 48,
       "options": {
         "legend": {
           "calcs": [
@@ -2450,11 +3427,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 53,
+        "y": 81,
         "w": 6,
         "h": 4
       },
-      "id": 36,
+      "id": 49,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2519,11 +3496,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 53,
+        "y": 81,
         "w": 6,
         "h": 4
       },
-      "id": 37,
+      "id": 50,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2580,11 +3557,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 53,
+        "y": 81,
         "w": 6,
         "h": 4
       },
-      "id": 38,
+      "id": 51,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2642,11 +3619,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 53,
+        "y": 81,
         "w": 3,
         "h": 4
       },
-      "id": 39,
+      "id": 52,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2704,11 +3681,11 @@
       },
       "gridPos": {
         "x": 21,
-        "y": 53,
+        "y": 81,
         "w": 3,
         "h": 4
       },
-      "id": 40,
+      "id": 53,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2796,11 +3773,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 57,
+        "y": 85,
         "w": 24,
         "h": 6
       },
-      "id": 41,
+      "id": 54,
       "options": {
         "legend": {
           "calcs": [
@@ -2888,11 +3865,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 63,
+        "y": 91,
         "w": 12,
         "h": 7
       },
-      "id": 42,
+      "id": 55,
       "options": {
         "legend": {
           "calcs": [
@@ -2984,11 +3961,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 63,
+        "y": 91,
         "w": 12,
         "h": 7
       },
-      "id": 43,
+      "id": 56,
       "options": {
         "legend": {
           "calcs": [
@@ -3076,11 +4053,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 70,
+        "y": 98,
         "w": 24,
         "h": 7
       },
-      "id": 44,
+      "id": 57,
       "options": {
         "legend": {
           "calcs": [
@@ -3115,11 +4092,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 77,
+        "y": 105,
         "w": 24,
         "h": 1
       },
-      "id": 45,
+      "id": 58,
       "panels": [],
       "title": "\ud83d\udcb5 PnL Distribution & Outcomes",
       "type": "row"
@@ -3165,11 +4142,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 78,
+        "y": 106,
         "w": 8,
         "h": 8
       },
-      "id": 46,
+      "id": 59,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -3241,11 +4218,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 78,
+        "y": 106,
         "w": 8,
         "h": 8
       },
-      "id": 47,
+      "id": 60,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -3316,11 +4293,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 78,
+        "y": 106,
         "w": 8,
         "h": 8
       },
-      "id": 48,
+      "id": 61,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -3376,11 +4353,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 86,
+        "y": 114,
         "w": 6,
         "h": 8
       },
-      "id": 49,
+      "id": 62,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -3444,11 +4421,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 86,
+        "y": 114,
         "w": 6,
         "h": 8
       },
-      "id": 50,
+      "id": 63,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -3510,11 +4487,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 86,
+        "y": 114,
         "w": 12,
         "h": 8
       },
-      "id": 51,
+      "id": 64,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3573,11 +4550,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 94,
+        "y": 122,
         "w": 12,
         "h": 8
       },
-      "id": 52,
+      "id": 65,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -3709,11 +4686,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 94,
+        "y": 122,
         "w": 12,
         "h": 8
       },
-      "id": 53,
+      "id": 66,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3844,11 +4821,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 102,
+        "y": 130,
         "w": 12,
         "h": 8
       },
-      "id": 54,
+      "id": 67,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3881,11 +4858,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 110,
+        "y": 138,
         "w": 24,
         "h": 1
       },
-      "id": 55,
+      "id": 68,
       "panels": [],
       "title": "\ud83c\udfaf Win-Rate Analytics",
       "type": "row"
@@ -3952,11 +4929,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 111,
+        "y": 139,
         "w": 24,
         "h": 7
       },
-      "id": 56,
+      "id": 69,
       "options": {
         "legend": {
           "calcs": [
@@ -4021,11 +4998,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 118,
+        "y": 146,
         "w": 8,
         "h": 7
       },
-      "id": 57,
+      "id": 70,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -4089,11 +5066,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 118,
+        "y": 146,
         "w": 8,
         "h": 7
       },
-      "id": 58,
+      "id": 71,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -4157,11 +5134,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 118,
+        "y": 146,
         "w": 8,
         "h": 7
       },
-      "id": 59,
+      "id": 72,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -4297,11 +5274,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 125,
+        "y": 153,
         "w": 12,
         "h": 8
       },
-      "id": 60,
+      "id": 73,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -4436,11 +5413,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 125,
+        "y": 153,
         "w": 12,
         "h": 8
       },
-      "id": 61,
+      "id": 74,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -4473,11 +5450,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 133,
+        "y": 161,
         "w": 24,
         "h": 1
       },
-      "id": 62,
+      "id": 75,
       "panels": [],
       "title": "\u2696\ufe0f Risk, Streaks & Expectancy",
       "type": "row"
@@ -4507,11 +5484,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 134,
+        "y": 162,
         "w": 4,
         "h": 4
       },
-      "id": 63,
+      "id": 76,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4567,11 +5544,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 134,
+        "y": 162,
         "w": 4,
         "h": 4
       },
-      "id": 64,
+      "id": 77,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4636,11 +5613,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 134,
+        "y": 162,
         "w": 4,
         "h": 4
       },
-      "id": 65,
+      "id": 78,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4705,11 +5682,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 134,
+        "y": 162,
         "w": 4,
         "h": 4
       },
-      "id": 66,
+      "id": 79,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4770,11 +5747,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 134,
+        "y": 162,
         "w": 4,
         "h": 4
       },
-      "id": 67,
+      "id": 80,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4840,11 +5817,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 134,
+        "y": 162,
         "w": 4,
         "h": 4
       },
-      "id": 68,
+      "id": 81,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4900,11 +5877,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 138,
+        "y": 166,
         "w": 12,
         "h": 8
       },
-      "id": 69,
+      "id": 82,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -5107,11 +6084,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 138,
+        "y": 166,
         "w": 12,
         "h": 8
       },
-      "id": 70,
+      "id": 83,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -5144,11 +6121,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 146,
+        "y": 174,
         "w": 24,
         "h": 1
       },
-      "id": 71,
+      "id": 84,
       "panels": [],
       "title": "\ud83d\udcd0 Trade Quality \u2014 R-multiple, excursion, duration",
       "type": "row"
@@ -5188,11 +6165,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 147,
+        "y": 175,
         "w": 4,
         "h": 4
       },
-      "id": 72,
+      "id": 85,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5250,11 +6227,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 147,
+        "y": 175,
         "w": 4,
         "h": 4
       },
-      "id": 73,
+      "id": 86,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5312,11 +6289,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 147,
+        "y": 175,
         "w": 4,
         "h": 4
       },
-      "id": 74,
+      "id": 87,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5378,11 +6355,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 147,
+        "y": 175,
         "w": 4,
         "h": 4
       },
-      "id": 75,
+      "id": 88,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5443,11 +6420,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 147,
+        "y": 175,
         "w": 4,
         "h": 4
       },
-      "id": 76,
+      "id": 89,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5504,11 +6481,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 147,
+        "y": 175,
         "w": 4,
         "h": 4
       },
-      "id": 77,
+      "id": 90,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5565,11 +6542,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 151,
+        "y": 179,
         "w": 4,
         "h": 4
       },
-      "id": 78,
+      "id": 91,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5626,11 +6603,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 151,
+        "y": 179,
         "w": 4,
         "h": 4
       },
-      "id": 79,
+      "id": 92,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5686,11 +6663,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 151,
+        "y": 179,
         "w": 4,
         "h": 4
       },
-      "id": 80,
+      "id": 93,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5747,11 +6724,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 151,
+        "y": 179,
         "w": 4,
         "h": 4
       },
-      "id": 81,
+      "id": 94,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5808,11 +6785,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 151,
+        "y": 179,
         "w": 4,
         "h": 4
       },
-      "id": 82,
+      "id": 95,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5877,11 +6854,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 151,
+        "y": 179,
         "w": 4,
         "h": 4
       },
-      "id": 83,
+      "id": 96,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5952,11 +6929,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 155,
+        "y": 183,
         "w": 8,
         "h": 7
       },
-      "id": 84,
+      "id": 97,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -6028,11 +7005,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 155,
+        "y": 183,
         "w": 8,
         "h": 7
       },
-      "id": 85,
+      "id": 98,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -6104,11 +7081,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 155,
+        "y": 183,
         "w": 8,
         "h": 7
       },
-      "id": 86,
+      "id": 99,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -6310,11 +7287,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 162,
+        "y": 190,
         "w": 24,
         "h": 8
       },
-      "id": 87,
+      "id": 100,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6347,11 +7324,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 170,
+        "y": 198,
         "w": 24,
         "h": 1
       },
-      "id": 88,
+      "id": 101,
       "panels": [],
       "title": "\ud83d\udd2c Signal Funnel & Rejections",
       "type": "row"
@@ -6381,11 +7358,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 171,
+        "y": 199,
         "w": 4,
         "h": 4
       },
-      "id": 89,
+      "id": 102,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6441,11 +7418,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 171,
+        "y": 199,
         "w": 4,
         "h": 4
       },
-      "id": 90,
+      "id": 103,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6501,11 +7478,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 171,
+        "y": 199,
         "w": 4,
         "h": 4
       },
-      "id": 91,
+      "id": 104,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6561,11 +7538,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 171,
+        "y": 199,
         "w": 4,
         "h": 4
       },
-      "id": 92,
+      "id": 105,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6623,11 +7600,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 171,
+        "y": 199,
         "w": 4,
         "h": 4
       },
-      "id": 93,
+      "id": 106,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6684,11 +7661,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 171,
+        "y": 199,
         "w": 4,
         "h": 4
       },
-      "id": 94,
+      "id": 107,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6744,11 +7721,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 175,
+        "y": 203,
         "w": 12,
         "h": 8
       },
-      "id": 95,
+      "id": 108,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -6803,11 +7780,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 175,
+        "y": 203,
         "w": 12,
         "h": 8
       },
-      "id": 96,
+      "id": 109,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -6894,11 +7871,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 183,
+        "y": 211,
         "w": 24,
         "h": 7
       },
-      "id": 97,
+      "id": 110,
       "options": {
         "legend": {
           "calcs": [
@@ -6992,11 +7969,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 190,
+        "y": 218,
         "w": 24,
         "h": 7
       },
-      "id": 98,
+      "id": 111,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7029,11 +8006,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 197,
+        "y": 225,
         "w": 24,
         "h": 1
       },
-      "id": 99,
+      "id": 112,
       "panels": [],
       "title": "\ud83e\udde9 Pattern Analytics",
       "type": "row"
@@ -7179,11 +8156,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 198,
+        "y": 226,
         "w": 8,
         "h": 8
       },
-      "id": 100,
+      "id": 113,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7237,11 +8214,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 198,
+        "y": 226,
         "w": 8,
         "h": 8
       },
-      "id": 101,
+      "id": 114,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7311,11 +8288,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 198,
+        "y": 226,
         "w": 8,
         "h": 8
       },
-      "id": 102,
+      "id": 115,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -7451,11 +8428,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 206,
+        "y": 234,
         "w": 24,
         "h": 8
       },
-      "id": 103,
+      "id": 116,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7488,11 +8465,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 214,
+        "y": 242,
         "w": 24,
         "h": 1
       },
-      "id": 104,
+      "id": 117,
       "panels": [],
       "title": "\ud83c\udf0a Regime Analytics",
       "type": "row"
@@ -7522,11 +8499,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 215,
+        "y": 243,
         "w": 8,
         "h": 8
       },
-      "id": 105,
+      "id": 118,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -7595,11 +8572,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 215,
+        "y": 243,
         "w": 8,
         "h": 8
       },
-      "id": 106,
+      "id": 119,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7770,11 +8747,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 215,
+        "y": 243,
         "w": 8,
         "h": 8
       },
-      "id": 107,
+      "id": 120,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7807,11 +8784,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 223,
+        "y": 251,
         "w": 24,
         "h": 1
       },
-      "id": 108,
+      "id": 121,
       "panels": [],
       "title": "\ud83d\udcca Market & Indicators (live, per pair)",
       "type": "row"
@@ -7925,11 +8902,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 224,
+        "y": 252,
         "w": 24,
         "h": 9
       },
-      "id": 109,
+      "id": 122,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8017,11 +8994,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 233,
+        "y": 261,
         "w": 12,
         "h": 8
       },
-      "id": 110,
+      "id": 123,
       "options": {
         "legend": {
           "calcs": [
@@ -8109,11 +9086,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 233,
+        "y": 261,
         "w": 12,
         "h": 8
       },
-      "id": 111,
+      "id": 124,
       "options": {
         "legend": {
           "calcs": [
@@ -8205,11 +9182,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 241,
+        "y": 269,
         "w": 12,
         "h": 8
       },
-      "id": 112,
+      "id": 125,
       "options": {
         "legend": {
           "calcs": [
@@ -8301,11 +9278,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 241,
+        "y": 269,
         "w": 12,
         "h": 8
       },
-      "id": 113,
+      "id": 126,
       "options": {
         "legend": {
           "calcs": [
@@ -8361,11 +9338,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 249,
+        "y": 277,
         "w": 8,
         "h": 7
       },
-      "id": 114,
+      "id": 127,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -8430,11 +9407,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 249,
+        "y": 277,
         "w": 8,
         "h": 7
       },
-      "id": 115,
+      "id": 128,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8498,11 +9475,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 249,
+        "y": 277,
         "w": 8,
         "h": 7
       },
-      "id": 116,
+      "id": 129,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8536,11 +9513,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 256,
+        "y": 284,
         "w": 24,
         "h": 1
       },
-      "id": 117,
+      "id": 130,
       "panels": [],
       "title": "\ud83e\uddea HP-Tuning Lab (grid: TP\u00d7SL\u00d7hold)",
       "type": "row"
@@ -8686,11 +9663,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 257,
+        "y": 285,
         "w": 24,
         "h": 9
       },
-      "id": 118,
+      "id": 131,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8749,11 +9726,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 266,
+        "y": 294,
         "w": 8,
         "h": 7
       },
-      "id": 119,
+      "id": 132,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8813,11 +9790,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 266,
+        "y": 294,
         "w": 8,
         "h": 7
       },
-      "id": 120,
+      "id": 133,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8877,11 +9854,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 266,
+        "y": 294,
         "w": 8,
         "h": 7
       },
-      "id": 121,
+      "id": 134,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9084,11 +10061,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 273,
+        "y": 301,
         "w": 12,
         "h": 8
       },
-      "id": 122,
+      "id": 135,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9151,11 +10128,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 273,
+        "y": 301,
         "w": 12,
         "h": 8
       },
-      "id": 123,
+      "id": 136,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9189,11 +10166,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 281,
+        "y": 309,
         "w": 24,
         "h": 1
       },
-      "id": 124,
+      "id": 137,
       "panels": [],
       "title": "\ud83c\udfc6 Per-Bot & Per-Pair Breakdown",
       "type": "row"
@@ -9304,11 +10281,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 282,
+        "y": 310,
         "w": 12,
         "h": 8
       },
-      "id": 125,
+      "id": 138,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9478,11 +10455,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 282,
+        "y": 310,
         "w": 12,
         "h": 8
       },
-      "id": 126,
+      "id": 139,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9537,11 +10514,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 290,
+        "y": 318,
         "w": 12,
         "h": 7
       },
-      "id": 127,
+      "id": 140,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9601,11 +10578,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 290,
+        "y": 318,
         "w": 12,
         "h": 7
       },
-      "id": 128,
+      "id": 141,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9639,11 +10616,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 297,
+        "y": 325,
         "w": 24,
         "h": 1
       },
-      "id": 129,
+      "id": 142,
       "panels": [],
       "title": "\ud83d\udd51 Session & Time-of-Day (UTC)",
       "type": "row"
@@ -9789,11 +10766,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 298,
+        "y": 326,
         "w": 12,
         "h": 8
       },
-      "id": 130,
+      "id": 143,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9852,11 +10829,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 298,
+        "y": 326,
         "w": 12,
         "h": 8
       },
-      "id": 131,
+      "id": 144,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9916,11 +10893,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 306,
+        "y": 334,
         "w": 12,
         "h": 7
       },
-      "id": 132,
+      "id": 145,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9976,11 +10953,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 306,
+        "y": 334,
         "w": 12,
         "h": 7
       },
-      "id": 133,
+      "id": 146,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10040,11 +11017,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 313,
+        "y": 341,
         "w": 12,
         "h": 7
       },
-      "id": 134,
+      "id": 147,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10100,11 +11077,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 313,
+        "y": 341,
         "w": 12,
         "h": 7
       },
-      "id": 135,
+      "id": 148,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10138,11 +11115,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 320,
+        "y": 348,
         "w": 24,
         "h": 1
       },
-      "id": 136,
+      "id": 149,
       "panels": [],
       "title": "\ud83d\udcb8 Fees & Costs",
       "type": "row"
@@ -10173,11 +11150,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 321,
+        "y": 349,
         "w": 4,
         "h": 4
       },
-      "id": 137,
+      "id": 150,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10234,11 +11211,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 321,
+        "y": 349,
         "w": 4,
         "h": 4
       },
-      "id": 138,
+      "id": 151,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10299,11 +11276,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 321,
+        "y": 349,
         "w": 4,
         "h": 4
       },
-      "id": 139,
+      "id": 152,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10364,11 +11341,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 321,
+        "y": 349,
         "w": 4,
         "h": 4
       },
-      "id": 140,
+      "id": 153,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10426,11 +11403,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 321,
+        "y": 349,
         "w": 4,
         "h": 4
       },
-      "id": 141,
+      "id": 154,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10488,11 +11465,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 321,
+        "y": 349,
         "w": 4,
         "h": 4
       },
-      "id": 142,
+      "id": 155,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -10581,11 +11558,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 325,
+        "y": 353,
         "w": 12,
         "h": 7
       },
-      "id": 143,
+      "id": 156,
       "options": {
         "legend": {
           "calcs": [
@@ -10673,11 +11650,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 325,
+        "y": 353,
         "w": 12,
         "h": 7
       },
-      "id": 144,
+      "id": 157,
       "options": {
         "legend": {
           "calcs": [
@@ -10712,11 +11689,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 332,
+        "y": 360,
         "w": 24,
         "h": 1
       },
-      "id": 145,
+      "id": 158,
       "panels": [],
       "title": "\ud83d\udcdc Trade History",
       "type": "row"
@@ -11062,11 +12039,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 333,
+        "y": 361,
         "w": 24,
         "h": 12
       },
-      "id": 146,
+      "id": 159,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11099,11 +12076,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 345,
+        "y": 373,
         "w": 24,
         "h": 1
       },
-      "id": 147,
+      "id": 160,
       "panels": [],
       "title": "\ud83d\udccc Open Positions (live)",
       "type": "row"
@@ -11210,11 +12187,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 346,
+        "y": 374,
         "w": 24,
         "h": 8
       },
-      "id": 148,
+      "id": 161,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11247,11 +12224,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 354,
+        "y": 382,
         "w": 24,
         "h": 1
       },
-      "id": 149,
+      "id": 162,
       "panels": [],
       "title": "\ud83e\ude7a Activity & Health",
       "type": "row"
@@ -11289,11 +12266,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 355,
+        "y": 383,
         "w": 6,
         "h": 4
       },
-      "id": 150,
+      "id": 163,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11358,11 +12335,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 355,
+        "y": 383,
         "w": 6,
         "h": 4
       },
-      "id": 151,
+      "id": 164,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -11426,11 +12403,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 355,
+        "y": 383,
         "w": 6,
         "h": 4
       },
-      "id": 152,
+      "id": 165,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11494,11 +12471,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 355,
+        "y": 383,
         "w": 6,
         "h": 4
       },
-      "id": 153,
+      "id": 166,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11554,11 +12531,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 359,
+        "y": 387,
         "w": 8,
         "h": 7
       },
-      "id": 154,
+      "id": 167,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11613,11 +12590,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 359,
+        "y": 387,
         "w": 8,
         "h": 7
       },
-      "id": 155,
+      "id": 168,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -11681,11 +12658,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 359,
+        "y": 387,
         "w": 8,
         "h": 7
       },
-      "id": 156,
+      "id": 169,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11772,11 +12749,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 366,
+        "y": 394,
         "w": 24,
         "h": 7
       },
-      "id": 157,
+      "id": 170,
       "options": {
         "legend": {
           "calcs": [
@@ -11874,11 +12851,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 373,
+        "y": 401,
         "w": 24,
         "h": 8
       },
-      "id": 158,
+      "id": 171,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11980,11 +12957,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 381,
+        "y": 409,
         "w": 24,
         "h": 8
       },
-      "id": 159,
+      "id": 172,
       "options": {
         "cellHeight": "sm",
         "footer": {

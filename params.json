@@ -86,9 +86,9 @@
   "max_hold_candles": {
     "value": 6,
     "type": "int",
-    "range": [2, 8],
-    "description": "Maximum candles to hold a position before forced timeout exit",
-    "impact": "higher = more time for TP to hit, but more exposure to adverse moves"
+    "range": [2, 48],
+    "description": "Maximum candles to hold a position before forced timeout exit (widened to 48 so trailing-close runners can ride extended moves)",
+    "impact": "higher = more time for TP/trail to develop, but more exposure to adverse moves"
   },
   "max_active_buckets": {
     "value": 20,
@@ -222,5 +222,26 @@
     "range": [0.1, 1.0],
     "description": "Multiplier applied to position size after the consecutive-loss threshold is hit",
     "impact": "lower = cut size harder after a losing streak (1.0 disables cool-off)"
+  },
+  "trailing_enabled": {
+    "value": false,
+    "type": "bool",
+    "range": [false, true],
+    "description": "Enable trailing-close: once a position is in profit the stop ratchets toward price, replacing the fixed take-profit so winners ride. Set per-bot in bots.json for A/B lab variants",
+    "impact": "true = let winners run and exit on reversal instead of a fixed TP; raises avg win, may lower raw win rate"
+  },
+  "trail_activation_r": {
+    "value": 1.0,
+    "type": "float",
+    "range": [0.3, 3.0],
+    "description": "Favourable excursion, in units of the initial stop distance R (= sl_atr_multiplier x ATR), at which the trailing stop arms",
+    "impact": "lower = trailing arms sooner and locks profit earlier; higher = waits for a stronger move before protecting"
+  },
+  "trail_distance_r": {
+    "value": 0.8,
+    "type": "float",
+    "range": [0.2, 2.0],
+    "description": "Gap the trailing stop holds below the running peak, in units of the initial stop distance R",
+    "impact": "lower = tighter trail, banks profit fast but gets shaken out; higher = gives the move room to breathe"
   }
 }

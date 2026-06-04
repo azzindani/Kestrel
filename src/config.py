@@ -166,6 +166,10 @@ class Params:
     drawdown_derisk_factor: float = 0.5
     consec_loss_cooloff: int = 3
     consec_loss_factor: float = 0.5
+    # --- trailing-close (ratchet the exit toward price as profit grows; execution/simulation.py + backtest/runner.py) ---
+    trailing_enabled: bool = False
+    trail_activation_r: float = 1.0
+    trail_distance_r: float = 0.8
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
@@ -206,6 +210,9 @@ class Params:
             "drawdown_derisk_factor",
             "consec_loss_cooloff",
             "consec_loss_factor",
+            "trailing_enabled",
+            "trail_activation_r",
+            "trail_distance_r",
         ]
         missing = [k for k in required_keys if k not in d]
         if missing:
@@ -243,6 +250,9 @@ class Params:
             drawdown_derisk_factor=float(d["drawdown_derisk_factor"]["value"]),
             consec_loss_cooloff=int(d["consec_loss_cooloff"]["value"]),
             consec_loss_factor=float(d["consec_loss_factor"]["value"]),
+            trailing_enabled=bool(d["trailing_enabled"]["value"]),
+            trail_activation_r=float(d["trail_activation_r"]["value"]),
+            trail_distance_r=float(d["trail_distance_r"]["value"]),
         )
 
 
