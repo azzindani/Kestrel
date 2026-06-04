@@ -131,17 +131,14 @@ class Daemon:
             self._dashboard.start()
 
         # Schedule per-bot background tasks.
-        # NOTE: cleanup_task + trade_context_post_task are spawned once
-        # globally by main() — they DELETE / SCAN across all bots so running
-        # them N times per night for N daemons is redundant.
+        # NOTE: cleanup_task, trade_context_post_task AND daily_summary_task are
+        # spawned once globally by main() — they DELETE / SCAN / AGGREGATE across
+        # all bots, so running them N times per night for N daemons is redundant
+        # (the daily summary in particular would emit one message per bot).
         self._tasks = [
             asyncio.create_task(feed.run(), name="ws_feed"),
             asyncio.create_task(self._candle_processor(), name="candle_processor"),
             asyncio.create_task(heartbeat_task(self.cfg, self.session_id), name="heartbeat"),
-            asyncio.create_task(
-                daily_summary_task(self.cfg, self.session_id, self.notifier),
-                name="daily_summary",
-            ),
         ]
 
         await db.write_event(
@@ -649,6 +646,10 @@ async def main() -> None:
         asyncio.create_task(
             trade_context_post_task(cfg.env.value),
             name="trade_context_post",
+        ),
+        asyncio.create_task(
+            daily_summary_task(cfg, f"{cfg.env.value}-global", notifier),
+            name="daily_summary_global",
         ),
     ]
 

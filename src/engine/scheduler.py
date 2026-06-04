@@ -29,18 +29,22 @@ async def daily_summary_task(
     session_id: str,
     notify_fn,
 ) -> None:
-    """Compute and send daily summary at 00:00 UTC (CLAUDE.md §27)."""
+    """Send ONE fleet-wide daily summary at 00:00 UTC (CLAUDE.md §27).
+
+    Runs globally (one instance for the whole process), NOT per-bot. A single
+    instance aggregates every bot's closed trades for the day into one message.
+    Spawning this per-bot emitted one summary per bot (240×) every midnight —
+    each with hardcoded zeros — which was the "hundreds of empty summaries" spam.
+    """
     while True:
         now = time.time()
         # Seconds until next UTC midnight
         midnight = (int(now) // 86400 + 1) * 86400
         await asyncio.sleep(midnight - now)
 
-        since_ts = midnight * 1000 - 86_400_000  # previous day start
+        since_ts = midnight * 1000 - 86_400_000  # previous UTC day start
 
-        # Fetch session stats
-        net_pnl = await db.get_session_pnl(cfg.bot_id, cfg.env.value, since_ts)
-        active = await db.count_active_positions(cfg.bot_id, cfg.env.value)
+        summary = await db.get_fleet_daily_summary(cfg.env.value, since_ts)
 
         await db.write_event(
             cfg.bot_id,
@@ -49,16 +53,18 @@ async def daily_summary_task(
             "INFO",
             "system",
             "daily_summary",
-            {"net_pnl_usdt": net_pnl, "active_positions": active},
+            summary,
         )
 
         if notify_fn:
             await notify_fn.daily_summary(
                 {
-                    "total_trades": 0,  # pulled from DB by caller if needed
-                    "win_rate": 0.0,
-                    "net_pnl_usdt": net_pnl,
-                    "bucket_states": f"{active} active",
+                    "total_trades": summary["total_trades"],
+                    "wins": summary["wins"],
+                    "losses": summary["losses"],
+                    "win_rate": summary["win_rate"],
+                    "net_pnl_usdt": summary["net_pnl_usdt"],
+                    "bucket_states": (f"{summary['active_positions']} open · {summary['bots_traded']} bots traded"),
                 }
             )
 

@@ -558,3 +558,40 @@ async def count_active_positions(bot_id: str, env: str) -> int:
             env,
         )
         return int(row["cnt"])
+
+
+async def get_fleet_daily_summary(env: str, since_ts: int) -> dict[str, Any]:
+    """Aggregate closed-trade stats across ALL bots for one env since `since_ts`.
+
+    Powers the single daily summary (CLAUDE.md §27): one message for the whole
+    fleet rather than one per bot. Returns real counts (trades, wins, win rate,
+    net PnL, bots that traded) plus a live open-position count.
+    """
+    async with acquire() as conn:
+        closed = await conn.fetchrow(
+            """
+            SELECT COUNT(*) AS total_trades,
+                   COUNT(*) FILTER (WHERE pnl_net_usdt > 0) AS wins,
+                   COALESCE(SUM(pnl_net_usdt), 0.0) AS net_pnl,
+                   COUNT(DISTINCT bot_id) AS bots
+            FROM trades
+            WHERE env = $1 AND exit_ts >= $2 AND pnl_net_usdt IS NOT NULL
+            """,
+            env,
+            since_ts,
+        )
+        active = await conn.fetchrow(
+            "SELECT COUNT(*) AS cnt FROM trades WHERE env = $1 AND exit_ts IS NULL",
+            env,
+        )
+    total = int(closed["total_trades"])
+    wins = int(closed["wins"])
+    return {
+        "total_trades": total,
+        "wins": wins,
+        "losses": total - wins,
+        "win_rate": (wins / total) if total else 0.0,
+        "net_pnl_usdt": float(closed["net_pnl"]),
+        "bots_traded": int(closed["bots"]),
+        "active_positions": int(active["cnt"]),
+    }

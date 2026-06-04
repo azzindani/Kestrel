@@ -25,6 +25,11 @@ PatternFn = Callable[[Sequence[Candle], Params], Optional[PatternResult]]
 
 registry: dict[str, PatternFn] = {}
 
+# Patterns whose entry deliberately OPPOSES the prevailing EMA trend (mean-reversion
+# / "flip the position"). The detector lets these supply their own direction instead
+# of requiring trend alignment — every other pattern must agree with the trend filter.
+COUNTER_TREND_PATTERNS: frozenset[str] = frozenset({"wave_flip"})
+
 
 def register(name: str) -> Callable[[PatternFn], PatternFn]:
     """Decorator that registers a pattern function into the registry."""
@@ -485,4 +490,153 @@ def detect_trend_momentum(candles: Sequence[Candle], params: Params) -> Optional
         direction=direction,
         confidence=round(confidence, 3),
         details={"variant": "trend_momentum", "body_ratio": round(body_ratio, 3)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Wave strategy family — "surf the wave, flip when wrong"
+#
+# Three entry styles the daemon runs as separate bots (see build_wave_lab.py):
+#   wave_ride  — ride an established trend wave after a shallow pullback (trend-aligned)
+#   vol_burst  — enter ONLY while volatility is expanding, in the trend direction
+#   wave_flip  — fade an exhausted extended run (COUNTER-TREND; COUNTER_TREND_PATTERNS)
+#
+# The patterns only decide entry + direction. The "ride it vs cut it" exit
+# behaviour is expressed by each bot's TP/SL/hold param profile, not here.
+# ---------------------------------------------------------------------------
+
+
+@register("wave_ride")
+def detect_wave_ride(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Ride a trend wave on the resumption candle after a shallow pullback.
+
+    Trend-aligned (EMA direction). Fires when the latest candle closes in the EMA
+    direction with a real body AND at least one of the prior two candles closed
+    against the trend (a minor pullback) — i.e. enter the continuation of the wave,
+    not an extended blow-off. Meant to be held with a wide SL / far TP / long hold
+    so the wave has room to run (the fix for the 73% premature stop-out).
+    """
+    if len(candles) < max(params.ema_slow + 1, 4):
+        return None
+
+    c = candles[-1]
+    ema9, ema21 = c.ema9, c.ema21
+    if ema9 is None or ema21 is None:
+        return None
+
+    if ema9 > ema21:
+        direction = Direction.LONG
+    elif ema9 < ema21:
+        direction = Direction.SHORT
+    else:
+        return None
+
+    # Resumption candle must close in the trend direction with conviction
+    if _direction_from_candle(c) is not direction:
+        return None
+    br = _body_ratio(c)
+    if br < params.body_ratio_min:
+        return None
+
+    # Require a shallow pullback in the prior two candles (don't chase extended runs)
+    prior_dirs = [_direction_from_candle(p) for p in candles[-3:-1]]
+    pulled_back = any(d is not None and d is not direction for d in prior_dirs)
+    if not pulled_back:
+        return None
+
+    confidence = min(0.58 + br * 0.20, 0.80)
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=round(confidence, 3),
+        details={"variant": "wave_ride", "body_ratio": round(br, 3)},
+    )
+
+
+@register("vol_burst")
+def detect_vol_burst(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter in the trend direction only while volatility is EXPANDING.
+
+    Fires when short-window ATR(5) exceeds long-window ATR(20) by
+    atr_volatile_multiplier (a genuine volatility burst, where the move is large
+    enough to clear the round-trip cost) and the latest candle closes in the
+    EMA-trend direction with a real body. Trend-aligned. The 'selective scalp':
+    high frequency during bursts, silent during chop.
+    """
+    if len(candles) < 22:
+        return None
+
+    c = candles[-1]
+    ema9, ema21 = c.ema9, c.ema21
+    if ema9 is None or ema21 is None:
+        return None
+
+    if ema9 > ema21:
+        direction = Direction.LONG
+    elif ema9 < ema21:
+        direction = Direction.SHORT
+    else:
+        return None
+
+    if _direction_from_candle(c) is not direction:
+        return None
+
+    atr5 = compute_atr(list(candles[-6:]), 5)
+    atr20 = compute_atr(list(candles[-21:]), 20)
+    if atr20 == 0.0:
+        return None
+    expansion = atr5 / atr20
+    if expansion < params.atr_volatile_multiplier:
+        return None
+
+    br = _body_ratio(c)
+    if br < params.body_ratio_min:
+        return None
+
+    confidence = min(0.55 + (expansion - params.atr_volatile_multiplier) * 0.10 + br * 0.10, 0.85)
+    return PatternResult(
+        pattern=PatternType.COMPRESSION_BREAKOUT,
+        direction=direction,
+        confidence=round(confidence, 3),
+        details={"variant": "vol_burst", "atr_expansion": round(expansion, 3), "body_ratio": round(br, 3)},
+    )
+
+
+@register("wave_flip")
+def detect_wave_flip(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Fade an exhausted extended run — the 'flip the position' entry.
+
+    After N consecutive same-direction candles (an extended wave), a candle that
+    closes AGAINST the run with a real body signals exhaustion; enter in the
+    OPPOSITE direction. This is COUNTER-TREND (see COUNTER_TREND_PATTERNS): the
+    detector permits it to set its own direction rather than requiring EMA
+    alignment. Captures "if the wave turns, ride it the other way."
+    """
+    n = max(params.momentum_acceleration_candles, 2)
+    if len(candles) < n + 2:
+        return None
+
+    run = list(candles[-(n + 1) : -1])  # the extended run, excluding the current candle
+    reversal = candles[-1]
+
+    run_dirs = [_direction_from_candle(x) for x in run]
+    if None in run_dirs or len(set(run_dirs)) != 1:
+        return None
+    run_dir = run_dirs[0]
+
+    rev_dir = _direction_from_candle(reversal)
+    if rev_dir is None or rev_dir is run_dir:
+        return None  # current candle must close against the run (the reversal)
+
+    rev_br = _body_ratio(reversal)
+    if rev_br < params.body_ratio_min:
+        return None
+
+    fade_dir = rev_dir  # opposite of run_dir by construction
+    confidence = min(0.55 + n * 0.04 + rev_br * 0.10, 0.80)
+    return PatternResult(
+        pattern=PatternType.ANOMALY_FADE,
+        direction=fade_dir,
+        confidence=round(confidence, 3),
+        details={"variant": "wave_flip", "run_len": n, "rev_body_ratio": round(rev_br, 3)},
     )
