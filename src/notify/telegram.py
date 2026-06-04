@@ -141,11 +141,17 @@ class TelegramNotifier:
         await self.send(msg, "INFO")
 
     async def daily_summary(self, summary: dict[str, Any]) -> None:
+        total = summary["total_trades"]
+        wins = summary.get("wins", 0)
+        losses = summary.get("losses", max(total - wins, 0))
+        net = summary["net_pnl_usdt"]
+        dot = "🟢" if net >= 0 else "🔴"
+        net_str = f"+${net:.2f}" if net >= 0 else f"-${abs(net):.2f}"
         msg = (
-            f"<b>DAILY SUMMARY</b>\n"
-            f"Trades: {summary['total_trades']} | Win rate: {summary['win_rate'] * 100:.1f}%\n"
-            f"Net PnL: ${summary['net_pnl_usdt']:.4f}\n"
-            f"Bucket states: {summary.get('bucket_states', '-')}"
+            f"📊 <b>DAILY SUMMARY</b> (fleet)\n"
+            f"Trades: {total} ({wins}W / {losses}L) · Win {summary['win_rate'] * 100:.1f}%\n"
+            f"{dot} Net PnL: {net_str}\n"
+            f"{summary.get('bucket_states', '-')}"
         )
         await self.send(msg, "INFO")
 

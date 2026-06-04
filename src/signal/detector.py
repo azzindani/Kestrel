@@ -37,7 +37,7 @@ from src.config import (
 )
 from src.signal.indicators import compute_ema, compute_rsi
 from src.signal.memory import adjust_confidence, should_suppress
-from src.signal.patterns import registry
+from src.signal.patterns import COUNTER_TREND_PATTERNS, registry
 from src.signal.regime import classify_regime, regime_permits_pattern
 
 
@@ -123,15 +123,18 @@ def _pattern_scan(
     candles: Sequence[Candle],
     params: Params,
     permitted_patterns: frozenset[str],
-    trend_direction: Direction,
+    trend_direction: Optional[Direction],
     pattern_memories: dict[str, dict | None],
     session: TradingSession,
     session_conf_multiplier: float,
 ) -> tuple[PatternResult, float] | Rejection:
     """
     Run all permitted patterns through the registry. Return (PatternResult, confidence)
-    for the highest-confidence match that aligns with trend_direction, or Rejection if
-    nothing fires.
+    for the highest-confidence match, or Rejection if nothing fires.
+
+    Trend-following patterns must agree with `trend_direction` (and are skipped when
+    it is None, i.e. the trend filter rejected). Counter-trend patterns
+    (COUNTER_TREND_PATTERNS) set their own direction and ignore the trend filter.
     """
     candidates = []
     for name, fn in registry.items():
@@ -140,14 +143,18 @@ def _pattern_scan(
         result = fn(candles, params)
         if result is None:
             continue
-        if result.direction != trend_direction:
-            continue
+        if name not in COUNTER_TREND_PATTERNS:
+            if trend_direction is None or result.direction != trend_direction:
+                continue
 
-        mem = pattern_memories.get(f"{name}:{trend_direction.value}")
+        # Memory is keyed by the actual trade direction — for counter-trend
+        # patterns that is the pattern's own (faded) direction, not the EMA trend.
+        trade_dir = result.direction.value
+        mem = pattern_memories.get(f"{name}:{trade_dir}")
         session_str = session.value
         regime_str = candles[-1].regime or "UNKNOWN"
 
-        if should_suppress(name, trend_direction.value, session_str, regime_str, mem):
+        if should_suppress(name, trade_dir, session_str, regime_str, mem):
             continue
 
         raw_conf = result.confidence
@@ -227,19 +234,25 @@ def evaluate(
     if enabled_patterns is not None:
         permitted = permitted & frozenset(enabled_patterns)
 
-    # --- Stage 2: Trend ---
+    # --- Stage 2: Trend (soft gate when a counter-trend pattern is enabled) ---
     trend_result = _trend_filter(candles, params)
     if isinstance(trend_result, Rejection):
-        return None, trend_result
-
-    layer_trend = 1
+        # Counter-trend patterns (e.g. wave_flip) deliberately trade against the
+        # EMA trend, so a 'no trend alignment' rejection must not block them.
+        if not (permitted & COUNTER_TREND_PATTERNS):
+            return None, trend_result
+        trend_direction: Optional[Direction] = None
+        layer_trend = 0
+    else:
+        trend_direction = trend_result.direction
+        layer_trend = 1
 
     # --- Stage 3: Pattern scan ---
     scan_result = _pattern_scan(
         candles,
         params,
         permitted,
-        trend_result.direction,
+        trend_direction,
         pattern_memories or {},
         session,
         session_conf_mult,

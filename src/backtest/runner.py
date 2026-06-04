@@ -15,7 +15,7 @@ Usage:
 
 from __future__ import annotations
 
-from typing import Any, Sequence
+from typing import Any, Optional, Sequence
 
 from src.config import (
     AppConfig,
@@ -40,6 +40,7 @@ def run_backtest(
     bot_id: str = "backtest-bot",
     session_id: str = "backtest-session",
     min_candles_warmup: int = 60,
+    enabled_patterns: Optional[Sequence[str]] = None,
 ) -> dict[str, Any]:
     """Run a full simulation backtest on a candle series.
 
@@ -50,6 +51,8 @@ def run_backtest(
         bot_id:             Bot identifier string.
         session_id:         Session identifier string.
         min_candles_warmup: Number of leading candles to skip (indicator warm-up).
+        enabled_patterns:   Restrict the detector to these pattern names (per-bot
+                            strategy isolation); None ⇒ all registered patterns.
 
     Returns:
         {
@@ -107,7 +110,9 @@ def run_backtest(
             current_ts=candle.ts,
         )
 
-        signal, rejection = evaluate(window, params, bot_id, session_id, cfg.env.value)
+        signal, rejection = evaluate(
+            window, params, bot_id, session_id, cfg.env.value, enabled_patterns=enabled_patterns
+        )
 
         if rejection is not None:
             signals.append(
@@ -198,6 +203,7 @@ def walk_forward(
     params: Params,
     cfg: AppConfig,
     train_frac: float = 0.60,
+    enabled_patterns: Optional[Sequence[str]] = None,
 ) -> dict[str, Any]:
     """Run walk-forward validation: train on first 60%, test on remaining 40%.
 
@@ -214,8 +220,8 @@ def walk_forward(
     train_candles = candles[:split]
     test_candles = candles[split:]
 
-    train_result = run_backtest(train_candles, params, cfg)
-    test_result = run_backtest(test_candles, params, cfg)
+    train_result = run_backtest(train_candles, params, cfg, enabled_patterns=enabled_patterns)
+    test_result = run_backtest(test_candles, params, cfg, enabled_patterns=enabled_patterns)
 
     return {
         "in_sample": compute_metrics(train_result["trades"]),

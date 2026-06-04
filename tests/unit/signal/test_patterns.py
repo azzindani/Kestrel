@@ -28,6 +28,9 @@ class TestRegistry:
             "momentum_continuation",
             "anomaly_fade",
             "trend_momentum",
+            "wave_ride",
+            "vol_burst",
+            "wave_flip",
         }
         assert expected == set(registry.keys())
 
