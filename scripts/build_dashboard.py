@@ -226,6 +226,32 @@ stat("Capital Deployed (open margin)", 3, 4, "SELECT COALESCE(SUM(size_usdt),0) 
 stat("Open Notional Exposure", 3, 4, "SELECT COALESCE(SUM(notional_usdt),0) AS v FROM trades WHERE exit_ts IS NULL", "currencyUSD", TH_BLUE)
 
 # ════════════════════════════════════════════════════════════════════════════
+# 1b — Position Sizing & Compounding (equity-scaled sizing, signal/sizing.py)
+# ════════════════════════════════════════════════════════════════════════════
+section("🪙 Position Sizing & Compounding (equity-scaled)")
+stat("Avg Position Size", 4, 4, f"SELECT ROUND(AVG(size_usdt),2) AS v {_CLOSED}", "currencyUSD", TH_BLUE, decimals=2)
+stat("Latest Position Size", 4, 4, "SELECT size_usdt AS v FROM trades WHERE exit_ts IS NOT NULL ORDER BY entry_ts DESC LIMIT 1", "currencyUSD", TH_BLUE, graph="area", decimals=2)
+stat("Largest Position Size", 4, 4, f"SELECT COALESCE(MAX(size_usdt),0) AS v {_CLOSED}", "currencyUSD", TH_GREEN, decimals=2)
+stat("Smallest Position Size", 4, 4, "SELECT COALESCE(MIN(size_usdt),0) AS v FROM trades WHERE exit_ts IS NOT NULL AND size_usdt>0", "currencyUSD", TH_BLUE, decimals=2)
+stat("Avg Notional (size×lev)", 4, 4, f"SELECT ROUND(AVG(notional_usdt),2) AS v {_CLOSED}", "currencyUSD", TH_BLUE, decimals=2)
+stat("Avg Bucket Equity (now)", 4, 4, "SELECT ROUND(AVG(eq),2) AS v FROM (SELECT DISTINCT ON (bot_id) bucket_balance_after AS eq FROM trades WHERE exit_ts IS NOT NULL ORDER BY bot_id, exit_ts DESC) x", "currencyUSD", TH_PNL, decimals=2)
+ts("Position Size Over Time (per strategy)", 12, 8,
+   f"SELECT to_timestamp(entry_ts/1000.0) AS \"time\", {_TOK} AS metric, AVG(size_usdt) AS size_usdt FROM trades WHERE exit_ts IS NOT NULL AND to_timestamp(entry_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1,2 ORDER BY 1",
+   unit="currencyUSD", fmt="time_series")
+ts("Bucket Equity Over Time (per strategy, shows compounding)", 12, 8,
+   f"SELECT to_timestamp(exit_ts/1000.0) AS \"time\", {_TOK} AS metric, AVG(bucket_balance_after) AS equity FROM trades WHERE exit_ts IS NOT NULL AND to_timestamp(exit_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1,2 ORDER BY 1",
+   unit="currencyUSD", fmt="time_series")
+histogram("Position Size ($) — distribution", 8, 7, f"SELECT size_usdt {_CLOSED}", "currencyUSD", color="green")
+ts("Position Size vs Notional (avg over time)", 8, 7,
+   "SELECT to_timestamp(entry_ts/1000.0) AS \"time\", AVG(size_usdt) AS margin, AVG(notional_usdt) AS notional FROM trades WHERE exit_ts IS NOT NULL AND to_timestamp(entry_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1 ORDER BY 1",
+   unit="currencyUSD", fmt="time_series")
+table("Per-Strategy Sizing", 8, 7,
+      f"SELECT {_TOK} AS strategy, COUNT(*) AS trades, ROUND(AVG(size_usdt),2) AS avg_size, ROUND(MAX(size_usdt),2) AS max_size, ROUND(AVG(notional_usdt),2) AS avg_notional, ROUND(AVG(leverage),1) AS leverage {_CLOSED} GROUP BY {_TOK} ORDER BY trades DESC",
+      overrides=[col_override("avg_size", "currencyUSD", bg=False), col_override("max_size", "currencyUSD", bg=False),
+                 col_override("avg_notional", "currencyUSD", bg=False)])
+stat("Bucket-Exhausted Stops (size→0)", 8, 4, "SELECT COUNT(*) AS v FROM events WHERE category='signal' AND message LIKE 'signal_rejected:bucket_exhausted%'", thresholds=TH_BLUE)
+
+# ════════════════════════════════════════════════════════════════════════════
 # 2 — Equity, Drawdown & Returns
 # ════════════════════════════════════════════════════════════════════════════
 section("📈 Equity, Drawdown & Returns")

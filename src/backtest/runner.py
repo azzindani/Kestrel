@@ -23,6 +23,7 @@ from src.config import (
     Candle,
     Direction,
     Params,
+    SizingState,
     compute_liquidation_price,
 )
 from src.risk.manager import validate
@@ -71,6 +72,11 @@ def run_backtest(
     session_pnl = 0.0
     session_reset_ts = _utc_midnight_ms(candles[0].ts) if candles else 0
 
+    # Equity-scaled sizing state (mirrors the live get_sizing_state path).
+    starting_bucket = cfg.bucket_size_usdt
+    peak_equity = starting_bucket
+    consec_losses = 0
+
     for i in range(min_candles_warmup, len(candles)):
         candle = candles[i]
         window = list(candles[max(0, i - 119) : i + 1])
@@ -94,6 +100,10 @@ def run_backtest(
                 equity += close_result["pnl_net_usdt"]
                 equity_curve.append(equity)
 
+                # Update equity-scaled sizing state.
+                peak_equity = max(peak_equity, starting_bucket + equity)
+                consec_losses = consec_losses + 1 if close_result["pnl_net_usdt"] <= 0.0 else 0
+
                 closed = {**open_trade, **close_result, "close_reason": reason}
                 trades.append(closed)
                 open_trade = None
@@ -110,8 +120,19 @@ def run_backtest(
             current_ts=candle.ts,
         )
 
+        sizing_state = SizingState(
+            equity_usdt=starting_bucket + equity,
+            peak_equity_usdt=peak_equity,
+            consec_losses=consec_losses,
+        )
         signal, rejection = evaluate(
-            window, params, bot_id, session_id, cfg.env.value, enabled_patterns=enabled_patterns
+            window,
+            params,
+            bot_id,
+            session_id,
+            cfg.env.value,
+            enabled_patterns=enabled_patterns,
+            sizing_state=sizing_state,
         )
 
         if rejection is not None:
@@ -169,7 +190,7 @@ def run_backtest(
             "leverage": cfg.leverage,
             "notional_usdt": notional,
             "fee_entry_usdt": fee_entry,
-            "bucket_balance_before": 10.0,
+            "bucket_balance_before": round(starting_bucket + equity, 4),
         }
         candle_hold_count = 0
 
@@ -298,7 +319,7 @@ def _simulate_close(trade: dict, candle: Candle, reason: str) -> dict:
         "fee_exit_usdt": round(fee_exit, 6),
         "pnl_net_usdt": round(pnl_net, 6),
         "pnl_pct": round(pnl_pct, 4),
-        "bucket_balance_after": round(10.0 + pnl_net, 4),
+        "bucket_balance_after": round(trade.get("bucket_balance_before", 10.0) + pnl_net, 4),
     }
 
 

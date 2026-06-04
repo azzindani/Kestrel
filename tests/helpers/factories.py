@@ -148,9 +148,27 @@ def make_params(**overrides) -> Params:
         momentum_acceleration_candles=3,
         rsi_long_max=75.0,
         rsi_short_min=25.0,
+        size_fraction_full=1.0,
+        size_fraction_half=0.5,
+        size_min_usdt=1.0,
+        drawdown_derisk_threshold=0.20,
+        drawdown_derisk_factor=0.5,
+        consec_loss_cooloff=3,
+        consec_loss_factor=0.5,
     )
     defaults.update(overrides)
     return Params(**defaults)
+
+
+def make_sizing_state(equity_usdt: float = 10.0, peak_equity_usdt=None, consec_losses: int = 0):
+    """Create a SizingState; peak defaults to equity (no drawdown)."""
+    from src.config import SizingState
+
+    return SizingState(
+        equity_usdt=equity_usdt,
+        peak_equity_usdt=equity_usdt if peak_equity_usdt is None else peak_equity_usdt,
+        consec_losses=consec_losses,
+    )
 
 
 # ---------------------------------------------------------------------------

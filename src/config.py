@@ -158,6 +158,14 @@ class Params:
     momentum_acceleration_candles: int
     rsi_long_max: float
     rsi_short_min: float
+    # --- position sizing / capital management (equity-scaled; see signal/sizing.py) ---
+    size_fraction_full: float = 1.0
+    size_fraction_half: float = 0.5
+    size_min_usdt: float = 1.0
+    drawdown_derisk_threshold: float = 0.20
+    drawdown_derisk_factor: float = 0.5
+    consec_loss_cooloff: int = 3
+    consec_loss_factor: float = 0.5
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
@@ -191,6 +199,13 @@ class Params:
             "momentum_acceleration_candles",
             "rsi_long_max",
             "rsi_short_min",
+            "size_fraction_full",
+            "size_fraction_half",
+            "size_min_usdt",
+            "drawdown_derisk_threshold",
+            "drawdown_derisk_factor",
+            "consec_loss_cooloff",
+            "consec_loss_factor",
         ]
         missing = [k for k in required_keys if k not in d]
         if missing:
@@ -221,6 +236,13 @@ class Params:
             momentum_acceleration_candles=int(d["momentum_acceleration_candles"]["value"]),
             rsi_long_max=float(d["rsi_long_max"]["value"]),
             rsi_short_min=float(d["rsi_short_min"]["value"]),
+            size_fraction_full=float(d["size_fraction_full"]["value"]),
+            size_fraction_half=float(d["size_fraction_half"]["value"]),
+            size_min_usdt=float(d["size_min_usdt"]["value"]),
+            drawdown_derisk_threshold=float(d["drawdown_derisk_threshold"]["value"]),
+            drawdown_derisk_factor=float(d["drawdown_derisk_factor"]["value"]),
+            consec_loss_cooloff=int(d["consec_loss_cooloff"]["value"]),
+            consec_loss_factor=float(d["consec_loss_factor"]["value"]),
         )
 
 
@@ -319,6 +341,20 @@ class BucketState:
     last_ws_reconnect_ts: Optional[int]  # unix ms; None = never reconnected
     session_net_pnl: float  # resets 00:00 UTC
     current_ts: int  # unix ms
+
+
+@dataclass(frozen=True, slots=True)
+class SizingState:
+    """Per-bucket capital state for equity-scaled position sizing (signal/sizing.py).
+
+    Assembled from authoritative DB state (CLAUDE.md §11) and passed into the
+    detector so position size compounds with realised PnL instead of using a
+    fixed bucket. None ⇒ fall back to the fixed-bucket model (backward compatible).
+    """
+
+    equity_usdt: float  # current bucket equity = starting bucket + cumulative realised PnL
+    peak_equity_usdt: float  # high-water mark of equity (for drawdown de-risking)
+    consec_losses: int  # trailing consecutive losing trades (for cool-off)
 
 
 @dataclass(frozen=True, slots=True)

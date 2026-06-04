@@ -64,10 +64,12 @@ class Daemon:
         self._last_ws_reconnect_ts: Optional[int] = None
         self._session_pnl: float = 0.0
         self._session_reset_ts: int = _utc_midnight_ms(self.start_ts)
-        # pair → (trade_id, entry_ts) for in-flight positions:
+        # pair → (trade_id, entry_ts, entry_equity) for in-flight positions:
         #   - trade_id lets _close_position UPDATE the right trades row;
-        #   - entry_ts powers trade_context 'during' linking on each candle.
-        self._open_trade_ids: dict[str, tuple[int, int]] = {}
+        #   - entry_ts powers trade_context 'during' linking on each candle;
+        #   - entry_equity (bucket equity at entry) gives the correct
+        #     bucket_balance_after on close under equity-scaled sizing.
+        self._open_trade_ids: dict[str, tuple[int, int, float]] = {}
 
         # State
         self._running = False
@@ -270,7 +272,7 @@ class Daemon:
         # the position lived through is in trade_context (CLAUDE.md §21).
         open_trade = self._open_trade_ids.get(candle.pair)
         if open_trade is not None:
-            trade_id, entry_ts = open_trade
+            trade_id, entry_ts, _entry_equity = open_trade
             await db.link_during_context(trade_id, candle_id, candle.ts, entry_ts)
 
         # Check if simulation needs to close any open positions (TP/SL)
@@ -305,6 +307,10 @@ class Daemon:
         if not candle_window:
             return
 
+        # Equity-scaled sizing: read the authoritative bucket equity from the DB
+        # (§11) so position size compounds with realised PnL.
+        sizing_state = await db.get_sizing_state(self.cfg.bot_id, self.cfg.env.value, self.cfg.bucket_size_usdt)
+
         signal, rejection = evaluate(
             candle_window,
             self.params,
@@ -312,6 +318,7 @@ class Daemon:
             self.session_id,
             self.cfg.env.value,
             enabled_patterns=self.cfg.enabled_patterns,
+            sizing_state=sizing_state,
         )
 
         if rejection is not None:
@@ -376,10 +383,10 @@ class Daemon:
                 "leverage": order["leverage"],
                 "notional_usdt": order["notional_usdt"],
                 "fee_entry_usdt": order["fee_usdt"],
-                "bucket_balance_before": self.cfg.bucket_size_usdt,
+                "bucket_balance_before": sizing_state.equity_usdt,
             }
         )
-        self._open_trade_ids[signal.pair] = (trade_id, order["ts"])
+        self._open_trade_ids[signal.pair] = (trade_id, order["ts"], sizing_state.equity_usdt)
 
         # Bulk-link the 48h of candles preceding this entry as 'pre' context
         # (CLAUDE.md §21). Idempotent; cheap (~576 INSERTs once per trade).
@@ -453,13 +460,15 @@ class Daemon:
             return
 
         self._session_pnl += result["pnl_net_usdt"]
-        bucket_balance_after = self.cfg.bucket_size_usdt + result["pnl_net_usdt"]
 
         # UPDATE the trades row with exit info — without this the row stays
         # exit_ts=NULL forever and count_active_positions over-counts on
         # subsequent restarts, blocking future signals via bucket_limit.
         open_entry = self._open_trade_ids.pop(pair, None)
         trade_id = open_entry[0] if open_entry is not None else None
+        # Equity at entry (3rd tuple element) + this trade's PnL = equity after.
+        entry_equity = open_entry[2] if open_entry is not None else self.cfg.bucket_size_usdt
+        bucket_balance_after = entry_equity + result["pnl_net_usdt"]
         if trade_id is not None:
             await db.close_trade(
                 trade_id,
