@@ -252,6 +252,40 @@ table("Per-Strategy Sizing", 8, 7,
 stat("Bucket-Exhausted Stops (size→0)", 8, 4, "SELECT COUNT(*) AS v FROM events WHERE category='signal' AND message LIKE 'signal_rejected:bucket_exhausted%'", thresholds=TH_BLUE)
 
 # ════════════════════════════════════════════════════════════════════════════
+# 1b — Trailing-Close (ratchet exit) — live A/B: trailing variants vs fixed
+# ════════════════════════════════════════════════════════════════════════════
+# Trailing bots carry a '_t'-suffixed strategy token (e.g. ride_t); fixed don't.
+_EXIT_POLICY = "CASE WHEN split_part(bot_id,'-',4) ~ '_t$' THEN 'trailing' ELSE 'fixed' END"
+_BASE_STRAT = "regexp_replace(split_part(bot_id,'-',4),'_t$','')"
+_TRAIL_F = "exit_ts IS NOT NULL AND split_part(bot_id,'-',4) ~ '_t$'"
+_FIXED_F = "exit_ts IS NOT NULL AND split_part(bot_id,'-',4) !~ '_t$'"
+section("🪤 Trailing-Close (ratchet exit) — live A/B vs fixed TP")
+stat("Trailing-Stop Exit Rate", 4, 4, f"SELECT ROUND(100.0*AVG((close_reason='trailing_stop')::int),1) AS v FROM trades WHERE {_TRAIL_F}", "percent", TH_WIN, decimals=1)
+stat("Trailing Trades (closed)", 4, 4, f"SELECT COUNT(*) AS v FROM trades WHERE {_TRAIL_F}", thresholds=TH_BLUE)
+stat("Avg Net PnL — Trailing", 4, 4, f"SELECT ROUND(AVG(pnl_net_usdt),4) AS v FROM trades WHERE {_TRAIL_F}", "currencyUSD", TH_PNL, decimals=4)
+stat("Avg Net PnL — Fixed", 4, 4, f"SELECT ROUND(AVG(pnl_net_usdt),4) AS v FROM trades WHERE {_FIXED_F}", "currencyUSD", TH_PNL, decimals=4)
+stat("Avg Hold — Trailing (candles)", 4, 4, f"SELECT ROUND(AVG(hold_candles),1) AS v FROM trades WHERE {_TRAIL_F}", thresholds=TH_BLUE, decimals=1)
+stat("Avg Hold — Fixed (candles)", 4, 4, f"SELECT ROUND(AVG(hold_candles),1) AS v FROM trades WHERE {_FIXED_F}", thresholds=TH_BLUE, decimals=1)
+stat("Avg Realized R — Trailing", 4, 4, f"SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM trades WHERE {_TRAIL_F}", "short", TH_PNL, decimals=3)
+stat("Avg Realized R — Fixed", 4, 4, f"SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM trades WHERE {_FIXED_F}", "short", TH_PNL, decimals=3)
+table("Trailing vs Fixed — by strategy (live A/B)", 12, 8,
+      f"SELECT {_BASE_STRAT} AS strategy, {_EXIT_POLICY} AS exit_policy, COUNT(*) AS trades, "
+      f"ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS win_pct, ROUND(AVG(pnl_net_usdt),4) AS avg_net, "
+      f"ROUND(SUM(pnl_net_usdt),3) AS net, ROUND(AVG(hold_candles),1) AS avg_hold, "
+      f"ROUND(100.0*AVG((close_reason='trailing_stop')::int),1) AS trail_exit_pct "
+      f"{_CLOSED} GROUP BY 1,2 ORDER BY 1,2",
+      overrides=[col_override("avg_net", "currencyUSD", bg=True, th=TH_PNL), col_override("net", "currencyUSD", bg=True, th=TH_PNL),
+                 col_override("win_pct", "percent", bg=False), col_override("trail_exit_pct", "percent", bg=False)])
+bargauge("Close Reasons — Trailing variants", 12, 8,
+         f"SELECT close_reason AS metric, COUNT(*) AS value FROM trades WHERE {_TRAIL_F} GROUP BY close_reason ORDER BY value DESC")
+ts("Avg Net PnL/trade Over Time — Trailing vs Fixed", 12, 7,
+   f"SELECT to_timestamp(exit_ts/1000.0) AS \"time\", {_EXIT_POLICY} AS metric, AVG(pnl_net_usdt) AS avg_net FROM trades WHERE exit_ts IS NOT NULL AND to_timestamp(exit_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1,2 ORDER BY 1",
+   unit="currencyUSD", fmt="time_series")
+ts("Trailing-Stop Exits Over Time", 12, 7,
+   f"SELECT to_timestamp(exit_ts/1000.0) AS \"time\", COUNT(*) FILTER (WHERE close_reason='trailing_stop') AS trailing_stops FROM trades WHERE {_TRAIL_F} AND to_timestamp(exit_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1 ORDER BY 1",
+   unit="short", fmt="time_series", bars=True, color="green")
+
+# ════════════════════════════════════════════════════════════════════════════
 # 2 — Equity, Drawdown & Returns
 # ════════════════════════════════════════════════════════════════════════════
 section("📈 Equity, Drawdown & Returns")

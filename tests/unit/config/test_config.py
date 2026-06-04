@@ -243,6 +243,9 @@ class TestParamsFromDict:
                 ("drawdown_derisk_factor", 0.5),
                 ("consec_loss_cooloff", 3),
                 ("consec_loss_factor", 0.5),
+                ("trailing_enabled", False),
+                ("trail_activation_r", 1.0),
+                ("trail_distance_r", 0.8),
             ]
         }
 

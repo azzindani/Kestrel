@@ -61,10 +61,13 @@ def get_execution_provider(cfg: AppConfig) -> ExecutionInterface:
         from src.config import load_params
         from src.execution.simulation import SimulationExecution
 
-        # Load strategy params so SimulationExecution knows max_hold_candles
-        # for the timeout branch in check_exits. Boundary-layer I/O is allowed
-        # here (CLAUDE.md §7).
-        params = load_params("params.json")
+        # SimulationExecution owns the exit mechanics — max_hold_candles timeout
+        # AND trailing-close. Those live in per-bot params, so prefer the bot's
+        # own override (cfg.params) and fall back to params.json for single-bot
+        # mode. Using base params here would silently ignore per-variant holds
+        # and disable trailing on the trailing lab variants. Boundary-layer I/O
+        # (load_params) is allowed here (CLAUDE.md §7).
+        params = cfg.params if cfg.params is not None else load_params("params.json")
         return SimulationExecution(cfg, params)
 
     name = cfg.exchange.lower()

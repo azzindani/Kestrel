@@ -59,8 +59,11 @@ class Daemon:
         self.session_id = f"{cfg.env.value}-{uuid.uuid4().hex[:8]}"
         self.start_ts = int(time.time() * 1000)
 
-        # Candle processing queue: CandleBuilder → process_candle
-        self._candle_queue: asyncio.Queue = asyncio.Queue(maxsize=50)
+        # Candle processing queue: CandleBuilder → process_candle.
+        # Sized to absorb the mock backfill burst (~288 candles) without the
+        # producer overflowing — the feed now drops on a full queue rather than
+        # dying, but headroom avoids dropping warm-up candles in the first place.
+        self._candle_queue: asyncio.Queue = asyncio.Queue(maxsize=1000)
         self._last_ws_reconnect_ts: Optional[int] = None
         self._session_pnl: float = 0.0
         self._session_reset_ts: int = _utc_midnight_ms(self.start_ts)

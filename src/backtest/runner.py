@@ -172,6 +172,10 @@ def run_backtest(
         fee_entry = notional * _TAKER_FEE_PCT
         liq_price = compute_liquidation_price(fill_price, signal.direction, cfg.leverage)
 
+        # Trailing-close geometry mirrors execution/simulation.py: trail distances
+        # in units of the initial stop distance R (= |entry − SL|).
+        r_unit = abs(fill_price - signal.sl_price)
+
         open_trade = {
             "bot_id": bot_id,
             "session_id": session_id,
@@ -191,6 +195,12 @@ def run_backtest(
             "notional_usdt": notional,
             "fee_entry_usdt": fee_entry,
             "bucket_balance_before": round(starting_bucket + equity, 4),
+            # Trailing-close state (consulted only when trailing_enabled).
+            "trailing_enabled": params.trailing_enabled,
+            "peak_price": fill_price,
+            "trail_stop": None,
+            "trail_activation_dist": params.trail_activation_r * r_unit,
+            "trail_distance_dist": params.trail_distance_r * r_unit,
         }
         candle_hold_count = 0
 
@@ -257,26 +267,71 @@ def walk_forward(
 
 
 def _check_exit(trade: dict, candle: Candle) -> str | None:
-    """Return close reason if TP/SL/liquidation is hit, else None."""
+    """Return close reason if trailing-stop/TP/SL/liquidation is hit, else None.
+
+    Trailing parity with execution/simulation.py: when trailing is enabled the
+    fixed TP is dropped and the trailing stop governs the upside. The stop is
+    checked against this candle's adverse extreme BEFORE the trail is advanced
+    with this candle's favourable extreme, so a single candle can never both
+    raise the stop and then trip it (no intra-candle look-ahead).
+    """
     direction = trade["direction"]
     high = candle.high
     low = candle.low
+    trailing = trade.get("trailing_enabled", False)
 
     if direction == "long":
-        if high >= trade["tp_price"]:
+        if trailing:
+            ts = trade["trail_stop"]
+            if ts is not None and low <= ts:
+                return "trailing_stop"
+        elif high >= trade["tp_price"]:
             return "take_profit"
         if low <= trade["sl_price"]:
             return "stop_loss"
         if low <= trade["liquidation_price"]:
             return "liquidated"
     else:
-        if low <= trade["tp_price"]:
+        if trailing:
+            ts = trade["trail_stop"]
+            if ts is not None and high >= ts:
+                return "trailing_stop"
+        elif low <= trade["tp_price"]:
             return "take_profit"
         if high >= trade["sl_price"]:
             return "stop_loss"
         if high >= trade["liquidation_price"]:
             return "liquidated"
+
+    if trailing:
+        _advance_trail_bt(trade, high, low)
     return None
+
+
+def _advance_trail_bt(trade: dict, high: float, low: float) -> None:
+    """Ratchet the backtest trailing stop using the candle's favourable extreme.
+
+    Mirrors SimulationExecution._advance_trail, but the favourable extreme is the
+    candle high (long) / low (short) rather than a single close price.
+    """
+    direction = trade["direction"]
+    entry = trade["entry_price"]
+    activation = trade["trail_activation_dist"]
+    distance = trade["trail_distance_dist"]
+    if direction == "long":
+        peak = max(trade["peak_price"], high)
+        trade["peak_price"] = peak
+        if peak - entry >= activation:
+            candidate = max(peak - distance, trade["sl_price"])
+            cur = trade["trail_stop"]
+            trade["trail_stop"] = candidate if cur is None else max(cur, candidate)
+    else:
+        trough = min(trade["peak_price"], low)
+        trade["peak_price"] = trough
+        if entry - trough >= activation:
+            candidate = min(trough + distance, trade["sl_price"])
+            cur = trade["trail_stop"]
+            trade["trail_stop"] = candidate if cur is None else min(cur, candidate)
 
 
 def _simulate_close(trade: dict, candle: Candle, reason: str) -> dict:
@@ -286,9 +341,12 @@ def _simulate_close(trade: dict, candle: Candle, reason: str) -> dict:
     notional = trade["notional_usdt"]
     size = trade["size_usdt"]
 
-    # Use TP/SL price if hit, otherwise candle close with slippage
+    # Use the exact level for a level-triggered exit, otherwise candle close
+    # with slippage (trailing fills at the trail-stop level it was hit at).
     if reason == "take_profit":
         raw_exit = trade["tp_price"]
+    elif reason == "trailing_stop":
+        raw_exit = trade["trail_stop"]
     elif reason in ("stop_loss", "liquidated"):
         raw_exit = trade["sl_price"] if reason == "stop_loss" else trade["liquidation_price"]
     else:
