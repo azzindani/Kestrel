@@ -40,7 +40,7 @@ from src.signal.indicators import compute_ema, compute_rsi
 from src.signal.memory import adjust_confidence, should_suppress
 from src.signal.patterns import COUNTER_TREND_PATTERNS, registry
 from src.signal.regime import classify_regime, regime_permits_pattern
-from src.signal.sizing import compute_position_size
+from src.signal.sizing import cap_size_for_risk, compute_position_size
 
 
 def _round_price(price: float) -> float:
@@ -187,6 +187,7 @@ def evaluate(
     pattern_memories: Optional[dict[str, dict | None]] = None,
     enabled_patterns: Optional[Sequence[str]] = None,
     sizing_state: Optional[SizingState] = None,
+    leverage: int = 0,
 ) -> tuple[Signal, None] | tuple[None, Rejection]:
     """
     Run the full signal pipeline on a completed candle list.
@@ -302,6 +303,15 @@ def evaluate(
     # supplies live bucket equity. None ⇒ legacy fixed $10/$5 bucket.
     # A size of 0 means the bucket is exhausted (bled below the viable floor).
     size_usdt = compute_position_size(adjusted_confidence, sizing_state, params)
+    # Risk hardening: cap per-trade downside to a fixed fraction of bucket equity
+    # so a single stop-out can't blow a large hole at high leverage (the "20% cut
+    # loss" failure mode). Only active when the caller supplies leverage and
+    # params.max_loss_pct_per_trade > 0; otherwise sizing is unchanged.
+    if leverage > 0 and params.max_loss_pct_per_trade > 0.0:
+        equity_ref = sizing_state.equity_usdt if sizing_state is not None else size_usdt
+        size_usdt = cap_size_for_risk(
+            size_usdt, equity_ref, entry, sl_price, leverage, params.max_loss_pct_per_trade
+        )
     if size_usdt <= 0.0:
         return None, Rejection(stage="pattern", reason="bucket_exhausted")
 

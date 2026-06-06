@@ -152,6 +152,13 @@ for _ccxt_name in (
     _REGISTRY[_ccxt_name] = _ccxt_feed_factory
     _SHARED_EXCHANGES.add(_ccxt_name)
 
+# Exness (MetaApi) is also a shared feed — see src/data/providers/exness.py. Its
+# factory is registered by the submodule's @register_feed("exness") decorator
+# (auto-imported below); marking it shared makes get_data_feed fan one poller out
+# to every subscribed bot instead of opening one MetaApi connection per bot, which
+# is what lets a large hyperparameter lab run on the single Exness account.
+_SHARED_EXCHANGES.add("exness")
+
 
 # ---------------------------------------------------------------------------
 # Auto-import submodules so @register_feed decorators run at package load

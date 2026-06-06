@@ -170,6 +170,9 @@ class Params:
     trailing_enabled: bool = False
     trail_activation_r: float = 1.0
     trail_distance_r: float = 0.8
+    # --- risk hardening: cap per-trade loss (signal/sizing.py cap_size_for_risk) ---
+    # Max fraction of bucket equity a single stop-out may lose. 0.0 ⇒ disabled.
+    max_loss_pct_per_trade: float = 0.0
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
@@ -253,6 +256,11 @@ class Params:
             trailing_enabled=bool(d["trailing_enabled"]["value"]),
             trail_activation_r=float(d["trail_activation_r"]["value"]),
             trail_distance_r=float(d["trail_distance_r"]["value"]),
+            # Optional (backward compatible): older params.json without this key
+            # loads with the risk cap disabled.
+            max_loss_pct_per_trade=(
+                float(d["max_loss_pct_per_trade"]["value"]) if "max_loss_pct_per_trade" in d else 0.0
+            ),
         )
 
 
