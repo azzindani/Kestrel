@@ -1,0 +1,135 @@
+# Exness Instruments — Data, Rules & Selection Rationale
+
+> Why Kestrel trades the instruments it does on Exness, and the hard numbers
+> behind each. Companion to the migration off crypto/gate onto Exness MT5.
+> Status as of June 2026. **Verify per-symbol specs in your own MT5 terminal** —
+> contract sizes, min-lots and leverage caps change and vary by account type.
+
+---
+
+## 1. Why Exness, and why these instruments
+
+The brokerage decision (Indonesian resident, automated bot, API + bots allowed)
+landed on **Exness** — see memory `project_indonesia_live_platform_landscape`.
+Exness is a **100% CFD broker**: you never own the underlying, everything is
+cash-settled. The operator's own position (their ijtihad) is that a CFD on a
+**real, tangible underlying** is acceptable where a synthetic/fiat one is not —
+so the instrument set is filtered to **real-underlying** symbols only.
+
+**Selection rule (in priority order):**
+1. **Real tangible underlying** — a commodity, metal, energy, or a real digital
+   asset. Excludes fiat FX pairs and index baskets.
+2. **Swap-free where possible** — removes the overnight-interest (riba) element.
+   *Mostly moot for this bot:* swap is an overnight charge and Kestrel closes
+   intraday (max-hold 3–8 candles ≈ minutes), so positions rarely survive to the
+   daily rollover. The bot must reliably close before rollover for this to hold.
+3. **Tradeable at the bucket size** — the lot the bucket can open must clear the
+   broker minimum (see §3).
+4. **No *bai' al-sarf* friction** — gold/silver carry the classical spot-possession
+   caveat; energy and industrial metals do not, so they rank cleaner.
+
+---
+
+## 2. Selected instruments (the fleet)
+
+| Symbol | Underlying | Class | Swap-free | Leverage tier | Notes |
+|---|---|---|---|---|---|
+| **USOIL** | WTI crude oil | Energy | ✅ | mid (~1:200) | Cleanest: real, swap-free, **no sarf caveat** |
+| **UKOIL** | Brent crude oil | Energy | swap | mid (~1:200) | Real energy commodity |
+| **XNGUSD** | Natural gas | Energy | swap | mid | Real energy commodity |
+| **XAUUSD** | Gold | Metal | ✅ | **high (≤1:2000/unltd)** | Real; *sarf* caveat; best leverage tier |
+| **XAGUSD** | Silver | Metal | ✅ | high | Real; *sarf* caveat |
+| **XPTUSD** | Platinum | Metal | swap | mid | Industrial metal, no sarf |
+| **XCUUSD** | Copper | Metal | swap | mid | Industrial metal, no sarf |
+| **BTCUSD** | Bitcoin | Crypto | swap | low (~1:200) | MUI-conditional commodity; keeps the bot's crypto tuning |
+| **ETHUSD** | Ethereum | Crypto | swap | low | MUI-conditional commodity |
+
+### Deliberately EXCLUDED (fail the real-underlying rule)
+- **Forex pairs** (EURUSD, …) — underlying is **fiat** (no tangible asset; *sarf*/riba).
+- **Indices** (US500, NAS100, …) — a **basket/number**, plus haram-sector constituents.
+
+---
+
+## 3. The leverage / min-lot / risk triangle (read before going live)
+
+Three numbers are in tension; you can't max all three:
+
+- **Leverage** — set in `.env` `LEVERAGE`. Exness is dynamic-by-equity
+  (`<$1k`→up to unltd MT4 / **1:2000 MT5 cap**; `$5k–30k`→1:1000; `≥$30k`→1:500).
+  High leverage is forex+gold+silver only; crypto/oil/other metals are lower.
+- **Min lot** — Exness minimum is **0.01 lot**. The margin that costs depends on
+  the symbol's contract size:
+
+  | Symbol | 0.01-lot notional (approx) | Margin @ 50× | Fits a $10 bucket? |
+  |---|---|---|---|
+  | USOIL | ~$80 (1 bbl) | ~$1.6 | ✅ |
+  | BTCUSD | ~$600 (0.01 BTC) | ~$12 | ⚠️ borderline |
+  | XAUUSD | ~$2,000 (1 oz) | ~$40 | ❌ needs ≥~$40 |
+
+- **Per-trade risk** — capped by `max_loss_pct_per_trade` (§4).
+
+**Implication:** at **50× with a small bucket**, gold's 0.01-lot minimum can't be
+opened, and a tight risk cap shrinks size below the minimum on most symbols. The
+**strongest lever to reconcile them is lower leverage** (e.g. 1:10–1:20): bigger
+position for the same risk, comfortably above min-lots. The live execution provider
+(`src/execution/providers/exness.py`) **rejects** sub-minimum orders rather than
+silently over-sizing.
+
+---
+
+## 4. Risk hardening — `max_loss_pct_per_trade`
+
+**Problem found in review:** sizing deployed `equity × fraction` (full = the whole
+bucket) as margin, so at 50× a 1-ATR stop (~0.5% price) lost
+`size × 50 × 0.005 ≈ 25%` of the bucket **per stop-out** — the "20% cut loss".
+
+**Fix:** fixed-fractional risk (`signal/sizing.py::cap_size_for_risk`). Position
+size is shrunk so a stop-out loses at most `max_loss_pct_per_trade` of bucket
+equity, regardless of leverage:
+
+```
+size ≤ max_loss_pct × equity / (leverage × sl_distance_pct)
+```
+
+Applied in `signal/detector.py` (after SL/entry are known), active whenever the
+daemon passes `leverage` and the param is > 0. **Does not touch `risk/manager.py`**
+(human-only) — it's a sizing-layer control, complementary to the risk gates.
+
+Default `0.05` (5%) — a 4–5× improvement over the old ~20–25%. Tunable per bot
+(the lab sweeps `0.05` vs `0.02`, see §5).
+
+---
+
+## 5. The hyperparameter lab (`bots.json`)
+
+Generated by `scripts/build_exness_lab.py`:
+
+```
+9 symbols × (3 entries × fixed/trail = 6 variants) × {risk 0.05, risk 0.02}
+= 108 bots,  served by 9 MetaApi pollers (shared ExnessFeed)
+```
+
+- **ENV=dev** → `SimulationExecution` (paper fills) on **real Exness candle data**.
+  The shared feed runs one poller per symbol, so 108 bots ≠ 108 MetaApi
+  connections — it fits the single-account / free-tier limit.
+- **ENV=prod** → one real position per symbol on the account; run **one bot per
+  symbol** (a real MT5 account can't hold independent same-symbol positions per
+  bot). Pick the winning param set per symbol from the dev lab / offline backtest.
+
+`bot_id = dev-{SYMBOL}-5m-{variant}-{NN}`; instance `01`=risk 0.05, `02`=risk 0.02.
+The dashboard groups on the 4th segment (`ride`/`ride_t`/`scalp`/…).
+
+---
+
+## 6. Open caveats (honest)
+
+- **No validated edge.** Prior exhaustive testing (memory
+  `project_strategy_no_edge_on_real_data`, `project_wave_strategy_no_edge`) found no
+  edge at any timeframe under cost. This migration **hardens loss control and sets
+  up tuning** — it does not, by itself, create edge. Treat live as forward-testing.
+- **Fee model is a placeholder** (`_FEE_PCT` in the execution provider) — calibrate
+  from real demo fills; Exness Standard is spread-only.
+- **`get_historical_candles` assumption** — the feed polls MetaApi historical
+  candles; requires the account to have historical market data (default).
+- **Leverage is global** (`.env`), not per-bot — the lab tunes the risk cap and
+  SL/TP/exit, not leverage.

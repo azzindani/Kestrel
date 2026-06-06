@@ -76,3 +76,34 @@ def compute_position_size(
         return params.size_min_usdt if equity >= params.size_min_usdt else 0.0
 
     return round(size, 2)
+
+
+def cap_size_for_risk(
+    size_usdt: float,
+    equity_usdt: float,
+    entry: float,
+    sl_price: float,
+    leverage: int,
+    max_loss_pct: float,
+) -> float:
+    """Shrink position size so a stop-out loses at most ``max_loss_pct`` of equity.
+
+    Risk hardening (fixed-fractional risk). At leverage ``L`` a position of margin
+    ``size`` carries notional ``size × L``; if the stop sits ``d = |entry-sl|/entry``
+    away, hitting it loses ``notional × d = size × L × d``. Bounding that loss at
+    ``max_loss_pct × equity`` gives::
+
+        size ≤ max_loss_pct × equity / (L × d)
+
+    This caps per-trade downside regardless of how wide the ATR stop is or how high
+    the leverage — the fix for "a single stop-out costs 20%+ of the bucket" at high
+    leverage. Returns the input unchanged when disabled (max_loss_pct ≤ 0) or inputs
+    are degenerate. Pure function.
+    """
+    if max_loss_pct <= 0.0 or leverage <= 0 or entry <= 0.0 or equity_usdt <= 0.0:
+        return size_usdt
+    sl_dist_pct = abs(entry - sl_price) / entry
+    if sl_dist_pct <= 0.0:
+        return size_usdt
+    cap = (max_loss_pct * equity_usdt) / (leverage * sl_dist_pct)
+    return round(min(size_usdt, cap), 2)

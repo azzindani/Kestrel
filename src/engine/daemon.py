@@ -322,6 +322,7 @@ class Daemon:
             self.cfg.env.value,
             enabled_patterns=self.cfg.enabled_patterns,
             sizing_state=sizing_state,
+            leverage=self.cfg.leverage,
         )
 
         if rejection is not None:

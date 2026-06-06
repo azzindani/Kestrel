@@ -133,6 +133,7 @@ def run_backtest(
             cfg.env.value,
             enabled_patterns=enabled_patterns,
             sizing_state=sizing_state,
+            leverage=cfg.leverage,
         )
 
         if rejection is not None:

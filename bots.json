@@ -1,7 +1,7 @@
 [
   {
-    "bot_id": "dev-BTCUSDT-5m-ride-01",
-    "pair": "BTC/USDT",
+    "bot_id": "dev-USOIL-5m-ride-01",
+    "pair": "USOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -12,12 +12,30 @@
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-5m-scalp-01",
-    "pair": "BTC/USDT",
+    "bot_id": "dev-USOIL-5m-ride-02",
+    "pair": "USOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-USOIL-5m-scalp-01",
+    "pair": "USOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -28,12 +46,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-5m-flip-01",
-    "pair": "BTC/USDT",
+    "bot_id": "dev-USOIL-5m-scalp-02",
+    "pair": "USOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-USOIL-5m-flip-01",
+    "pair": "USOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -44,12 +80,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-5m-ride_t-01",
-    "pair": "BTC/USDT",
+    "bot_id": "dev-USOIL-5m-flip-02",
+    "pair": "USOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-USOIL-5m-ride_t-01",
+    "pair": "USOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -63,98 +117,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-5m-scalp_t-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
-    }
-  },
-  {
-    "bot_id": "dev-BTCUSDT-5m-flip_t-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-ride-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-scalp-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-flip-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-ride_t-01",
-    "pair": "ETH/USDT",
+    "bot_id": "dev-USOIL-5m-ride_t-02",
+    "pair": "USOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -168,12 +137,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-5m-scalp_t-01",
-    "pair": "ETH/USDT",
+    "bot_id": "dev-USOIL-5m-scalp_t-01",
+    "pair": "USOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -187,12 +157,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-5m-flip_t-01",
-    "pair": "ETH/USDT",
+    "bot_id": "dev-USOIL-5m-scalp_t-02",
+    "pair": "USOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-USOIL-5m-flip_t-01",
+    "pair": "USOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -206,12 +197,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-ride-01",
-    "pair": "SOL/USDT",
+    "bot_id": "dev-USOIL-5m-flip_t-02",
+    "pair": "USOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-UKOIL-5m-ride-01",
+    "pair": "UKOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -222,12 +234,30 @@
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-scalp-01",
-    "pair": "SOL/USDT",
+    "bot_id": "dev-UKOIL-5m-ride-02",
+    "pair": "UKOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-UKOIL-5m-scalp-01",
+    "pair": "UKOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -238,12 +268,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-flip-01",
-    "pair": "SOL/USDT",
+    "bot_id": "dev-UKOIL-5m-scalp-02",
+    "pair": "UKOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-UKOIL-5m-flip-01",
+    "pair": "UKOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -254,12 +302,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-ride_t-01",
-    "pair": "SOL/USDT",
+    "bot_id": "dev-UKOIL-5m-flip-02",
+    "pair": "UKOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-UKOIL-5m-ride_t-01",
+    "pair": "UKOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -273,98 +339,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-5m-scalp_t-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
-    }
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-flip_t-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-ride-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-scalp-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-flip-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-ride_t-01",
-    "pair": "DOGE/USDT",
+    "bot_id": "dev-UKOIL-5m-ride_t-02",
+    "pair": "UKOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -378,12 +359,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-5m-scalp_t-01",
-    "pair": "DOGE/USDT",
+    "bot_id": "dev-UKOIL-5m-scalp_t-01",
+    "pair": "UKOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -397,12 +379,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-5m-flip_t-01",
-    "pair": "DOGE/USDT",
+    "bot_id": "dev-UKOIL-5m-scalp_t-02",
+    "pair": "UKOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-UKOIL-5m-flip_t-01",
+    "pair": "UKOIL",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -416,12 +419,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-5m-ride-01",
-    "pair": "PEPE/USDT",
+    "bot_id": "dev-UKOIL-5m-flip_t-02",
+    "pair": "UKOIL",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XNGUSD-5m-ride-01",
+    "pair": "XNGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -432,12 +456,30 @@
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-5m-scalp-01",
-    "pair": "PEPE/USDT",
+    "bot_id": "dev-XNGUSD-5m-ride-02",
+    "pair": "XNGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XNGUSD-5m-scalp-01",
+    "pair": "XNGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -448,12 +490,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-5m-flip-01",
-    "pair": "PEPE/USDT",
+    "bot_id": "dev-XNGUSD-5m-scalp-02",
+    "pair": "XNGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XNGUSD-5m-flip-01",
+    "pair": "XNGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -464,12 +524,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-5m-ride_t-01",
-    "pair": "PEPE/USDT",
+    "bot_id": "dev-XNGUSD-5m-flip-02",
+    "pair": "XNGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XNGUSD-5m-ride_t-01",
+    "pair": "XNGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -483,98 +561,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-5m-scalp_t-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
-    }
-  },
-  {
-    "bot_id": "dev-PEPEUSDT-5m-flip_t-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
-    }
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-ride-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-scalp-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
-    }
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-flip-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-HYPEUSDT-5m-ride_t-01",
-    "pair": "HYPE/USDT",
+    "bot_id": "dev-XNGUSD-5m-ride_t-02",
+    "pair": "XNGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -588,12 +581,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-HYPEUSDT-5m-scalp_t-01",
-    "pair": "HYPE/USDT",
+    "bot_id": "dev-XNGUSD-5m-scalp_t-01",
+    "pair": "XNGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -607,12 +601,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-HYPEUSDT-5m-flip_t-01",
-    "pair": "HYPE/USDT",
+    "bot_id": "dev-XNGUSD-5m-scalp_t-02",
+    "pair": "XNGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XNGUSD-5m-flip_t-01",
+    "pair": "XNGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -626,12 +641,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-XRPUSDT-5m-ride-01",
-    "pair": "XRP/USDT",
+    "bot_id": "dev-XNGUSD-5m-flip_t-02",
+    "pair": "XNGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAUUSD-5m-ride-01",
+    "pair": "XAUUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -642,12 +678,30 @@
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-XRPUSDT-5m-scalp-01",
-    "pair": "XRP/USDT",
+    "bot_id": "dev-XAUUSD-5m-ride-02",
+    "pair": "XAUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAUUSD-5m-scalp-01",
+    "pair": "XAUUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -658,12 +712,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-XRPUSDT-5m-flip-01",
-    "pair": "XRP/USDT",
+    "bot_id": "dev-XAUUSD-5m-scalp-02",
+    "pair": "XAUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAUUSD-5m-flip-01",
+    "pair": "XAUUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -674,12 +746,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-XRPUSDT-5m-ride_t-01",
-    "pair": "XRP/USDT",
+    "bot_id": "dev-XAUUSD-5m-flip-02",
+    "pair": "XAUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAUUSD-5m-ride_t-01",
+    "pair": "XAUUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -693,98 +783,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-XRPUSDT-5m-scalp_t-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
-    }
-  },
-  {
-    "bot_id": "dev-XRPUSDT-5m-flip_t-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
-    }
-  },
-  {
-    "bot_id": "dev-BNBUSDT-5m-ride-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-BNBUSDT-5m-scalp-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
-    }
-  },
-  {
-    "bot_id": "dev-BNBUSDT-5m-flip-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-BNBUSDT-5m-ride_t-01",
-    "pair": "BNB/USDT",
+    "bot_id": "dev-XAUUSD-5m-ride_t-02",
+    "pair": "XAUUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -798,12 +803,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-BNBUSDT-5m-scalp_t-01",
-    "pair": "BNB/USDT",
+    "bot_id": "dev-XAUUSD-5m-scalp_t-01",
+    "pair": "XAUUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -817,12 +823,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-BNBUSDT-5m-flip_t-01",
-    "pair": "BNB/USDT",
+    "bot_id": "dev-XAUUSD-5m-scalp_t-02",
+    "pair": "XAUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAUUSD-5m-flip_t-01",
+    "pair": "XAUUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -836,12 +863,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-5m-ride-01",
-    "pair": "ADA/USDT",
+    "bot_id": "dev-XAUUSD-5m-flip_t-02",
+    "pair": "XAUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAGUSD-5m-ride-01",
+    "pair": "XAGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -852,12 +900,30 @@
     "params": {
       "tp_atr_multiplier": 3.0,
       "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-5m-scalp-01",
-    "pair": "ADA/USDT",
+    "bot_id": "dev-XAGUSD-5m-ride-02",
+    "pair": "XAGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAGUSD-5m-scalp-01",
+    "pair": "XAGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -868,12 +934,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-5m-flip-01",
-    "pair": "ADA/USDT",
+    "bot_id": "dev-XAGUSD-5m-scalp-02",
+    "pair": "XAGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAGUSD-5m-flip-01",
+    "pair": "XAGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -884,12 +968,30 @@
     "params": {
       "tp_atr_multiplier": 1.6,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-5m-ride_t-01",
-    "pair": "ADA/USDT",
+    "bot_id": "dev-XAGUSD-5m-flip-02",
+    "pair": "XAGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAGUSD-5m-ride_t-01",
+    "pair": "XAGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -903,98 +1005,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-5m-scalp_t-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
-    }
-  },
-  {
-    "bot_id": "dev-ADAUSDT-5m-flip_t-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
-    }
-  },
-  {
-    "bot_id": "dev-AVAXUSDT-5m-ride-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8
-    }
-  },
-  {
-    "bot_id": "dev-AVAXUSDT-5m-scalp-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3
-    }
-  },
-  {
-    "bot_id": "dev-AVAXUSDT-5m-flip-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4
-    }
-  },
-  {
-    "bot_id": "dev-AVAXUSDT-5m-ride_t-01",
-    "pair": "AVAX/USDT",
+    "bot_id": "dev-XAGUSD-5m-ride_t-02",
+    "pair": "XAGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1008,12 +1025,13 @@
       "max_hold_candles": 24,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-AVAXUSDT-5m-scalp_t-01",
-    "pair": "AVAX/USDT",
+    "bot_id": "dev-XAGUSD-5m-scalp_t-01",
+    "pair": "XAGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1027,12 +1045,33 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
     }
   },
   {
-    "bot_id": "dev-AVAXUSDT-5m-flip_t-01",
-    "pair": "AVAX/USDT",
+    "bot_id": "dev-XAGUSD-5m-scalp_t-02",
+    "pair": "XAGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XAGUSD-5m-flip_t-01",
+    "pair": "XAGUSD",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1046,7 +1085,916 @@
       "max_hold_candles": 8,
       "trailing_enabled": true,
       "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XAGUSD-5m-flip_t-02",
+    "pair": "XAGUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-ride-01",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-ride-02",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-scalp-01",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-scalp-02",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-flip-01",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-flip-02",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-ride_t-01",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-ride_t-02",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-scalp_t-01",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-scalp_t-02",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-flip_t-01",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XPTUSD-5m-flip_t-02",
+    "pair": "XPTUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-ride-01",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-ride-02",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-scalp-01",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-scalp-02",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-flip-01",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-flip-02",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-ride_t-01",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-ride_t-02",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-scalp_t-01",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-scalp_t-02",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-flip_t-01",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-XCUUSD-5m-flip_t-02",
+    "pair": "XCUUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-ride-01",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-ride-02",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-scalp-01",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-scalp-02",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-flip-01",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-flip-02",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-ride_t-01",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-ride_t-02",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-scalp_t-01",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-scalp_t-02",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-flip_t-01",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSD-5m-flip_t-02",
+    "pair": "BTCUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-ride-01",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-ride-02",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-scalp-01",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-scalp-02",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-flip-01",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-flip-02",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-ride_t-01",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-ride_t-02",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-scalp_t-01",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-scalp_t-02",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-flip_t-01",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.05
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSD-5m-flip_t-02",
+    "pair": "ETHUSD",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
     }
   }
 ]

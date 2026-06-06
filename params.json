@@ -243,5 +243,12 @@
     "range": [0.2, 2.0],
     "description": "Gap the trailing stop holds below the running peak, in units of the initial stop distance R",
     "impact": "lower = tighter trail, banks profit fast but gets shaken out; higher = gives the move room to breathe"
+  },
+  "max_loss_pct_per_trade": {
+    "value": 0.05,
+    "type": "float",
+    "range": [0.01, 0.20],
+    "description": "Risk hardening: maximum fraction of bucket equity a single stop-out may lose. Position size is shrunk (signal/sizing.py cap_size_for_risk) so notional x SL-distance <= this x equity, bounding per-trade downside independently of leverage. Was effectively ~0.20-0.25 (full bucket x leverage x 1-ATR stop) before this cap.",
+    "impact": "lower = smaller positions and tighter per-trade loss control (but at high leverage may fall below the broker min-lot in live); higher = larger positions, bigger loss per stop. The strongest companion lever is lower LEVERAGE in .env."
   }
 }
