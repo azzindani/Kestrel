@@ -83,11 +83,23 @@ class TestDegenerate:
         assert compute_exit_prices(0.0, Direction.LONG, atr=2.0, params=p, leverage=20) is None
 
     def test_zero_tp_or_sl_pct_returns_none(self):
-        assert compute_exit_prices(
-            100.0, Direction.LONG, atr=2.0,
-            params=_params(tp_sl_pct_enabled=True, tp_pct=0.0, sl_pct=0.025), leverage=20,
-        ) is None
-        assert compute_exit_prices(
-            100.0, Direction.LONG, atr=2.0,
-            params=_params(tp_sl_pct_enabled=True, tp_pct=0.05, sl_pct=0.0), leverage=20,
-        ) is None
+        assert (
+            compute_exit_prices(
+                100.0,
+                Direction.LONG,
+                atr=2.0,
+                params=_params(tp_sl_pct_enabled=True, tp_pct=0.0, sl_pct=0.025),
+                leverage=20,
+            )
+            is None
+        )
+        assert (
+            compute_exit_prices(
+                100.0,
+                Direction.LONG,
+                atr=2.0,
+                params=_params(tp_sl_pct_enabled=True, tp_pct=0.05, sl_pct=0.0),
+                leverage=20,
+            )
+            is None
+        )

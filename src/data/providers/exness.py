@@ -162,8 +162,7 @@ class ExnessFeed:
             from metaapi_cloud_sdk import MetaApi
         except ImportError as exc:
             raise ImportError(
-                "metaapi-cloud-sdk is required for the Exness feed. "
-                "Install it with: pip install metaapi-cloud-sdk"
+                "metaapi-cloud-sdk is required for the Exness feed. Install it with: pip install metaapi-cloud-sdk"
             ) from exc
         api = MetaApi(self.cfg.api_key)
         account = await api.metatrader_account_api.get_account(self.cfg.api_secret)
@@ -248,8 +247,7 @@ class ExnessFeed:
                     if notify:
                         notify(
                             "CRITICAL",
-                            f"Exness feed {pair}/{timeframe} exceeded max retries "
-                            f"({_MAX_RETRIES}). Last error: {exc}",
+                            f"Exness feed {pair}/{timeframe} exceeded max retries ({_MAX_RETRIES}). Last error: {exc}",
                         )
                     await asyncio.sleep(60)
                     retry_count = 0
