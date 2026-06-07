@@ -39,7 +39,7 @@ class TestCapSizeForRisk:
 
     def test_wider_stop_smaller_cap(self):
         tight = cap_size_for_risk(100.0, 100.0, 100.0, 99.5, 50, 0.02)  # 0.5%
-        wide = cap_size_for_risk(100.0, 100.0, 100.0, 98.0, 50, 0.02)   # 2.0%
+        wide = cap_size_for_risk(100.0, 100.0, 100.0, 98.0, 50, 0.02)  # 2.0%
         assert wide < tight
 
     def test_degenerate_inputs_safe(self):

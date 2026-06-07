@@ -269,9 +269,7 @@ class Params:
             max_loss_pct_per_trade=(
                 float(d["max_loss_pct_per_trade"]["value"]) if "max_loss_pct_per_trade" in d else 0.0
             ),
-            tp_sl_pct_enabled=(
-                bool(d["tp_sl_pct_enabled"]["value"]) if "tp_sl_pct_enabled" in d else False
-            ),
+            tp_sl_pct_enabled=(bool(d["tp_sl_pct_enabled"]["value"]) if "tp_sl_pct_enabled" in d else False),
             tp_pct=(float(d["tp_pct"]["value"]) if "tp_pct" in d else 0.05),
             sl_pct=(float(d["sl_pct"]["value"]) if "sl_pct" in d else 0.025),
         )

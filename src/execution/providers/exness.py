@@ -99,8 +99,10 @@ class ExnessExecution(ExecutionInterface):
         self.cfg = cfg
         self._token = cfg.api_key
         self._account_id = cfg.api_secret
-        self._account = None
-        self._connection = None
+        # MetaApi SDK objects (no type stubs); typed Any so the lazy None→client
+        # transition doesn't trip mypy attribute-access checks after connection.
+        self._account: Any = None
+        self._connection: Any = None
         self._spec_cache: dict[str, dict] = {}
 
     # ------------------------------------------------------------------
@@ -114,8 +116,7 @@ class ExnessExecution(ExecutionInterface):
             from metaapi_cloud_sdk import MetaApi
         except ImportError as exc:
             raise ImportError(
-                "metaapi-cloud-sdk is required for the Exness provider. "
-                "Install it with: pip install metaapi-cloud-sdk"
+                "metaapi-cloud-sdk is required for the Exness provider. Install it with: pip install metaapi-cloud-sdk"
             ) from exc
 
         try:
@@ -261,9 +262,7 @@ class ExnessExecution(ExecutionInterface):
                 "ts": int(time.time() * 1000),
                 "fee_usdt": 0.0,
                 "notional_usdt": round(notional, 4),
-                "liquidation_price": compute_liquidation_price(
-                    entry, Direction(direction), self.cfg.leverage
-                ),
+                "liquidation_price": compute_liquidation_price(entry, Direction(direction), self.cfg.leverage),
                 "unrealised_pnl": float(p.get("profit", 0.0) or 0.0),
             }
         return None
@@ -286,9 +285,7 @@ class ExnessExecution(ExecutionInterface):
         try:
             await conn.close_position(pos["order_id"])
         except Exception as exc:
-            raise ExecutionError(
-                f"Exness close failed: {exc}", {"pair": pair, "reason": reason}
-            ) from exc
+            raise ExecutionError(f"Exness close failed: {exc}", {"pair": pair, "reason": reason}) from exc
 
         notional = pos["notional_usdt"]
         entry = pos["entry_price"]

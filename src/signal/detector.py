@@ -350,9 +350,7 @@ def evaluate(
     # params.max_loss_pct_per_trade > 0; otherwise sizing is unchanged.
     if leverage > 0 and params.max_loss_pct_per_trade > 0.0:
         equity_ref = sizing_state.equity_usdt if sizing_state is not None else size_usdt
-        size_usdt = cap_size_for_risk(
-            size_usdt, equity_ref, entry, sl_price, leverage, params.max_loss_pct_per_trade
-        )
+        size_usdt = cap_size_for_risk(size_usdt, equity_ref, entry, sl_price, leverage, params.max_loss_pct_per_trade)
     if size_usdt <= 0.0:
         return None, Rejection(stage="pattern", reason="bucket_exhausted")
 
