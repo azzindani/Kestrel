@@ -55,6 +55,51 @@ def _round_price(price: float) -> float:
     return round(price, max(decimals, 8))
 
 
+# Keep a fixed-percent stop within this fraction of the liquidation distance
+# (~1/leverage) so liquidation — a larger, uncontrolled loss — can never trigger
+# before the intended stop. The 30% headroom also absorbs exit slippage.
+_LIQ_SAFETY_FRACTION = 0.7
+
+
+def compute_exit_prices(
+    entry: float,
+    direction: Direction,
+    atr: Optional[float],
+    params: Params,
+    leverage: int,
+) -> Optional[tuple[float, float]]:
+    """Pure: return (tp_price, sl_price) for a candidate entry, or None if inputs
+    are degenerate.
+
+    Two modes (``params.tp_sl_pct_enabled``):
+      * pct  — fixed reward:risk at ``tp_pct`` / ``sl_pct`` of entry price. The stop
+        fraction is clamped to ``_LIQ_SAFETY_FRACTION / leverage`` so it always sits
+        inside the liquidation distance (the 'mindful risk management' guard — a 5%
+        stop at 20x would otherwise liquidate at ~4.5% first).
+      * atr  — ATR-multiple distances (the original behaviour); requires a usable ATR.
+    """
+    if entry <= 0.0:
+        return None
+
+    if params.tp_sl_pct_enabled:
+        sl_pct = params.sl_pct
+        if leverage > 0:
+            sl_pct = min(sl_pct, _LIQ_SAFETY_FRACTION / leverage)
+        if sl_pct <= 0.0 or params.tp_pct <= 0.0:
+            return None
+        tp_dist = entry * params.tp_pct
+        sl_dist = entry * sl_pct
+    else:
+        if atr is None or atr == 0.0:
+            return None
+        tp_dist = atr * params.tp_atr_multiplier
+        sl_dist = atr * params.sl_atr_multiplier
+
+    if direction is Direction.LONG:
+        return entry + tp_dist, entry - sl_dist
+    return entry - tp_dist, entry + sl_dist
+
+
 # ---------------------------------------------------------------------------
 # Pipeline stage: trend filter
 # ---------------------------------------------------------------------------
@@ -284,19 +329,15 @@ def evaluate(
     layer_volume = 1
 
     # --- Stage 5: Build signal ---
-    atr = latest.atr14
-    if atr is None or atr == 0.0:
-        return None, Rejection(stage="pattern", reason="atr_unavailable")
-
     direction = pattern_result.direction
     entry = latest.close
 
-    if direction is Direction.LONG:
-        tp_price = entry + atr * params.tp_atr_multiplier
-        sl_price = entry - atr * params.sl_atr_multiplier
-    else:
-        tp_price = entry - atr * params.tp_atr_multiplier
-        sl_price = entry + atr * params.sl_atr_multiplier
+    # TP/SL: ATR-multiple or fixed-percent reward:risk (params.tp_sl_pct_enabled),
+    # with the pct stop clamped inside the liquidation distance. Pure helper.
+    exits = compute_exit_prices(entry, direction, latest.atr14, params, leverage)
+    if exits is None:
+        return None, Rejection(stage="pattern", reason="exit_prices_unavailable")
+    tp_price, sl_price = exits
 
     # Position size — equity-scaled so positions compound with realised PnL
     # (signal/sizing.py). Confidence still sets the conviction band; sizing_state

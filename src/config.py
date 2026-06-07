@@ -170,6 +170,14 @@ class Params:
     trailing_enabled: bool = False
     trail_activation_r: float = 1.0
     trail_distance_r: float = 0.8
+    # --- fixed-percent reward:risk TP/SL (alternative to ATR-based; signal/detector.py) ---
+    # When enabled, TP/SL are placed at fixed fractions of entry price instead of ATR
+    # multiples, giving a deterministic reward:risk = tp_pct / sl_pct. The stop is
+    # clamped to stay INSIDE the liquidation distance (~1/leverage) so liquidation can
+    # never front-run it. Composes with trailing (the trail R-unit becomes sl_pct×entry).
+    tp_sl_pct_enabled: bool = False
+    tp_pct: float = 0.05
+    sl_pct: float = 0.025
     # --- risk hardening: cap per-trade loss (signal/sizing.py cap_size_for_risk) ---
     # Max fraction of bucket equity a single stop-out may lose. 0.0 ⇒ disabled.
     max_loss_pct_per_trade: float = 0.0
@@ -256,11 +264,16 @@ class Params:
             trailing_enabled=bool(d["trailing_enabled"]["value"]),
             trail_activation_r=float(d["trail_activation_r"]["value"]),
             trail_distance_r=float(d["trail_distance_r"]["value"]),
-            # Optional (backward compatible): older params.json without this key
-            # loads with the risk cap disabled.
+            # Optional (backward compatible): older params.json without these keys
+            # loads with the risk cap disabled and ATR-based TP/SL.
             max_loss_pct_per_trade=(
                 float(d["max_loss_pct_per_trade"]["value"]) if "max_loss_pct_per_trade" in d else 0.0
             ),
+            tp_sl_pct_enabled=(
+                bool(d["tp_sl_pct_enabled"]["value"]) if "tp_sl_pct_enabled" in d else False
+            ),
+            tp_pct=(float(d["tp_pct"]["value"]) if "tp_pct" in d else 0.05),
+            sl_pct=(float(d["sl_pct"]["value"]) if "sl_pct" in d else 0.025),
         )
 
 

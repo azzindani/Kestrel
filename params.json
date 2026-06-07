@@ -250,5 +250,26 @@
     "range": [0.01, 0.20],
     "description": "Risk hardening: maximum fraction of bucket equity a single stop-out may lose. Position size is shrunk (signal/sizing.py cap_size_for_risk) so notional x SL-distance <= this x equity, bounding per-trade downside independently of leverage. Was effectively ~0.20-0.25 (full bucket x leverage x 1-ATR stop) before this cap.",
     "impact": "lower = smaller positions and tighter per-trade loss control (but at high leverage may fall below the broker min-lot in live); higher = larger positions, bigger loss per stop. The strongest companion lever is lower LEVERAGE in .env."
+  },
+  "tp_sl_pct_enabled": {
+    "value": false,
+    "type": "bool",
+    "range": [false, true],
+    "description": "Use fixed-percent reward:risk TP/SL (tp_pct/sl_pct of entry price) instead of ATR-multiple distances. Set per-bot in bots.json for A/B lab variants. The pct stop is auto-clamped inside the liquidation distance (~1/leverage) by signal/detector.py.",
+    "impact": "true = deterministic R:R independent of volatility (e.g. 5% TP / 2.5% SL = 2:1); false = ATR-scaled distances that breathe with volatility"
+  },
+  "tp_pct": {
+    "value": 0.05,
+    "type": "float",
+    "range": [0.005, 0.10],
+    "description": "Take-profit distance as a fraction of entry price when tp_sl_pct_enabled (e.g. 0.05 = 5%). With trailing on, this is the fallback target the trail replaces.",
+    "impact": "higher = larger targets, lower win rate but higher reward:risk per win"
+  },
+  "sl_pct": {
+    "value": 0.025,
+    "type": "float",
+    "range": [0.0025, 0.05],
+    "description": "Stop-loss distance as a fraction of entry price when tp_sl_pct_enabled (e.g. 0.025 = 2.5%). Reward:risk = tp_pct/sl_pct. Detector clamps this inside 0.7/leverage so liquidation never front-runs the stop.",
+    "impact": "lower = tighter stops (more SL hits, smaller per-loss); must stay well below 1/leverage or the clamp tightens it further"
   }
 }
