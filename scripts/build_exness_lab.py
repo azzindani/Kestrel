@@ -9,15 +9,22 @@ new dimension is RISK HARDENING: every bot carries a max_loss_pct_per_trade cap
 (signal/sizing.py cap_size_for_risk) so a single stop-out can no longer cost ~20%
 of the bucket at high leverage.
 
-Fleet = SYMBOLS × (3 entries × fixed/trail) × {risk 0.05, risk 0.02}.
-One Exness account serves all of it: the shared ExnessFeed runs one MetaApi poller
-per symbol (not per bot). In ENV=dev fills are simulated, so the whole lab is paper
-on real Exness data. In ENV=prod, run ONE bot per symbol (real account can't hold
-independent same-symbol positions per bot).
+Fleet = SYMBOLS × (3 entries × 4 exit modes) × {risk 0.02}.
+The 4 exit modes A/B the two questions the strategy review raised — at ~40% win rate
+the lever to profitability is reward:risk, not win rate (0.4·R > 0.6 ⇒ need R > 1.5):
+    fixed-ATR  · trail-ATR  · fixed-PCT  · trail-PCT
+where PCT = fixed-percent reward:risk TP/SL (tp_pct/sl_pct), clamped inside the
+liquidation distance, and trail = ratcheting trailing-close. Every bot keeps the
+max_loss_pct_per_trade=0.02 risk cap (mindful risk management).
 
-bot_id: dev-{SYMBOL}-5m-{variant}-{NN}
-    4th segment ({variant}: ride/ride_t/scalp/...) is the dashboard grouping token.
-    instance NN encodes the risk cap: 01 = 0.05, 02 = 0.02.
+One account serves all of it: the shared feed runs one poller per symbol (not per
+bot). In ENV=dev fills are simulated, so the whole lab is paper on real data. In
+ENV=prod, run ONE bot per symbol (a real account can't hold independent same-symbol
+positions per bot).
+
+bot_id: dev-{SYMBOL}-5m-{variant}-01
+    4th segment ({variant}: ride/ride_t/ride_p/ride_pt/scalp/...) is the dashboard
+    grouping token: bare=fixed-ATR, _t=trail-ATR, _p=fixed-PCT, _pt=trail-PCT.
 
 Run:  python3 scripts/build_exness_lab.py
 """
@@ -43,44 +50,62 @@ SYMBOLS = [
     "ETHUSD",  # ethereum
 ]
 
-# Entry/exit variants — identical structure to the wave lab, now risk-capped.
-_BASE_VARIANTS = [
+# Three entry patterns; each crossed with four exit modes (12 variants/symbol).
+# PCT reward:risk values are sized for the configured leverage so the stop sits
+# inside the liquidation distance (detector also clamps as a backstop). R:R = 2:1.
+_ENTRIES = [
     {"name": "ride", "patterns": ["wave_ride"],
-     "params": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.6, "max_hold_candles": 8}},
+     "atr": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.6},
+     "pct": {"tp_pct": 0.05, "sl_pct": 0.025},          # 5% / 2.5% — the user's example
+     "hold_fixed": 8, "hold_trail": 24, "trail": (1.0, 1.0)},
     {"name": "scalp", "patterns": ["vol_burst"],
-     "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 3}},
+     "atr": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0},
+     "pct": {"tp_pct": 0.02, "sl_pct": 0.01},           # tight scalp R:R
+     "hold_fixed": 3, "hold_trail": 8, "trail": (0.8, 0.5)},
     {"name": "flip", "patterns": ["wave_flip"],
-     "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 4}},
-    {"name": "ride_t", "patterns": ["wave_ride"],
-     "params": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.6, "max_hold_candles": 24,
-                "trailing_enabled": True, "trail_activation_r": 1.0, "trail_distance_r": 1.0}},
-    {"name": "scalp_t", "patterns": ["vol_burst"],
-     "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 8,
-                "trailing_enabled": True, "trail_activation_r": 0.8, "trail_distance_r": 0.5}},
-    {"name": "flip_t", "patterns": ["wave_flip"],
-     "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 8,
-                "trailing_enabled": True, "trail_activation_r": 1.0, "trail_distance_r": 0.8}},
+     "atr": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0},
+     "pct": {"tp_pct": 0.03, "sl_pct": 0.015},
+     "hold_fixed": 4, "hold_trail": 8, "trail": (1.0, 0.8)},
 ]
 
-# Risk-cap sweep: instance suffix → max_loss_pct_per_trade (the new tuning knob).
-RISK_LEVELS = {"01": 0.05, "02": 0.02}
+# Single mindful risk cap across the whole fleet (was a 0.05/0.02 sweep; the freed
+# dimension now A/B-tests the exit mode the review asked for).
+_RISK_CAP = 0.02
+
+
+def _variants_for(e: dict) -> list[dict]:
+    """Expand one entry into its four exit-mode variants (fixed/trail × ATR/PCT)."""
+    act, dist = e["trail"]
+    return [
+        {"suffix": "", "params": {**e["atr"], "max_hold_candles": e["hold_fixed"]}},
+        {"suffix": "_t", "params": {**e["atr"], "max_hold_candles": e["hold_trail"],
+                                    "trailing_enabled": True,
+                                    "trail_activation_r": act, "trail_distance_r": dist}},
+        {"suffix": "_p", "params": {"tp_sl_pct_enabled": True, **e["pct"],
+                                    "max_hold_candles": e["hold_fixed"]}},
+        {"suffix": "_pt", "params": {"tp_sl_pct_enabled": True, **e["pct"],
+                                     "max_hold_candles": e["hold_trail"],
+                                     "trailing_enabled": True,
+                                     "trail_activation_r": act, "trail_distance_r": dist}},
+    ]
 
 
 def main() -> None:
     bots = []
     for symbol in SYMBOLS:
-        for v in _BASE_VARIANTS:
-            for inst, risk in RISK_LEVELS.items():
+        for e in _ENTRIES:
+            for v in _variants_for(e):
+                name = f"{e['name']}{v['suffix']}"
                 params = dict(v["params"])
-                params["max_loss_pct_per_trade"] = risk
+                params["max_loss_pct_per_trade"] = _RISK_CAP
                 bots.append({
-                    "bot_id": f"dev-{symbol}-5m-{v['name']}-{inst}",
+                    "bot_id": f"dev-{symbol}-5m-{name}-01",
                     "pair": symbol,
                     "timeframe_entry": "5m",
                     "timeframe_regime": "15m",
                     "max_active_buckets": 1,
-                    "strategy": v["name"],
-                    "patterns": v["patterns"],
+                    "strategy": name,
+                    "patterns": e["patterns"],
                     "params": params,
                 })
 
@@ -89,8 +114,9 @@ def main() -> None:
         json.dump(bots, f, indent=2)
     print(
         f"wrote {os.path.normpath(out)}: {len(bots)} bots = "
-        f"{len(_BASE_VARIANTS)} variants × {len(RISK_LEVELS)} risk levels × "
-        f"{len(SYMBOLS)} symbols  ({len(SYMBOLS)} MetaApi pollers via shared feed)"
+        f"{len(_ENTRIES)} entries × 4 exit modes (fixed/trail × ATR/PCT) × "
+        f"{len(SYMBOLS)} symbols @ risk cap {_RISK_CAP}  "
+        f"({len(SYMBOLS)} pollers via shared feed)"
     )
 
 
