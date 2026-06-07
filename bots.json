@@ -1,7 +1,7 @@
 [
   {
-    "bot_id": "dev-USOIL-5m-ride-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-ride-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -17,8 +17,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-ride_t-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-ride_t-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -37,8 +37,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-ride_p-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-ride_p-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -55,8 +55,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-ride_pt-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-ride_pt-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -76,8 +76,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-scalp-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-scalp-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -93,8 +93,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-scalp_t-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-scalp_t-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -113,8 +113,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-scalp_p-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-scalp_p-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -131,8 +131,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-scalp_pt-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-scalp_pt-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -152,8 +152,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-flip-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-flip-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -169,8 +169,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-flip_t-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-flip_t-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -189,8 +189,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-flip_p-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-flip_p-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -207,8 +207,8 @@
     }
   },
   {
-    "bot_id": "dev-USOIL-5m-flip_pt-01",
-    "pair": "USOIL",
+    "bot_id": "dev-BTC-5m-flip_pt-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -228,8 +228,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-ride-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-ride-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -245,8 +245,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-ride_t-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-ride_t-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -265,8 +265,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-ride_p-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-ride_p-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -283,8 +283,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-ride_pt-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-ride_pt-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -304,8 +304,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-scalp-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-scalp-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -321,8 +321,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-scalp_t-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-scalp_t-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -341,8 +341,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-scalp_p-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-scalp_p-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -359,8 +359,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-scalp_pt-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-scalp_pt-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -380,8 +380,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-flip-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-flip-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -397,8 +397,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-flip_t-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-flip_t-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -417,8 +417,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-flip_p-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-flip_p-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -435,8 +435,8 @@
     }
   },
   {
-    "bot_id": "dev-UKOIL-5m-flip_pt-01",
-    "pair": "UKOIL",
+    "bot_id": "dev-ETH-5m-flip_pt-01",
+    "pair": "ETH/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -456,8 +456,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-ride-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-ride-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -473,8 +473,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-ride_t-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-ride_t-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -493,8 +493,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-ride_p-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-ride_p-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -511,8 +511,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-ride_pt-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-ride_pt-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -532,8 +532,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-scalp-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-scalp-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -549,8 +549,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-scalp_t-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-scalp_t-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -569,8 +569,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-scalp_p-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-scalp_p-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -587,8 +587,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-scalp_pt-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-scalp_pt-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -608,8 +608,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-flip-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-flip-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -625,8 +625,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-flip_t-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-flip_t-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -645,8 +645,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-flip_p-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-flip_p-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -663,8 +663,8 @@
     }
   },
   {
-    "bot_id": "dev-XNGUSD-5m-flip_pt-01",
-    "pair": "XNGUSD",
+    "bot_id": "dev-SOL-5m-flip_pt-01",
+    "pair": "SOL/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -684,8 +684,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-ride-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-ride-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -701,8 +701,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-ride_t-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-ride_t-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -721,8 +721,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-ride_p-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-ride_p-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -739,8 +739,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-ride_pt-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-ride_pt-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -760,8 +760,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-scalp-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-scalp-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -777,8 +777,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-scalp_t-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-scalp_t-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -797,8 +797,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-scalp_p-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-scalp_p-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -815,8 +815,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-scalp_pt-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-scalp_pt-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -836,8 +836,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-flip-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-flip-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -853,8 +853,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-flip_t-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-flip_t-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -873,8 +873,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-flip_p-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-flip_p-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -891,8 +891,8 @@
     }
   },
   {
-    "bot_id": "dev-XAUUSD-5m-flip_pt-01",
-    "pair": "XAUUSD",
+    "bot_id": "dev-XRP-5m-flip_pt-01",
+    "pair": "XRP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -912,8 +912,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-ride-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-ride-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -929,8 +929,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-ride_t-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-ride_t-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -949,8 +949,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-ride_p-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-ride_p-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -967,8 +967,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-ride_pt-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-ride_pt-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -988,8 +988,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-scalp-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-scalp-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1005,8 +1005,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-scalp_t-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-scalp_t-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1025,8 +1025,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-scalp_p-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-scalp_p-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1043,8 +1043,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-scalp_pt-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-scalp_pt-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1064,8 +1064,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-flip-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-flip-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1081,8 +1081,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-flip_t-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-flip_t-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1101,8 +1101,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-flip_p-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-flip_p-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1119,8 +1119,8 @@
     }
   },
   {
-    "bot_id": "dev-XAGUSD-5m-flip_pt-01",
-    "pair": "XAGUSD",
+    "bot_id": "dev-BNB-5m-flip_pt-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1140,8 +1140,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-ride-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-ride-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1157,8 +1157,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-ride_t-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-ride_t-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1177,8 +1177,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-ride_p-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-ride_p-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1195,8 +1195,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-ride_pt-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-ride_pt-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1216,8 +1216,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-scalp-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-scalp-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1233,8 +1233,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-scalp_t-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-scalp_t-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1253,8 +1253,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-scalp_p-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-scalp_p-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1271,8 +1271,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-scalp_pt-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-scalp_pt-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1292,8 +1292,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-flip-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-flip-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1309,8 +1309,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-flip_t-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-flip_t-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1329,8 +1329,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-flip_p-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-flip_p-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1347,8 +1347,8 @@
     }
   },
   {
-    "bot_id": "dev-XPTUSD-5m-flip_pt-01",
-    "pair": "XPTUSD",
+    "bot_id": "dev-ADA-5m-flip_pt-01",
+    "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1368,8 +1368,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-ride-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-ride-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1385,8 +1385,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-ride_t-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-ride_t-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1405,8 +1405,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-ride_p-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-ride_p-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1423,8 +1423,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-ride_pt-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-ride_pt-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1444,8 +1444,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-scalp-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-scalp-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1461,8 +1461,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-scalp_t-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-scalp_t-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1481,8 +1481,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-scalp_p-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-scalp_p-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1499,8 +1499,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-scalp_pt-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-scalp_pt-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1520,8 +1520,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-flip-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-flip-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1537,8 +1537,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-flip_t-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-flip_t-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1557,8 +1557,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-flip_p-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-flip_p-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1575,8 +1575,8 @@
     }
   },
   {
-    "bot_id": "dev-XCUUSD-5m-flip_pt-01",
-    "pair": "XCUUSD",
+    "bot_id": "dev-AVAX-5m-flip_pt-01",
+    "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1596,8 +1596,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-ride-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-ride-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1613,8 +1613,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-ride_t-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-ride_t-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1633,8 +1633,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-ride_p-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-ride_p-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1651,8 +1651,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-ride_pt-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-ride_pt-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1672,8 +1672,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-scalp-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-scalp-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1689,8 +1689,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-scalp_t-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-scalp_t-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1709,8 +1709,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-scalp_p-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-scalp_p-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1727,8 +1727,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-scalp_pt-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-scalp_pt-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1748,8 +1748,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-flip-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-flip-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1765,8 +1765,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-flip_t-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-flip_t-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1785,8 +1785,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-flip_p-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-flip_p-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1803,8 +1803,8 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSD-5m-flip_pt-01",
-    "pair": "BTCUSD",
+    "bot_id": "dev-DOGE-5m-flip_pt-01",
+    "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1824,8 +1824,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-ride-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-ride-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1841,8 +1841,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-ride_t-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-ride_t-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1861,8 +1861,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-ride_p-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-ride_p-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1879,8 +1879,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-ride_pt-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-ride_pt-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1900,8 +1900,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-scalp-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-scalp-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1917,8 +1917,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-scalp_t-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-scalp_t-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1937,8 +1937,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-scalp_p-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-scalp_p-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1955,8 +1955,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-scalp_pt-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-scalp_pt-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1976,8 +1976,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-flip-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-flip-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -1993,8 +1993,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-flip_t-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-flip_t-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -2013,8 +2013,8 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-flip_p-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-flip_p-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
@@ -2031,8 +2031,236 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSD-5m-flip_pt-01",
-    "pair": "ETHUSD",
+    "bot_id": "dev-PEPE-5m-flip_pt-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_pt",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_sl_pct_enabled": true,
+      "tp_pct": 0.03,
+      "sl_pct": 0.015,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-ride-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-ride_t-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_t",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.6,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-ride_p-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_p",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_sl_pct_enabled": true,
+      "tp_pct": 0.05,
+      "sl_pct": 0.025,
+      "max_hold_candles": 8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-ride_pt-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "ride_pt",
+    "patterns": [
+      "wave_ride"
+    ],
+    "params": {
+      "tp_sl_pct_enabled": true,
+      "tp_pct": 0.05,
+      "sl_pct": 0.025,
+      "max_hold_candles": 24,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 1.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-scalp-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-scalp_t-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_t",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-scalp_p-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_p",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_sl_pct_enabled": true,
+      "tp_pct": 0.02,
+      "sl_pct": 0.01,
+      "max_hold_candles": 3,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-scalp_pt-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "scalp_pt",
+    "patterns": [
+      "vol_burst"
+    ],
+    "params": {
+      "tp_sl_pct_enabled": true,
+      "tp_pct": 0.02,
+      "sl_pct": 0.01,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 0.8,
+      "trail_distance_r": 0.5,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-flip-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-flip_t-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_t",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.6,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-flip_p-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "15m",
+    "max_active_buckets": 1,
+    "strategy": "flip_p",
+    "patterns": [
+      "wave_flip"
+    ],
+    "params": {
+      "tp_sl_pct_enabled": true,
+      "tp_pct": 0.03,
+      "sl_pct": 0.015,
+      "max_hold_candles": 4,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPE-5m-flip_pt-01",
+    "pair": "HYPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "15m",
     "max_active_buckets": 1,
