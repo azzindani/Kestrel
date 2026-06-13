@@ -34,7 +34,7 @@ from src.backtest.runner import walk_forward
 # okx first: proven to paginate full history from this host. gate rejects long
 # lookbacks; kraken hard-caps at ~720 candles so it can't serve a long span.
 FETCH_ORDER = ("okx", "gate", "kraken")
-_TF_MS = {"5m": 300_000, "15m": 900_000, "1h": 3_600_000, "4h": 14_400_000}
+_TF_MS = {"5m": 300_000, "15m": 900_000, "1h": 3_600_000, "4h": 14_400_000, "1d": 86_400_000}
 _RETRIES = 3
 
 
