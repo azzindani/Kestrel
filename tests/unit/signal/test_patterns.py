@@ -4,11 +4,14 @@ from __future__ import annotations
 
 from src.config import Direction, PatternType
 from src.signal.patterns import (
+    SELF_DIRECTING_PATTERNS,
     detect_anomaly_fade,
     detect_compression_breakout,
     detect_impulse_retracement,
+    detect_mom_adx,
     detect_momentum_continuation,
     detect_trend_momentum,
+    detect_triple_mom,
     detect_wick_rejection,
     registry,
 )
@@ -31,6 +34,8 @@ class TestRegistry:
             "wave_ride",
             "vol_burst",
             "wave_flip",
+            "mom_adx",
+            "triple_mom",
         }
         assert expected == set(registry.keys())
 
@@ -503,3 +508,114 @@ class TestTrendMomentum:
         result = detect_trend_momentum(candles, params)
         assert result is not None
         assert 0.55 <= result.confidence <= 0.72
+
+
+# ---------------------------------------------------------------------------
+# confluence momentum: mom_adx / triple_mom
+# ---------------------------------------------------------------------------
+
+
+class TestConfluenceMomentum:
+    def _streak(
+        self,
+        direction: Direction = Direction.LONG,
+        adx: float = 30.0,
+        rising_atr: bool = True,
+        n_base: int = 10,
+    ) -> list:
+        """History ending in a 3-candle same-direction streak, with ADX and a
+        rising (or flat) ATR on the final candle for the confluence gates."""
+        base_atr = 1.0
+        candles = [
+            make_candle(close=100.0, open_=100.0, volume=100.0, ts=i * 300_000, adx=20.0, atr14=base_atr)
+            for i in range(n_base)
+        ]
+        last_atr = base_atr * (1.5 if rising_atr else 1.0)
+        price = 100.0
+        for j in range(3):
+            o = price
+            cl = price + 2.0 if direction is Direction.LONG else price - 2.0
+            candles.append(
+                make_candle(
+                    close=cl,
+                    open_=o,
+                    high=max(o, cl) + 0.5,
+                    low=min(o, cl) - 0.5,
+                    volume=120.0,
+                    ts=(n_base + j) * 300_000,
+                    adx=adx,
+                    atr14=last_atr,
+                )
+            )
+            price = cl
+        return candles
+
+    # --- registry / self-direction contract ---
+
+    def test_both_patterns_are_self_directing(self):
+        assert "mom_adx" in SELF_DIRECTING_PATTERNS
+        assert "triple_mom" in SELF_DIRECTING_PATTERNS
+
+    # --- mom_adx ---
+
+    def test_mom_adx_long_fires(self):
+        params = make_params()
+        result = detect_mom_adx(self._streak(Direction.LONG, adx=30.0), params)
+        assert result is not None
+        assert result.direction is Direction.LONG
+        assert result.pattern is PatternType.MOMENTUM_CONTINUATION
+        assert result.details["variant"] == "mom_adx"
+        assert 0.75 <= result.confidence <= 0.92  # full-size band, as validated
+
+    def test_mom_adx_short_fires(self):
+        params = make_params()
+        result = detect_mom_adx(self._streak(Direction.SHORT, adx=30.0), params)
+        assert result is not None
+        assert result.direction is Direction.SHORT
+
+    def test_mom_adx_weak_adx_returns_none(self):
+        """ADX at/below adx_strong_min → not a strong trend → no entry."""
+        params = make_params(adx_strong_min=25.0)
+        assert detect_mom_adx(self._streak(Direction.LONG, adx=20.0), params) is None
+
+    def test_mom_adx_no_streak_returns_none(self):
+        """A mixed (non-streak) final 3 candles → no entry."""
+        params = make_params()
+        candles = self._streak(Direction.LONG, adx=30.0)
+        # Flip the middle of the streak so the last 3 are not all one direction
+        c = candles[-2]
+        candles[-2] = make_candle(
+            close=c.open, open_=c.close, high=c.high, low=c.low, volume=c.volume, ts=c.ts, adx=30.0, atr14=c.atr14
+        )
+        assert detect_mom_adx(candles, params) is None
+
+    def test_mom_adx_missing_adx_returns_none(self):
+        params = make_params()
+        candles = self._streak(Direction.LONG, adx=30.0)
+        c = candles[-1]
+        candles[-1] = make_candle(
+            close=c.close, open_=c.open, high=c.high, low=c.low, volume=c.volume, ts=c.ts, adx=None, atr14=c.atr14
+        )
+        assert detect_mom_adx(candles, params) is None
+
+    # --- triple_mom ---
+
+    def test_triple_mom_fires_with_rising_atr(self):
+        params = make_params()
+        result = detect_triple_mom(self._streak(Direction.LONG, adx=30.0, rising_atr=True), params)
+        assert result is not None
+        assert result.direction is Direction.LONG
+        assert result.details["variant"] == "triple_mom"
+
+    def test_triple_mom_flat_atr_returns_none(self):
+        """Volatility not expanding (ATR flat) → strictest gate rejects."""
+        params = make_params()
+        assert detect_triple_mom(self._streak(Direction.LONG, adx=30.0, rising_atr=False), params) is None
+
+    def test_triple_mom_weak_adx_returns_none(self):
+        params = make_params(adx_strong_min=25.0)
+        assert detect_triple_mom(self._streak(Direction.LONG, adx=20.0, rising_atr=True), params) is None
+
+    def test_triple_mom_insufficient_candles_returns_none(self):
+        params = make_params()
+        assert detect_triple_mom([make_candle(100.0)] * 6, params) is None

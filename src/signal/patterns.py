@@ -26,9 +26,18 @@ PatternFn = Callable[[Sequence[Candle], Params], Optional[PatternResult]]
 registry: dict[str, PatternFn] = {}
 
 # Patterns whose entry deliberately OPPOSES the prevailing EMA trend (mean-reversion
-# / "flip the position"). The detector lets these supply their own direction instead
-# of requiring trend alignment — every other pattern must agree with the trend filter.
+# / "flip the position"). Kept as a named subset for clarity/back-compat.
 COUNTER_TREND_PATTERNS: frozenset[str] = frozenset({"wave_flip"})
+
+# Patterns that supply their OWN entry direction and therefore bypass the detector's
+# trend-alignment gate (the RSI-band / EMA-streak trend filter). Every other pattern
+# must agree with the trend filter. Two kinds live here:
+#   * counter-trend mean-reversion (wave_flip) — trades AGAINST the EMA trend
+#   * self-directing momentum (mom_adx, triple_mom) — trades the price-streak
+#     direction inside a strong (high-ADX) move. These were validated WITHOUT the
+#     RSI/EMA trend gate (which would drop the strongest, most overbought momentum
+#     entries), so they self-direct to reproduce that validated behaviour.
+SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset({"mom_adx", "triple_mom"})
 
 
 def register(name: str) -> Callable[[PatternFn], PatternFn]:
@@ -83,6 +92,17 @@ def _vol_ratio(c: Candle, volume_ma: float) -> float:
     if c.volume_ratio is not None:
         return c.volume_ratio
     return c.volume / volume_ma if volume_ma > 0 else 1.0
+
+
+def _streak_direction(candles: Sequence[Candle], n: int) -> Optional[Direction]:
+    """Common direction of the last ``n`` candles, or None if shorter than ``n``,
+    any candle is a doji, or they are not all the same direction."""
+    if len(candles) < n:
+        return None
+    dirs = [_direction_from_candle(c) for c in candles[-n:]]
+    if None in dirs or len(set(dirs)) != 1:
+        return None
+    return dirs[0]
 
 
 # ---------------------------------------------------------------------------
@@ -639,4 +659,80 @@ def detect_wave_flip(candles: Sequence[Candle], params: Params) -> Optional[Patt
         direction=fade_dir,
         confidence=round(confidence, 3),
         details={"variant": "wave_flip", "run_len": n, "rev_body_ratio": round(rev_br, 3)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Confluence momentum family — "ride the strong trend"
+#
+# Handwritten multi-condition AND entries (the low-compute alternative to ML
+# feature-combination). Validated on 4h walk-forward across 10 crypto pairs as
+# the project's broadest positive result: mom_adx is net-positive on 10/10 pairs
+# (clears the §30 OOS bar on ETH). Both are SELF_DIRECTING_PATTERNS — they take
+# the price-streak direction inside a strong trend WITHOUT the RSI/EMA trend gate,
+# which is exactly how they were validated. They still pass through every
+# downstream gate (volume confirm, min confidence, QUIET-regime block, and all six
+# risk rules incl. fee viability). Both read only stored Candle indicators (cheap).
+# ---------------------------------------------------------------------------
+
+
+@register("mom_adx")
+def detect_mom_adx(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter the direction of a 3-candle price streak inside a strong trend.
+
+    Confluence: a 3-candle same-direction streak AND ADX > adx_strong_min (a
+    genuinely strong directional move, not chop). Self-directing momentum.
+    """
+    if len(candles) < 3:
+        return None
+
+    c = candles[-1]
+    if c.adx is None or c.adx <= params.adx_strong_min:
+        return None
+
+    direction = _streak_direction(candles, 3)
+    if direction is None:
+        return None
+
+    # Confidence rises with trend strength above the floor; stays in the full-size
+    # band (>= 0.75) the way the validation sized these (full bucket).
+    confidence = min(0.78 + (c.adx - params.adx_strong_min) * 0.004, 0.92)
+
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=round(confidence, 3),
+        details={"variant": "mom_adx", "adx": round(c.adx, 2)},
+    )
+
+
+@register("triple_mom")
+def detect_triple_mom(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Strictest confluence momentum: streak + strong ADX + expanding volatility.
+
+    Confluence: a 3-candle same-direction streak AND ADX > adx_strong_min AND ATR
+    rising over the last ~6 candles (volatility expanding into the move, so it is
+    more likely to clear the round-trip cost). Self-directing momentum.
+    """
+    if len(candles) < 7:
+        return None
+
+    c = candles[-1]
+    past = candles[-7]
+    if c.adx is None or c.adx <= params.adx_strong_min:
+        return None
+    if c.atr14 is None or past.atr14 is None or c.atr14 <= past.atr14:
+        return None  # ATR must be rising = volatility expanding
+
+    direction = _streak_direction(candles, 3)
+    if direction is None:
+        return None
+
+    confidence = min(0.80 + (c.adx - params.adx_strong_min) * 0.004, 0.93)
+
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=round(confidence, 3),
+        details={"variant": "triple_mom", "adx": round(c.adx, 2)},
     )

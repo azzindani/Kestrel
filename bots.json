@@ -1,2281 +1,381 @@
 [
   {
-    "bot_id": "dev-BTC-5m-ride-01",
+    "bot_id": "dev-BTCUSDT-4h-mom_adx-01",
     "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "mom_adx",
     "patterns": [
-      "wave_ride"
+      "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-BTC-5m-ride_t-01",
+    "bot_id": "dev-BTCUSDT-4h-triple_mom-01",
     "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "ride_t",
+    "strategy": "triple_mom",
     "patterns": [
-      "wave_ride"
+      "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-ride_p-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-ride_pt-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-scalp-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-scalp_t-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-scalp_p-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-scalp_pt-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-flip-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
       "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-BTC-5m-flip_t-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-flip_p-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BTC-5m-flip_pt-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-ride-01",
+    "bot_id": "dev-ETHUSDT-4h-mom_adx-01",
     "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "mom_adx",
     "patterns": [
-      "wave_ride"
+      "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-ETH-5m-ride_t-01",
+    "bot_id": "dev-ETHUSDT-4h-triple_mom-01",
     "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "ride_t",
+    "strategy": "triple_mom",
     "patterns": [
-      "wave_ride"
+      "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-ride_p-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-ride_pt-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-scalp-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-scalp_t-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-scalp_p-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-scalp_pt-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-flip-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
       "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-ETH-5m-flip_t-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-flip_p-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ETH-5m-flip_pt-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-ride-01",
+    "bot_id": "dev-SOLUSDT-4h-mom_adx-01",
     "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "mom_adx",
     "patterns": [
-      "wave_ride"
+      "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-SOL-5m-ride_t-01",
+    "bot_id": "dev-SOLUSDT-4h-triple_mom-01",
     "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "ride_t",
+    "strategy": "triple_mom",
     "patterns": [
-      "wave_ride"
+      "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-ride_p-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-ride_pt-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-scalp-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-scalp_t-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-scalp_p-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-scalp_pt-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-flip-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
       "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-SOL-5m-flip_t-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-flip_p-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-SOL-5m-flip_pt-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-ride-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-ride_t-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_t",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-ride_p-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-ride_pt-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-scalp-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-scalp_t-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-scalp_p-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-scalp_pt-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-flip-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-flip_t-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-flip_p-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-XRP-5m-flip_pt-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-ride-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-ride_t-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_t",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-ride_p-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-ride_pt-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-scalp-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-scalp_t-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-scalp_p-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-scalp_pt-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-flip-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-flip_t-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-flip_p-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-BNB-5m-flip_pt-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-ride-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-ride_t-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_t",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-ride_p-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-ride_pt-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-scalp-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-scalp_t-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-scalp_p-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-scalp_pt-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-flip-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-flip_t-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-flip_p-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-ADA-5m-flip_pt-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-ride-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-ride_t-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_t",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-ride_p-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-ride_pt-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-scalp-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-scalp_t-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-scalp_p-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-scalp_pt-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-flip-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-flip_t-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_t",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-flip_p-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-AVAX-5m-flip_pt-01",
-    "pair": "AVAX/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-ride-01",
+    "bot_id": "dev-DOGEUSDT-4h-mom_adx-01",
     "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "ride",
+    "strategy": "mom_adx",
     "patterns": [
-      "wave_ride"
+      "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-ride_t-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_t",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-ride_p-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-ride_pt-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-scalp-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-scalp_t-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-scalp_p-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-scalp_pt-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-flip-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
       "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-DOGE-5m-flip_t-01",
+    "bot_id": "dev-DOGEUSDT-4h-triple_mom-01",
     "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "flip_t",
+    "strategy": "triple_mom",
     "patterns": [
-      "wave_flip"
+      "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-flip_p-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-DOGE-5m-flip_pt-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-ride-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-ride_t-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_t",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-ride_p-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-ride_pt-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-scalp-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-scalp_t-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-scalp_p-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-scalp_pt-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-flip-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
       "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-PEPE-5m-flip_t-01",
+    "bot_id": "dev-PEPEUSDT-4h-mom_adx-01",
     "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "flip_t",
+    "strategy": "mom_adx",
     "patterns": [
-      "wave_flip"
+      "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-flip_p-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 4,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-PEPE-5m-flip_pt-01",
-    "pair": "PEPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_pt",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-ride-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-ride_t-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_t",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_atr_multiplier": 3.0,
-      "sl_atr_multiplier": 1.6,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-ride_p-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_p",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-ride_pt-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "ride_pt",
-    "patterns": [
-      "wave_ride"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.05,
-      "sl_pct": 0.025,
-      "max_hold_candles": 24,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 1.0,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-scalp-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-scalp_t-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_t",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
-      "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-scalp_p-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_p",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 3,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-scalp_pt-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "scalp_pt",
-    "patterns": [
-      "vol_burst"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.02,
-      "sl_pct": 0.01,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.8,
-      "trail_distance_r": 0.5,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-flip-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_atr_multiplier": 1.6,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
       "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-HYPE-5m-flip_t-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "bot_id": "dev-PEPEUSDT-4h-triple_mom-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "flip_t",
+    "strategy": "triple_mom",
     "patterns": [
-      "wave_flip"
+      "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.6,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
-      "max_loss_pct_per_trade": 0.02
-    }
-  },
-  {
-    "bot_id": "dev-HYPE-5m-flip_p-01",
-    "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
-    "max_active_buckets": 1,
-    "strategy": "flip_p",
-    "patterns": [
-      "wave_flip"
-    ],
-    "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
       "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   },
   {
-    "bot_id": "dev-HYPE-5m-flip_pt-01",
+    "bot_id": "dev-HYPEUSDT-4h-mom_adx-01",
     "pair": "HYPE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "15m",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
     "max_active_buckets": 1,
-    "strategy": "flip_pt",
+    "strategy": "mom_adx",
     "patterns": [
-      "wave_flip"
+      "mom_adx"
     ],
     "params": {
-      "tp_sl_pct_enabled": true,
-      "tp_pct": 0.03,
-      "sl_pct": 0.015,
-      "max_hold_candles": 8,
-      "trailing_enabled": true,
-      "trail_activation_r": 1.0,
-      "trail_distance_r": 0.8,
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-4h-triple_mom-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-4h-mom_adx-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-XRPUSDT-4h-triple_mom-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-4h-mom_adx-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-4h-triple_mom-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-4h-mom_adx-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ADAUSDT-4h-triple_mom-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-4h-mom_adx-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-4h-triple_mom-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "4h",
+    "timeframe_regime": "4h",
+    "max_active_buckets": 1,
+    "strategy": "triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
     }
   }

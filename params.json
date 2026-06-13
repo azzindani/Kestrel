@@ -76,6 +76,13 @@
     "description": "ADX threshold above which market is classified as TRENDING regime",
     "impact": "higher = stricter trending definition, more signals fall into RANGING"
   },
+  "adx_strong_min": {
+    "value": 25.0,
+    "type": "float",
+    "range": [20.0, 35.0],
+    "description": "ADX floor for the mom_adx/triple_mom confluence-momentum entry: a price streak only fires as a momentum signal when ADX exceeds this (a genuinely strong trend)",
+    "impact": "higher = fewer, stronger-trend-only momentum entries; lower = more entries in weaker trends (validated value 25.0)"
+  },
   "bb_width_threshold": {
     "value": 0.02,
     "type": "float",

@@ -38,7 +38,7 @@ from src.config import (
 )
 from src.signal.indicators import compute_ema, compute_rsi
 from src.signal.memory import adjust_confidence, should_suppress
-from src.signal.patterns import COUNTER_TREND_PATTERNS, registry
+from src.signal.patterns import SELF_DIRECTING_PATTERNS, registry
 from src.signal.regime import classify_regime, regime_permits_pattern
 from src.signal.sizing import cap_size_for_risk, compute_position_size
 
@@ -180,8 +180,8 @@ def _pattern_scan(
     for the highest-confidence match, or Rejection if nothing fires.
 
     Trend-following patterns must agree with `trend_direction` (and are skipped when
-    it is None, i.e. the trend filter rejected). Counter-trend patterns
-    (COUNTER_TREND_PATTERNS) set their own direction and ignore the trend filter.
+    it is None, i.e. the trend filter rejected). Self-directing patterns
+    (SELF_DIRECTING_PATTERNS) set their own direction and ignore the trend filter.
     """
     candidates = []
     for name, fn in registry.items():
@@ -190,7 +190,7 @@ def _pattern_scan(
         result = fn(candles, params)
         if result is None:
             continue
-        if name not in COUNTER_TREND_PATTERNS:
+        if name not in SELF_DIRECTING_PATTERNS:
             if trend_direction is None or result.direction != trend_direction:
                 continue
 
@@ -286,9 +286,10 @@ def evaluate(
     # --- Stage 2: Trend (soft gate when a counter-trend pattern is enabled) ---
     trend_result = _trend_filter(candles, params)
     if isinstance(trend_result, Rejection):
-        # Counter-trend patterns (e.g. wave_flip) deliberately trade against the
-        # EMA trend, so a 'no trend alignment' rejection must not block them.
-        if not (permitted & COUNTER_TREND_PATTERNS):
+        # Self-directing patterns (wave_flip counter-trend, mom_adx/triple_mom
+        # momentum) supply their own direction, so a 'no trend alignment'
+        # rejection must not block them.
+        if not (permitted & SELF_DIRECTING_PATTERNS):
             return None, trend_result
         trend_direction: Optional[Direction] = None
         layer_trend = 0

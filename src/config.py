@@ -181,6 +181,12 @@ class Params:
     # --- risk hardening: cap per-trade loss (signal/sizing.py cap_size_for_risk) ---
     # Max fraction of bucket equity a single stop-out may lose. 0.0 ⇒ disabled.
     max_loss_pct_per_trade: float = 0.0
+    # --- confluence momentum (signal/patterns.py mom_adx / triple_mom) ---
+    # ADX floor above which a price streak is treated as a STRONG-trend momentum
+    # entry. Distinct from adx_trend_min (the regime classifier threshold): this is
+    # the entry gate validated for the mom_adx / triple_mom patterns. Optional so
+    # older params.json (without the key) loads unchanged at the validated default.
+    adx_strong_min: float = 25.0
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
@@ -272,6 +278,7 @@ class Params:
             tp_sl_pct_enabled=(bool(d["tp_sl_pct_enabled"]["value"]) if "tp_sl_pct_enabled" in d else False),
             tp_pct=(float(d["tp_pct"]["value"]) if "tp_pct" in d else 0.05),
             sl_pct=(float(d["sl_pct"]["value"]) if "sl_pct" in d else 0.025),
+            adx_strong_min=(float(d["adx_strong_min"]["value"]) if "adx_strong_min" in d else 25.0),
         )
 
 

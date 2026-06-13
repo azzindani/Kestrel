@@ -79,14 +79,36 @@ def _ema_from_closes(candles: Sequence[Candle], period: int) -> float:
 
 def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
     """Return True if the regime allows the given pattern (CLAUDE.md §22)."""
+    # Confluence-momentum (mom_adx, triple_mom) is permitted in every non-QUIET
+    # regime: its own ADX>adx_strong_min gate already restricts it to strong moves,
+    # which is how it was validated (QUIET stays blocked for all patterns).
     _allowed: dict[Regime, frozenset[str]] = {
         Regime.TRENDING: frozenset(
-            {"impulse_retracement", "momentum_continuation", "trend_momentum", "wave_ride", "vol_burst"}
+            {
+                "impulse_retracement",
+                "momentum_continuation",
+                "trend_momentum",
+                "wave_ride",
+                "vol_burst",
+                "mom_adx",
+                "triple_mom",
+            }
         ),
         Regime.VOLATILE: frozenset(
-            {"compression_breakout", "anomaly_fade", "trend_momentum", "wave_ride", "vol_burst", "wave_flip"}
+            {
+                "compression_breakout",
+                "anomaly_fade",
+                "trend_momentum",
+                "wave_ride",
+                "vol_burst",
+                "wave_flip",
+                "mom_adx",
+                "triple_mom",
+            }
         ),
-        Regime.RANGING: frozenset({"wick_rejection", "anomaly_fade", "trend_momentum", "wave_flip"}),
+        Regime.RANGING: frozenset(
+            {"wick_rejection", "anomaly_fade", "trend_momentum", "wave_flip", "mom_adx", "triple_mom"}
+        ),
         Regime.QUIET: frozenset(),
     }
     return pattern in _allowed.get(regime, frozenset())
