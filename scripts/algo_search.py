@@ -299,6 +299,105 @@ def _compress_fade(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     return _opp(_dir(C[-1]))  # fade the first move out of the squeeze
 
 
+# --- confluence (multi-condition AND) ----------------------------------------
+# The only live-positive thread was 4h momentum (sub-§30, SOL-concentrated). These
+# require 2-3 independent conditions to AGREE — the handwritten alternative to ML
+# feature-combination — to filter momentum down to higher-quality setups. All use
+# only stored Candle indicators (cheap). Volume is read directly here (the pipeline
+# volume gate is bypassed), so these explicitly test whether volume helps.
+def _streak_dir(C: Sequence[Candle], n: int) -> Optional[Direction]:
+    if len(C) < n:
+        return None
+    ds = [_dir(x) for x in C[-n:]]
+    if None in ds or len(set(ds)) != 1:
+        return None
+    return ds[0]
+
+
+@_algo("mom_adx", PatternType.MOMENTUM_CONTINUATION)
+def _mom_adx(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    c = C[-1]
+    if c.adx is None or c.adx <= 25.0:  # 3-streak only inside a strong trend
+        return None
+    return _streak_dir(C, 3)
+
+
+@_algo("mom_align", PatternType.MOMENTUM_CONTINUATION)
+def _mom_align(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    c = C[-1]
+    if None in (c.ema9, c.ema21, c.adx) or c.adx <= 22.0:
+        return None
+    br = c.body_ratio if c.body_ratio is not None else 0.0
+    d = _dir(c)
+    if d is None or br < 0.5:
+        return None
+    trend = Direction.LONG if c.ema9 > c.ema21 else (Direction.SHORT if c.ema9 < c.ema21 else None)
+    return d if d is trend else None  # conviction candle aligned with EMA trend + ADX
+
+
+@_algo("breakout_vol", PatternType.MOMENTUM_CONTINUATION)
+def _breakout_vol(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    if len(C) < 21:
+        return None
+    c = C[-1]
+    vr = c.volume_ratio if c.volume_ratio is not None else 0.0
+    if vr < 1.5:  # breakout must carry real participation
+        return None
+    prior = C[-21:-1]
+    if c.close >= max(x.high for x in prior):
+        return Direction.LONG
+    if c.close <= min(x.low for x in prior):
+        return Direction.SHORT
+    return None
+
+
+@_algo("pullback_trend", PatternType.MOMENTUM_CONTINUATION)
+def _pullback_trend(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    if len(C) < 3:
+        return None
+    a, c = C[-2], C[-1]
+    if None in (c.ema9, c.ema21, c.rsi14):
+        return None
+    if c.ema9 > c.ema21 and _dir(a) is Direction.SHORT and _dir(c) is Direction.LONG and 40.0 <= c.rsi14 <= 60.0:
+        return Direction.LONG  # buy the pullback in an uptrend, RSI not extended
+    if c.ema9 < c.ema21 and _dir(a) is Direction.LONG and _dir(c) is Direction.SHORT and 40.0 <= c.rsi14 <= 60.0:
+        return Direction.SHORT
+    return None
+
+
+@_algo("mom_volexp", PatternType.MOMENTUM_CONTINUATION)
+def _mom_volexp(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    if len(C) < 7:
+        return None
+    c, past = C[-1], C[-7]
+    if c.atr14 is None or past.atr14 is None or past.atr14 <= 0.0 or c.atr14 <= past.atr14:
+        return None  # ATR rising = volatility expanding
+    return _streak_dir(C, 3)
+
+
+@_algo("triple_mom", PatternType.MOMENTUM_CONTINUATION)
+def _triple_mom(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    if len(C) < 7:
+        return None
+    c, past = C[-1], C[-7]
+    if c.adx is None or c.adx <= 25.0:
+        return None
+    if c.atr14 is None or past.atr14 is None or c.atr14 <= past.atr14:
+        return None
+    return _streak_dir(C, 3)  # strictest: streak + strong ADX + expanding ATR
+
+
+@_algo("compress_vol_break", PatternType.COMPRESSION_BREAKOUT)
+def _compress_vol_break(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    if not _compressed(C):
+        return None
+    c = C[-1]
+    vr = c.volume_ratio if c.volume_ratio is not None else 0.0
+    if vr < 1.3:
+        return None
+    return _dir(c)  # squeeze breakout confirmed by volume
+
+
 # ---------------------------------------------------------------------------
 # Neutralise secondary gates so each algo is judged on its own entry edge.
 # (Module-global rebinds — detector resolves these names at call time.)
