@@ -327,6 +327,72 @@ EXITS = {
     "wide": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.5, "max_hold_candles": 8},
 }
 
+# Forex / metals universe for --forex mode (yfinance symbols). Majors + crosses +
+# gold/oil — the instruments BingX's TradFi side covers but ccxt doesn't expose, so
+# we research them on free Yahoo data before building any live forex integration.
+FOREX_PAIRS = [
+    "EURUSD=X",
+    "GBPUSD=X",
+    "USDJPY=X",
+    "AUDUSD=X",
+    "USDCAD=X",
+    "USDCHF=X",
+    "NZDUSD=X",
+    "EURJPY=X",
+    "GBPJPY=X",
+    "GC=F",
+]
+
+
+def _fetch_forex(symbol: str, tf: str, days: int) -> tuple[str, list]:
+    """Fetch forex/metal OHLCV via yfinance → rows [ts_ms, o, h, l, c, v].
+
+    Yahoo caps intraday history (5m≈60d, 1h≈730d) and has no native 4h, so we
+    fetch the largest available base interval and resample up. yfinance is a
+    research-only dep (NOT in the image) — imported lazily, pip-installed in the
+    one-off container that runs --forex.
+    """
+    import pandas as pd
+    import yfinance as yf
+
+    if tf == "5m":
+        base, period = "5m", f"{min(days, 59)}d"
+    elif tf in ("1h", "4h"):
+        base, period = "1h", f"{min(days, 729)}d"
+    else:  # 1d or higher
+        base, period = "1d", f"{days}d"
+
+    df = yf.download(symbol, period=period, interval=base, progress=False, auto_adjust=False)
+    if df is None or len(df) == 0:
+        raise RuntimeError("yfinance returned no rows")
+    if getattr(df.columns, "nlevels", 1) > 1:  # single-ticker MultiIndex → flatten
+        df.columns = df.columns.get_level_values(0)
+
+    if tf == "4h":  # resample 1h → 4h
+        df = pd.DataFrame(
+            {
+                "Open": df["Open"].resample("4h").first(),
+                "High": df["High"].resample("4h").max(),
+                "Low": df["Low"].resample("4h").min(),
+                "Close": df["Close"].resample("4h").last(),
+                "Volume": df["Volume"].resample("4h").sum(),
+            }
+        ).dropna()
+
+    rows = []
+    for ts, r in df.iterrows():
+        rows.append(
+            [
+                int(ts.timestamp() * 1000),
+                float(r["Open"]),
+                float(r["High"]),
+                float(r["Low"]),
+                float(r["Close"]),
+                float(r["Volume"] or 0.0),
+            ]
+        )
+    return ("yfinance", rows)
+
 
 def main() -> None:
     ap = argparse.ArgumentParser()
@@ -336,6 +402,7 @@ def main() -> None:
     ap.add_argument("--algos", default=None, help="comma list to restrict the algo set")
     ap.add_argument("--exits", default="tight,wide", help="comma list of exit profiles")
     ap.add_argument("--regime", default=None, help="restrict firing to one regime: ranging|trending|volatile")
+    ap.add_argument("--forex", action="store_true", help="search forex/metals (yfinance) instead of crypto")
     args = ap.parse_args()
 
     load_dotenv()
@@ -344,7 +411,9 @@ def main() -> None:
     base = dataclasses.replace(base, volume_ratio_min=1.1)  # most-permissive (volume gate is bypassed anyway)
     _install_search_gates(args.regime)
 
-    pairs = [p.strip() for p in args.pairs.split(",")] if args.pairs else lab.PAIRS
+    default_pairs = FOREX_PAIRS if args.forex else lab.PAIRS
+    pairs = [p.strip() for p in args.pairs.split(",")] if args.pairs else default_pairs
+    fetch = _fetch_forex if args.forex else bt.fetch_ohlcv
     algos = [a.strip() for a in args.algos.split(",")] if args.algos else list(_ALGOS)
     exits = [e.strip() for e in args.exits.split(",") if e.strip() in EXITS]
     tag = time.strftime("%Y%m%d-%H%M%S", time.gmtime())
@@ -367,7 +436,7 @@ def main() -> None:
 
     for pi, pair in enumerate(pairs, 1):
         try:
-            ex_used, raw = bt.fetch_ohlcv(pair, args.tf, args.days)
+            ex_used, raw = fetch(pair, args.tf, args.days)
         except Exception as exc:  # noqa: BLE001 — survey loop: report and continue
             print(
                 f"[{pi}/{len(pairs)}] {pair}: FETCH FAILED ({type(exc).__name__}: {str(exc)[:70]}) — skipped",
