@@ -408,7 +408,7 @@ def _install_search_gates(regime_filter: Optional[str] = None) -> None:
         detector.regime_permits_pattern = lambda regime, p: regime.name.lower() == want  # one regime only
     else:
         detector.regime_permits_pattern = lambda regime, p: True  # permit-all
-    detector.COUNTER_TREND_PATTERNS = frozenset(_ALGOS)  # every algo self-directs
+    detector.SELF_DIRECTING_PATTERNS = frozenset(_ALGOS)  # every algo self-directs
 
     def _pass_volume(candle: Candle, params: Params, mult: float) -> VolumeResult:
         return VolumeResult(
