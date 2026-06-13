@@ -38,12 +38,17 @@ from src.db import connection as db_conn
 from src.db import writer as db
 
 _FEED_EXCHANGE = "gate"   # must match the live ccxt.pro feed for volume consistency
-_TF_MS = 300_000          # 5m
+# Per-timeframe candle period (ms) and how many days to backfill so the daemon has
+# enough history to bootstrap indicators (EMA/ATR(50)/ADX) + regime immediately.
+# Higher TFs need a long lookback to reach 51+ candles for ATR(50).
+_TF_MS = {"5m": 300_000, "15m": 900_000, "1h": 3_600_000, "4h": 14_400_000, "1d": 86_400_000}
+_TF_DAYS = {"5m": 2, "15m": 7, "1h": 30, "4h": 120, "1d": 500}
 
 
 def fetch_quote_ohlcv(pair: str, timeframe: str, days: int) -> list[list]:
     """Fetch gate REST OHLCV and convert volume base→quote (× close) to match
     the live gate WebSocket volume scale."""
+    tf_ms = _TF_MS.get(timeframe, 300_000)
     ex = getattr(ccxt, _FEED_EXCHANGE)({"enableRateLimit": True})
     ex.load_markets()
     now_ms = int(time.time() * 1000)
@@ -56,7 +61,7 @@ def fetch_quote_ohlcv(pair: str, timeframe: str, days: int) -> list[list]:
         if not batch:
             break
         rows.extend(batch)
-        cur = batch[-1][0] + _TF_MS
+        cur = batch[-1][0] + tf_ms
         if len(batch) < 2:
             break
     # de-dup + convert volume to quote (USDT) to match the live WS feed
@@ -82,7 +87,7 @@ async def run() -> None:
     await db_conn.init_pool(cfg)
     try:
         for (pair, tf), grp in groups.items():
-            rows = fetch_quote_ohlcv(pair, tf, days=1)
+            rows = fetch_quote_ohlcv(pair, tf, days=_TF_DAYS.get(tf, 2))
             avg_vol = sum(r[5] for r in rows) / len(rows) if rows else 0
             wrote = 0
             for bot in grp:
