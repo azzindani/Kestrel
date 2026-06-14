@@ -129,6 +129,7 @@ class Daemon:
             builder=builder,
             on_reconnect=self._on_ws_reconnect,
             notify=self._sync_notify,
+            log_event=self._sync_log_event,
         )
 
         # Dashboard
@@ -551,6 +552,25 @@ class Daemon:
     def _sync_notify(self, level: str, message: str) -> None:
         """Sync wrapper for notifier (called from non-async feed context)."""
         asyncio.create_task(self.notifier.send(message, level))
+
+    def _sync_log_event(self, level: str, message: str, payload: dict) -> None:
+        """Sync wrapper to record a WS/connection event in the events table.
+
+        The feed (Layer 2) calls this so connection failures are observable in
+        the DB/dashboard even when Telegram is disabled — without the feed itself
+        importing the Layer 3 db writer. Called from the non-async feed context.
+        """
+        asyncio.create_task(
+            db.write_event(
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                level,
+                "connection",
+                message,
+                payload,
+            )
+        )
 
 
 # ---------------------------------------------------------------------------
