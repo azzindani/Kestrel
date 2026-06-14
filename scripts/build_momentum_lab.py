@@ -51,11 +51,16 @@ MOMENTUM_PAIRS = [
     "AVAX/USDT",
 ]
 
-# Validated "tight" exit + risk profile shared by both strategies.
-_TIGHT = {
-    "tp_atr_multiplier": 1.4,
+# "medium" exit + risk profile shared by both strategies. The 2026-06-14 exit
+# sweep (scripts/algo_search.py --exits tight,medium,runner,wide,trail, 4h/365d/10
+# pairs) found medium (tp 2.0 / sl 1.0 / hold 6) is the best confluence-momentum
+# variant by expectancy: triple_mom/medium +$35.9 OOS, R/R 1.68 (vs tight +$27.8,
+# R/R 1.28). Still sub-§30 (46.6% win < 55% — momentum is inherently low-win,
+# high-R/R), so paper-only; this forward-tests the strongest variant found.
+_EXIT = {
+    "tp_atr_multiplier": 2.0,
     "sl_atr_multiplier": 1.0,
-    "max_hold_candles": 4,
+    "max_hold_candles": 6,
     "volume_ratio_min": 1.1,  # floor — keep the prod volume gate near pass-through
     "adx_strong_min": 25.0,  # the validated strong-trend entry threshold
     "max_loss_pct_per_trade": 0.02,
@@ -81,7 +86,7 @@ def main() -> None:
                     "max_active_buckets": 1,
                     "strategy": s["name"],
                     "patterns": s["patterns"],
-                    "params": dict(_TIGHT),
+                    "params": dict(_EXIT),
                 }
             )
 

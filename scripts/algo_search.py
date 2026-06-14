@@ -424,6 +424,20 @@ def _install_search_gates(regime_filter: Optional[str] = None) -> None:
 EXITS = {
     "tight": {"tp_atr_multiplier": 1.4, "sl_atr_multiplier": 1.0, "max_hold_candles": 4},
     "wide": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.5, "max_hold_candles": 8},
+    # Added 2026-06-14 to chase the §30 R/R gap on the confluence-momentum family
+    # (mom_adx was net-+ on 10/10 pairs but realized R/R < 1.2 on several). All keep
+    # planned R/R = tp/sl ≥ 1.2 (risk Rule 3). "trail" rides winners via the
+    # trailing-close exit (backtest/runner.py honours trailing_enabled).
+    "medium": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 1.0, "max_hold_candles": 6},
+    "runner": {"tp_atr_multiplier": 2.5, "sl_atr_multiplier": 1.2, "max_hold_candles": 6},
+    "trail": {
+        "tp_atr_multiplier": 2.0,
+        "sl_atr_multiplier": 1.0,
+        "max_hold_candles": 12,
+        "trailing_enabled": True,
+        "trail_activation_r": 1.0,
+        "trail_distance_r": 1.0,
+    },
 }
 
 # Forex / metals universe for --forex mode (yfinance symbols). Majors + crosses +

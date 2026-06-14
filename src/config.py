@@ -439,6 +439,12 @@ class AppConfig:
     enabled_patterns: Optional[tuple] = None
     strategy: str = "default"
 
+    # Market-data transport: "ws" (ccxt.pro WebSocket, default) or "poll" (ccxt
+    # REST polling). Poll is reliable for HIGH timeframes where the WS rollover
+    # update is sparse/missed (a 4h close is one event every 4h — a missed WS push
+    # = a lost candle). Optional/back-compatible: absent ⇒ "ws".
+    feed_mode: str = "ws"
+
     @classmethod
     def from_mapping(cls, m: Mapping[str, str]) -> "AppConfig":
         """Construct from a string→string mapping (e.g. os.environ).
@@ -491,6 +497,7 @@ class AppConfig:
             telegram_token=m["TELEGRAM_TOKEN"],
             telegram_chat_id=m["TELEGRAM_CHAT_ID"],
             log_level=m["LOG_LEVEL"].upper(),
+            feed_mode=(m.get("FEED_MODE") or "ws").lower(),
         )
 
 

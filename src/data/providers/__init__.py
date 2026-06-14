@@ -111,10 +111,20 @@ def get_data_feed(
         )
 
     if name in _SHARED_EXCHANGES:
-        feed = _SHARED_INSTANCES.get(name)
+        # feed_mode="poll" → REST-polling transport (reliable for high timeframes
+        # where the WS rollover push is sparse/missed); keyed separately so it never
+        # collides with a WS instance for the same exchange.
+        poll = getattr(cfg, "feed_mode", "ws") == "poll"
+        key = f"{name}:poll" if poll else name
+        feed = _SHARED_INSTANCES.get(key)
         if feed is None:
-            feed = _REGISTRY[name](cfg=cfg)
-            _SHARED_INSTANCES[name] = feed
+            if poll:
+                from src.data.providers.polling import PollingFeed
+
+                feed = PollingFeed(cfg)
+            else:
+                feed = _REGISTRY[name](cfg=cfg)
+            _SHARED_INSTANCES[key] = feed
         feed.subscribe(pair, timeframe, builder, on_reconnect, notify, log_event)
         return feed
 
