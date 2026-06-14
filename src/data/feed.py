@@ -31,6 +31,9 @@ from src.data.candle_builder import CandleBuilder
 
 NotifyFn = Callable[[str, str], None]
 ReconnectFn = Callable[[int], None]
+# (level, message, payload) — routed by the daemon to the events table so WS
+# health is observable in the DB/dashboard even when Telegram is disabled.
+LogEventFn = Callable[[str, str, dict], None]
 
 _MAX_RETRIES = 5
 _BACKOFF_BASE = 2
@@ -43,6 +46,7 @@ class _Subscription:
     builder: CandleBuilder
     on_reconnect: Optional[ReconnectFn]
     notify: Optional[NotifyFn]
+    log_event: Optional[LogEventFn] = None
 
 
 class MarketFeed:
@@ -66,9 +70,10 @@ class MarketFeed:
         builder: CandleBuilder,
         on_reconnect: Optional[ReconnectFn] = None,
         notify: Optional[NotifyFn] = None,
+        log_event: Optional[LogEventFn] = None,
     ) -> None:
         """Register a (pair, timeframe) stream with this shared feed."""
-        self._subscriptions.append(_Subscription(pair, timeframe, builder, on_reconnect, notify))
+        self._subscriptions.append(_Subscription(pair, timeframe, builder, on_reconnect, notify, log_event))
 
     @property
     def subscriptions(self) -> list[_Subscription]:
@@ -159,22 +164,42 @@ class MarketFeed:
             except Exception as exc:
                 retry_count += 1
                 if retry_count > _MAX_RETRIES:
+                    msg = f"WS feed {sub.pair}/{sub.timeframe} exceeded max retries ({_MAX_RETRIES}). Last error: {exc}"
                     if sub.notify:
-                        sub.notify(
+                        sub.notify("CRITICAL", msg)
+                    if sub.log_event:
+                        sub.log_event(
                             "CRITICAL",
-                            f"WS feed {sub.pair}/{sub.timeframe} exceeded max retries "
-                            f"({_MAX_RETRIES}). Last error: {exc}",
+                            msg,
+                            {
+                                "pair": sub.pair,
+                                "timeframe": sub.timeframe,
+                                "error": str(exc),
+                                "error_type": type(exc).__name__,
+                                "retries": _MAX_RETRIES,
+                            },
                         )
                     await asyncio.sleep(60)
                     retry_count = 0
                     continue
                 delay = _BACKOFF_BASE**retry_count
+                msg = (
+                    f"WS feed {sub.pair}/{sub.timeframe} disconnected "
+                    f"(attempt {retry_count}/{_MAX_RETRIES}). Reconnecting in {delay}s. err={exc}"
+                )
                 if sub.notify:
-                    sub.notify(
+                    sub.notify("WARN", msg)
+                if sub.log_event:
+                    sub.log_event(
                         "WARN",
-                        f"WS feed {sub.pair}/{sub.timeframe} disconnected "
-                        f"(attempt {retry_count}/{_MAX_RETRIES}). "
-                        f"Reconnecting in {delay}s. err={exc}",
+                        msg,
+                        {
+                            "pair": sub.pair,
+                            "timeframe": sub.timeframe,
+                            "error": str(exc),
+                            "error_type": type(exc).__name__,
+                            "attempt": retry_count,
+                        },
                     )
                 await asyncio.sleep(delay)
 

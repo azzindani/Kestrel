@@ -58,6 +58,7 @@ class FeedProtocol(Protocol):
 
 NotifyFn = Callable[[str, str], None]
 ReconnectFn = Callable[[int], None]
+LogEventFn = Callable[[str, str, dict], None]
 FeedFactory = Callable[..., FeedProtocol]
 
 _REGISTRY: dict[str, FeedFactory] = {}
@@ -91,6 +92,7 @@ def get_data_feed(
     builder: CandleBuilder,
     on_reconnect: Optional[ReconnectFn] = None,
     notify: Optional[NotifyFn] = None,
+    log_event: Optional[LogEventFn] = None,
 ) -> FeedProtocol:
     """Resolve the streaming feed for cfg.exchange.
 
@@ -113,7 +115,7 @@ def get_data_feed(
         if feed is None:
             feed = _REGISTRY[name](cfg=cfg)
             _SHARED_INSTANCES[name] = feed
-        feed.subscribe(pair, timeframe, builder, on_reconnect, notify)
+        feed.subscribe(pair, timeframe, builder, on_reconnect, notify, log_event)
         return feed
 
     return _REGISTRY[name](
