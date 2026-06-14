@@ -14,14 +14,28 @@ For each bot in bots.json: fetch ~1 day, convert volume base→quote, run throug
 the production CandleBuilder, write to DB. Then restart the daemon so it
 bootstraps from the populated, scale-consistent history.
 
-Run (one-off container on kestrel_net, DB reachable):
+The candle source defaults to gate (the labs ccxt.pro WS feed). Pass --source to
+match a different live feed's venue/volume scale: the Phase-2 staging stack feeds
+from BingX REST polling (FEED_MODE=poll, EXCHANGE=bingx), so warm it from BingX.
+--bots selects the fleet file (default bots.json); candles are written per the
+file's bot_ids + the container's ENV (the bootstrap is bot_id-scoped, so each bot
+needs its own history). No exchange API keys needed — fetch_ohlcv is public.
+
+Run — labs (default):
   docker run --rm --network kestrel_net --env-file .env -e DB_HOST=postgres \
     -v /root/Kestrel:/app -w /app --entrypoint python \
     kestrel-kestrel:latest scripts/backfill_history.py
+
+Run — Phase-2 staging warmup (env='staging' candles from BingX, no keys needed):
+  docker run --rm --network kestrel_net --env-file .env \
+    -e DB_HOST=postgres -e ENV=staging \
+    -v /root/Kestrel:/app -w /app --entrypoint python kestrel-kestrel:latest \
+    scripts/backfill_history.py --bots bots.staging.json --source bingx
 """
 
 from __future__ import annotations
 
+import argparse
 import asyncio
 import os
 import sys
@@ -37,7 +51,7 @@ from src.data.candle_builder import CandleBuilder
 from src.db import connection as db_conn
 from src.db import writer as db
 
-_FEED_EXCHANGE = "gate"   # must match the live ccxt.pro feed for volume consistency
+_DEFAULT_SOURCE = "gate"  # default candle venue — must match the live feed for volume consistency
 # Per-timeframe candle period (ms) and how many days to backfill so the daemon has
 # enough history to bootstrap indicators (EMA/ATR(50)/ADX) + regime immediately.
 # Higher TFs need a long lookback to reach 51+ candles for ATR(50).
@@ -45,11 +59,12 @@ _TF_MS = {"5m": 300_000, "15m": 900_000, "1h": 3_600_000, "4h": 14_400_000, "1d"
 _TF_DAYS = {"5m": 2, "15m": 7, "1h": 30, "4h": 120, "1d": 500}
 
 
-def fetch_quote_ohlcv(pair: str, timeframe: str, days: int) -> list[list]:
-    """Fetch gate REST OHLCV and convert volume base→quote (× close) to match
-    the live gate WebSocket volume scale."""
+def fetch_quote_ohlcv(pair: str, timeframe: str, days: int, source: str = _DEFAULT_SOURCE) -> list[list]:
+    """Fetch REST OHLCV from `source` and convert volume base→quote (× close) to
+    match the live feed's quote-volume scale (gate WS and the BingX poll feed both
+    carry quote volume)."""
     tf_ms = _TF_MS.get(timeframe, 300_000)
-    ex = getattr(ccxt, _FEED_EXCHANGE)({"enableRateLimit": True})
+    ex = getattr(ccxt, source)({"enableRateLimit": True})
     ex.load_markets()
     now_ms = int(time.time() * 1000)
     since = now_ms - days * 86_400_000
@@ -72,11 +87,11 @@ def fetch_quote_ohlcv(pair: str, timeframe: str, days: int) -> list[list]:
     return [seen[k] for k in sorted(seen)]
 
 
-async def run() -> None:
+async def run(bots_path: str = "bots.json", source: str = _DEFAULT_SOURCE) -> None:
     load_dotenv()
     cfg = AppConfig.from_mapping(os.environ)
     base = load_params("params.json")
-    bots = load_bot_configs("bots.json", cfg, base)
+    bots = load_bot_configs(bots_path, cfg, base)
 
     # Group bots by (pair, timeframe) so each pair is fetched ONCE (not per bot) —
     # essential at lab scale where hundreds of bots share ~10 pairs.
@@ -87,7 +102,7 @@ async def run() -> None:
     await db_conn.init_pool(cfg)
     try:
         for (pair, tf), grp in groups.items():
-            rows = fetch_quote_ohlcv(pair, tf, days=_TF_DAYS.get(tf, 2))
+            rows = fetch_quote_ohlcv(pair, tf, days=_TF_DAYS.get(tf, 2), source=source)
             avg_vol = sum(r[5] for r in rows) / len(rows) if rows else 0
             wrote = 0
             for bot in grp:
@@ -102,11 +117,15 @@ async def run() -> None:
                         wrote += 1
                     except Exception:
                         pass
-            print(f"{pair} {tf}: source={_FEED_EXCHANGE}(quote) fetched={len(rows)} "
+            print(f"{pair} {tf}: source={source}(quote) fetched={len(rows)} "
                   f"bots={len(grp)} candles_written={wrote} avg_vol={avg_vol:,.0f}", flush=True)
     finally:
         await db_conn.close_pool()
 
 
 if __name__ == "__main__":
-    asyncio.run(run())
+    p = argparse.ArgumentParser(description="Backfill warmup candle history for a bot fleet.")
+    p.add_argument("--bots", default="bots.json", help="fleet file (default bots.json; e.g. bots.staging.json)")
+    p.add_argument("--source", default=_DEFAULT_SOURCE, help=f"candle venue, match the live feed (default {_DEFAULT_SOURCE}; bingx for staging poll feed)")
+    args = p.parse_args()
+    asyncio.run(run(args.bots, args.source))
