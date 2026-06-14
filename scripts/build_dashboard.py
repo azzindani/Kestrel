@@ -28,10 +28,48 @@ from __future__ import annotations
 
 import json
 import os
+import re
 
 DS = {"type": "postgres", "uid": "kestrel-db"}
 PV = "11.3.0"
 OUT = os.path.join(os.path.dirname(__file__), "..", "infra", "grafana", "dashboards", "kestrel.json")
+
+# Phase scope — every query is rescoped to the dashboard's `env` template variable
+# so ONE board serves all three phases (Phase 1 labs=dev · Phase 2 staging · Phase 3
+# prod) via the top dropdown. Without this the panels aggregate ALL envs into one
+# view, mixing labs paper trades with staging/prod once those start writing rows.
+ENVF = "${env}"  # Grafana single-value variable → substituted to e.g. 'dev' at query time
+
+# env-bearing tables (§19) filter on env; heartbeats has no env column, so it is
+# scoped by the {env}- bot_id prefix instead (bot_id format {env}-{pair}-{tf}-{inst}).
+_ENV_TABLES = {
+    "trades": f"env = '{ENVF}'",
+    "signals": f"env = '{ENVF}'",
+    "events": f"env = '{ENVF}'",
+    "candles": f"env = '{ENVF}'",
+    "heartbeats": f"bot_id LIKE '{ENVF}-%'",
+}
+
+
+def _scope_env(sql: str) -> str:
+    """Rescope every base-table reference in a raw SQL string to the `env` variable.
+
+    Replaces `FROM/JOIN <table> [alias]` with `FROM/JOIN (SELECT * FROM <table>
+    WHERE <pred>) <alias>`. A single re.sub pass per table is left-to-right and
+    does NOT re-scan inserted text, so the `FROM <table>` inside the injected
+    subquery is never re-wrapped. Existing lowercase aliases (t, s, …) are
+    preserved; bare references get the table name as the derived-table alias.
+    Keywords after the table (WHERE/GROUP/ORDER/UNION) are uppercase, so the
+    `(?![A-Z])[a-z]` alias guard never mistakes a keyword for an alias.
+    """
+    for tbl, pred in _ENV_TABLES.items():
+
+        def repl(m: "re.Match") -> str:
+            alias = (m.group(2) or "").strip() or tbl
+            return f"{m.group(1)} (SELECT * FROM {tbl} WHERE {pred}) {alias}"
+
+        sql = re.sub(rf"\b(FROM|JOIN)\s+{tbl}\b(\s+(?![A-Z])[a-z]\w*)?", repl, sql)
+    return sql
 
 TH_PNL = {"mode": "absolute", "steps": [{"color": "red", "value": None}, {"color": "green", "value": 0}]}
 TH_BLUE = {"mode": "absolute", "steps": [{"color": "blue", "value": None}]}
@@ -104,7 +142,7 @@ def place(w, h):
 
 # ── Field-config + panel helpers ─────────────────────────────────────────────
 def tgt(sql, fmt="table"):
-    return {"datasource": DS, "format": fmt, "rawQuery": True, "rawSql": sql, "refId": "A"}
+    return {"datasource": DS, "format": fmt, "rawQuery": True, "rawSql": _scope_env(sql), "refId": "A"}
 
 
 def fc(unit=None, thresholds=None, custom=None, mn=None, mx=None, decimals=None):
@@ -586,8 +624,23 @@ dashboard = {
                               "name": "Annotations & Alerts", "type": "dashboard"}]},
     "editable": True, "fiscalYearStartMonth": 0, "graphTooltip": 0, "id": None, "links": [],
     "panels": panels, "refresh": "30s", "schemaVersion": 39, "tags": ["kestrel"],
-    "templating": {"list": []}, "time": {"from": "now-7d", "to": "now"}, "timepicker": {},
-    "timezone": "utc", "title": "Kestrel — Multi-Bot Overview", "uid": "kestrel-main",
+    "templating": {"list": [
+        {
+            "name": "env",
+            "label": "Phase",
+            "type": "custom",
+            "description": "Phase 1 labs (dev) · Phase 2 staging (BingX VST demo) · Phase 3 prod (real)",
+            "query": "dev,staging,prod",
+            "options": [
+                {"text": "dev", "value": "dev", "selected": True},
+                {"text": "staging", "value": "staging", "selected": False},
+                {"text": "prod", "value": "prod", "selected": False},
+            ],
+            "current": {"text": "dev", "value": "dev", "selected": True},
+            "includeAll": False, "multi": False, "skipUrlSync": False, "hide": 0,
+        }
+    ]}, "time": {"from": "now-7d", "to": "now"}, "timepicker": {},
+    "timezone": "utc", "title": "Kestrel — Phase Monitor ($env)", "uid": "kestrel-main",
     "version": 1, "weekStart": "",
 }
 
