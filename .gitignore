@@ -1,4 +1,9 @@
 .env
+# Per-phase env files hold real credentials (e.g. .env.staging = BingX VST keys).
+# Ignore every .env.* but keep the committed *.example templates.
+.env.*
+!.env.example
+!.env.staging.example
 backups/
 __pycache__/
 *.pyc

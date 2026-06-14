@@ -16,8 +16,11 @@ from typing import Any, Mapping, Optional
 
 
 class Env(str, Enum):
-    DEV = "dev"
-    PROD = "prod"
+    DEV = "dev"  # Phase 1 — labs: SimulationExecution (paper), many bots, no venue.
+    STAGING = "staging"  # Phase 2 — quarantine: LiveExecution on a demo/testnet venue
+    #                      (e.g. BingX VST) with virtual money. Routes to the live code
+    #                      path (env is not DEV) but TESTNET=true → set_sandbox_mode.
+    PROD = "prod"  # Phase 3 — live: LiveExecution, real keys, real capital (§18 gated).
 
 
 class Direction(str, Enum):
