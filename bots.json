@@ -10,9 +10,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -29,9 +29,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -48,9 +48,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -67,9 +67,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -86,9 +86,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -105,9 +105,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -124,9 +124,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -143,9 +143,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -162,9 +162,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -181,9 +181,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -200,9 +200,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -219,9 +219,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -238,9 +238,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -257,9 +257,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -276,9 +276,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -295,9 +295,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -314,9 +314,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -333,9 +333,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -352,9 +352,9 @@
       "mom_adx"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
@@ -371,9 +371,9 @@
       "triple_mom"
     ],
     "params": {
-      "tp_atr_multiplier": 1.4,
+      "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 4,
+      "max_hold_candles": 6,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.02
