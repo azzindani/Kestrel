@@ -54,9 +54,21 @@ def get_execution_provider(cfg: AppConfig) -> ExecutionInterface:
     """Resolve the execution backend for the current environment.
 
     DI rules (CLAUDE.md §14):
-        ENV=dev  → SimulationExecution (paper trading, no exchange)
-        ENV=prod → real provider selected by cfg.exchange
+        ENV=dev      → SimulationExecution (paper trading, no exchange)
+        ENV=staging  → real provider, but MUST be a demo/testnet venue (virtual money)
+        ENV=prod     → real provider selected by cfg.exchange (real capital, §18 gated)
     """
+    # Phase 2 quarantine safety rail: staging routes to the LIVE code path (it is
+    # not DEV) so it exercises real order placement/fills, but it must run against
+    # a demo/testnet venue. Refuse to start staging on a live (TESTNET=false)
+    # venue — that would place real orders while masquerading as a paper phase.
+    if cfg.env is Env.STAGING and not cfg.testnet:
+        raise ValueError(
+            "ENV=staging requires TESTNET=true — staging must run on a demo/testnet "
+            "venue (e.g. BingX VST) with virtual money, never real capital. Set "
+            "TESTNET=true in the staging .env, or use ENV=prod for real trading."
+        )
+
     if cfg.env is Env.DEV:
         from src.config import load_params
         from src.execution.simulation import SimulationExecution
