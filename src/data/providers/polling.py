@@ -160,14 +160,19 @@ class PollingFeed:
         tasks: list[asyncio.Task] = []
         try:
             while not self._stop_event.is_set():
+                # ONE poller per unique (pair, timeframe) — it feeds EVERY bot
+                # subscribed to that stream. Many bots share one pair (e.g. two
+                # strategies on ETH/USDT 4h); spawning per-sub would poll the pair
+                # once and feed only the first-subscribed bot, silently starving
+                # the rest (they would never see a candle close → never trade).
                 for sub in list(self._subs):
                     key = (sub.pair, sub.timeframe)
                     if key not in spawned:
                         spawned.add(key)
                         tasks.append(
                             asyncio.create_task(
-                                self._poll_one(exchange, sub),
-                                name=f"poll:{sub.pair}/{sub.timeframe}",
+                                self._poll_key(exchange, key[0], key[1]),
+                                name=f"poll:{key[0]}/{key[1]}",
                             )
                         )
                 try:
@@ -181,37 +186,57 @@ class PollingFeed:
         finally:
             await exchange.close()
 
-    async def _poll_one(self, exchange, sub: _PollSub) -> None:
-        period_ms = _tf_ms(sub.timeframe)
-        # Seed from the builder's newest bootstrapped candle so we emit only
-        # genuinely new closes and never replay history.
-        buf = sub.builder.buffer
-        last_emitted: Optional[int] = buf[-1].ts if buf else None
+    def _subs_for(self, pair: str, timeframe: str) -> list[_PollSub]:
+        """All subscriptions on a given (pair, timeframe) stream."""
+        return [s for s in self._subs if s.pair == pair and s.timeframe == timeframe]
+
+    def _dispatch_closed(self, pair: str, timeframe: str, row: list) -> None:
+        """Feed one CLOSED OHLCV row to EVERY bot subscribed to (pair, timeframe).
+
+        Volume is converted base→quote (× close) to match the ccxt.pro WS scale.
+        Each builder gets its own list copy so no bot can mutate another's input.
+        """
+        ts = int(row[0])
+        ohlcv = [ts, row[1], row[2], row[3], row[4], row[5] * row[4]]
+        for sub in self._subs_for(pair, timeframe):
+            sub.builder.process_ohlcv(list(ohlcv), is_closed=True)
+
+    async def _poll_key(self, exchange, pair: str, timeframe: str) -> None:
+        period_ms = _tf_ms(timeframe)
+        # Seed from the newest bootstrapped candle across the subscribed bots so
+        # we emit only genuinely new closes and never replay history (the bots
+        # share one backfill, so their buffers start aligned).
+        last_emitted: Optional[int] = None
+        for sub in self._subs_for(pair, timeframe):
+            buf = sub.builder.buffer
+            if buf:
+                last_emitted = buf[-1].ts if last_emitted is None else max(last_emitted, buf[-1].ts)
         while not self._stop_event.is_set():
             try:
                 rows = await asyncio.wait_for(
-                    exchange.fetch_ohlcv(sub.pair, sub.timeframe, limit=_POLL_LIMIT),
+                    exchange.fetch_ohlcv(pair, timeframe, limit=_POLL_LIMIT),
                     timeout=30,
                 )
                 now_ms = int(time.time() * 1000)
                 for r in new_closed_rows(rows, period_ms, now_ms, last_emitted):
-                    ts = int(r[0])
-                    # base→quote volume (× close) to match the ccxt.pro WS scale
-                    sub.builder.process_ohlcv([ts, r[1], r[2], r[3], r[4], r[5] * r[4]], is_closed=True)
-                    last_emitted = ts
+                    self._dispatch_closed(pair, timeframe, r)
+                    last_emitted = int(r[0])
             except asyncio.CancelledError:
                 break
             except Exception as exc:  # noqa: BLE001 — poll loop: log and keep polling
-                msg = f"Polling feed {sub.pair}/{sub.timeframe} fetch failed. err={exc}"
-                if sub.notify:
-                    sub.notify("WARN", msg)
-                if sub.log_event:
-                    sub.log_event(
+                msg = f"Polling feed {pair}/{timeframe} fetch failed. err={exc}"
+                subs = self._subs_for(pair, timeframe)
+                notify = subs[0].notify if subs else None
+                log_event = subs[0].log_event if subs else None
+                if notify:
+                    notify("WARN", msg)
+                if log_event:
+                    log_event(
                         "WARN",
                         msg,
                         {
-                            "pair": sub.pair,
-                            "timeframe": sub.timeframe,
+                            "pair": pair,
+                            "timeframe": timeframe,
                             "error": str(exc),
                             "error_type": type(exc).__name__,
                         },

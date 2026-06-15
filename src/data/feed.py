@@ -137,8 +137,8 @@ class MarketFeed:
                         spawned.add(key)
                         tasks.append(
                             asyncio.create_task(
-                                self._stream_one(exchange, sub),
-                                name=f"ws:{sub.pair}/{sub.timeframe}",
+                                self._stream_one(exchange, key[0], key[1]),
+                                name=f"ws:{key[0]}/{key[1]}",
                             )
                         )
                 # Wait a short tick before re-checking; exit immediately if stop fires.
@@ -153,27 +153,46 @@ class MarketFeed:
         finally:
             await exchange.close()
 
-    async def _stream_one(self, exchange, sub: _Subscription) -> None:
+    def _subs_for(self, pair: str, timeframe: str) -> list[_Subscription]:
+        """All subscriptions on a given (pair, timeframe) stream."""
+        return [s for s in self._subscriptions if s.pair == pair and s.timeframe == timeframe]
+
+    def _dispatch_ws(self, pair: str, timeframe: str, ohlcv: list, is_closed: bool) -> None:
+        """Feed an OHLCV row to EVERY bot subscribed to (pair, timeframe).
+
+        Many bots share one pair; one WS stream per pair must fan out to all of
+        their builders or the non-first bots never see a candle (and never trade).
+        Each builder gets its own list copy so no bot can mutate another's input.
+        """
+        for sub in self._subs_for(pair, timeframe):
+            sub.builder.process_ohlcv(list(ohlcv), is_closed=is_closed)
+
+    async def _stream_one(self, exchange, pair: str, timeframe: str) -> None:
         retry_count = 0
         while not self._stop_event.is_set():
             try:
-                await self._stream_inner(exchange, sub, retry_count)
+                await self._stream_inner(exchange, pair, timeframe, retry_count)
                 retry_count = 0
             except asyncio.CancelledError:
                 break
             except Exception as exc:
+                # Per-pair callbacks (notify/log_event) are identical across the
+                # bots on this stream — use the first to avoid duplicate logs.
+                subs = self._subs_for(pair, timeframe)
+                notify = subs[0].notify if subs else None
+                log_event = subs[0].log_event if subs else None
                 retry_count += 1
                 if retry_count > _MAX_RETRIES:
-                    msg = f"WS feed {sub.pair}/{sub.timeframe} exceeded max retries ({_MAX_RETRIES}). Last error: {exc}"
-                    if sub.notify:
-                        sub.notify("CRITICAL", msg)
-                    if sub.log_event:
-                        sub.log_event(
+                    msg = f"WS feed {pair}/{timeframe} exceeded max retries ({_MAX_RETRIES}). Last error: {exc}"
+                    if notify:
+                        notify("CRITICAL", msg)
+                    if log_event:
+                        log_event(
                             "CRITICAL",
                             msg,
                             {
-                                "pair": sub.pair,
-                                "timeframe": sub.timeframe,
+                                "pair": pair,
+                                "timeframe": timeframe,
                                 "error": str(exc),
                                 "error_type": type(exc).__name__,
                                 "retries": _MAX_RETRIES,
@@ -184,18 +203,18 @@ class MarketFeed:
                     continue
                 delay = _BACKOFF_BASE**retry_count
                 msg = (
-                    f"WS feed {sub.pair}/{sub.timeframe} disconnected "
+                    f"WS feed {pair}/{timeframe} disconnected "
                     f"(attempt {retry_count}/{_MAX_RETRIES}). Reconnecting in {delay}s. err={exc}"
                 )
-                if sub.notify:
-                    sub.notify("WARN", msg)
-                if sub.log_event:
-                    sub.log_event(
+                if notify:
+                    notify("WARN", msg)
+                if log_event:
+                    log_event(
                         "WARN",
                         msg,
                         {
-                            "pair": sub.pair,
-                            "timeframe": sub.timeframe,
+                            "pair": pair,
+                            "timeframe": timeframe,
                             "error": str(exc),
                             "error_type": type(exc).__name__,
                             "attempt": retry_count,
@@ -203,8 +222,8 @@ class MarketFeed:
                     )
                 await asyncio.sleep(delay)
 
-    async def _stream_inner(self, exchange, sub: _Subscription, retry_count: int) -> None:
-        """Per-subscription streaming loop.
+    async def _stream_inner(self, exchange, pair: str, timeframe: str, retry_count: int) -> None:
+        """Per-(pair, timeframe) streaming loop, fanning out to all subscribed bots.
 
         ccxt.pro exchanges differ in how they push candles:
             - Some (binance, bybit) return batches where the final entry is the
@@ -220,13 +239,16 @@ class MarketFeed:
         if retry_count > 0:
             ts_ms = int(time.time() * 1000)
             self._last_reconnect_ts = ts_ms
-            if sub.on_reconnect:
-                sub.on_reconnect(ts_ms)
+            # Broadcast the reconnect to EVERY bot on this stream so each one's
+            # stale-data guard (risk Rule 6) trips, not just the first.
+            for sub in self._subs_for(pair, timeframe):
+                if sub.on_reconnect:
+                    sub.on_reconnect(ts_ms)
 
         last_open: Optional[list] = None
         while not self._stop_event.is_set():
             ohlcvs = await asyncio.wait_for(
-                exchange.watch_ohlcv(sub.pair, sub.timeframe),
+                exchange.watch_ohlcv(pair, timeframe),
                 timeout=90,
             )
             if not ohlcvs:
@@ -235,11 +257,11 @@ class MarketFeed:
                 is_latest = ohlcv is ohlcvs[-1]
                 if not is_latest:
                     # Older entries in a multi-row batch are guaranteed closed.
-                    sub.builder.process_ohlcv(ohlcv, is_closed=True)
+                    self._dispatch_ws(pair, timeframe, ohlcv, is_closed=True)
                     continue
                 # ohlcv is the most recent entry in this batch.
                 if last_open is not None and ohlcv[0] > last_open[0]:
                     # Timestamp advanced → the previous one we were tracking
                     # has now closed (a new period began).
-                    sub.builder.process_ohlcv(last_open, is_closed=True)
+                    self._dispatch_ws(pair, timeframe, last_open, is_closed=True)
                 last_open = ohlcv
