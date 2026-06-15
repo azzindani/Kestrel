@@ -1,9 +1,9 @@
 [
   {
-    "bot_id": "dev-BTCUSDT-4h-mom_adx-01",
+    "bot_id": "dev-BTCUSDT-5m-mom_adx-01",
     "pair": "BTC/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -19,10 +19,10 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-4h-triple_mom-01",
+    "bot_id": "dev-BTCUSDT-5m-triple_mom-01",
     "pair": "BTC/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -38,10 +38,10 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-4h-mom_adx-01",
+    "bot_id": "dev-ETHUSDT-5m-mom_adx-01",
     "pair": "ETH/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -57,10 +57,10 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-4h-triple_mom-01",
+    "bot_id": "dev-ETHUSDT-5m-triple_mom-01",
     "pair": "ETH/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -76,10 +76,10 @@
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-4h-mom_adx-01",
+    "bot_id": "dev-SOLUSDT-5m-mom_adx-01",
     "pair": "SOL/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -95,10 +95,10 @@
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-4h-triple_mom-01",
+    "bot_id": "dev-SOLUSDT-5m-triple_mom-01",
     "pair": "SOL/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -114,10 +114,10 @@
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-4h-mom_adx-01",
+    "bot_id": "dev-DOGEUSDT-5m-mom_adx-01",
     "pair": "DOGE/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -133,10 +133,10 @@
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-4h-triple_mom-01",
+    "bot_id": "dev-DOGEUSDT-5m-triple_mom-01",
     "pair": "DOGE/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -152,10 +152,10 @@
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-4h-mom_adx-01",
+    "bot_id": "dev-PEPEUSDT-5m-mom_adx-01",
     "pair": "PEPE/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -171,10 +171,10 @@
     }
   },
   {
-    "bot_id": "dev-PEPEUSDT-4h-triple_mom-01",
+    "bot_id": "dev-PEPEUSDT-5m-triple_mom-01",
     "pair": "PEPE/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -190,10 +190,10 @@
     }
   },
   {
-    "bot_id": "dev-HYPEUSDT-4h-mom_adx-01",
+    "bot_id": "dev-HYPEUSDT-5m-mom_adx-01",
     "pair": "HYPE/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -209,10 +209,10 @@
     }
   },
   {
-    "bot_id": "dev-HYPEUSDT-4h-triple_mom-01",
+    "bot_id": "dev-HYPEUSDT-5m-triple_mom-01",
     "pair": "HYPE/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -228,10 +228,10 @@
     }
   },
   {
-    "bot_id": "dev-XRPUSDT-4h-mom_adx-01",
+    "bot_id": "dev-XRPUSDT-5m-mom_adx-01",
     "pair": "XRP/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -247,10 +247,10 @@
     }
   },
   {
-    "bot_id": "dev-XRPUSDT-4h-triple_mom-01",
+    "bot_id": "dev-XRPUSDT-5m-triple_mom-01",
     "pair": "XRP/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -266,10 +266,10 @@
     }
   },
   {
-    "bot_id": "dev-BNBUSDT-4h-mom_adx-01",
+    "bot_id": "dev-BNBUSDT-5m-mom_adx-01",
     "pair": "BNB/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -285,10 +285,10 @@
     }
   },
   {
-    "bot_id": "dev-BNBUSDT-4h-triple_mom-01",
+    "bot_id": "dev-BNBUSDT-5m-triple_mom-01",
     "pair": "BNB/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -304,10 +304,10 @@
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-4h-mom_adx-01",
+    "bot_id": "dev-ADAUSDT-5m-mom_adx-01",
     "pair": "ADA/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -323,10 +323,10 @@
     }
   },
   {
-    "bot_id": "dev-ADAUSDT-4h-triple_mom-01",
+    "bot_id": "dev-ADAUSDT-5m-triple_mom-01",
     "pair": "ADA/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [
@@ -342,10 +342,10 @@
     }
   },
   {
-    "bot_id": "dev-AVAXUSDT-4h-mom_adx-01",
+    "bot_id": "dev-AVAXUSDT-5m-mom_adx-01",
     "pair": "AVAX/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "mom_adx",
     "patterns": [
@@ -361,10 +361,10 @@
     }
   },
   {
-    "bot_id": "dev-AVAXUSDT-4h-triple_mom-01",
+    "bot_id": "dev-AVAXUSDT-5m-triple_mom-01",
     "pair": "AVAX/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
     "max_active_buckets": 1,
     "strategy": "triple_mom",
     "patterns": [

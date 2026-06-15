@@ -66,6 +66,13 @@ _EXIT = {
     "max_loss_pct_per_trade": 0.02,
 }
 
+# Lab timeframe. The confluence-momentum edge was VALIDATED at 4h (see above) —
+# 5m has NO validated edge (5m moves are smaller than the ~0.18% round-trip cost,
+# the exact reason the search pushed to 4h). This is set to 5m by request for
+# ACTIVITY/observation (many trades to watch the machine work), NOT for profit:
+# expect negative expectancy here. Flip back to "4h" for the validated config.
+_TIMEFRAME = "5m"
+
 STRATEGIES = [
     {"name": "mom_adx", "patterns": ["mom_adx"]},
     {"name": "triple_mom", "patterns": ["triple_mom"]},
@@ -79,10 +86,10 @@ def main() -> None:
         for s in STRATEGIES:
             bots.append(
                 {
-                    "bot_id": f"dev-{token_pair}-4h-{s['name']}-01",
+                    "bot_id": f"dev-{token_pair}-{_TIMEFRAME}-{s['name']}-01",
                     "pair": pair,
-                    "timeframe_entry": "4h",
-                    "timeframe_regime": "4h",
+                    "timeframe_entry": _TIMEFRAME,
+                    "timeframe_regime": _TIMEFRAME,
                     "max_active_buckets": 1,
                     "strategy": s["name"],
                     "patterns": s["patterns"],
@@ -95,7 +102,7 @@ def main() -> None:
         json.dump(bots, f, indent=2)
     print(
         f"wrote {os.path.normpath(out)}: {len(bots)} bots = "
-        f"{len(STRATEGIES)} strategies × {len(MOMENTUM_PAIRS)} markets (4h)"
+        f"{len(STRATEGIES)} strategies × {len(MOMENTUM_PAIRS)} markets ({_TIMEFRAME})"
     )
 
 
