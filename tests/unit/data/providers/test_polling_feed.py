@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from src.data.providers.polling import _tf_ms, new_closed_rows
+from unittest.mock import MagicMock
+
+from src.data.providers.polling import PollingFeed, _tf_ms, new_closed_rows
+from tests.helpers.factories import make_app_config
 
 # 4h period in ms; build rows on 4h boundaries.
 _P = 14_400_000
@@ -65,3 +68,35 @@ class TestNewClosedRows:
         rows = [_row(2 * _P)]
         assert new_closed_rows(rows, _P, 3 * _P, last_emitted=_P) == [rows[0]]
         assert new_closed_rows(rows, _P, 3 * _P - 1, last_emitted=_P) == []
+
+
+class TestMultiBotDispatch:
+    """Regression: one poller per (pair, tf) must feed EVERY bot on that stream.
+
+    The original bug fed only the first-subscribed bot, silently starving the
+    other strategy on the same pair (it never saw a candle close → never traded).
+    """
+
+    def test_dispatch_feeds_all_bots_on_a_pair(self):
+        cfg = make_app_config(exchange="gate")
+        feed = PollingFeed(cfg)
+        b1, b2, other = MagicMock(), MagicMock(), MagicMock()
+        feed.subscribe("ETH/USDT", "4h", b1)
+        feed.subscribe("ETH/USDT", "4h", b2)  # second strategy, SAME pair
+        feed.subscribe("BTC/USDT", "4h", other)
+
+        feed._dispatch_closed("ETH/USDT", "4h", [1_700_000_000_000, 100.0, 110.0, 95.0, 105.0, 50.0])
+
+        b1.process_ohlcv.assert_called_once()
+        b2.process_ohlcv.assert_called_once()  # would FAIL under the old per-sub bug
+        other.process_ohlcv.assert_not_called()
+
+    def test_dispatch_converts_volume_base_to_quote(self):
+        cfg = make_app_config(exchange="gate")
+        feed = PollingFeed(cfg)
+        b = MagicMock()
+        feed.subscribe("ETH/USDT", "4h", b)
+        feed._dispatch_closed("ETH/USDT", "4h", [1_700_000_000_000, 100.0, 110.0, 95.0, 105.0, 50.0])
+        sent = b.process_ohlcv.call_args.args[0]
+        assert sent[0] == 1_700_000_000_000
+        assert sent[5] == 50.0 * 105.0  # volume × close → quote scale

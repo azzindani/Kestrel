@@ -104,3 +104,40 @@ class TestMarketFeedConstruction:
         assert sub.on_reconnect is on_reconnect
         assert sub.notify is notify
         assert sub.builder is builder
+
+
+class TestMultiBotFanout:
+    """Regression: one WS stream per (pair, tf) must feed EVERY bot on that pair.
+
+    The original bug fed only the first-subscribed bot per pair; the other
+    strategies on the same pair never saw a candle close → never traded.
+    """
+
+    def test_dispatch_feeds_all_bots_on_a_pair(self):
+        cfg = make_app_config(exchange="binance")
+        feed = MarketFeed(cfg)
+        b1, b2, other = MagicMock(), MagicMock(), MagicMock()
+        feed.subscribe("BTCUSDT", "5m", b1)
+        feed.subscribe("BTCUSDT", "5m", b2)  # second strategy, SAME pair
+        feed.subscribe("ETHUSDT", "5m", other)
+
+        row = [1_700_000_000_000, 100.0, 110.0, 95.0, 105.0, 5.0]
+        feed._dispatch_ws("BTCUSDT", "5m", row, is_closed=True)
+
+        b1.process_ohlcv.assert_called_once()
+        b2.process_ohlcv.assert_called_once()  # would FAIL under the old per-sub bug
+        other.process_ohlcv.assert_not_called()
+
+    def test_reconnect_broadcasts_to_all_bots_on_a_pair(self):
+        cfg = make_app_config(exchange="binance")
+        feed = MarketFeed(cfg)
+        r1, r2 = MagicMock(), MagicMock()
+        feed.subscribe("BTCUSDT", "5m", MagicMock(), on_reconnect=r1)
+        feed.subscribe("BTCUSDT", "5m", MagicMock(), on_reconnect=r2)
+
+        for sub in feed._subs_for("BTCUSDT", "5m"):
+            if sub.on_reconnect:
+                sub.on_reconnect(1_700_000_000_000)
+
+        r1.assert_called_once_with(1_700_000_000_000)
+        r2.assert_called_once_with(1_700_000_000_000)
