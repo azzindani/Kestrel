@@ -38,6 +38,25 @@
     }
   },
   {
+    "bot_id": "dev-BTCUSDT-5m-trend_mom-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
     "bot_id": "dev-ETHUSDT-5m-mom_adx-01",
     "pair": "ETH/USDT",
     "timeframe_entry": "5m",
@@ -65,6 +84,25 @@
     "strategy": "triple_mom",
     "patterns": [
       "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-5m-trend_mom-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 2.0,
@@ -114,6 +152,25 @@
     }
   },
   {
+    "bot_id": "dev-SOLUSDT-5m-trend_mom-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
     "bot_id": "dev-DOGEUSDT-5m-mom_adx-01",
     "pair": "DOGE/USDT",
     "timeframe_entry": "5m",
@@ -141,6 +198,25 @@
     "strategy": "triple_mom",
     "patterns": [
       "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-5m-trend_mom-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 2.0,
@@ -190,6 +266,25 @@
     }
   },
   {
+    "bot_id": "dev-PEPEUSDT-5m-trend_mom-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
     "bot_id": "dev-HYPEUSDT-5m-mom_adx-01",
     "pair": "HYPE/USDT",
     "timeframe_entry": "5m",
@@ -217,6 +312,25 @@
     "strategy": "triple_mom",
     "patterns": [
       "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-HYPEUSDT-5m-trend_mom-01",
+    "pair": "HYPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 2.0,
@@ -266,6 +380,25 @@
     }
   },
   {
+    "bot_id": "dev-XRPUSDT-5m-trend_mom-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
     "bot_id": "dev-BNBUSDT-5m-mom_adx-01",
     "pair": "BNB/USDT",
     "timeframe_entry": "5m",
@@ -293,6 +426,25 @@
     "strategy": "triple_mom",
     "patterns": [
       "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-BNBUSDT-5m-trend_mom-01",
+    "pair": "BNB/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 2.0,
@@ -342,6 +494,25 @@
     }
   },
   {
+    "bot_id": "dev-ADAUSDT-5m-trend_mom-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
     "bot_id": "dev-AVAXUSDT-5m-mom_adx-01",
     "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
@@ -369,6 +540,25 @@
     "strategy": "triple_mom",
     "patterns": [
       "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.02
+    }
+  },
+  {
+    "bot_id": "dev-AVAXUSDT-5m-trend_mom-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "trend_mom",
+    "patterns": [
+      "trend_momentum"
     ],
     "params": {
       "tp_atr_multiplier": 2.0,

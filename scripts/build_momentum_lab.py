@@ -76,6 +76,13 @@ _TIMEFRAME = "5m"
 STRATEGIES = [
     {"name": "mom_adx", "patterns": ["mom_adx"]},
     {"name": "triple_mom", "patterns": ["triple_mom"]},
+    # ACTIVITY pattern (added for the 5m lab): trend_momentum is permissive — it
+    # enters in the established EMA-trend direction on any decent-bodied close
+    # (body_ratio>=0.30), so it fires on ~9% of candles vs the ~1% of the strict
+    # ADX>25 confluence patterns. This is what produces frequent, visible trades
+    # at 5m. It has NO validated edge either (more trades = more -EV churn, not
+    # profit); it exists so the lab is active to watch. Drop it for the strict lab.
+    {"name": "trend_mom", "patterns": ["trend_momentum"]},
 ]
 
 
