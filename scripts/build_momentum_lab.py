@@ -66,12 +66,14 @@ _EXIT = {
     "max_loss_pct_per_trade": 0.02,
 }
 
-# Lab timeframe. The confluence-momentum edge was VALIDATED at 4h (see above) —
-# 5m has NO validated edge (5m moves are smaller than the ~0.18% round-trip cost,
-# the exact reason the search pushed to 4h). This is set to 5m by request for
-# ACTIVITY/observation (many trades to watch the machine work), NOT for profit:
-# expect negative expectancy here. Flip back to "4h" for the validated config.
-_TIMEFRAME = "5m"
+# Lab timeframes. 2026-06-16: the lockbox/cross-year validation (reports/lockbox_4h.log
+# + breakout_xyear.log) REFUTED every handwritten entry as a cross-year edge — mom_adx
+# wins the recent year & loses the prior; breakout_vol the mirror. So NONE of these is a
+# real edge at ANY timeframe; this multi-TF fleet is a landscape/activity/parity lab
+# (user wants the minutes window + a big active fleet), NOT a profit deployment — expect
+# bleed, especially at 5m where moves < the ~0.18% taker cost. 3 strat × 4 TF × 10 pairs
+# = 120 bots. (Maker execution — the one consistent lever — is not in the live sim yet.)
+_TIMEFRAMES = ["5m", "15m", "1h", "4h"]
 
 STRATEGIES = [
     {"name": "mom_adx", "patterns": ["mom_adx"]},
@@ -90,26 +92,28 @@ def main() -> None:
     bots = []
     for pair in MOMENTUM_PAIRS:
         token_pair = pair.replace("/", "")
-        for s in STRATEGIES:
-            bots.append(
-                {
-                    "bot_id": f"dev-{token_pair}-{_TIMEFRAME}-{s['name']}-01",
-                    "pair": pair,
-                    "timeframe_entry": _TIMEFRAME,
-                    "timeframe_regime": _TIMEFRAME,
-                    "max_active_buckets": 1,
-                    "strategy": s["name"],
-                    "patterns": s["patterns"],
-                    "params": dict(_EXIT),
-                }
-            )
+        for tf in _TIMEFRAMES:
+            for s in STRATEGIES:
+                bots.append(
+                    {
+                        "bot_id": f"dev-{token_pair}-{tf}-{s['name']}-01",
+                        "pair": pair,
+                        "timeframe_entry": tf,
+                        "timeframe_regime": tf,
+                        "max_active_buckets": 1,
+                        "strategy": s["name"],
+                        "patterns": s["patterns"],
+                        "params": dict(_EXIT),
+                    }
+                )
 
     out = os.path.join(os.path.dirname(__file__), "..", "bots.json")
     with open(out, "w") as f:
         json.dump(bots, f, indent=2)
     print(
         f"wrote {os.path.normpath(out)}: {len(bots)} bots = "
-        f"{len(STRATEGIES)} strategies × {len(MOMENTUM_PAIRS)} markets ({_TIMEFRAME})"
+        f"{len(STRATEGIES)} strategies × {len(_TIMEFRAMES)} timeframes "
+        f"× {len(MOMENTUM_PAIRS)} markets"
     )
 
 
