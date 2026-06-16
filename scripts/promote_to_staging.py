@@ -41,7 +41,10 @@ import sys
 _EXIT = {
     "tp_atr_multiplier": 2.0,
     "sl_atr_multiplier": 1.0,
-    "max_hold_candles": 6,
+    "max_hold_candles": 12,
+    "trailing_enabled": True,
+    "trail_activation_r": 1.0,
+    "trail_distance_r": 1.0,
     "volume_ratio_min": 1.1,
     "adx_strong_min": 25.0,
     "max_loss_pct_per_trade": 0.02,
@@ -183,9 +186,7 @@ async def _run(args: argparse.Namespace) -> int:
 def main() -> int:
     p = argparse.ArgumentParser(description="Promote lab winners into the staging fleet.")
     p.add_argument("--top", type=int, default=5, help="max cells to promote (default 5)")
-    p.add_argument(
-        "--min-trades", type=int, default=10, help="min closed trades for a cell to qualify (default 10)"
-    )
+    p.add_argument("--min-trades", type=int, default=10, help="min closed trades for a cell to qualify (default 10)")
     p.add_argument(
         "--manual",
         type=str,

@@ -59,11 +59,10 @@ class TestBotEntry:
 
     def test_carries_validated_exit_profile(self):
         e = promote._bot_entry("DOGEUSDT", "mom_adx")
-        # Must match the validated "medium" bracket (build_momentum_lab._EXIT).
-        assert e["params"]["tp_atr_multiplier"] == 2.0
-        assert e["params"]["sl_atr_multiplier"] == 1.0
-        assert e["params"]["max_hold_candles"] == 6
-        assert e["params"]["adx_strong_min"] == 25.0
+        # Must carry the exact exit profile the lab ships (the TestExitProfileInSyncWithLab
+        # test pins promote._EXIT == build_momentum_lab._EXIT, so reference it here).
+        assert e["params"] == dict(promote._EXIT)
+        assert e["params"]["trailing_enabled"] is True
 
 
 class TestExitProfileInSyncWithLab:

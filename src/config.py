@@ -460,6 +460,15 @@ class AppConfig:
     # by itself create edge. Set MAKER_EXECUTION=true for the paper lab. Absent ⇒ False.
     maker_execution: bool = False
 
+    # Portfolio guard ("manager bot") thresholds, as a fraction of total account
+    # equity. When aggregate UNREALISED PnL across all bots crosses +portfolio_tp_pct
+    # the guard force-closes every open position (lock the gain); when it crosses
+    # -portfolio_dd_pct it force-closes everything (cap the drawdown). 0.0 = that side
+    # OFF (both default 0.0 ⇒ guard disabled = live-safe). This is RISK-SHAPING, not
+    # edge — it reduces variance on a no-edge book; forced closes are taker market-outs.
+    portfolio_tp_pct: float = 0.0
+    portfolio_dd_pct: float = 0.0
+
     @classmethod
     def from_mapping(cls, m: Mapping[str, str]) -> "AppConfig":
         """Construct from a string→string mapping (e.g. os.environ).
@@ -514,6 +523,8 @@ class AppConfig:
             log_level=m["LOG_LEVEL"].upper(),
             feed_mode=(m.get("FEED_MODE") or "ws").lower(),
             maker_execution=(m.get("MAKER_EXECUTION") or "").lower() in ("1", "true", "yes"),
+            portfolio_tp_pct=float(m.get("PORTFOLIO_TP_PCT") or 0.0),
+            portfolio_dd_pct=float(m.get("PORTFOLIO_DD_PCT") or 0.0),
         )
 
 
