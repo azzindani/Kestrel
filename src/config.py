@@ -448,6 +448,18 @@ class AppConfig:
     # = a lost candle). Optional/back-compatible: absent ⇒ "ws".
     feed_mode: str = "ws"
 
+    # Execution cost model. False (default) = TAKER: market fills with taker fee +
+    # slippage on every entry and exit (the live-safe model). True = MAKER: model
+    # post-only LIMIT fills — entries and take-profit exits pay the maker fee with
+    # NO slippage (you set the fill price); stop-loss / timeout / liquidation still
+    # market out (taker + slippage). This cuts the fixed round-trip cost ~4x AND
+    # removes entry/TP slippage, which lifts WINS more than losses → directly
+    # improves the realised reward:risk (the "lose 10% / win 3%" asymmetry).
+    # CAVEAT: optimistic for MOMENTUM entries — a real post-only limit may not fill
+    # on a breakout — so it is a best-case ceiling, not a guarantee, and it does NOT
+    # by itself create edge. Set MAKER_EXECUTION=true for the paper lab. Absent ⇒ False.
+    maker_execution: bool = False
+
     @classmethod
     def from_mapping(cls, m: Mapping[str, str]) -> "AppConfig":
         """Construct from a string→string mapping (e.g. os.environ).
@@ -501,6 +513,7 @@ class AppConfig:
             telegram_chat_id=m["TELEGRAM_CHAT_ID"],
             log_level=m["LOG_LEVEL"].upper(),
             feed_mode=(m.get("FEED_MODE") or "ws").lower(),
+            maker_execution=(m.get("MAKER_EXECUTION") or "").lower() in ("1", "true", "yes"),
         )
 
 
