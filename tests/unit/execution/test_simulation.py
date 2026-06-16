@@ -373,3 +373,34 @@ class TestMakerExecution:
         sim.update_price(sig.pair, 99.0)
         result = _run(sim.close_position(sig.pair, "stop_loss"))
         assert result["exit_price"] < 99.0  # slippage still applied on the market-out
+
+
+# ---------------------------------------------------------------------------
+# unrealized_pnl (portfolio-guard mark-to-market)
+# ---------------------------------------------------------------------------
+
+
+class TestUnrealizedPnl:
+    def test_no_positions_is_zero(self):
+        assert SimulationExecution(make_app_config()).unrealized_pnl() == 0.0
+
+    def test_long_in_profit_is_positive(self):
+        sim = SimulationExecution(make_app_config(maker_execution=True))
+        sig = make_signal(entry=100.0, direction=Direction.LONG)
+        _run(sim.place_order(sig))
+        sim.update_price(sig.pair, 101.0)  # +1% move
+        assert sim.unrealized_pnl() > 0.0
+
+    def test_long_in_loss_is_negative(self):
+        sim = SimulationExecution(make_app_config(maker_execution=True))
+        sig = make_signal(entry=100.0, direction=Direction.LONG)
+        _run(sim.place_order(sig))
+        sim.update_price(sig.pair, 99.0)
+        assert sim.unrealized_pnl() < 0.0
+
+    def test_short_in_profit_is_positive(self):
+        sim = SimulationExecution(make_app_config(maker_execution=True))
+        sig = make_signal(entry=100.0, direction=Direction.SHORT)
+        _run(sim.place_order(sig))
+        sim.update_price(sig.pair, 99.0)  # price down = short profit
+        assert sim.unrealized_pnl() > 0.0

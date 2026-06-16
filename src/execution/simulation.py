@@ -205,6 +205,23 @@ class SimulationExecution(ExecutionInterface):
         """Record current market price for simulated TP/SL/close calculations."""
         self._prices[pair] = price
 
+    def unrealized_pnl(self) -> float:
+        """Gross mark-to-market PnL (USDT) of all open positions at the last seen
+        price. Used by the portfolio guard to aggregate across bots; NOT part of
+        ExecutionInterface (sim-only — the daemon narrows the type before calling)."""
+        total = 0.0
+        for pair, pos in self._positions.items():
+            entry = pos["entry_price"]
+            price = self._prices.get(pair, entry)
+            notional = pos["notional_usdt"]
+            if entry <= 0.0:
+                continue
+            if pos["direction"] == "long":
+                total += (price - entry) / entry * notional
+            else:
+                total += (entry - price) / entry * notional
+        return total
+
     @staticmethod
     def _advance_trail(pos: dict[str, Any], price: float) -> None:
         """Ratchet the trailing stop toward price as unrealised profit grows.

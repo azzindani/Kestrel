@@ -530,6 +530,32 @@ class Daemon:
             await self.notifier.trade_closed_loss(notify_data)
 
     # -----------------------------------------------------------------------
+    # Portfolio guard hooks ("manager bot") — see engine/portfolio_guard.py
+    # -----------------------------------------------------------------------
+
+    def portfolio_snapshot(self) -> tuple[float, float]:
+        """(realised equity, open unrealised PnL) in USDT for this bot. Pure read.
+
+        Equity = starting bucket + realised session PnL; unrealised = mark-to-market
+        of open positions (sim only). The guard sums these across all bots.
+        """
+        equity = self.cfg.bucket_size_usdt + self._session_pnl
+        unrealised = 0.0
+        if isinstance(self.execution, SimulationExecution):
+            unrealised = self.execution.unrealized_pnl()
+        return equity, unrealised
+
+    async def force_close_all(self, reason: str) -> None:
+        """Close every open position for THIS bot (a portfolio-guard directive).
+
+        Reuses the normal close path (_close_position): writes the trade exit, event,
+        and notification. Already-closed pairs are skipped, so it is safe to call
+        concurrently with the per-candle monitor.
+        """
+        for pair in list(self._open_trade_ids.keys()):
+            await self._close_position(pair, reason, None)
+
+    # -----------------------------------------------------------------------
     # Helpers
     # -----------------------------------------------------------------------
 
@@ -626,6 +652,7 @@ async def main() -> None:
     load_dotenv()
 
     from src.config import load_bot_configs
+    from src.engine.portfolio_guard import PortfolioGuard
 
     cfg = AppConfig.from_mapping(os.environ)
     params = load_params("params.json")
@@ -685,6 +712,20 @@ async def main() -> None:
             name="daily_summary_global",
         ),
     ]
+
+    # ── Portfolio guard / "manager bot" (one coordinator for the whole process) ──
+    # Watches aggregate unrealised PnL across all bots and force-closes everything on
+    # a profit-lock / drawdown-stop crossing. Off unless a threshold > 0 (live-safe).
+    guard = PortfolioGuard(
+        cfg,
+        f"{cfg.env.value}-global",
+        notifier,
+        cfg.portfolio_tp_pct,
+        cfg.portfolio_dd_pct,
+    )
+    guard.attach(daemons)
+    if guard.enabled:
+        global_tasks.append(asyncio.create_task(guard.run(), name="portfolio_guard"))
 
     # ── Run all bots concurrently ──────────────────────────────────────────
     try:

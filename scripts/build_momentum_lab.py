@@ -60,7 +60,14 @@ MOMENTUM_PAIRS = [
 _EXIT = {
     "tp_atr_multiplier": 2.0,
     "sl_atr_multiplier": 1.0,
-    "max_hold_candles": 6,
+    # Trailing-close ON (2026-06-16, user "don't let winners slide"): once price runs
+    # 1R in favour, the stop trails 1R behind the peak and the fixed TP is dropped, so
+    # winners ride until they reverse instead of fading to a small timeout. Backtests
+    # show it lifts win rate + cuts timeouts. Longer hold (12) gives the trail room.
+    "max_hold_candles": 12,
+    "trailing_enabled": True,
+    "trail_activation_r": 1.0,
+    "trail_distance_r": 1.0,
     "volume_ratio_min": 1.1,  # floor — keep the prod volume gate near pass-through
     "adx_strong_min": 25.0,  # the validated strong-trend entry threshold
     "max_loss_pct_per_trade": 0.02,
