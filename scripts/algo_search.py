@@ -135,6 +135,65 @@ for _lo, _hi in [(25.0, 75.0), (20.0, 80.0), (30.0, 70.0)]:
     _make_rsi_revert(_lo, _hi)
 
 
+# --- Connors RSI-2 mean-reversion (research 2026-06-16) -----------------------
+# The web research converged on RSI-2 (Larry Connors) as the highest-win-rate
+# mean-reversion archetype (documented 62-68% on daily BTC) — the family Kestrel's
+# >55% win bar actually favours. It is NOT the rsi_revert_* above: those fade a
+# slow RSI-14; this uses a 2-period RSI (very responsive) AND an SMA-200 trend
+# filter so it only buys dips WITH the higher trend (buy oversold in an uptrend,
+# sell overbought in a downtrend). Candles store only rsi14, so RSI(2) + SMA(100)
+# are computed inline from closes here. NOTE: the detector/backtest only ever pass
+# the last 120 candles (runner.py window = candles[i-119:i+1]), so the trend filter
+# uses SMA(100) (fits the window + stays deployable) — Connors' SMA(200) cannot be
+# seen and would silently never fire.
+def _rsi(closes: Sequence[float], period: int) -> Optional[float]:
+    if len(closes) < period + 1:
+        return None
+    gains = losses = 0.0
+    for i in range(-period, 0):
+        ch = closes[i] - closes[i - 1]
+        gains += ch if ch > 0 else 0.0
+        losses += -ch if ch < 0 else 0.0
+    if losses == 0.0:
+        return 100.0
+    rs = (gains / period) / (losses / period)
+    return 100.0 - 100.0 / (1.0 + rs)
+
+
+def _sma(closes: Sequence[float], n: int) -> Optional[float]:
+    if len(closes) < n:
+        return None
+    return sum(closes[-n:]) / n
+
+
+def _make_rsi2(tag: str, lo: float, hi: float, use_trend: bool) -> None:
+    @_algo(tag, PatternType.ANOMALY_FADE)
+    def _fn(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+        closes = [c.close for c in C]
+        r = _rsi(closes, 2)
+        if r is None:
+            return None
+        if use_trend:
+            ma = _sma(closes, 100)
+            if ma is None:
+                return None
+            if closes[-1] > ma and r < lo:
+                return Direction.LONG  # oversold dip inside an uptrend
+            if closes[-1] < ma and r > hi:
+                return Direction.SHORT  # overbought pop inside a downtrend
+            return None
+        if r < lo:
+            return Direction.LONG
+        if r > hi:
+            return Direction.SHORT
+        return None
+
+
+_make_rsi2("rsi2_ct", 10.0, 90.0, True)  # canonical Connors RSI-2 (trend-aligned)
+_make_rsi2("rsi2_ct5", 5.0, 95.0, True)  # stricter (fewer, higher-quality dips)
+_make_rsi2("rsi2_raw", 10.0, 90.0, False)  # no trend filter — isolates the SMA-200 contribution
+
+
 @_algo("bb_fade", PatternType.ANOMALY_FADE)
 def _bb_fade(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     c = C[-1]
@@ -507,6 +566,29 @@ def _fetch_forex(symbol: str, tf: str, days: int) -> tuple[str, list]:
     return ("yfinance", rows)
 
 
+# Fee-model toggle (research 2026-06-16). The live runner/sim model TAKER fees
+# (0.04% + 0.05% slippage = 0.18% round trip). The web research found maker
+# (post-only limit) execution on BingX is ~0.02%/side with ~0 slippage (you set the
+# fill price), cutting the round trip to ~0.04% — a ~4x lower cost wall that could
+# make high-win-rate mean-reversion viable. This patches the cost model AT RUNTIME
+# in THIS research process only: the backtest runner's fee constants AND the risk
+# manager's fee-viability gate (Rule 4 reads config.round_trip_fee_pct, imported by
+# name into risk.manager — so patch it there). It does NOT edit risk/manager.py,
+# execution/live.py, or simulation.py; live keeps real taker fees until maker order
+# execution is actually built and validated.
+def _apply_fee_model(mode: str) -> float:
+    import src.backtest.runner as _runner
+    import src.risk.manager as _risk
+
+    if mode == "maker":
+        _runner._TAKER_FEE_PCT = 0.02 / 100.0  # BingX perp maker, per side
+        _runner._SLIPPAGE_PCT = 0.0  # post-only limit fills at the set price (no slippage)
+        _risk.round_trip_fee_pct = lambda: 0.02 + 0.02  # 0.04% round trip for the viability gate
+        bg._COST_PCT = (0.0002 + 0.0) * 2 * 100.0  # 0.04% (display only)
+        return bg._COST_PCT
+    return bg._COST_PCT  # taker default: 0.18% (runner/risk/bg untouched)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=45)
@@ -515,6 +597,7 @@ def main() -> None:
     ap.add_argument("--algos", default=None, help="comma list to restrict the algo set")
     ap.add_argument("--exits", default="tight,wide", help="comma list of exit profiles")
     ap.add_argument("--regime", default=None, help="restrict firing to one regime: ranging|trending|volatile")
+    ap.add_argument("--fees", default="taker", choices=["taker", "maker"], help="cost model (see _apply_fee_model)")
     ap.add_argument("--forex", action="store_true", help="search forex/metals (yfinance) instead of crypto")
     args = ap.parse_args()
 
@@ -522,6 +605,7 @@ def main() -> None:
     cfg = AppConfig.from_mapping(os.environ)
     base = load_params("params.json")
     base = dataclasses.replace(base, volume_ratio_min=1.1)  # most-permissive (volume gate is bypassed anyway)
+    _apply_fee_model(args.fees)
     _install_search_gates(args.regime)
 
     default_pairs = FOREX_PAIRS if args.forex else lab.PAIRS
@@ -533,7 +617,8 @@ def main() -> None:
     combos = [(a, e) for a in algos for e in exits]
 
     print(
-        f"=== Kestrel ALGORITHM SEARCH ({args.tf}, {args.days}d, {cfg.leverage}x, regime={args.regime or 'all'}) ===",
+        f"=== Kestrel ALGORITHM SEARCH ({args.tf}, {args.days}d, {cfg.leverage}x, "
+        f"fees={args.fees}, regime={args.regime or 'all'}) ===",
         flush=True,
     )
     print(
