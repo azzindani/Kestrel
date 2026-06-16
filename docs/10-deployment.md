@@ -80,9 +80,9 @@ the watchdog, and the portfolio guard.
   "strategy": "mom_adx",
   "patterns": ["mom_adx"],
   "params": {
-    "tp_atr_multiplier": 2.0, "sl_atr_multiplier": 1.0, "max_hold_candles": 12,
-    "trailing_enabled": true, "trail_activation_r": 1.0, "trail_distance_r": 1.0,
-    "volume_ratio_min": 1.1, "adx_strong_min": 25.0, "max_loss_pct_per_trade": 0.02
+    "tp_atr_multiplier": 2.4, "sl_atr_multiplier": 1.5, "max_hold_candles": 6,
+    "trailing_enabled": true, "trail_activation_r": 0.5, "trail_distance_r": 0.5,
+    "volume_ratio_min": 1.1, "adx_strong_min": 25.0, "max_loss_pct_per_trade": 0.01
   }
 }
 ```

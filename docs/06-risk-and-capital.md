@@ -55,8 +55,8 @@ of their signals are rejected `fee_not_viable`, and the ones that pass don't cle
 average.
 
 > **Maker-fee subtlety:** `round_trip_fee_pct()` is left at the **taker** 0.18% even when the
-> simulator runs the maker model. This is intentional and safe — the lab's `tp_atr=2.0`
-> (~1% move) clears the taker bar regardless, so no genuinely-viable maker trade is wrongly
+> simulator runs the maker model. This is intentional and safe — the lab's `tp_atr=2.4`
+> (~1.4% move) clears the taker bar regardless, so no genuinely-viable maker trade is wrongly
 > blocked. The research harness, which needs the maker bar for sweeps, monkeypatches the fee
 > at runtime (it cannot edit the frozen file).
 
@@ -97,12 +97,16 @@ cap         = (max_loss_pct_per_trade × equity) / (leverage × sl_dist_pct)
 size        = min(size, cap)
 ```
 
-With `max_loss_pct_per_trade = 0.02` and 20× leverage, a stop-out is capped at ~2% of bucket
-equity — even though the raw position move at the stop is `leverage × SL-distance` ≈ 10% of
-*notional*. **This is the resolution to the user's "I lose 10% in one trade" observation:**
-the −10% is the % of the *position* (20× × ~0.5% ATR stop), while the cap limits the loss to
-~2% of bucket *equity* by shrinking the position. To shrink the per-trade % itself, the levers
-are **lower leverage** (`.env`) or a **tighter stop** — not the sizing module.
+With `max_loss_pct_per_trade = 0.01` (lab; lowered from 0.02 on 2026-06-16) and 20× leverage, a
+stop-out is capped at ~1% of bucket equity — even though the raw position move at the stop is
+`leverage × SL-distance` ≈ 18% of *notional* (20× × 1.5-ATR ≈ 0.9% stop). **This is the
+resolution to the "I lose 10%+ in one trade" observation:** that figure is the % of the
+*position*, while the cap limits the dollar loss to ~1% of bucket *equity* by shrinking the
+position. Crucially, with the cap active the per-trade **notional** is `max_loss_pct × equity /
+sl_dist_pct` — *independent of leverage* — so lowering `max_loss_pct` 0.02→0.01 and widening the
+stop 1.0→1.5 ATR together cut per-trade notional from ~3.3× to ~1.1× equity (the headline
+exposure reduction). To shrink the per-trade **%-of-margin** figure itself, the only clean lever
+is **lower leverage** (`.env`, §4 human-gated) — a wider stop *raises* it.
 
 ## 4. Liquidation math (`config.py`)
 
@@ -167,8 +171,8 @@ ride smoother; they do not make a losing system win. The only remaining real-pro
 | `size_min_usdt` | 1.0 | bucket treated as exhausted below this |
 | `drawdown_derisk_threshold` / `_factor` | 0.20 / 0.5 | cut size when in drawdown past threshold |
 | `consec_loss_cooloff` / `_factor` | 3 / 0.5 | cut size after a losing streak |
-| `max_loss_pct_per_trade` | 0.05 (lab: 0.02) | per-trade equity loss cap |
-| `tp_atr_multiplier` / `sl_atr_multiplier` | 1.6 / 1.0 (lab: 2.0 / 1.0) | ATR-based exit distances |
-| `max_hold_candles` | 6 (lab: 12) | timeout exit |
-| `trailing_enabled` / `trail_activation_r` / `trail_distance_r` | false / 1.0 / 0.8 | trailing-close (lab: enabled, 1.0 / 1.0) |
+| `max_loss_pct_per_trade` | 0.01 (lab: 0.01) | per-trade equity loss cap (lowered 0.05/0.02→0.01) |
+| `tp_atr_multiplier` / `sl_atr_multiplier` | 2.4 / 1.5 (lab: 2.4 / 1.5) | ATR-based exit distances (R/R 1.6; wider stop than the old 1.0) |
+| `max_hold_candles` | 6 (lab: 6) | timeout exit (lab lowered 12→6) |
+| `trailing_enabled` / `trail_activation_r` / `trail_distance_r` | false / 0.5 / 0.5 | trailing-close; lab: enabled, arms at +0.5R, trails 0.5R (was 1.0/1.0) |
 | `tp_sl_pct_enabled` / `tp_pct` / `sl_pct` | false / 0.05 / 0.025 | fixed-percent exit mode |
