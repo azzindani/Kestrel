@@ -51,26 +51,41 @@ MOMENTUM_PAIRS = [
     "AVAX/USDT",
 ]
 
-# "medium" exit + risk profile shared by both strategies. The 2026-06-14 exit
-# sweep (scripts/algo_search.py --exits tight,medium,runner,wide,trail, 4h/365d/10
-# pairs) found medium (tp 2.0 / sl 1.0 / hold 6) is the best confluence-momentum
-# variant by expectancy: triple_mom/medium +$35.9 OOS, R/R 1.68 (vs tight +$27.8,
-# R/R 1.28). Still sub-§30 (46.6% win < 55% — momentum is inherently low-win,
-# high-R/R), so paper-only; this forward-tests the strongest variant found.
+# RISK-SHAPED exit + sizing profile (2026-06-16 revision). The prior "medium +
+# trailing" bracket (tp 2.0 / sl 1.0 / hold 12 / trail 1R@1R / max_loss 0.02) ran
+# 31.7% win with 54% of trades hitting a FULL 1-ATR stop at ~-12% of margin, and
+# ~3.3x-equity notional per trade (a $93 position on a grown $28 bucket) — i.e.
+# the exposure was too big and the stop too tight. Web research (sizing / exits /
+# overtrading, 2026-06-16) + the live diagnostic drove four changes, none of which
+# creates edge (the book is ~coin-flip) — they CUT EXPOSURE and reshape the
+# win/loss profile on a no-edge book:
+#   sl 1.0 -> 1.5 ATR  : 1-ATR sits INSIDE the noise band (the canonical cause of
+#                        premature stop-outs); 1.5 ATR lets price breathe.
+#   tp 2.0 -> 2.4 ATR  : keep planned R/R = 1.6 (>= risk Rule 3's 1.2) after the
+#                        wider stop (trailing still replaces the fixed TP on a run).
+#   trail 1R@1R -> 0.5R@0.5R : arm the trail at +0.5R and trail 0.5R behind peak,
+#                        so a trade that goes +0.5R then reverses scratches at ~BE
+#                        instead of riding back to a full stop; locks gains earlier
+#                        (defensible here — no fat-tail trend edge to protect).
+#   max_loss 0.02 -> 0.01 : halve the per-trade equity-risk cap. With the wider
+#                        stop this cuts per-trade notional from ~3.3x to ~1.1x
+#                        equity (cap_size_for_risk: notional = max_loss*eq/sl_dist),
+#                        a ~3x exposure reduction — within the ~2x-equity guidance.
+#   max_hold 12 -> 6   : mean-reversion decays in 3-5 bars; our timeouts (77% win)
+#                        confirm shorter exits are the good ones; 12 over-held into
+#                        noise + liquidation risk and inflated time-exposure.
+# NOTE: the single BIGGEST lever (leverage 20x -> ~5x) is .env/§4 human-gated and
+# is NOT applied here — it must be set by a human. See memory + the session report.
 _EXIT = {
-    "tp_atr_multiplier": 2.0,
-    "sl_atr_multiplier": 1.0,
-    # Trailing-close ON (2026-06-16, user "don't let winners slide"): once price runs
-    # 1R in favour, the stop trails 1R behind the peak and the fixed TP is dropped, so
-    # winners ride until they reverse instead of fading to a small timeout. Backtests
-    # show it lifts win rate + cuts timeouts. Longer hold (12) gives the trail room.
-    "max_hold_candles": 12,
+    "tp_atr_multiplier": 2.4,
+    "sl_atr_multiplier": 1.5,
+    "max_hold_candles": 6,
     "trailing_enabled": True,
-    "trail_activation_r": 1.0,
-    "trail_distance_r": 1.0,
+    "trail_activation_r": 0.5,
+    "trail_distance_r": 0.5,
     "volume_ratio_min": 1.1,  # floor — keep the prod volume gate near pass-through
     "adx_strong_min": 25.0,  # the validated strong-trend entry threshold
-    "max_loss_pct_per_trade": 0.02,
+    "max_loss_pct_per_trade": 0.01,  # per-trade equity-risk cap (was 0.02)
 }
 
 # Lab timeframes. 2026-06-16: the lockbox/cross-year validation (reports/lockbox_4h.log
