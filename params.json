@@ -49,18 +49,18 @@
     "impact": "higher = fewer signals, higher volume conviction required per entry"
   },
   "tp_atr_multiplier": {
-    "value": 1.6,
+    "value": 2.4,
     "type": "float",
     "range": [0.8, 3.0],
     "description": "Take-profit distance expressed as ATR14 multiples from entry",
     "impact": "higher = larger TP targets, lower win rate but higher avg win per trade"
   },
   "sl_atr_multiplier": {
-    "value": 1.0,
+    "value": 1.5,
     "type": "float",
     "range": [0.5, 2.0],
-    "description": "Stop-loss distance expressed as ATR14 multiples from entry",
-    "impact": "lower = tighter SL, more frequent SL hits but smaller individual losses"
+    "description": "Stop-loss distance expressed as ATR14 multiples from entry (raised 1.0->1.5 on 2026-06-16: a 1-ATR stop sits inside the short-TF noise band and caused a 54% premature full-stop-out rate)",
+    "impact": "lower = tighter SL, more frequent SL hits but smaller individual losses; ~1.5 keeps the stop outside normal noise"
   },
   "min_confidence": {
     "value": 0.40,
@@ -238,24 +238,24 @@
     "impact": "true = let winners run and exit on reversal instead of a fixed TP; raises avg win, may lower raw win rate"
   },
   "trail_activation_r": {
-    "value": 1.0,
+    "value": 0.5,
     "type": "float",
     "range": [0.3, 3.0],
-    "description": "Favourable excursion, in units of the initial stop distance R (= sl_atr_multiplier x ATR), at which the trailing stop arms",
+    "description": "Favourable excursion, in units of the initial stop distance R (= sl_atr_multiplier x ATR), at which the trailing stop arms (lowered 1.0->0.5 on 2026-06-16 to arm earlier and scratch good-then-bad trades near breakeven instead of riding back to a full stop)",
     "impact": "lower = trailing arms sooner and locks profit earlier; higher = waits for a stronger move before protecting"
   },
   "trail_distance_r": {
-    "value": 0.8,
+    "value": 0.5,
     "type": "float",
     "range": [0.2, 2.0],
-    "description": "Gap the trailing stop holds below the running peak, in units of the initial stop distance R",
+    "description": "Gap the trailing stop holds below the running peak, in units of the initial stop distance R (lowered 0.8->0.5 on 2026-06-16: paired with the 0.5R activation, a trade that runs +0.5R then reverses exits at ~breakeven)",
     "impact": "lower = tighter trail, banks profit fast but gets shaken out; higher = gives the move room to breathe"
   },
   "max_loss_pct_per_trade": {
-    "value": 0.05,
+    "value": 0.01,
     "type": "float",
     "range": [0.01, 0.20],
-    "description": "Risk hardening: maximum fraction of bucket equity a single stop-out may lose. Position size is shrunk (signal/sizing.py cap_size_for_risk) so notional x SL-distance <= this x equity, bounding per-trade downside independently of leverage. Was effectively ~0.20-0.25 (full bucket x leverage x 1-ATR stop) before this cap.",
+    "description": "Risk hardening: maximum fraction of bucket equity a single stop-out may lose. Position size is shrunk (signal/sizing.py cap_size_for_risk) so notional x SL-distance <= this x equity, bounding per-trade downside independently of leverage. Lowered 0.05->0.01 on 2026-06-16 to cut exposure: with the 1.5-ATR stop this sets per-trade notional ~1.1x equity (was ~3.3x at 0.02/1-ATR), within the ~2x-equity portfolio guidance.",
     "impact": "lower = smaller positions and tighter per-trade loss control (but at high leverage may fall below the broker min-lot in live); higher = larger positions, bigger loss per stop. The strongest companion lever is lower LEVERAGE in .env."
   },
   "tp_sl_pct_enabled": {

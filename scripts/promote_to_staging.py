@@ -36,18 +36,19 @@ import os
 import sys
 
 # Exit + risk profile for staging bots. KEEP IN SYNC with
-# scripts/build_momentum_lab.py:_EXIT (the validated "medium" bracket: best
-# confluence-momentum variant by expectancy on the 2026-06-14 4h/365d sweep).
+# scripts/build_momentum_lab.py:_EXIT (the 2026-06-16 risk-shaped bracket: wider
+# 1.5-ATR stop, earlier 0.5R trail, shorter 6-candle hold, halved 0.01 per-trade
+# risk cap — cuts exposure ~3x and the full-stop-out rate; see that file's note).
 _EXIT = {
-    "tp_atr_multiplier": 2.0,
-    "sl_atr_multiplier": 1.0,
-    "max_hold_candles": 12,
+    "tp_atr_multiplier": 2.4,
+    "sl_atr_multiplier": 1.5,
+    "max_hold_candles": 6,
     "trailing_enabled": True,
-    "trail_activation_r": 1.0,
-    "trail_distance_r": 1.0,
+    "trail_activation_r": 0.5,
+    "trail_distance_r": 0.5,
     "volume_ratio_min": 1.1,
     "adx_strong_min": 25.0,
-    "max_loss_pct_per_trade": 0.02,
+    "max_loss_pct_per_trade": 0.01,
 }
 
 # Cells that cleared the §30 OOS bar in the walk-forward (see memory
