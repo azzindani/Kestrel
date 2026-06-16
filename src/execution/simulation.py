@@ -2,8 +2,10 @@
 Layer 3 boundary — simulation execution engine.
 
 Implements ExecutionInterface for paper trading (ENV=dev).
-Models isolated margin, taker fees, slippage, and liquidation exactly
-as specified in CLAUDE.md §13, §17, §29.
+Models isolated margin, fees, slippage, and liquidation exactly as specified in
+CLAUDE.md §13, §17, §29. Two cost models, selected by cfg.maker_execution:
+taker (default) = market fills with taker fee + slippage; maker = post-only limit
+fills (entry + take-profit) at the set price with the maker fee and no slippage.
 
 Injected by the daemon when ENV=dev. Never touches a real exchange.
 """
@@ -23,8 +25,9 @@ from src.config import (
 )
 from src.execution.interface import ExecutionError, ExecutionInterface
 
-_TAKER_FEE_PCT = 0.04 / 100.0  # 0.04% per side
-_SLIPPAGE_PCT = 0.05 / 100.0  # 0.05% per side
+_TAKER_FEE_PCT = 0.04 / 100.0  # 0.04% per side (market fills)
+_MAKER_FEE_PCT = 0.02 / 100.0  # 0.02% per side (post-only limit fills; see cfg.maker_execution)
+_SLIPPAGE_PCT = 0.05 / 100.0  # 0.05% per side (market fills only — maker limit fills have none)
 _DEFAULT_MAX_HOLD_CANDLES = 4  # fallback when params not supplied (CLAUDE.md §22)
 
 
@@ -50,21 +53,27 @@ class SimulationExecution(ExecutionInterface):
     # -----------------------------------------------------------------------
 
     async def place_order(self, signal: Signal) -> dict[str, Any]:
-        """Simulate a market order with taker fee and slippage."""
+        """Simulate the entry fill. Taker (default) = market fill with slippage +
+        taker fee; maker (cfg.maker_execution) = post-only limit fill at the signal
+        price with NO slippage + the lower maker fee."""
         if signal.pair in self._positions:
             raise ExecutionError(
                 f"Position already open for {signal.pair}",
                 {"pair": signal.pair},
             )
 
-        slip = _SLIPPAGE_PCT
-        if signal.direction is Direction.LONG:
-            fill_price = signal.entry_price * (1.0 + slip)
-        else:
-            fill_price = signal.entry_price * (1.0 - slip)
-
         notional = signal.size_usdt * self.cfg.leverage
-        fee_entry = notional * _TAKER_FEE_PCT
+        if self.cfg.maker_execution:
+            # Post-only limit: fills at the price you set — no slippage, maker fee.
+            fill_price = signal.entry_price
+            fee_entry = notional * _MAKER_FEE_PCT
+        else:
+            slip = _SLIPPAGE_PCT
+            if signal.direction is Direction.LONG:
+                fill_price = signal.entry_price * (1.0 + slip)
+            else:
+                fill_price = signal.entry_price * (1.0 - slip)
+            fee_entry = notional * _TAKER_FEE_PCT
         liq_price = compute_liquidation_price(fill_price, signal.direction, self.cfg.leverage)
 
         order_id = str(uuid.uuid4())[:8]
@@ -134,13 +143,21 @@ class SimulationExecution(ExecutionInterface):
         size = pos["size_usdt"]
         notional = pos["notional_usdt"]
 
-        slip = _SLIPPAGE_PCT
-        if direction == "long":
-            fill_exit = exit_price * (1.0 - slip)
+        # Maker treatment applies ONLY to take-profit exits (a resting limit at the
+        # target fills with no slippage + maker fee). Stops, timeouts and
+        # liquidations market out — they pay taker fee + slippage even in maker mode,
+        # because you cannot post-only your way out of an adverse move. This is what
+        # makes maker lift the WIN side more than the loss side.
+        if self.cfg.maker_execution and reason == "take_profit":
+            fill_exit = exit_price
+            fee_exit = notional * _MAKER_FEE_PCT
         else:
-            fill_exit = exit_price * (1.0 + slip)
-
-        fee_exit = notional * _TAKER_FEE_PCT
+            slip = _SLIPPAGE_PCT
+            if direction == "long":
+                fill_exit = exit_price * (1.0 - slip)
+            else:
+                fill_exit = exit_price * (1.0 + slip)
+            fee_exit = notional * _TAKER_FEE_PCT
 
         if direction == "long":
             pnl_gross = (fill_exit - entry) / entry * notional

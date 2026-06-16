@@ -317,3 +317,59 @@ class TestReconcile:
         _run(sim.place_order(make_signal()))
         result = _run(sim.reconcile())
         assert len(result) == 1
+
+
+# ---------------------------------------------------------------------------
+# maker_execution cost model (cfg.maker_execution=True)
+# ---------------------------------------------------------------------------
+
+
+class TestMakerExecution:
+    """Maker = post-only limit fills: no slippage on entry or take-profit, lower
+    fee; stops/timeouts/liquidations still market out (taker + slippage)."""
+
+    def test_maker_entry_no_slippage_long(self):
+        sim = SimulationExecution(make_app_config(maker_execution=True))
+        order = _run(sim.place_order(make_signal(entry=100.0, direction=Direction.LONG)))
+        assert order["entry_price"] == 100.0
+
+    def test_maker_entry_no_slippage_short(self):
+        sim = SimulationExecution(make_app_config(maker_execution=True))
+        order = _run(sim.place_order(make_signal(entry=100.0, direction=Direction.SHORT)))
+        assert order["entry_price"] == 100.0
+
+    def test_maker_entry_fee_below_taker(self):
+        sig = make_signal(entry=100.0, direction=Direction.LONG)
+        taker = _run(SimulationExecution(make_app_config(maker_execution=False)).place_order(sig))
+        maker = _run(SimulationExecution(make_app_config(maker_execution=True)).place_order(sig))
+        assert maker["fee_usdt"] < taker["fee_usdt"]
+
+    def test_maker_take_profit_exit_no_slippage(self):
+        sim = SimulationExecution(make_app_config(maker_execution=True))
+        sig = make_signal(entry=100.0, direction=Direction.LONG, tp_offset=2.0, sl_offset=1.0)
+        _run(sim.place_order(sig))
+        sim.update_price(sig.pair, 102.0)
+        result = _run(sim.close_position(sig.pair, "take_profit"))
+        assert result["exit_price"] == 102.0  # limit fills at the target, no slippage
+
+    def test_maker_take_profit_beats_taker_for_same_move(self):
+        sig = make_signal(entry=100.0, direction=Direction.LONG, tp_offset=2.0, sl_offset=1.0)
+        taker_sim = SimulationExecution(make_app_config(maker_execution=False))
+        _run(taker_sim.place_order(sig))
+        taker_sim.update_price(sig.pair, 102.0)
+        taker = _run(taker_sim.close_position(sig.pair, "take_profit"))
+        maker_sim = SimulationExecution(make_app_config(maker_execution=True))
+        _run(maker_sim.place_order(sig))
+        maker_sim.update_price(sig.pair, 102.0)
+        maker = _run(maker_sim.close_position(sig.pair, "take_profit"))
+        assert maker["pnl_net_usdt"] > taker["pnl_net_usdt"]
+
+    def test_maker_stop_loss_exit_still_market_out(self):
+        """A stop exit keeps taker treatment even in maker mode (no post-only escape
+        from an adverse move): the long exit fill is BELOW the recorded price."""
+        sim = SimulationExecution(make_app_config(maker_execution=True))
+        sig = make_signal(entry=100.0, direction=Direction.LONG, tp_offset=2.0, sl_offset=1.0)
+        _run(sim.place_order(sig))
+        sim.update_price(sig.pair, 99.0)
+        result = _run(sim.close_position(sig.pair, "stop_loss"))
+        assert result["exit_price"] < 99.0  # slippage still applied on the market-out
