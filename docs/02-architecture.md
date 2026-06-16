@@ -30,6 +30,13 @@ makes the boundary between "decide" and "act" the one place where real money can
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
+> **One nuance on `engine/`.** `CLAUDE.md` §7 lists `engine/` under Layer 1, and most of it
+> (`signal/`, `risk/`, `backtest/`) is genuinely pure. But `engine/daemon.py`, `watchdog.py`,
+> and `portfolio_guard.py` are the **orchestration shells / composition root** — they *do*
+> perform I/O (DB writes, Telegram, process supervision) and call the pure logic. Read them as
+> the wiring that drives the boundary layer, not as pure transforms. (`portfolio_guard.py`'s
+> own header even labels itself "Layer 3 boundary.")
+
 **Dependency rules (hard):**
 
 ```

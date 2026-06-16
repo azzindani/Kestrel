@@ -98,7 +98,10 @@ trend (`mom_adx`, `triple_mom`).
 
 ## Family 2 — The permissive baseline
 
-### `trend_momentum`
+### `trend_momentum`  *(lab strategy label: `trend_mom`)*
+- **Naming:** the registered *pattern* is `trend_momentum`; the lab's *strategy label* in
+  `bots.json` is the shortened `trend_mom` (`"strategy": "trend_mom"`, `"patterns":
+  ["trend_momentum"]`). `mom_adx` and `triple_mom` use the same name for both.
 - **Why it exists:** the five classic patterns almost never trigger on real 5m data, so the
   lab stayed silent. `trend_momentum` is a deliberately simple, higher-frequency entry that
   gives the lab *activity* to measure parity and behaviour — **explicitly not an edge.**

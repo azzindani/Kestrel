@@ -170,7 +170,7 @@ The momentum patterns deliberately produce confidences in the full band (≥ 0.7
 they were sized during validation; the permissive `trend_momentum` caps at 0.72 so it sizes
 at the conservative half-bucket. The actual USDT amount and all the risk-shaping (drawdown
 de-risk, loss cool-off, per-trade loss cap) happen in the sizing module —
-[Risk & Capital §3](06-risk-and-capital.md#3-equity-scaled-position-sizing).
+[Risk & Capital §3](06-risk-and-capital.md#3-equity-scaled-position-sizing-signalsizingpy).
 
 ## 5. Trading sessions (UTC)
 

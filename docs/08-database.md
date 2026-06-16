@@ -101,7 +101,7 @@ daemon needs:
 | `get_fleet_daily_summary(env, since_ts) -> dict` | fleet-wide aggregate for the daily Telegram summary |
 
 `get_sizing_state` is the bridge that makes [equity-scaled
-sizing](06-risk-and-capital.md#3-equity-scaled-position-sizing) live: each candle the daemon
+sizing](06-risk-and-capital.md#3-equity-scaled-position-sizing-signalsizingpy) live: each candle the daemon
 reads the bucket's real equity/peak/loss-streak from closed trades and hands it to
 `evaluate()`.
 

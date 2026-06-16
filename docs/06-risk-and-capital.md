@@ -10,9 +10,15 @@ file (`src/risk/manager.py`, `CLAUDE.md` §3/§24) — the agent may never modif
 ```
 Total simulated capital:  $100 USDT
 Bucket size:              $10 USDT, isolated collateral per position
-Max buckets:              up to 10 slots (lab runs max_active_buckets up to 20 across pairs)
+Max buckets:              the single-bot capital model is $100 / $10 = up to 10 slots
 Leverage:                 10×–50×  (lab: 20×)
 ```
+
+> **`max_active_buckets` in the fleet:** the `params.json` base default is **20** (range
+> `[1, 20]`), but **every lab bot in `bots.json` overrides it to `1`** — so each of the 120
+> bots holds at most one open position at a time, and is its own isolated $10 bucket. The
+> "$100 / 10 buckets" picture above is the *single-bot* capital model from `CLAUDE.md` §13/§24;
+> the fleet realises it as 120 independent one-bucket bots rather than one ten-bucket bot.
 
 - Each open position consumes one **bucket** of isolated collateral. Buckets never share a
   pool — a blow-up in one cannot drain another.
@@ -38,6 +44,9 @@ Constants: `_MIN_LIQ_DISTANCE_PCT = 0.015`, `_MIN_RR = 1.2`,
 `_FEE_VIABILITY_MULTIPLIER = 1.5`, `_DAILY_LOSS_LIMIT_USDT = -5.00`,
 `_WS_STALE_WINDOW_SEC = 60`, `_MAINTENANCE_MARGIN_RATE = 0.005`.
 
+Rule 3 also short-circuits with `reason="sl_distance_zero"` if the stop distance is exactly
+zero (a degenerate signal) before computing the R/R ratio.
+
 **Rule 4 is the edge gate.** `round_trip_fee_pct()` returns **0.18%** (taker 0.04%×2 +
 slippage 0.05%×2). A trade's take-profit distance must exceed 1.5× that — so the expected
 gross gain must beat costs by a margin before any order is allowed. This single rule is *why*
@@ -58,15 +67,18 @@ compounds when winning and de-risks when losing. `compute_position_size(confiden
 params)`:
 
 ```
+0. fallback  : if SizingState is None → legacy fixed bucket ($10 full / $5 half), done
 1. band      = full if confidence ≥ 0.75 else half
 2. frac      = size_fraction_full (1.0) if full else size_fraction_half (0.5)
 3. size      = equity × frac                              # equity-scaled base
-4. drawdown  : if equity < peak_equity (in drawdown):
-                   size ×= drawdown_derisk_factor (0.5)
+4. drawdown  : drawdown = (peak_equity − equity) / peak_equity
+                   if drawdown ≥ drawdown_derisk_threshold (0.20):
+                       size ×= drawdown_derisk_factor (0.5)   # only once past a 20% drawdown
 5. cooloff   : if consec_losses ≥ consec_loss_cooloff (3):
                    size ×= consec_loss_factor (0.5)
 6. cap       : size = min(size, equity)
-7. floor     : if size < size_min_usdt (1.0): treat bucket as exhausted (stop trading it)
+7. floor     : if size < size_min_usdt (1.0):
+                   bump up to the floor if equity ≥ floor, else 0 (bucket exhausted → stop)
 ```
 
 The `SizingState` (`equity_usdt`, `peak_equity_usdt`, `consec_losses`) is read live from the
