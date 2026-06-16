@@ -39,7 +39,6 @@ Read top-to-bottom for a full understanding, or jump to the subsystem you care a
 | 10 | [Deployment](10-deployment.md) | Docker topology, the three-phase deploy model, `bots.json`, the operational scripts, the reset protocol. |
 | 11 | [Operations](11-operations.md) | Daemon lifecycle, watchdog, scheduler, Telegram alerts, the terminal dashboard, Grafana. |
 | 12 | [Go-Live & Definition of Done](12-go-live.md) | The go-live criteria, per-feature/strategy/deploy DoD, and what would actually change the verdict. |
-| — | [Exness Instruments](EXNESS_INSTRUMENTS.md) | Venue reference: the instrument data and selection rationale from the earlier **Exness CFD** direction. *Historical* — the current dev feed is Gate.io and the selected broker is BingX (see [Deployment](10-deployment.md)); kept for the forex/CFD option. |
 
 ---
 
