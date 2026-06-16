@@ -130,8 +130,9 @@ Computes the exit prices and position size, then assembles the immutable `Signal
 tp_dist = atr × tp_atr_multiplier
 sl_dist = atr × sl_atr_multiplier
 ```
-Distances *breathe* with volatility. The lab uses `tp_atr_multiplier = 2.0`,
-`sl_atr_multiplier = 1.0` (a 2:1 reward:risk in ATR units).
+Distances *breathe* with volatility. The lab uses `tp_atr_multiplier = 2.4`,
+`sl_atr_multiplier = 1.5` (a 1.6:1 reward:risk in ATR units; the 1.5-ATR stop sits outside
+the short-TF noise band — a 1.0-ATR stop was the cause of a 54% premature stop-out rate).
 
 **Mode B — fixed-percent (`tp_sl_pct_enabled = true`):**
 ```
