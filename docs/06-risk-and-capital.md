@@ -104,8 +104,12 @@ resolution to the "I lose 10%+ in one trade" observation:** that figure is the %
 *position*, while the cap limits the dollar loss to ~1% of bucket *equity* by shrinking the
 position. Crucially, with the cap active the per-trade **notional** is `max_loss_pct × equity /
 sl_dist_pct` — *independent of leverage* — so lowering `max_loss_pct` 0.02→0.01 and widening the
-stop 1.0→1.5 ATR together cut per-trade notional from ~3.3× to ~1.1× equity (the headline
-exposure reduction). To shrink the per-trade **%-of-margin** figure itself, the only clean lever
+stop 1.0→1.5 ATR together cut per-trade notional by ~3× *for the same candle* (e.g. ~3.3× → ~1.1×
+equity at a typical ~0.6% ATR). The **absolute** notional still scales *inversely* with volatility
+(the cap fixes dollar-risk, not notional) — on a quiet, low-ATR candle the same 1% dollar-risk
+buys a larger position, so notional can run several× equity; what is bounded is the **dollar loss
+per stop ≈ 1% of bucket equity**, and the margin actually committed (observed ~$1.5–3 on a $10
+bucket). To shrink the per-trade **%-of-margin** figure itself, the only clean lever
 is **lower leverage** (`.env`, §4 human-gated) — a wider stop *raises* it.
 
 ## 4. Liquidation math (`config.py`)
