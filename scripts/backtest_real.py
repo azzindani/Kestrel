@@ -23,13 +23,11 @@ import time
 sys.path.insert(0, "/app")  # make `src` importable when run as a plain script
 
 import ccxt  # provided by the image
-
 from dotenv import load_dotenv
 
+from src.backtest.runner import walk_forward
 from src.config import AppConfig, load_params
 from src.data.candle_builder import CandleBuilder
-from src.backtest.metrics import compute_metrics
-from src.backtest.runner import walk_forward
 
 # okx first: proven to paginate full history from this host. gate rejects long
 # lookbacks; kraken hard-caps at ~720 candles so it can't serve a long span.
@@ -60,8 +58,13 @@ def _fetch_one(name: str, pair: str, timeframe: str, start: int, now_ms: int, tf
     return [seen[k] for k in sorted(seen)]
 
 
-def fetch_ohlcv(pair: str, timeframe: str, days: int) -> tuple[str, list[list]]:
-    """Paginate real OHLCV `days` back from now. Returns (exchange_used, rows).
+def fetch_ohlcv(pair: str, timeframe: str, days: int, offset_days: int = 0) -> tuple[str, list[list]]:
+    """Paginate real OHLCV `days` back from (now - offset_days). Returns (exchange, rows).
+
+    offset_days shifts the END of the window back in time, so e.g.
+    days=365, offset_days=365 returns the YEAR BEFORE last year — a clean lockbox
+    that no recent-window search has ever seen (validation finding: a final test set
+    the search never touched). offset_days=0 = the original "last `days`" behaviour.
 
     Rejects any source that returns far fewer candles than the requested span
     implies (e.g. kraken's 720-candle cap) so the backtest never silently runs
@@ -69,15 +72,15 @@ def fetch_ohlcv(pair: str, timeframe: str, days: int) -> tuple[str, list[list]]:
     """
     tf_ms = _TF_MS[timeframe]
     span_ms = days * 86_400_000
-    now_ms = int(time.time() * 1000)
-    start = now_ms - span_ms
+    end = int(time.time() * 1000) - offset_days * 86_400_000
+    start = end - span_ms
     min_required = int((span_ms / tf_ms) * 0.6)  # tolerate gaps/holidays, reject tiny windows
 
     last_err: Exception | None = None
     for name in FETCH_ORDER:
         for attempt in range(1, _RETRIES + 1):
             try:
-                ordered = _fetch_one(name, pair, timeframe, start, now_ms, tf_ms)
+                ordered = _fetch_one(name, pair, timeframe, start, end, tf_ms)
                 if len(ordered) >= min_required:
                     return name, ordered
                 last_err = RuntimeError(
@@ -103,9 +106,9 @@ def build_candles(cfg: AppConfig, params, rows: list[list]) -> list:
 
 
 def _fmt(m: dict) -> str:
-    rr = (abs(m["avg_win_usdt"] / m["avg_loss_usdt"]) if m["avg_loss_usdt"] else float("inf"))
+    rr = abs(m["avg_win_usdt"] / m["avg_loss_usdt"]) if m["avg_loss_usdt"] else float("inf")
     return (
-        f"    trades={m['total_trades']}  win_rate={m['win_rate']*100:.1f}%  "
+        f"    trades={m['total_trades']}  win_rate={m['win_rate'] * 100:.1f}%  "
         f"net=${m['total_pnl_usdt']:.4f}  avg=${m['avg_pnl_usdt']:.4f}/trade\n"
         f"    avg_win=${m['avg_win_usdt']:.4f}  avg_loss=${m['avg_loss_usdt']:.4f}  "
         f"R/R={rr:.2f}  profit_factor={m['profit_factor']}\n"
@@ -128,9 +131,11 @@ def main() -> None:
     pair = args.pair or cfg.pair
     tf = args.tf or cfg.timeframe_entry
 
-    print(f"=== Kestrel real-data walk-forward backtest ===")
-    print(f"pair={pair}  tf={tf}  days={args.days}  leverage={cfg.leverage}x  "
-          f"bucket=${cfg.bucket_size_usdt}  params=params.json (current)")
+    print("=== Kestrel real-data walk-forward backtest ===")
+    print(
+        f"pair={pair}  tf={tf}  days={args.days}  leverage={cfg.leverage}x  "
+        f"bucket=${cfg.bucket_size_usdt}  params=params.json (current)"
+    )
 
     print(f"\nFetching ~{args.days}d of real {pair} {tf} OHLCV...")
     ex_used, rows = fetch_ohlcv(pair, tf, args.days)
@@ -143,7 +148,7 @@ def main() -> None:
     print(f"  built {len(candles)} indicator-enriched candles via production CandleBuilder")
 
     split = int(len(candles) * 0.60)
-    print(f"\nWalk-forward split: {split} train (in-sample) / {len(candles)-split} test (out-of-sample)\n")
+    print(f"\nWalk-forward split: {split} train (in-sample) / {len(candles) - split} test (out-of-sample)\n")
     wf = walk_forward(candles, params, cfg, train_frac=0.60)
 
     print("IN-SAMPLE (train 60%):")
@@ -155,7 +160,7 @@ def main() -> None:
     oos = wf["out_sample"]
     rr = abs(oos["avg_win_usdt"] / oos["avg_loss_usdt"]) if oos["avg_loss_usdt"] else float("inf")
     checks = [
-        ("win_rate > 55%", oos["win_rate"] > 0.55, f"{oos['win_rate']*100:.1f}%"),
+        ("win_rate > 55%", oos["win_rate"] > 0.55, f"{oos['win_rate'] * 100:.1f}%"),
         ("avg R/R >= 1.2", rr >= 1.2, f"{rr:.2f}"),
         ("net PnL > 0", oos["total_pnl_usdt"] > 0, f"${oos['total_pnl_usdt']:.4f}"),
         ("trades >= 30 (sample size)", oos["total_trades"] >= 30, str(oos["total_trades"])),
@@ -175,7 +180,7 @@ def main() -> None:
         n = len(ts)
         w = sum(1 for t in ts if float(t["pnl_net_usdt"]) > 0)
         net = sum(float(t["pnl_net_usdt"]) for t in ts)
-        return f"    {label:28s} n={n:4d}  win={w/n*100 if n else 0:5.1f}%  net=${net:8.3f}"
+        return f"    {label:28s} n={n:4d}  win={w / n * 100 if n else 0:5.1f}%  net=${net:8.3f}"
 
     print(f"\n=== DIAGNOSTIC: full-period breakdown ({len(full)} trades) ===")
     print("  by pattern:")
@@ -192,16 +197,20 @@ def main() -> None:
     fee_rt = notional * (0.0004 * 2)
     slip_rt = notional * (0.0005 * 2)
     cost = fee_rt + slip_rt
-    print(f"\n  fee+slippage drag per trade ≈ ${cost:.3f} "
-          f"({cost/cfg.bucket_size_usdt*100:.2f}% of ${cfg.bucket_size_usdt} bucket) "
-          f"at {cfg.leverage}x — a winner must clear this before any profit.")
+    print(
+        f"\n  fee+slippage drag per trade ≈ ${cost:.3f} "
+        f"({cost / cfg.bucket_size_usdt * 100:.2f}% of ${cfg.bucket_size_usdt} bucket) "
+        f"at {cfg.leverage}x — a winner must clear this before any profit."
+    )
 
     print("\n=== GO-LIVE VERDICT (out-of-sample, CLAUDE.md §30) ===")
     all_pass = True
     for label, ok, val in checks:
         all_pass = all_pass and ok
         print(f"  [{'PASS' if ok else 'FAIL'}] {label:32s} = {val}")
-    print(f"\n  >>> {'STRATEGY VALIDATED — eligible to proceed' if all_pass else 'NOT VALIDATED — re-tune params before any real money'} <<<")
+    print(
+        f"\n  >>> {'STRATEGY VALIDATED — eligible to proceed' if all_pass else 'NOT VALIDATED — re-tune params before any real money'} <<<"
+    )
 
 
 if __name__ == "__main__":

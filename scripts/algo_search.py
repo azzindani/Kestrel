@@ -481,6 +481,11 @@ def _install_search_gates(regime_filter: Optional[str] = None) -> None:
 # Exit profiles (ATR-mode). Entry style interacts with exit, so bracket tight/wide.
 # Both keep planned R/R = tp/sl >= 1.2 (risk Rule 3).
 EXITS = {
+    # "scalp": fast minutes-window exit (added 2026-06-16, user wants a hyper-speed
+    # scalper). Smallest viable bracket: tp/sl = 0.8/0.6 = 1.33 ≥ Rule 3's 1.2, hold 2.
+    # Only has a prayer of clearing cost under MAKER fees (taker minutes-scalping is
+    # proven dead by the cost wall) — run it with --fees maker.
+    "scalp": {"tp_atr_multiplier": 0.8, "sl_atr_multiplier": 0.6, "max_hold_candles": 2},
     "tight": {"tp_atr_multiplier": 1.4, "sl_atr_multiplier": 1.0, "max_hold_candles": 4},
     "wide": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.5, "max_hold_candles": 8},
     # Added 2026-06-14 to chase the §30 R/R gap on the confluence-momentum family
@@ -598,6 +603,14 @@ def main() -> None:
     ap.add_argument("--exits", default="tight,wide", help="comma list of exit profiles")
     ap.add_argument("--regime", default=None, help="restrict firing to one regime: ranging|trending|volatile")
     ap.add_argument("--fees", default="taker", choices=["taker", "maker"], help="cost model (see _apply_fee_model)")
+    ap.add_argument(
+        "--offset-days",
+        type=int,
+        default=0,
+        dest="offset_days",
+        help="shift the window END back N days for a LOCKBOX test (e.g. --days 365 --offset-days 365 "
+        "= the year before last, never seen by any recent-window search). Crypto only.",
+    )
     ap.add_argument("--forex", action="store_true", help="search forex/metals (yfinance) instead of crypto")
     args = ap.parse_args()
 
@@ -610,7 +623,14 @@ def main() -> None:
 
     default_pairs = FOREX_PAIRS if args.forex else lab.PAIRS
     pairs = [p.strip() for p in args.pairs.split(",")] if args.pairs else default_pairs
-    fetch = _fetch_forex if args.forex else bt.fetch_ohlcv
+    if args.forex and args.offset_days:
+        raise SystemExit("--offset-days (lockbox) is crypto-only; not supported with --forex")
+
+    def fetch(pair: str, tf: str, days: int) -> tuple:
+        if args.forex:
+            return _fetch_forex(pair, tf, days)
+        return bt.fetch_ohlcv(pair, tf, days, offset_days=args.offset_days)
+
     algos = [a.strip() for a in args.algos.split(",")] if args.algos else list(_ALGOS)
     exits = [e.strip() for e in args.exits.split(",") if e.strip() in EXITS]
     tag = time.strftime("%Y%m%d-%H%M%S", time.gmtime())
@@ -618,7 +638,8 @@ def main() -> None:
 
     print(
         f"=== Kestrel ALGORITHM SEARCH ({args.tf}, {args.days}d, {cfg.leverage}x, "
-        f"fees={args.fees}, regime={args.regime or 'all'}) ===",
+        f"fees={args.fees}, regime={args.regime or 'all'}"
+        f"{f', LOCKBOX offset={args.offset_days}d' if args.offset_days else ''}) ===",
         flush=True,
     )
     print(
