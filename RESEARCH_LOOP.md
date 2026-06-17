@@ -42,46 +42,85 @@ result and retains the baseline. **Never churn the live lab with an unvalidated 
 - Commit directly to **main**, push, deploy. Never branch.
 - CI (`ruff check src/ tests/` + tests) must be green before deploy.
 
+## STANDING PREFERENCES (the user's recurring asks — honor EVERY iteration)
+
+These are the things the user repeats and gets frustrated when skipped. The full end-to-end
+ritual below is non-optional — "evaluate" alone is not a finished iteration.
+
+1. **Evaluate the algorithm & strategy** every firing (MEASURE + DIAGNOSE + BACKTEST). Use web
+   browsing when a fresh angle is warranted.
+2. **Apply a new bot / update** every firing — rotate the experimental cohort to the current
+   best candidate so there is always something new and visible (skip only if it is byte-identical
+   to what is already live).
+3. **Reset everything** after deploying anything new — `feedback_reset_after_new_algorithm`:
+   wipe trades/signals/events/trade_context/pattern_memory + heartbeats, **KEEP candles**,
+   backfill, restart. A deploy without a reset is the #1 mistake — the slate must visibly zero.
+4. **Ensure CI passes** — lint to CI scope, push, and confirm `gh` shows `completed/success`
+   before declaring done.
+5. **Commit & push to `main`** directly — never a branch (`feedback_no_branches_commit_to_main`).
+6. **Redeploy** — rebuild (code) or restart (config) and confirm the container is healthy.
+7. **Make it visible in Grafana** — the reset zeroes the panels and the cohort rotates, so the
+   dashboard changes; also log the `system` event marker.
+8. **Be honest about edge** — the cohort/visibility is a live testbed, not a profit claim; the
+   project still has no proven edge. Do not fake an edge to satisfy the bar.
+
 ---
 
-## END-TO-END ITERATION PROTOCOL (one pass per firing)
+## END-TO-END ITERATION PROTOCOL (one pass per firing — DO ALL STEPS, IN ORDER)
 
-1. **MEASURE** — pull live lab metrics from Postgres for `env='dev'`: trade count, win rate,
-   net PnL, profit factor, avg R, close-reason mix (stop-out % / trail % / timeout %),
-   exposure. Compare to the baseline + last iteration below.
-2. **DIAGNOSE** — what is the dominant failure mode this window (e.g. premature stop-outs,
-   fee bleed, regime mismatch, overtrading)? One root cause, not symptoms.
-3. **HYPOTHESIZE** — pick ONE concrete candidate change targeting that root cause. Do **web
-   research** (`WebSearch`/`WebFetch`) when a new angle is needed — look beyond indicator
-   tweaks toward *structural* levers (regime gating, funding-rate, session filtering, holding
-   period, instrument). Do NOT re-try anything in the REFUTED LEDGER below without a materially
-   new variant.
-4. **BACKTEST** — implement the candidate in the research harness and run walk-forward OOS +
-   lockbox via `scripts/algo_search.py` / `backtest_*.py` across ≥ 3 pairs. Capture IS vs OOS
-   vs lockbox expectancy, profit factor, win rate, deflated Sharpe.
-5. **DECIDE — two independent tracks:**
-   - **BASELINE (the 120 main bots)** changes *only* on full validation: candidate beats
-     baseline AND clears the lockbox without IS→OOS collapse → update `signal/*` +
-     `params.json` + regenerate via `build_momentum_lab.py`, run CI, commit + push,
-     `docker compose up -d --build`, then **reset** (reset_dev.py → wipe heartbeats →
-     backfill_history → restart). If it does not validate, the baseline is left untouched.
-   - **EXPERIMENTAL COHORT (the `exp_*` bots)** is refreshed *every* iteration with the
-     iteration's **best candidate so far** — validated or not — so there is always a visible
-     live experiment (see "Experimental cohort" below). This is how the loop stays visibly
-     active in Grafana even when nothing clears the validation bar.
-6. **RECORD** — append an iteration entry below (date, hypothesis, result, decision, new best).
-   Update the REFUTED LEDGER if an idea was killed. **Also write a `system` event so the
-   iteration is visible in Grafana** (Recent Events / Events-by-Category panels) — this is how
-   the loop proves it ran even when it deploys nothing:
-   ```sql
-   INSERT INTO events (bot_id, session_id, env, ts, level, category, message, payload)
-   VALUES ('dev-research-loop','research-loop','dev', <now_ms>, 'INFO','system',
-           'research_loop iter <N> — <one-line result>',
-           '{"event":"research_loop_iteration","iteration":<N>,"deployed":<bool>,...}'::jsonb);
-   ```
-   (run via `docker compose exec -T postgres psql -U kestrel -d kestrel -c "..."`).
-7. **CHECK STOP** — if a STOPPING CONDITION is met, send Telegram CRITICAL, write a `## STOPPED`
-   marker here, and `CronDelete` the loop. Else end the iteration; the cron fires again in ~8h.
+This is the user's required ritual. Earlier failures were skipping the back half (no reset, no
+CI-verify). **Never stop after "evaluate" — the iteration is only DONE after deploy + reset are
+verified green.** The whole point is that Grafana visibly changes every iteration.
+
+1. **MEASURE** — pull live `env='dev'` metrics: trade count, win rate, net PnL, profit factor,
+   avg R, close-reason mix (stop-out/trail/timeout %), exposure, per-TF + per-strategy split
+   (especially `exp_*` cohort rows). Re-baseline from the CURRENT slate (a prior reset zeroes it).
+2. **DIAGNOSE** — the ONE dominant failure mode this window (premature stop-outs, fee bleed,
+   regime mismatch, overtrading), root cause not symptom.
+3. **HYPOTHESIZE** — ONE concrete candidate targeting that root cause. **Web research**
+   (`WebSearch`/`WebFetch`) when a new angle helps — favor *structural* levers (regime gating,
+   funding-rate/basis, session filtering, holding period, instrument) over indicator tweaks.
+   Do NOT re-try the REFUTED LEDGER without a materially new variant.
+4. **BACKTEST** — run walk-forward OOS + lockbox via `scripts/algo_search.py` / `backtest_*.py`
+   across ≥ 3 pairs (in-container: `docker compose exec -T kestrel python3 scripts/...`). Capture
+   IS vs OOS vs lockbox expectancy, profit factor, win rate, deflated Sharpe. **This backtest —
+   not the live slate — is the edge arbiter and the stop-condition evidence** (live resets each
+   deploy, so it can't accumulate 100 trades; the OOS sample does).
+5. **APPLY (always ship something visible)** — write `exp_candidate.json` with this iteration's
+   **best candidate** and rotate the cohort: `python3 scripts/build_exp_cohort.py`. Promote to
+   the 120-bot **baseline** too (`build_momentum_lab.py`/`params.json`) **only if it fully
+   validates** (beats baseline AND clears the lockbox without IS→OOS collapse). If the best
+   candidate is *identical* to what's already deployed, say so in the log and skip the
+   deploy+reset (let the slate accumulate) — otherwise proceed.
+6. **LINT + CI** — `ruff check src/ tests/` (host; CI scope — see `feedback_local_lint_must_match_ci`).
+   Fix any failure before continuing.
+7. **COMMIT + PUSH** — commit DIRECTLY to `main`, never a branch (`feedback_no_branches_commit_to_main`);
+   `git push origin main`. Then **verify CI is green** (`gh run list --limit 1` until
+   `completed/success`). Do not call the iteration done on a red/in-progress CI.
+8. **REDEPLOY** — code change → `docker compose up -d --build kestrel`; config-only
+   (bots.json/params.json) → `docker compose restart kestrel`. Confirm container `(healthy)`.
+9. **FULL RESET (the ritual I kept missing — `feedback_reset_after_new_algorithm`)** — whenever a
+   new/changed config was deployed this iteration: `reset_dev.py --yes` (wipe trades/signals/
+   events/trade_context/pattern_memory) → wipe `heartbeats` → `backfill_history.py --source gate`
+   → `docker compose up -d --build`/`restart`. **KEEP candles.** Verify clean: `trades=0`,
+   heartbeats back to full count, cohort present, `errors=0`. (Skip ONLY when step 5 deployed
+   nothing new.)
+10. **RECORD** — append an iteration entry below (date, hypothesis, backtest result, what was
+    deployed, reset done?, new best) + update the REFUTED LEDGER if an idea died. **Write a
+    `system` event** so it shows in Grafana (Recent Events / Events-by-Category):
+    ```sql
+    INSERT INTO events (bot_id, session_id, env, ts, level, category, message, payload)
+    VALUES ('dev-research-loop','research-loop','dev', <now_ms>, 'INFO','system',
+            'research_loop iter <N> — <one-line result + deployed + reset>',
+            '{"event":"research_loop_iteration","iteration":<N>,"deployed":<bool>,"reset":<bool>,...}'::jsonb);
+    ```
+    (via `docker compose exec -T postgres psql -U kestrel -d kestrel -c "..."`).
+11. **CHECK STOP** — if a STOPPING CONDITION holds, send Telegram CRITICAL, write a `## STOPPED`
+    marker here, and `CronDelete` the loop. Else end; the cron fires again in ~8h.
+
+> **Self-check before declaring the iteration done (the user WILL ask):** evaluated ✓ · applied
+> a change ✓ · lint+CI green ✓ · committed+pushed to main ✓ · redeployed healthy ✓ · full reset
+> verified clean ✓ · system event logged ✓. If any box is unchecked, the iteration is NOT done.
 
 ---
 
