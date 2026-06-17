@@ -1,29 +1,9 @@
 {
-  "iteration": 1,
-  "note": "First cohort. Two arms probing the iter-1 diagnosis (5m bleeds via stop-outs; cost floor dominates). exp_qual = same 5m strategies but only the STRONGEST setups (adx>=35, vol>=1.7) -> does trading less, better, beat trading everything? exp_htf = the structural lever the user kept out of baseline: same strategies at 1h, escaping the 5m cost floor. Both stay env=dev / simulation; baseline 120 untouched. Watch exp_* rows in the per-strategy / leaderboard panels.",
+  "iteration": 2,
+  "note": "Iter-2 backtest: 1h momentum is the LEAST-BAD TF (recent-year OOS +EV: mom_adx/wide +$5.03, expR +0.10, R/R 1.37) but FAILS the lockbox (prior-year −$0.50, expR +0.02) — same data-mining signature as the refuted 4h, so NOT promoted to baseline. 5m strict (iter-1 exp_qual) confirmed dead and dropped. Cohort rotated to two 1h arms A/B-testing the exit lever, since 1h is the only place with any positive signal: exp_h1tp = bank early (trail 0.5R, tp2.4); exp_h1run = let winners run (trail 1.0R/0.8R, tp3.0, hold8). Honest: this is a live testbed to watch, NOT an edge claim.",
   "arms": [
     {
-      "label": "exp_qual",
-      "timeframe": "5m",
-      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT"],
-      "strategies": [
-        {"name": "mom_adx", "patterns": ["mom_adx"]},
-        {"name": "triple_mom", "patterns": ["triple_mom"]}
-      ],
-      "params": {
-        "tp_atr_multiplier": 2.4,
-        "sl_atr_multiplier": 1.5,
-        "max_hold_candles": 6,
-        "trailing_enabled": true,
-        "trail_activation_r": 0.5,
-        "trail_distance_r": 0.5,
-        "volume_ratio_min": 1.7,
-        "adx_strong_min": 35.0,
-        "max_loss_pct_per_trade": 0.01
-      }
-    },
-    {
-      "label": "exp_htf",
+      "label": "exp_h1tp",
       "timeframe": "1h",
       "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT"],
       "strategies": [
@@ -37,6 +17,26 @@
         "trailing_enabled": true,
         "trail_activation_r": 0.5,
         "trail_distance_r": 0.5,
+        "volume_ratio_min": 1.1,
+        "adx_strong_min": 25.0,
+        "max_loss_pct_per_trade": 0.01
+      }
+    },
+    {
+      "label": "exp_h1run",
+      "timeframe": "1h",
+      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT"],
+      "strategies": [
+        {"name": "mom_adx", "patterns": ["mom_adx"]},
+        {"name": "triple_mom", "patterns": ["triple_mom"]}
+      ],
+      "params": {
+        "tp_atr_multiplier": 3.0,
+        "sl_atr_multiplier": 1.5,
+        "max_hold_candles": 8,
+        "trailing_enabled": true,
+        "trail_activation_r": 1.0,
+        "trail_distance_r": 0.8,
         "volume_ratio_min": 1.1,
         "adx_strong_min": 25.0,
         "max_loss_pct_per_trade": 0.01

@@ -2640,188 +2640,12 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-5m-exp_qual_mom_adx-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "exp_qual_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.5,
-      "trail_distance_r": 0.5,
-      "volume_ratio_min": 1.7,
-      "adx_strong_min": 35.0,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "dev-BTCUSDT-5m-exp_qual_triple_mom-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "exp_qual_triple_mom",
-    "patterns": [
-      "triple_mom"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.5,
-      "trail_distance_r": 0.5,
-      "volume_ratio_min": 1.7,
-      "adx_strong_min": 35.0,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-exp_qual_mom_adx-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "exp_qual_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.5,
-      "trail_distance_r": 0.5,
-      "volume_ratio_min": 1.7,
-      "adx_strong_min": 35.0,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "dev-ETHUSDT-5m-exp_qual_triple_mom-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "exp_qual_triple_mom",
-    "patterns": [
-      "triple_mom"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.5,
-      "trail_distance_r": 0.5,
-      "volume_ratio_min": 1.7,
-      "adx_strong_min": 35.0,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-exp_qual_mom_adx-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "exp_qual_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.5,
-      "trail_distance_r": 0.5,
-      "volume_ratio_min": 1.7,
-      "adx_strong_min": 35.0,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "dev-SOLUSDT-5m-exp_qual_triple_mom-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "exp_qual_triple_mom",
-    "patterns": [
-      "triple_mom"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.5,
-      "trail_distance_r": 0.5,
-      "volume_ratio_min": 1.7,
-      "adx_strong_min": 35.0,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-exp_qual_mom_adx-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "exp_qual_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.5,
-      "trail_distance_r": 0.5,
-      "volume_ratio_min": 1.7,
-      "adx_strong_min": 35.0,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "dev-DOGEUSDT-5m-exp_qual_triple_mom-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "exp_qual_triple_mom",
-    "patterns": [
-      "triple_mom"
-    ],
-    "params": {
-      "tp_atr_multiplier": 2.4,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": true,
-      "trail_activation_r": 0.5,
-      "trail_distance_r": 0.5,
-      "volume_ratio_min": 1.7,
-      "adx_strong_min": 35.0,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "dev-BTCUSDT-1h-exp_htf_mom_adx-01",
+    "bot_id": "dev-BTCUSDT-1h-exp_h1tp_mom_adx-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "exp_htf_mom_adx",
+    "strategy": "exp_h1tp_mom_adx",
     "patterns": [
       "mom_adx"
     ],
@@ -2838,12 +2662,12 @@
     }
   },
   {
-    "bot_id": "dev-BTCUSDT-1h-exp_htf_triple_mom-01",
+    "bot_id": "dev-BTCUSDT-1h-exp_h1tp_triple_mom-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "exp_htf_triple_mom",
+    "strategy": "exp_h1tp_triple_mom",
     "patterns": [
       "triple_mom"
     ],
@@ -2860,12 +2684,12 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-1h-exp_htf_mom_adx-01",
+    "bot_id": "dev-ETHUSDT-1h-exp_h1tp_mom_adx-01",
     "pair": "ETH/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "exp_htf_mom_adx",
+    "strategy": "exp_h1tp_mom_adx",
     "patterns": [
       "mom_adx"
     ],
@@ -2882,12 +2706,12 @@
     }
   },
   {
-    "bot_id": "dev-ETHUSDT-1h-exp_htf_triple_mom-01",
+    "bot_id": "dev-ETHUSDT-1h-exp_h1tp_triple_mom-01",
     "pair": "ETH/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "exp_htf_triple_mom",
+    "strategy": "exp_h1tp_triple_mom",
     "patterns": [
       "triple_mom"
     ],
@@ -2904,12 +2728,12 @@
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-1h-exp_htf_mom_adx-01",
+    "bot_id": "dev-SOLUSDT-1h-exp_h1tp_mom_adx-01",
     "pair": "SOL/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "exp_htf_mom_adx",
+    "strategy": "exp_h1tp_mom_adx",
     "patterns": [
       "mom_adx"
     ],
@@ -2926,12 +2750,12 @@
     }
   },
   {
-    "bot_id": "dev-SOLUSDT-1h-exp_htf_triple_mom-01",
+    "bot_id": "dev-SOLUSDT-1h-exp_h1tp_triple_mom-01",
     "pair": "SOL/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "exp_htf_triple_mom",
+    "strategy": "exp_h1tp_triple_mom",
     "patterns": [
       "triple_mom"
     ],
@@ -2948,12 +2772,12 @@
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-1h-exp_htf_mom_adx-01",
+    "bot_id": "dev-DOGEUSDT-1h-exp_h1tp_mom_adx-01",
     "pair": "DOGE/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "exp_htf_mom_adx",
+    "strategy": "exp_h1tp_mom_adx",
     "patterns": [
       "mom_adx"
     ],
@@ -2970,12 +2794,12 @@
     }
   },
   {
-    "bot_id": "dev-DOGEUSDT-1h-exp_htf_triple_mom-01",
+    "bot_id": "dev-DOGEUSDT-1h-exp_h1tp_triple_mom-01",
     "pair": "DOGE/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "exp_htf_triple_mom",
+    "strategy": "exp_h1tp_triple_mom",
     "patterns": [
       "triple_mom"
     ],
@@ -2986,6 +2810,182 @@
       "trailing_enabled": true,
       "trail_activation_r": 0.5,
       "trail_distance_r": 0.5,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-1h-exp_h1run_mom_adx-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "exp_h1run_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "dev-BTCUSDT-1h-exp_h1run_triple_mom-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "exp_h1run_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-1h-exp_h1run_mom_adx-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "exp_h1run_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "dev-ETHUSDT-1h-exp_h1run_triple_mom-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "exp_h1run_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-1h-exp_h1run_mom_adx-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "exp_h1run_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "dev-SOLUSDT-1h-exp_h1run_triple_mom-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "exp_h1run_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-1h-exp_h1run_mom_adx-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "exp_h1run_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
+      "volume_ratio_min": 1.1,
+      "adx_strong_min": 25.0,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "dev-DOGEUSDT-1h-exp_h1run_triple_mom-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "exp_h1run_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8,
+      "trailing_enabled": true,
+      "trail_activation_r": 1.0,
+      "trail_distance_r": 0.8,
       "volume_ratio_min": 1.1,
       "adx_strong_min": 25.0,
       "max_loss_pct_per_trade": 0.01
