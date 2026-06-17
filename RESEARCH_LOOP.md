@@ -121,7 +121,13 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   `trend_mom`) × 4 TF (`5m`, `15m`, `1h`, `4h`) × 10 pairs.
 - Exit profile: `tp_atr=2.4 / sl_atr=1.5 (R/R 1.6) / max_hold=6 / trail arms +0.5R trails 0.5R
   / max_loss_pct=0.01`. Leverage 20×. MAKER sim on. Portfolio guard ±10%.
-- **Live metrics:** 124 trades · **31.5% win** · net **−$3.25** USDT.
+- **Live metrics (PRE-reset diagnostic that motivated the cohort):** 124 trades · **31.5% win**
+  · net **−$3.25** · profit factor 0.55.
+- **FULL RESET performed 2026-06-17** after the cohort deploy (standing preference
+  `feedback_reset_after_new_algorithm`): dev slate wiped (124 trades / 203 signals / 7924 events
+  / 57k trade_context / heartbeats cleared, **candles kept**), all 136 bots relaunched clean.
+  → Each MEASURE step now **re-baselines from the fresh slate** — do not expect the 124-trade
+  numbers above; they are history. The clean-slate evaluation starts here.
 
 ## CURRENT BEST
 
