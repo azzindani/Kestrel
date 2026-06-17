@@ -149,10 +149,11 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **Iteration 1 (deployed 2026-06-17):** 16 bots, 2 arms × `mom_adx`/`triple_mom` × {BTC, ETH,
-  SOL, DOGE}. `exp_qual` = 5m, strongest setups only (adx≥35, vol≥1.7). `exp_htf` = 1h (escape
-  the 5m cost floor — the structural lever kept out of baseline). Watch `exp_qual_*` /
-  `exp_htf_*` rows in the leaderboard.
+- **Iteration 2 (deployed 2026-06-17):** 16 bots, 2 arms × `mom_adx`/`triple_mom` × {BTC, ETH,
+  SOL, DOGE}, both at **1h** (the least-bad TF). `exp_h1tp` = bank early (trail 0.5R, tp2.4,
+  hold6); `exp_h1run` = let winners run (trail 1.0R/0.8R, tp3.0, hold8). A/B of the exit lever on
+  the only TF with any positive recent-year signal. Watch `exp_h1tp_*` / `exp_h1run_*` rows.
+- ~~Iteration 1: `exp_qual` (5m strict) + `exp_htf` (1h)~~ — retired: 5m strict confirmed dead.
 
 ## BASELINE (set 2026-06-17, before iteration 1)
 
@@ -189,6 +190,11 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 - **Regime-conditional momentum @ 5m** (iter 1) — restricting `mom_adx/triple_mom` to trending or
   volatile regimes does NOT rescue expectancy (0/2 each OOS, maker fees). 5m is dead in every
   regime.
+- **1h momentum** (iter 2) — the LEAST-BAD TF but still NOT an edge: `mom_adx`/wide is recent-year
+  OOS +EV (n=747, win 45.6%, net +$5.03, expR +0.10, R/R 1.37, maker) but the **lockbox
+  (prior year) is breakeven/negative** (win 43.0%, net −$0.50, expR +0.02); tight variants clearly
+  −EV both windows. Same "wins recent / dies prior" data-mining signature as 4h → not promoted.
+  Kept as the cohort testbed only.
 
 **Levers confirmed real but human-gated / structural (outside agent scope or untried):**
 maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-only) ·
@@ -199,6 +205,26 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 2 — 2026-06-17 (first scheduled/triggered firing)
+
+- **MEASURE:** post-reset slate, ~6h: 81 trades · **39.1% win** · net −$3.04 · PF 0.35. Baseline
+  67 closed (37.3% win, −$3.14); cohort still thin (2 closed, both wins). Close-reason: `stop_loss`
+  19 / **0% win** / −12.4% each (dominant bleed, ~28% of closes); `trailing_stop` 27 / 59.3% / +1.06%;
+  `timeout` 23 / 47.8% / −0.51%. 0 errors, fleet healthy.
+- **DIAGNOSE:** same signature — the new exit profile works (trailing exits now +EV), but with no
+  entry edge ~28% of trades run straight to the full 1.5-ATR stop (0% win, −12% each) and sink it.
+- **HYPOTHESIZE:** 1h momentum — the one structural lever flagged but never lockbox-tested (only 4h
+  was). Web research queued time-of-day/overnight seasonality (Quantpedia) as a future arm (needs a
+  new pattern).
+- **BACKTEST (maker, 6 pairs, walk-forward OOS + lockbox):** 1h `mom_adx`/wide recent-year **+EV**
+  (n=747, win 45.6%, net +$5.03, expR +0.10, R/R 1.37, IS→OOS +0.009) but **lockbox breakeven/neg**
+  (win 43.0%, net −$0.50, expR +0.02); tight variants −EV both windows. 0/4 clear §30 in both.
+- **DECIDE:** 1h does NOT validate (lockbox not positive) → **baseline untouched**. 1h added to the
+  refuted ledger as "least-bad, still not an edge." Best candidate = 1h momentum (cohort only).
+- **APPLY:** rotated cohort → two 1h arms (`exp_h1tp` bank-early vs `exp_h1run` let-run), dropped the
+  dead 5m `exp_qual`. 136 bots (120 baseline + 16 cohort). Config-only → restart.
+- **CHECK STOP:** not met (best win 45.6% < 70%; lockbox not positive → no validated edge).
 
 ### Iteration 1 — 2026-06-17 (inline, loop start)
 
