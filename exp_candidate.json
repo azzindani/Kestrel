@@ -1,0 +1,46 @@
+{
+  "iteration": 1,
+  "note": "First cohort. Two arms probing the iter-1 diagnosis (5m bleeds via stop-outs; cost floor dominates). exp_qual = same 5m strategies but only the STRONGEST setups (adx>=35, vol>=1.7) -> does trading less, better, beat trading everything? exp_htf = the structural lever the user kept out of baseline: same strategies at 1h, escaping the 5m cost floor. Both stay env=dev / simulation; baseline 120 untouched. Watch exp_* rows in the per-strategy / leaderboard panels.",
+  "arms": [
+    {
+      "label": "exp_qual",
+      "timeframe": "5m",
+      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT"],
+      "strategies": [
+        {"name": "mom_adx", "patterns": ["mom_adx"]},
+        {"name": "triple_mom", "patterns": ["triple_mom"]}
+      ],
+      "params": {
+        "tp_atr_multiplier": 2.4,
+        "sl_atr_multiplier": 1.5,
+        "max_hold_candles": 6,
+        "trailing_enabled": true,
+        "trail_activation_r": 0.5,
+        "trail_distance_r": 0.5,
+        "volume_ratio_min": 1.7,
+        "adx_strong_min": 35.0,
+        "max_loss_pct_per_trade": 0.01
+      }
+    },
+    {
+      "label": "exp_htf",
+      "timeframe": "1h",
+      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT"],
+      "strategies": [
+        {"name": "mom_adx", "patterns": ["mom_adx"]},
+        {"name": "triple_mom", "patterns": ["triple_mom"]}
+      ],
+      "params": {
+        "tp_atr_multiplier": 2.4,
+        "sl_atr_multiplier": 1.5,
+        "max_hold_candles": 6,
+        "trailing_enabled": true,
+        "trail_activation_r": 0.5,
+        "trail_distance_r": 0.5,
+        "volume_ratio_min": 1.1,
+        "adx_strong_min": 25.0,
+        "max_loss_pct_per_trade": 0.01
+      }
+    }
+  ]
+}
