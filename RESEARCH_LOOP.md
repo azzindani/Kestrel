@@ -66,7 +66,16 @@ result and retains the baseline. **Never churn the live lab with an unvalidated 
      heartbeats → backfill_history → restart) for a clean slate.
    - **Does not validate** → retain baseline, deploy nothing, log the negative result.
 6. **RECORD** — append an iteration entry below (date, hypothesis, result, decision, new best).
-   Update the REFUTED LEDGER if an idea was killed.
+   Update the REFUTED LEDGER if an idea was killed. **Also write a `system` event so the
+   iteration is visible in Grafana** (Recent Events / Events-by-Category panels) — this is how
+   the loop proves it ran even when it deploys nothing:
+   ```sql
+   INSERT INTO events (bot_id, session_id, env, ts, level, category, message, payload)
+   VALUES ('dev-research-loop','research-loop','dev', <now_ms>, 'INFO','system',
+           'research_loop iter <N> — <one-line result>',
+           '{"event":"research_loop_iteration","iteration":<N>,"deployed":<bool>,...}'::jsonb);
+   ```
+   (run via `docker compose exec -T postgres psql -U kestrel -d kestrel -c "..."`).
 7. **CHECK STOP** — if a STOPPING CONDITION is met, send Telegram CRITICAL, write a `## STOPPED`
    marker here, and `CronDelete` the loop. Else end the iteration; the cron fires again in ~8h.
 
