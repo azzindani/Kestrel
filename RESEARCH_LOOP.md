@@ -59,12 +59,16 @@ result and retains the baseline. **Never churn the live lab with an unvalidated 
 4. **BACKTEST** — implement the candidate in the research harness and run walk-forward OOS +
    lockbox via `scripts/algo_search.py` / `backtest_*.py` across ≥ 3 pairs. Capture IS vs OOS
    vs lockbox expectancy, profit factor, win rate, deflated Sharpe.
-5. **DECIDE:**
-   - **Validates** (beats baseline AND clears the lockbox without IS→OOS collapse) → update
-     `signal/*` + `params.json` + regenerate `bots.json` via `build_momentum_lab.py`, run CI,
-     commit + push, `docker compose up -d --build`, then **reset** (reset_dev.py → wipe
-     heartbeats → backfill_history → restart) for a clean slate.
-   - **Does not validate** → retain baseline, deploy nothing, log the negative result.
+5. **DECIDE — two independent tracks:**
+   - **BASELINE (the 120 main bots)** changes *only* on full validation: candidate beats
+     baseline AND clears the lockbox without IS→OOS collapse → update `signal/*` +
+     `params.json` + regenerate via `build_momentum_lab.py`, run CI, commit + push,
+     `docker compose up -d --build`, then **reset** (reset_dev.py → wipe heartbeats →
+     backfill_history → restart). If it does not validate, the baseline is left untouched.
+   - **EXPERIMENTAL COHORT (the `exp_*` bots)** is refreshed *every* iteration with the
+     iteration's **best candidate so far** — validated or not — so there is always a visible
+     live experiment (see "Experimental cohort" below). This is how the loop stays visibly
+     active in Grafana even when nothing clears the validation bar.
 6. **RECORD** — append an iteration entry below (date, hypothesis, result, decision, new best).
    Update the REFUTED LEDGER if an idea was killed. **Also write a `system` event so the
    iteration is visible in Grafana** (Recent Events / Events-by-Category panels) — this is how
@@ -80,6 +84,36 @@ result and retains the baseline. **Never churn the live lab with an unvalidated 
    marker here, and `CronDelete` the loop. Else end the iteration; the cron fires again in ~8h.
 
 ---
+
+## Experimental cohort (the `exp_*` bots — visible live A/B)
+
+A small slice of bots (~16) running the loop's current best candidate, alongside the untouched
+120 baseline. They are **env=dev / simulation** (safe execution path) and carry a strategy
+label starting with `exp_`, so they appear as their own rows in the dashboard's per-strategy /
+leaderboard / per-bot panels — "watch them rise and fall." The 120 baseline configs are never
+touched by the cohort.
+
+**Rotate the cohort each iteration** (params-only candidate → no rebuild; new `signal/*` code →
+rebuild):
+```
+1. write exp_candidate.json   # {iteration, note, arms:[{label:"exp_*", timeframe, pairs,
+                              #   strategies:[{name,patterns}], params:{...}}]}
+2. python3 scripts/build_exp_cohort.py        # strips old exp_*, merges new cohort into bots.json
+3. validate it loads:  docker compose exec -T kestrel python3 -c \
+     "import os;from src.config import *;load_bot_configs('bots.json',AppConfig.from_mapping(os.environ),load_params('params.json'))"
+4. if a prior cohort had trades:  docker compose exec -T kestrel python3 scripts/reset_exp.py --yes
+5. docker compose up -d --build kestrel   # (restart suffices if no signal/* change)
+```
+`build_exp_cohort.py` keeps baseline entries verbatim; `reset_exp.py` wipes ONLY `exp_*` rows
+(baseline + candles + shared pattern_memory untouched). **Cohort allocation is honest, not a
+hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a profit claim.
+
+## CURRENT COHORT
+
+- **Iteration 1 (deployed 2026-06-17):** 16 bots, 2 arms × `mom_adx`/`triple_mom` × {BTC, ETH,
+  SOL, DOGE}. `exp_qual` = 5m, strongest setups only (adx≥35, vol≥1.7). `exp_htf` = 1h (escape
+  the 5m cost floor — the structural lever kept out of baseline). Watch `exp_qual_*` /
+  `exp_htf_*` rows in the leaderboard.
 
 ## BASELINE (set 2026-06-17, before iteration 1)
 
