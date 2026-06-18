@@ -88,25 +88,22 @@ _EXIT = {
     "max_loss_pct_per_trade": 0.01,  # per-trade equity-risk cap (was 0.02)
 }
 
-# Lab timeframes. 2026-06-16: the lockbox/cross-year validation (reports/lockbox_4h.log
-# + breakout_xyear.log) REFUTED every handwritten entry as a cross-year edge — mom_adx
-# wins the recent year & loses the prior; breakout_vol the mirror. So NONE of these is a
-# real edge at ANY timeframe; this multi-TF fleet is a landscape/activity/parity lab
-# (user wants the minutes window + a big active fleet), NOT a profit deployment — expect
-# bleed, especially at 5m where moves < the ~0.18% taker cost. 3 strat × 4 TF × 10 pairs
-# = 120 bots. (Maker execution — the one consistent lever — is not in the live sim yet.)
-_TIMEFRAMES = ["5m", "15m", "1h", "4h"]
+# Lab timeframes. 2026-06-18 (loop iter 5, active-maintenance / "replace unproductive bots"):
+# PRUNED 5m + 15m. The research loop refuted momentum at every TF across recent + lockbox, but
+# the live slate makes the cell-viability call concrete: 5m bled −$4.88 (110 trades, 27% win) and
+# 15m −$1.45 (12.5% win) vs 1h slightly POSITIVE — the short TFs' moves sit below the cost floor,
+# so they are structurally -EV for every strategy. Keep only 1h + 4h (the least-bad TFs, where any
+# signal lives). This trades activity for less bleed — the quality side of the activity/quality
+# tension the user just chose. NONE of this is a proven edge; it cuts the worst losers.
+_TIMEFRAMES = ["1h", "4h"]
 
+# PRUNED trend_mom (loop iter 5): the permissive "activity" pattern (fires on ~9% of candles,
+# body_ratio>=0.30, no ADX gate) was the single biggest drag — −$3.60 of a −$6.04 slate, 26.7%
+# win, no validated edge at any TF. "Replace unproductive bots" → removed. Keep only the strict
+# ADX>25 confluence entries. 2 strat × 2 TF × 10 pairs = 40 bots.
 STRATEGIES = [
     {"name": "mom_adx", "patterns": ["mom_adx"]},
     {"name": "triple_mom", "patterns": ["triple_mom"]},
-    # ACTIVITY pattern (added for the 5m lab): trend_momentum is permissive — it
-    # enters in the established EMA-trend direction on any decent-bodied close
-    # (body_ratio>=0.30), so it fires on ~9% of candles vs the ~1% of the strict
-    # ADX>25 confluence patterns. This is what produces frequent, visible trades
-    # at 5m. It has NO validated edge either (more trades = more -EV churn, not
-    # profit); it exists so the lab is active to watch. Drop it for the strict lab.
-    {"name": "trend_mom", "patterns": ["trend_momentum"]},
 ]
 
 
