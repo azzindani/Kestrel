@@ -109,7 +109,15 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
             }
         ),
         Regime.RANGING: frozenset(
-            {"session_seasonal", "wick_rejection", "anomaly_fade", "trend_momentum", "wave_flip", "mom_adx", "triple_mom"}
+            {
+                "session_seasonal",
+                "wick_rejection",
+                "anomaly_fade",
+                "trend_momentum",
+                "wave_flip",
+                "mom_adx",
+                "triple_mom",
+            }
         ),
         Regime.QUIET: frozenset(),
     }
