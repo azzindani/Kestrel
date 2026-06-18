@@ -133,10 +133,13 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
    (bots.json/params.json) → `docker compose restart kestrel`. Confirm container `(healthy)`.
 9. **FULL RESET (the ritual I kept missing — `feedback_reset_after_new_algorithm`)** — whenever a
    new/changed config was deployed this iteration: `reset_dev.py --yes` (wipe trades/signals/
-   events/trade_context/pattern_memory) → wipe `heartbeats` → `backfill_history.py --source gate`
-   → `docker compose up -d --build`/`restart`. **KEEP candles.** Verify clean: `trades=0`,
-   heartbeats back to full count, cohort present, `errors=0`. (Skip ONLY when step 5 deployed
-   nothing new.)
+   events/trade_context/pattern_memory) → **`DELETE FROM heartbeats;` (full wipe, BEFORE restart —
+   do NOT use a post-restart age threshold; if the fleet shrank, orphans from dropped bots are only
+   seconds old at restart and a `ts < now-90s` delete misses them, leaving phantom bots in Grafana.
+   Wiping all heartbeats up-front means only the live fleet repopulates → no orphan race)** →
+   `backfill_history.py --source gate` → `docker compose up -d --build`/`restart`. **KEEP candles.**
+   Verify clean: `trades=0`, heartbeats == intended fleet size (e.g. 48 = 40 baseline + 8 cohort),
+   cohort present, `errors=0`. (Skip ONLY when step 5 deployed nothing new.)
 10. **RECORD** — append an iteration entry below (date, hypothesis, backtest result, what was
     deployed, reset done?, new best) + update the REFUTED LEDGER if an idea died. **Write a
     `system` event** so it shows in Grafana (Recent Events / Events-by-Category):
