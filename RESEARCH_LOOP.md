@@ -40,7 +40,9 @@ result and retains the baseline. **Never churn the live lab with an unvalidated 
 - Every backtest applies the fee + slippage model and uses **walk-forward** (train 60% / test
   40%) — never in-sample only.
 - Commit directly to **main**, push, deploy. Never branch.
-- CI (`ruff check src/ tests/` + tests) must be green before deploy.
+- CI must be green before deploy. CI runs **`ruff format --check src/ tests/`** AND
+  **`ruff check src/ tests/`** AND the test suite — run **all three** locally (the format check
+  is easy to forget and will red the build; run `ruff format src/ tests/` to fix).
 
 ## STANDING PREFERENCES (the user's recurring asks — honor EVERY iteration)
 
@@ -92,8 +94,9 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
    validates** (beats baseline AND clears the lockbox without IS→OOS collapse). If the best
    candidate is *identical* to what's already deployed, say so in the log and skip the
    deploy+reset (let the slate accumulate) — otherwise proceed.
-6. **LINT + CI** — `ruff check src/ tests/` (host; CI scope — see `feedback_local_lint_must_match_ci`).
-   Fix any failure before continuing.
+6. **LINT** — run BOTH (CI runs both; `feedback_local_lint_must_match_ci`):
+   `ruff format --check src/ tests/` **and** `ruff check src/ tests/`. Fix with
+   `ruff format src/ tests/` before continuing. (The format check is the easy-to-forget half.)
 7. **COMMIT + PUSH** — commit DIRECTLY to `main`, never a branch (`feedback_no_branches_commit_to_main`);
    `git push origin main`. Then **verify CI is green** (`gh run list --limit 1` until
    `completed/success`). Do not call the iteration done on a red/in-progress CI.

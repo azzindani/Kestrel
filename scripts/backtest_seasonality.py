@@ -62,7 +62,10 @@ def _agg(window_name: str, pairs: list[str], days: int, offset: int, holds: list
         win = 100.0 * sum(1 for r in rets if r > 0) / n
         out.append(
             {
-                "hour": h, "hold": hold, "n": n, "gross_pct": gross * 100,
+                "hour": h,
+                "hold": hold,
+                "n": n,
+                "gross_pct": gross * 100,
                 "net_maker_pct": (gross - _MAKER_RT) * 100,
                 "net_taker_pct": (gross - _TAKER_RT) * 100,
                 "win": win,
@@ -96,7 +99,9 @@ def main() -> None:
     print("\n-- RECENT top by gross long return (hour UTC / hold h) --")
     print("  hour hold     n   win%  gross%  netMaker%  netTaker%")
     for r in _top(recent, "gross_pct"):
-        print(f"  {r['hour']:>4} {r['hold']:>4} {r['n']:>6} {r['win']:>5.1f} {r['gross_pct']:>7.3f} {r['net_maker_pct']:>9.3f} {r['net_taker_pct']:>9.3f}")
+        print(
+            f"  {r['hour']:>4} {r['hold']:>4} {r['n']:>6} {r['win']:>5.1f} {r['gross_pct']:>7.3f} {r['net_maker_pct']:>9.3f} {r['net_taker_pct']:>9.3f}"
+        )
 
     print("\n-- VERDICT: (hour,hold) that are NET-MAKER-POSITIVE in BOTH recent AND lockbox --")
     survivors = []
@@ -108,8 +113,10 @@ def main() -> None:
         print("  NONE — no entry-hour clears maker cost in both windows (seasonality not a durable edge)")
     else:
         for (h, hold), r, lk in sorted(survivors, key=lambda x: x[1]["net_maker_pct"], reverse=True)[:10]:
-            print(f"  hour={h:>2} hold={hold}h  recent netMaker={r['net_maker_pct']:+.3f}% (n={r['n']}, win {r['win']:.0f}%)"
-                  f"  | lockbox netMaker={lk['net_maker_pct']:+.3f}% (n={lk['n']}, win {lk['win']:.0f}%)")
+            print(
+                f"  hour={h:>2} hold={hold}h  recent netMaker={r['net_maker_pct']:+.3f}% (n={r['n']}, win {r['win']:.0f}%)"
+                f"  | lockbox netMaker={lk['net_maker_pct']:+.3f}% (n={lk['n']}, win {lk['win']:.0f}%)"
+            )
     print(f"\nsurvivors: {len(survivors)} (taker bar is stricter — see netTaker columns)")
 
 
