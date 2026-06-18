@@ -7,6 +7,25 @@
 
 ---
 
+## MODE: MONITORING (since iter 4, 2026-06-18) — user directive
+
+The in-scope directional/seasonal search is **exhausted** (everything refuted across recent +
+lockbox — see the MILESTONE in the refuted ledger). The user chose **"keep looping as
+monitoring"**, so the loop's job changed:
+
+- **Cadence slowed to DAILY** (was every 8h) — discovery is done; no need to fire 3×/day.
+- **Each run: MEASURE** the forward-test (cohort `exp_h1tp` 1h momentum + baseline) and **log a
+  system event**. Report drift honestly.
+- **Re-validate periodically** (~weekly, or when the cohort has ≥100 closed trades): re-run the
+  walk-forward OOS + lockbox on the deployed strategies to catch a regime change that unlocks an
+  edge. The forward-test is the only truly-clean OOS data.
+- **Do NOT manufacture marginal variants** (theater). Only deploy + reset when EITHER a
+  re-validation surprises with a real (stop-condition #2) edge, OR the user greenlights a new
+  STRUCTURAL direction (funding-rate/basis — §4 new module) or a leverage change (§4).
+- The full deploy+reset ritual still applies **if** something is deployed.
+
+---
+
 ## STOPPING CONDITIONS — stop the loop (delete cron, Telegram CRITICAL) when EITHER holds
 
 1. **Win-rate target (user's bar):** rolling win rate **≥ 70%** over **≥ 100** out-of-sample /
