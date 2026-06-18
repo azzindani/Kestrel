@@ -78,14 +78,94 @@ def _top(rows: list[dict], key: str, k: int = 6, rev: bool = True) -> list[dict]
     return sorted(rows, key=lambda r: r[key], reverse=rev)[:k]
 
 
+def _window_returns(rows: list[list], start: int, window: int, hold: int, non_overlap: bool) -> list[float]:
+    """Gross long returns for the DEPLOYED window (hours [start, start+window) mod 24, hold h).
+
+    non_overlap=True keeps only independent samples (next entry after the prior exit) so the
+    t-stat is not inflated by overlapping holds — the defensible significance number.
+    """
+    rets: list[float] = []
+    last_exit = -1
+    for i in range(len(rows) - hold):
+        if (_hour(rows[i][0]) - start) % 24 >= window:
+            continue
+        if non_overlap and i <= last_exit:
+            continue
+        ec, xc = rows[i][4], rows[i + hold][4]
+        if ec <= 0:
+            continue
+        rets.append((xc - ec) / ec)
+        last_exit = i + hold
+    return rets
+
+
+def _wstats(rets: list[float]) -> "dict | None":
+    import math
+    import statistics
+
+    n = len(rets)
+    if n < 2:
+        return None
+    m = statistics.fmean(rets)
+    sd = statistics.pstdev(rets)
+    t = (m * math.sqrt(n) / sd) if sd > 0 else 0.0
+    return {
+        "n": n,
+        "gross_pct": m * 100,
+        "net_maker_pct": (m - _MAKER_RT) * 100,
+        "t": t,
+        "win": 100.0 * sum(1 for r in rets if r > 0) / n,
+    }
+
+
+def _validate(pairs: list[str], days: int, start: int, window: int, hold: int) -> None:
+    """Validate the SPECIFIC deployed window per-pair (breadth + non-overlap significance).
+
+    Honesty: the window was selected partly using the lockbox, so neither window here is a
+    clean OOS test for it — the definitive OOS test is the live forward cohort. This measures
+    BREADTH (is it broad across pairs or 1-2-pair-driven?) and within-sample SIGNIFICANCE.
+    """
+    end_h = (start + window - 1) % 24
+    print(f"=== VALIDATE deployed window: entry hours {start}..{end_h} UTC, hold={hold}h, maker cost ===")
+    for label, offset in [("RECENT", 0), ("LOCKBOX", days)]:
+        print(f"-- {label} --")
+        print("  pair         n  win%  gross%  netMaker%   t(ovlp) | nonOvlp:  n  netMaker%   t")
+        pooled: list[float] = []
+        pooled_no: list[float] = []
+        for p in pairs:
+            _src, rows = bt.fetch_ohlcv(p, "1h", days, offset)
+            ov = _window_returns(rows, start, window, hold, False)
+            no = _window_returns(rows, start, window, hold, True)
+            pooled += ov
+            pooled_no += no
+            s, sn = _wstats(ov), _wstats(no)
+            if s and sn:
+                print(
+                    f"  {p:10} {s['n']:>5} {s['win']:>5.1f} {s['gross_pct']:>7.3f} {s['net_maker_pct']:>9.3f} {s['t']:>8.2f} | {sn['n']:>5} {sn['net_maker_pct']:>9.3f} {sn['t']:>6.2f}"
+                )
+        ps, pn = _wstats(pooled), _wstats(pooled_no)
+        if ps and pn:
+            print(
+                f"  POOLED     {ps['n']:>5} {ps['win']:>5.1f} {ps['gross_pct']:>7.3f} {ps['net_maker_pct']:>9.3f} {ps['t']:>8.2f} | {pn['n']:>5} {pn['net_maker_pct']:>9.3f} {pn['t']:>6.2f}"
+            )
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=365)
     ap.add_argument("--pairs", default="BTC/USDT,ETH/USDT,SOL/USDT,DOGE/USDT,BNB/USDT,XRP/USDT")
     ap.add_argument("--holds", default="1,2,3,4,6")
+    ap.add_argument("--validate", action="store_true", help="per-pair robustness of the deployed window")
+    ap.add_argument("--win-start", type=int, default=18)
+    ap.add_argument("--win-hours", type=int, default=7)
+    ap.add_argument("--hold", type=int, default=4)
     args = ap.parse_args()
     pairs = [p.strip() for p in args.pairs.split(",")]
     holds = [int(x) for x in args.holds.split(",")]
+
+    if args.validate:
+        _validate(pairs, args.days, args.win_start, args.win_hours, args.hold)
+        return
 
     print(f"=== SEASONALITY PROBE (1h, {args.days}d, pairs={len(pairs)}, holds={holds}) ===")
     print("RECENT (walk-forward proxy):")

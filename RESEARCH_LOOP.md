@@ -152,11 +152,10 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **Iteration 3 (deployed 2026-06-18):** 14 bots, 2 arms. `exp_h1tp` = 1h momentum (mom_adx +
-  triple_mom × {BTC,ETH,SOL,DOGE}, bank-early exit) — kept to accumulate. **`exp_tod` = the NEW
-  `session_seasonal` pattern** (time-of-day long, 18:00–00:00 UTC window) × {BTC,ETH,SOL,DOGE,
-  BNB,XRP}, 1h, time-based exit (hold4, wide TP/SL, trail off). Watch `exp_tod_seas` rows.
-- ~~Iter 2: `exp_h1tp` + `exp_h1run`~~ retired the let-run A/B; ~~Iter 1: `exp_qual` + `exp_htf`~~.
+- **Iteration 4 (deployed 2026-06-18):** 8 bots, 1 arm. `exp_h1tp` = 1h momentum (mom_adx +
+  triple_mom × {BTC,ETH,SOL,DOGE}, bank-early exit) — the persistent least-bad, kept as the sole
+  forward-test. Seasonal arm retired (refuted). Watch `exp_h1tp_*` rows.
+- ~~Iter 3: + `exp_tod` seasonal~~ refuted (sub-maker-cost OOS); ~~Iter 2: `exp_h1run`~~; ~~Iter 1~~.
 
 ## BASELINE (set 2026-06-17, before iteration 1)
 
@@ -175,12 +174,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 ## CURRENT BEST
 
 - Baseline unchanged (no candidate has FULLY validated).
-- **Most promising LEAD (iter 3): time-of-day / overnight seasonality** — the project's first
-  signal to survive the untouched lockbox (US-afternoon/overnight window net-maker-positive in
-  both windows, 6 pairs). **But marginal**: maker-only (negative at taker), +0.01–0.05%/trade in
-  the lockbox, 8/120 combos survived (multiple-testing risk). Now forward-testing live as cohort
-  `exp_tod`. To PROMOTE it needs: a deflated-Sharpe / multiple-testing correction, per-pair
-  robustness, and a taker-survivable or genuinely maker-fillable execution — none proven yet.
+- **No remaining lead.** The iter-3 seasonality lead was REFUTED in iter 4 under per-pair +
+  non-overlapping validation (gross drift real but sub-maker-cost; lockbox pooled net-maker
+  −0.008%; only DOGE robust = 1-in-6 luck). Baseline unchanged; cohort = `exp_h1tp` 1h momentum
+  (least-bad) only.
+- **The in-scope directional/seasonal search is exhausted** (see the MILESTONE in the refuted
+  ledger). To make further real progress the loop needs a STRUCTURAL build (funding-rate/basis)
+  or a HUMAN decision on leverage — both flagged to the user. Continuing to spin marginal
+  directional variants would be theater, not progress.
 
 ---
 
@@ -205,6 +206,21 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   −EV both windows. Same "wins recent / dies prior" data-mining signature as 4h → not promoted.
   Kept as the cohort testbed only.
 
+- **Time-of-day / overnight seasonality** (iter 3 found, iter 4 refuted) — the gross UTC-window
+  drift (≈18:00–00:00, hold 4h) is statistically real (pooled non-overlap t≈4.8 recent / 2.2
+  lockbox) but the **effect size (~0.05% gross) is below maker cost**: pooled net-maker is
+  NEGATIVE in the lockbox (−0.008%), and only 1 of 6 pairs (DOGE) is robust across both windows
+  (1-in-6 luck). The iter-3 "8/120 net-maker survivors" was a multiple-testing/threshold artifact.
+  Not a net-of-cost edge. `session_seasonal` pattern stays registered (tested) but undeployed.
+
+> **MILESTONE (iter 4): the directional + seasonal entry search space is EXHAUSTED.** Every entry
+> idea testable in this per-bot directional architecture — single-rule, confluence-momentum at
+> 5m/15m/1h/4h, Connors RSI-2, wave/flip, regime-conditional, time-of-day seasonality — has been
+> refuted across recent + lockbox. The remaining levers that could create a net-of-cost edge are
+> **structural** (funding-rate / basis harvesting — needs a different non-directional mechanism +
+> perp funding data, not just a new pattern) or **human-gated** (leverage, .env/§4). The loop
+> should escalate this to the user rather than keep manufacturing marginal directional variants.
+
 **Levers confirmed real but human-gated / structural (outside agent scope or untried):**
 maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-only) ·
 **funding-rate harvesting** (structural, untried) · instrument class (no broker keys).
@@ -214,6 +230,25 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 4 — 2026-06-18 (scheduled firing)
+
+- **MEASURE:** 113 trades since iter-3 reset · 54.3% win · +$1.55 · PF 1.58 — but this is 7h of
+  variance on the no-edge baseline (all baseline; cohort thin), NOT edge. `exp_tod` seasonal fired
+  0 (correctly — 08:48 UTC, outside the 18:00–00:00 window; 0 window candles since the 01:14 reset).
+  Fleet healthy, 0 errors.
+- **DIAGNOSE:** no validated edge; the seasonality lead is the only positive signal and needs a
+  rigorous robustness test before it earns more (the queued step).
+- **HYPOTHESIZE/BACKTEST:** validated the EXACT deployed window per-pair (`--validate`, non-overlap
+  significance, 6 pairs, recent + lockbox) — one pre-specified hypothesis, not a 120-combo search.
+  Result: gross drift real (pooled non-overlap t≈4.8 recent / 2.2 lockbox) but **effect ~0.05%
+  gross < maker cost** → pooled net-maker LOCKBOX **−0.008%** (negative); only DOGE robust (1/6).
+- **DECIDE:** seasonality **REFUTED** as a net-of-cost edge (the iter-3 "8/120" was a
+  multiple-testing artifact). Baseline untouched. Added to refuted ledger + declared the
+  directional/seasonal search EXHAUSTED (milestone) → escalate to user (structural or leverage next).
+- **APPLY:** retired `exp_tod`; cohort → `exp_h1tp` 1h momentum only (128 bots). `session_seasonal`
+  pattern kept registered (tested) but undeployed. Config-only → restart.
+- **CHECK STOP:** not met.
 
 ### Iteration 3 — 2026-06-18 (scheduled firing)
 
