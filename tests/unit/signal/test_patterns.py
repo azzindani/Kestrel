@@ -10,6 +10,7 @@ from src.signal.patterns import (
     detect_impulse_retracement,
     detect_mom_adx,
     detect_momentum_continuation,
+    detect_session_seasonal,
     detect_trend_momentum,
     detect_triple_mom,
     detect_wick_rejection,
@@ -36,6 +37,7 @@ class TestRegistry:
             "wave_flip",
             "mom_adx",
             "triple_mom",
+            "session_seasonal",
         }
         assert expected == set(registry.keys())
 
@@ -619,3 +621,27 @@ class TestConfluenceMomentum:
     def test_triple_mom_insufficient_candles_returns_none(self):
         params = make_params()
         assert detect_triple_mom([make_candle(100.0)] * 6, params) is None
+
+
+class TestSessionSeasonal:
+    # ts = hour * 3_600_000 ms → that UTC hour on 1970-01-01.
+    def test_fires_long_inside_window(self):
+        params = make_params()  # default window 18:00 +7h → hours 18-23,0
+        r = detect_session_seasonal([make_candle(100.0, ts=20 * 3_600_000)], params)
+        assert r is not None
+        assert r.direction == Direction.LONG
+        assert r.pattern == PatternType.SESSION_SEASONAL
+
+    def test_no_fire_outside_window(self):
+        params = make_params()
+        assert detect_session_seasonal([make_candle(100.0, ts=10 * 3_600_000)], params) is None
+
+    def test_window_wraps_past_midnight(self):
+        params = make_params()  # window includes hour 0 (wrap)
+        assert detect_session_seasonal([make_candle(100.0, ts=0)], params) is not None
+
+    def test_is_self_directing(self):
+        assert "session_seasonal" in SELF_DIRECTING_PATTERNS
+
+    def test_empty_candles_returns_none(self):
+        assert detect_session_seasonal([], make_params()) is None

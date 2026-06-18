@@ -278,5 +278,19 @@
     "range": [0.0025, 0.05],
     "description": "Stop-loss distance as a fraction of entry price when tp_sl_pct_enabled (e.g. 0.025 = 2.5%). Reward:risk = tp_pct/sl_pct. Detector clamps this inside 0.7/leverage so liquidation never front-runs the stop.",
     "impact": "lower = tighter stops (more SL hits, smaller per-loss); must stay well below 1/leverage or the clamp tightens it further"
+  },
+  "seasonal_entry_hour_start": {
+    "value": 18,
+    "type": "int",
+    "range": [0, 23],
+    "description": "UTC hour at which the session_seasonal long window opens. backtest_seasonality.py found the US-afternoon/overnight block (~18:00-00:00 UTC) net-maker-positive in recent + lockbox; razor-thin and maker-only (forward-test, not a validated edge).",
+    "impact": "shifts the seasonal entry window; 18 = validated start"
+  },
+  "seasonal_entry_window_hours": {
+    "value": 7,
+    "type": "int",
+    "range": [1, 12],
+    "description": "Length in hours of the session_seasonal entry window starting at seasonal_entry_hour_start (7 = hours 18,19,20,21,22,23,0 UTC).",
+    "impact": "wider = more seasonal entries (dilutes toward the always-on baseline); narrower = only the strongest hours"
   }
 }

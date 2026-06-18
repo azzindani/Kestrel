@@ -12,6 +12,7 @@ Public API:
 
 from __future__ import annotations
 
+import datetime
 from typing import Callable, Optional, Sequence
 
 from src.config import Candle, Direction, Params, PatternResult, PatternType
@@ -37,7 +38,9 @@ COUNTER_TREND_PATTERNS: frozenset[str] = frozenset({"wave_flip"})
 #     direction inside a strong (high-ADX) move. These were validated WITHOUT the
 #     RSI/EMA trend gate (which would drop the strongest, most overbought momentum
 #     entries), so they self-direct to reproduce that validated behaviour.
-SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset({"mom_adx", "triple_mom"})
+SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
+    {"mom_adx", "triple_mom", "session_seasonal"}
+)
 
 
 def register(name: str) -> Callable[[PatternFn], PatternFn]:
@@ -735,4 +738,41 @@ def detect_triple_mom(candles: Sequence[Candle], params: Params) -> Optional[Pat
         direction=direction,
         confidence=round(confidence, 3),
         details={"variant": "triple_mom", "adx": round(c.adx, 2)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: session_seasonal (time-of-day / overnight seasonality)
+# ---------------------------------------------------------------------------
+@register("session_seasonal")
+def detect_session_seasonal(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Seasonal long: enter LONG when the candle's UTC hour is in the validated window.
+
+    scripts/backtest_seasonality.py found the US-afternoon/overnight block
+    (≈18:00–00:00 UTC, params.seasonal_entry_hour_start + window_hours) net-MAKER-positive
+    in BOTH a recent window and an untouched prior-year lockbox across 6 pairs — the
+    project's first lockbox-surviving signal. It is razor-thin and maker-only (negative at
+    taker), so this is a live FORWARD-TEST cohort arm, NOT a validated edge — do not promote
+    to baseline on its basis alone.
+
+    Self-directing (always long). The seasonal effect is a small drift over a few hours, so
+    the exit should be TIME-BASED — run it with a short max_hold and wide TP/SL (trailing off)
+    so the timeout, not the ATR bracket, captures the window. Modest confidence → half-bucket
+    sizing (honest under-sizing for a marginal signal).
+    """
+    if not candles:
+        return None
+    c = candles[-1]
+    hour = datetime.datetime.fromtimestamp(c.ts / 1000, datetime.timezone.utc).hour
+    start = params.seasonal_entry_hour_start
+    window = params.seasonal_entry_window_hours
+    # Fire only inside [start, start+window) on a 24h wrap.
+    if (hour - start) % 24 >= window:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.SESSION_SEASONAL,
+        direction=Direction.LONG,
+        confidence=0.65,  # half-conviction band — marginal, maker-only signal
+        details={"utc_hour": hour, "window_start": start, "window_hours": window},
     )

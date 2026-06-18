@@ -56,6 +56,7 @@ _VALID_PARAM_KEYS = {
     "size_fraction_full", "size_fraction_half", "size_min_usdt",
     "drawdown_derisk_threshold", "drawdown_derisk_factor",
     "consec_loss_cooloff", "consec_loss_factor", "max_loss_pct_per_trade",
+    "seasonal_entry_hour_start", "seasonal_entry_window_hours",
 }
 
 _HERE = os.path.dirname(__file__)

@@ -85,6 +85,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
     _allowed: dict[Regime, frozenset[str]] = {
         Regime.TRENDING: frozenset(
             {
+                "session_seasonal",
                 "impulse_retracement",
                 "momentum_continuation",
                 "trend_momentum",
@@ -96,6 +97,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
         ),
         Regime.VOLATILE: frozenset(
             {
+                "session_seasonal",
                 "compression_breakout",
                 "anomaly_fade",
                 "trend_momentum",
@@ -107,7 +109,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
             }
         ),
         Regime.RANGING: frozenset(
-            {"wick_rejection", "anomaly_fade", "trend_momentum", "wave_flip", "mom_adx", "triple_mom"}
+            {"session_seasonal", "wick_rejection", "anomaly_fade", "trend_momentum", "wave_flip", "mom_adx", "triple_mom"}
         ),
         Regime.QUIET: frozenset(),
     }
