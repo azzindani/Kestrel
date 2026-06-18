@@ -1,6 +1,6 @@
 {
-  "iteration": 3,
-  "note": "Iter-3 found the project's FIRST lockbox-surviving signal: time-of-day seasonality (backtest_seasonality.py) — the US-afternoon/overnight window (18:00-00:00 UTC) is net-MAKER-positive in BOTH recent and lockbox across 6 pairs. BUT razor-thin and maker-only (negative at taker), and 8/120 combos survived (multiple-testing risk), so it does NOT clear stop-condition #2 and is NOT promoted to baseline. Deployed as a live forward-test cohort arm (exp_tod) via the new session_seasonal pattern, alongside the 1h momentum arm (exp_h1tp) kept to accumulate. Honest: the live arm is an APPROXIMATION (engine ATR brackets + volume filter distort the pure time-exit drift); the backtest is the real evidence.",
+  "iteration": 4,
+  "note": "Iter-4 rigorously validated the iter-3 seasonality lead per-pair (backtest_seasonality.py --validate). The gross time-of-day drift is statistically real (pooled non-overlap t≈4.8 recent / 2.2 lockbox) but the EFFECT SIZE (~0.05% gross) is BELOW maker cost: pooled net-maker is NEGATIVE in the lockbox (-0.008%) and only 1 of 6 pairs (DOGE) is robust across both windows — a 1-in-6 fluke, confirming the iter-3 '8/120 survivors' was a multiple-testing/threshold artifact. REFUTED as a net-of-cost edge. Retired the broad exp_tod arm; cohort reverts to exp_h1tp (1h momentum, the persistent least-bad). The session_seasonal pattern stays registered as a tested capability, just unused. MILESTONE: the directional + seasonal entry search is now exhausted across recent+lockbox; remaining real levers are STRUCTURAL (funding-rate/basis) or HUMAN-GATED (leverage) — flagged to the user.",
   "arms": [
     {
       "label": "exp_h1tp",
@@ -20,24 +20,6 @@
         "volume_ratio_min": 1.1,
         "adx_strong_min": 25.0,
         "max_loss_pct_per_trade": 0.01
-      }
-    },
-    {
-      "label": "exp_tod",
-      "timeframe": "1h",
-      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "BNB/USDT", "XRP/USDT"],
-      "strategies": [
-        {"name": "seas", "patterns": ["session_seasonal"]}
-      ],
-      "params": {
-        "tp_atr_multiplier": 3.0,
-        "sl_atr_multiplier": 2.0,
-        "max_hold_candles": 4,
-        "trailing_enabled": false,
-        "volume_ratio_min": 1.1,
-        "max_loss_pct_per_trade": 0.01,
-        "seasonal_entry_hour_start": 18,
-        "seasonal_entry_window_hours": 7
       }
     }
   ]
