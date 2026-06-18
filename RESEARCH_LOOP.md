@@ -7,22 +7,32 @@
 
 ---
 
-## MODE: MONITORING (since iter 4, 2026-06-18) — user directive
+## MODE: ACTIVE MAINTENANCE (since iter 5, 2026-06-18) — user directive
 
-The in-scope directional/seasonal search is **exhausted** (everything refuted across recent +
-lockbox — see the MILESTONE in the refuted ledger). The user chose **"keep looping as
-monitoring"**, so the loop's job changed:
+Discovery of a *new* directional edge is exhausted (everything refuted across recent + lockbox —
+see the MILESTONE). But the user explicitly **expanded the mandate** ("you can replace unproductive
+bots, add new parameters or any statistical enforcements") after the slate worsened. So the loop is
+no longer passive monitoring — each run it actively MAINTAINS the fleet to cut bleed:
 
-- **Cadence slowed to DAILY** (was every 8h) — discovery is done; no need to fire 3×/day.
-- **Each run: MEASURE** the forward-test (cohort `exp_h1tp` 1h momentum + baseline) and **log a
-  system event**. Report drift honestly.
-- **Re-validate periodically** (~weekly, or when the cohort has ≥100 closed trades): re-run the
-  walk-forward OOS + lockbox on the deployed strategies to catch a regime change that unlocks an
-  edge. The forward-test is the only truly-clean OOS data.
-- **Do NOT manufacture marginal variants** (theater). Only deploy + reset when EITHER a
-  re-validation surprises with a real (stop-condition #2) edge, OR the user greenlights a new
-  STRUCTURAL direction (funding-rate/basis — §4 new module) or a leverage change (§4).
-- The full deploy+reset ritual still applies **if** something is deployed.
+**Expanded authorities (every run may, within agent scope — never touch frozen files):**
+1. **Replace / prune unproductive bots** — drop cells that fail the cell-viability rule below;
+   reallocate toward the least-bad. (bots.json / `build_momentum_lab.py`.)
+2. **Add new parameters** — within their declared `params.json` ranges + full contract.
+3. **Add statistical enforcements** — significance/sample gates, suppression of chronically-losing
+   `(pattern, regime, session)` cells (`signal/memory.py`), min-trade thresholds, etc.
+
+**Cell-viability rule (the standing statistical enforcement for pruning):** a `(strategy × TF)`
+cell is **unproductive → prune** once it has **≥ 50 closed trades** AND **net PnL < 0** AND
+**profit factor < 1.0**. Applied iter 5 → pruned 5m, 15m, and `trend_mom` (all met it decisively).
+
+- **Cadence: every 8h** (re-activated from the daily monitoring pause — the fleet needs active
+  upkeep now, not once-a-day watching).
+- Each run still: MEASURE → DIAGNOSE → (maintain: prune/param/enforce, or re-validate) → if
+  anything deployed, the **FULL ritual** (lint format+check → commit/push main → CI green →
+  redeploy → reset_dev+wipe heartbeats+backfill+restart → verify clean) → log a `system` event →
+  CHECK STOP. Skip deploy+reset only if the fleet is byte-identical to what's live.
+- Still **no proven edge**; maintenance cuts losers, it does not manufacture one. A new STRUCTURAL
+  direction (funding-rate) or leverage change stays **§4 human-gated** — flag, don't start.
 
 ---
 
@@ -178,8 +188,10 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## BASELINE (set 2026-06-17, before iteration 1)
 
-- Deployed config: momentum lab — 120 bots = 3 strategies (`mom_adx`, `triple_mom`,
-  `trend_mom`) × 4 TF (`5m`, `15m`, `1h`, `4h`) × 10 pairs.
+- Deployed config: momentum lab. **Iter 5 (2026-06-18) PRUNED to 40 bots = 2 strategies
+  (`mom_adx`, `triple_mom`) × 2 TF (`1h`, `4h`) × 10 pairs** — was 120 (3 strat × 4 TF). Dropped
+  `trend_mom` + 5m + 15m per the cell-viability rule (all decisively −EV: 5m −$4.88, 15m −$1.45,
+  `trend_mom` −$3.60 of a −$6.04 slate). + 8-bot `exp_h1tp` cohort = 48 total.
 - Exit profile: `tp_atr=2.4 / sl_atr=1.5 (R/R 1.6) / max_hold=6 / trail arms +0.5R trails 0.5R
   / max_loss_pct=0.01`. Leverage 20×. MAKER sim on. Portfolio guard ±10%.
 - **Live metrics (PRE-reset diagnostic that motivated the cohort):** 124 trades · **31.5% win**
@@ -249,6 +261,24 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 5 — 2026-06-18 (user-directed active maintenance)
+
+- **TRIGGER:** user flagged "everything now worse" + expanded the mandate ("you can replace
+  unproductive bots, add new parameters or any statistical enforcements").
+- **MEASURE:** slate since iter-4 reset = 138 trades · **26.9% win · −$6.04 · PF 0.28** (worse).
+  By strategy: `trend_mom` −$3.60 (86 tr, worst), `mom_adx` −$1.75, `triple_mom` −$0.69. By TF:
+  5m −$4.88 (110 tr), 15m −$1.45 (12.5% win), 1h +$0.29 (75% win, the cohort). 0 errors, healthy.
+- **DIAGNOSE:** the bleed is the short-TF / `trend_mom` baseline cells kept for activity — all
+  below the cost floor, structurally −EV. The 1h cohort is the only green.
+- **ACTION (active maintenance, not discovery):** codified the **cell-viability rule** (≥50 closed
+  trades AND net<0 AND PF<1 → prune) as the loop's standing statistical enforcement, and applied
+  it: pruned **5m + 15m + `trend_mom`** from `build_momentum_lab.py`. Baseline 120 → **40** (mom_adx
+  + triple_mom × 1h/4h × 10). Fleet = 40 baseline + 8 cohort = 48. Re-activated cron to 8h + moved
+  the loop to ACTIVE-MAINTENANCE mode.
+- **RITUAL:** lint (format+check) clean → commit/push → CI green → restart (config-only) → full
+  reset → event. No edge created — exposure/bleed cut by removing the dead cells.
+- **CHECK STOP:** not met.
 
 ### Iteration 4 — 2026-06-18 (scheduled firing)
 
