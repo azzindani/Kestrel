@@ -119,10 +119,17 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
    deploy, so it can't accumulate 100 trades; the OOS sample does).
 5. **APPLY (always ship something visible)** — write `exp_candidate.json` with this iteration's
    **best candidate** and rotate the cohort: `python3 scripts/build_exp_cohort.py`. Promote to
-   the 120-bot **baseline** too (`build_momentum_lab.py`/`params.json`) **only if it fully
+   the **baseline** too (`build_momentum_lab.py`/`params.json`) **only if it fully
    validates** (beats baseline AND clears the lockbox without IS→OOS collapse). If the best
    candidate is *identical* to what's already deployed, say so in the log and skip the
    deploy+reset (let the slate accumulate) — otherwise proceed.
+   **DEDUP GUARD (don't re-run a bot we already tested):** before deploying, run
+   `python3 scripts/bot_registry.py check bots.json`. Every config has a stable fingerprint over
+   its behaviour (pair/timeframes/patterns/params, NOT the bot_id label). The check prints NEW vs
+   SEEN and exits 1 if any are SEEN. A SEEN config means that exact bot already ran in a past fleet
+   snapshot — re-deploying it just re-measures a known result, so change the params (a real new
+   variant) or skip it. After a deploy lands, run `python3 scripts/bot_registry.py build` to fold
+   the new snapshot into `bot_registry.json` and commit it alongside.
 6. **LINT** — run BOTH (CI runs both; `feedback_local_lint_must_match_ci`):
    `ruff format --check src/ tests/` **and** `ruff check src/ tests/`. Fix with
    `ruff format src/ tests/` before continuing. (The format check is the easy-to-forget half.)
