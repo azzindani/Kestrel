@@ -41,6 +41,7 @@ class PatternType(str, Enum):
     COMPRESSION_BREAKOUT = "compression_breakout"
     MOMENTUM_CONTINUATION = "momentum_continuation"
     ANOMALY_FADE = "anomaly_fade"
+    SESSION_SEASONAL = "session_seasonal"
 
 
 class SignalOutcome(str, Enum):
@@ -190,6 +191,14 @@ class Params:
     # the entry gate validated for the mom_adx / triple_mom patterns. Optional so
     # older params.json (without the key) loads unchanged at the validated default.
     adx_strong_min: float = 25.0
+    # --- time-of-day seasonality (signal/patterns.py session_seasonal) ---
+    # UTC entry-hour window for a seasonal long. scripts/backtest_seasonality.py found
+    # the US-afternoon/overnight block (≈18:00–00:00 UTC) net-maker-positive in BOTH a
+    # recent window and an untouched prior-year lockbox across 6 pairs — the project's
+    # first lockbox-surviving signal, though razor-thin and maker-only (forward-test, not
+    # a validated edge). Optional; older params.json loads at the validated default window.
+    seasonal_entry_hour_start: int = 18
+    seasonal_entry_window_hours: int = 7
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
@@ -282,6 +291,12 @@ class Params:
             tp_pct=(float(d["tp_pct"]["value"]) if "tp_pct" in d else 0.05),
             sl_pct=(float(d["sl_pct"]["value"]) if "sl_pct" in d else 0.025),
             adx_strong_min=(float(d["adx_strong_min"]["value"]) if "adx_strong_min" in d else 25.0),
+            seasonal_entry_hour_start=(
+                int(d["seasonal_entry_hour_start"]["value"]) if "seasonal_entry_hour_start" in d else 18
+            ),
+            seasonal_entry_window_hours=(
+                int(d["seasonal_entry_window_hours"]["value"]) if "seasonal_entry_window_hours" in d else 7
+            ),
         )
 
 

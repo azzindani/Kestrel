@@ -149,11 +149,11 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **Iteration 2 (deployed 2026-06-17):** 16 bots, 2 arms × `mom_adx`/`triple_mom` × {BTC, ETH,
-  SOL, DOGE}, both at **1h** (the least-bad TF). `exp_h1tp` = bank early (trail 0.5R, tp2.4,
-  hold6); `exp_h1run` = let winners run (trail 1.0R/0.8R, tp3.0, hold8). A/B of the exit lever on
-  the only TF with any positive recent-year signal. Watch `exp_h1tp_*` / `exp_h1run_*` rows.
-- ~~Iteration 1: `exp_qual` (5m strict) + `exp_htf` (1h)~~ — retired: 5m strict confirmed dead.
+- **Iteration 3 (deployed 2026-06-18):** 14 bots, 2 arms. `exp_h1tp` = 1h momentum (mom_adx +
+  triple_mom × {BTC,ETH,SOL,DOGE}, bank-early exit) — kept to accumulate. **`exp_tod` = the NEW
+  `session_seasonal` pattern** (time-of-day long, 18:00–00:00 UTC window) × {BTC,ETH,SOL,DOGE,
+  BNB,XRP}, 1h, time-based exit (hold4, wide TP/SL, trail off). Watch `exp_tod_seas` rows.
+- ~~Iter 2: `exp_h1tp` + `exp_h1run`~~ retired the let-run A/B; ~~Iter 1: `exp_qual` + `exp_htf`~~.
 
 ## BASELINE (set 2026-06-17, before iteration 1)
 
@@ -171,7 +171,13 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT BEST
 
-- Same as baseline (no validated improvement yet).
+- Baseline unchanged (no candidate has FULLY validated).
+- **Most promising LEAD (iter 3): time-of-day / overnight seasonality** — the project's first
+  signal to survive the untouched lockbox (US-afternoon/overnight window net-maker-positive in
+  both windows, 6 pairs). **But marginal**: maker-only (negative at taker), +0.01–0.05%/trade in
+  the lockbox, 8/120 combos survived (multiple-testing risk). Now forward-testing live as cohort
+  `exp_tod`. To PROMOTE it needs: a deflated-Sharpe / multiple-testing correction, per-pair
+  robustness, and a taker-survivable or genuinely maker-fillable execution — none proven yet.
 
 ---
 
@@ -205,6 +211,25 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 3 — 2026-06-18 (scheduled firing)
+
+- **MEASURE:** 98 trades since iter-2 reset · 32.6% win · −$5.03 · PF 0.30. Two anomalies found &
+  resolved: 16 stale heartbeats (iter-2 reset-race orphans) cleaned → 136; stop_loss avg −33.9%
+  traced to `trend_mom` 15m @ 20× on volatile candles (real, not a bug). Cohort (1h) still thin.
+- **DIAGNOSE:** stop-outs remain the entire bleed, now fat-tailed from `trend_mom`/short-TF/leverage.
+- **HYPOTHESIZE:** time-of-day / overnight seasonality (web-researched; genuinely new, non-momentum).
+- **BACKTEST** (`scripts/backtest_seasonality.py`, 1h, 6 pairs, recent + lockbox): the US-afternoon/
+  overnight window (≈18:00–00:00 UTC) is net-MAKER-positive in BOTH windows — **the first
+  lockbox-survivor in project history**. But marginal: maker-only (negative at taker),
+  +0.01–0.05%/trade lockbox, 8/120 combos (multiple-testing risk).
+- **DECIDE:** does NOT clear stop-cond #2 → **baseline untouched**. Best lead → cohort forward-test.
+- **APPLY:** built the `session_seasonal` pattern (config.py PatternType + 2 Params, patterns.py +
+  SELF_DIRECTING, regime.py permits, params.json, + unit tests). Rotated cohort → `exp_tod`
+  (seasonal) + `exp_h1tp` (1h momentum, kept). 134 bots. Code change → rebuild. Validated the new
+  code in-container before rebuild (registry/regime/params/load/fire-time all pass); 161 signal
+  unit tests green.
+- **CHECK STOP:** not met (seasonality marginal/maker-only; not lockbox-validated to the #2 bar).
 
 ### Iteration 2 — 2026-06-17 (first scheduled/triggered firing)
 

@@ -1,6 +1,6 @@
 {
-  "iteration": 2,
-  "note": "Iter-2 backtest: 1h momentum is the LEAST-BAD TF (recent-year OOS +EV: mom_adx/wide +$5.03, expR +0.10, R/R 1.37) but FAILS the lockbox (prior-year −$0.50, expR +0.02) — same data-mining signature as the refuted 4h, so NOT promoted to baseline. 5m strict (iter-1 exp_qual) confirmed dead and dropped. Cohort rotated to two 1h arms A/B-testing the exit lever, since 1h is the only place with any positive signal: exp_h1tp = bank early (trail 0.5R, tp2.4); exp_h1run = let winners run (trail 1.0R/0.8R, tp3.0, hold8). Honest: this is a live testbed to watch, NOT an edge claim.",
+  "iteration": 3,
+  "note": "Iter-3 found the project's FIRST lockbox-surviving signal: time-of-day seasonality (backtest_seasonality.py) — the US-afternoon/overnight window (18:00-00:00 UTC) is net-MAKER-positive in BOTH recent and lockbox across 6 pairs. BUT razor-thin and maker-only (negative at taker), and 8/120 combos survived (multiple-testing risk), so it does NOT clear stop-condition #2 and is NOT promoted to baseline. Deployed as a live forward-test cohort arm (exp_tod) via the new session_seasonal pattern, alongside the 1h momentum arm (exp_h1tp) kept to accumulate. Honest: the live arm is an APPROXIMATION (engine ATR brackets + volume filter distort the pure time-exit drift); the backtest is the real evidence.",
   "arms": [
     {
       "label": "exp_h1tp",
@@ -23,23 +23,21 @@
       }
     },
     {
-      "label": "exp_h1run",
+      "label": "exp_tod",
       "timeframe": "1h",
-      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT"],
+      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "BNB/USDT", "XRP/USDT"],
       "strategies": [
-        {"name": "mom_adx", "patterns": ["mom_adx"]},
-        {"name": "triple_mom", "patterns": ["triple_mom"]}
+        {"name": "seas", "patterns": ["session_seasonal"]}
       ],
       "params": {
         "tp_atr_multiplier": 3.0,
-        "sl_atr_multiplier": 1.5,
-        "max_hold_candles": 8,
-        "trailing_enabled": true,
-        "trail_activation_r": 1.0,
-        "trail_distance_r": 0.8,
+        "sl_atr_multiplier": 2.0,
+        "max_hold_candles": 4,
+        "trailing_enabled": false,
         "volume_ratio_min": 1.1,
-        "adx_strong_min": 25.0,
-        "max_loss_pct_per_trade": 0.01
+        "max_loss_pct_per_trade": 0.01,
+        "seasonal_entry_hour_start": 18,
+        "seasonal_entry_window_hours": 7
       }
     }
   ]
