@@ -123,13 +123,17 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
    validates** (beats baseline AND clears the lockbox without IS→OOS collapse). If the best
    candidate is *identical* to what's already deployed, say so in the log and skip the
    deploy+reset (let the slate accumulate) — otherwise proceed.
-   **DEDUP GUARD (don't re-run a bot we already tested):** before deploying, run
-   `python3 scripts/bot_registry.py check bots.json`. Every config has a stable fingerprint over
-   its behaviour (pair/timeframes/patterns/params, NOT the bot_id label). The check prints NEW vs
-   SEEN and exits 1 if any are SEEN. A SEEN config means that exact bot already ran in a past fleet
-   snapshot — re-deploying it just re-measures a known result, so change the params (a real new
-   variant) or skip it. After a deploy lands, run `python3 scripts/bot_registry.py build` to fold
-   the new snapshot into `bot_registry.json` and commit it alongside.
+   **DEDUP GUARD — RUN THIS EVERY FIRING, don't make the same mistakes:** before deploying, run
+   `python3 scripts/bot_registry.py check bots.json`. The registry lives in `bot_registry/` (one
+   JSON shard per instrument + `_index.json`; ~1.3k+ configs reconstructed from the full git
+   history of bots.json). Every config has a stable fingerprint over its BEHAVIOUR
+   (pair/timeframes/patterns/params, NOT the bot_id label). The check prints NEW vs SEEN and exits
+   1 if any are SEEN. A SEEN config means that exact bot already ran in a past fleet — re-deploying
+   it just re-measures a known result. **Each iteration's value comes from the NEW count: prefer
+   genuinely new hypotheses (new patterns / new param regimes), not new copies of a refuted one.**
+   It is OK to retain a few SEEN configs as deliberate CONTROLS (say so in the log). After a deploy
+   lands, run `python3 scripts/bot_registry.py build` to fold the new snapshot into `bot_registry/`
+   and commit the shards alongside.
 6. **LINT** — run BOTH (CI runs both; `feedback_local_lint_must_match_ci`):
    `ruff format --check src/ tests/` **and** `ruff check src/ tests/`. Fix with
    `ruff format src/ tests/` before continuing. (The format check is the easy-to-forget half.)
@@ -145,7 +149,7 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
    seconds old at restart and a `ts < now-90s` delete misses them, leaving phantom bots in Grafana.
    Wiping all heartbeats up-front means only the live fleet repopulates → no orphan race)** →
    `backfill_history.py --source gate` → `docker compose up -d --build`/`restart`. **KEEP candles.**
-   Verify clean: `trades=0`, heartbeats == intended fleet size (e.g. 48 = 40 baseline + 8 cohort),
+   Verify clean: `trades=0`, heartbeats == intended fleet size (e.g. 120 = the diversity fleet),
    cohort present, `errors=0`. (Skip ONLY when step 5 deployed nothing new.)
 10. **RECORD** — append an iteration entry below (date, hypothesis, backtest result, what was
     deployed, reset done?, new best) + update the REFUTED LEDGER if an idea died. **Write a
@@ -191,19 +195,27 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **Iteration 4 (deployed 2026-06-18):** 8 bots, 1 arm. `exp_h1tp` = 1h momentum (mom_adx +
-  triple_mom × {BTC,ETH,SOL,DOGE}, bank-early exit) — the persistent least-bad, kept as the sole
-  forward-test. Seasonal arm retired (refuted). Watch `exp_h1tp_*` rows.
-- ~~Iter 3: + `exp_tod` seasonal~~ refuted (sub-maker-cost OOS); ~~Iter 2: `exp_h1run`~~; ~~Iter 1~~.
+- **RETIRED iter 6 (2026-06-19).** The `exp_h1tp` 1h-momentum cohort is now a subset of the
+  diverse-120 baseline (which includes 1h mom_adx/triple_mom), so it was folded away — the whole
+  120-bot fleet IS the experiment. The cohort tooling (`build_exp_cohort.py`/`reset_exp.py`) stays
+  available for a future genuinely-distinct arm.
+- ~~Iter 4: `exp_h1tp`~~; ~~Iter 3: `exp_tod` seasonal~~ refuted; ~~Iter 2: `exp_h1run`~~; ~~Iter 1~~.
 
-## BASELINE (set 2026-06-17, before iteration 1)
+## BASELINE (diversity fleet, set iter 6 2026-06-19)
 
-- Deployed config: momentum lab. **Iter 5 (2026-06-18) PRUNED to 40 bots = 2 strategies
-  (`mom_adx`, `triple_mom`) × 2 TF (`1h`, `4h`) × 10 pairs** — was 120 (3 strat × 4 TF). Dropped
-  `trend_mom` + 5m + 15m per the cell-viability rule (all decisively −EV: 5m −$4.88, 15m −$1.45,
-  `trend_mom` −$3.60 of a −$6.04 slate). + 8-bot `exp_h1tp` cohort = 48 total.
-- Exit profile: `tp_atr=2.4 / sl_atr=1.5 (R/R 1.6) / max_hold=6 / trail arms +0.5R trails 0.5R
-  / max_loss_pct=0.01`. Leverage 20×. MAKER sim on. Portfolio guard ±10%.
+- **Iter 6 PIVOT to hypothesis DIVERSITY** (user: "40 bots not effective, we didn't learn more").
+  The iter-5 40-bot fleet was wide on instruments but tested only 2 ideas (mom_adx, triple_mom —
+  both refuted momentum). New baseline = **120 bots = 6 patterns × 2 TF (1h/4h) × 10 pairs**:
+  `mom_adx` + `triple_mom` (VALIDATED CONTROLS, registry=SEEN) + `impulse_retracement`,
+  `compression_breakout`, `anomaly_fade`, `wick_rejection` (the latter three NEVER deployed as
+  bots → 80 registry-NEW hypotheses). This is "120 done productively" — NOT the old redundant 120
+  (3 momentum patterns × 4 TF, half sub-cost-floor). `build_momentum_lab.py`.
+- Dedup guard at deploy: **80 NEW + 40 SEEN** (the SEEN are the deliberate momentum controls).
+- ~~Iter 5: 40 bots (2 momentum × 2 TF × 10) + 8 cohort~~ — too narrow, pivoted to diversity.
+- Exit profile (UNIFORM across all 6 patterns, isolates signal not exit tuning): `tp_atr=2.4 /
+  sl_atr=1.5 (R/R 1.6) / max_hold=6 / trail arms +0.5R trails 0.5R / max_loss_pct=0.01`.
+  Pattern-shape params (wick_ratio_min, compression_factor, ...) from params.json. Leverage 20×.
+  MAKER sim on. Portfolio guard ±10%.
 - **Live metrics (PRE-reset diagnostic that motivated the cohort):** 124 trades · **31.5% win**
   · net **−$3.25** · profit factor 0.55.
 - **FULL RESET performed 2026-06-17** after the cohort deploy (standing preference
@@ -271,6 +283,29 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 6 — 2026-06-19 (user-directed: pivot to hypothesis diversity)
+
+- **TRIGGER:** user — "with current 40 bots setup is not effective, we didn't learn more about
+  anything, is it good if we keep 120 bots?" + "split [the registry], create directory, check this
+  over and over during the loop, don't make the same mistakes."
+- **DIAGNOSE (the registry made it concrete):** the 40-bot fleet = 2 patterns (mom_adx,
+  triple_mom) × 2 TF × 10 pairs — WIDE on instruments, NARROW on ideas (both refuted momentum). So
+  nothing new is learned. `bot_registry` showed `wick_rejection` / `compression_breakout` /
+  `anomaly_fade` have **NEVER been deployed as bots** → genuinely untested hypotheses. The fix for
+  "learn more" is DIVERSITY, not count: the old 120 (3 momentum × 4 TF) would be re-running SEEN
+  −EV cells; a DIVERSE 120 adds real information.
+- **REGISTRY (the "don't make the same mistakes" ask):** sharded the 1.3 MB monolith into
+  `bot_registry/` (one shard per instrument + `_index.json`, 35 shards). Wired the dedup guard to
+  run **every firing** (step 5): prefer NEW configs, retain SEEN only as deliberate controls.
+- **ACTION:** rebuilt `build_momentum_lab.py` as the DIVERSITY lab — **120 bots = 6 patterns × 2
+  TF (1h/4h) × 10 pairs**: 2 momentum controls (SEEN) + 4 under/never-tested patterns spanning all
+  regime buckets (80 registry-NEW). Uniform risk-shaped exit so the comparison isolates each
+  pattern's signal. Retired the now-redundant `exp_h1tp` cohort. Dedup guard: 80 NEW + 40 SEEN.
+- **HONEST FRAME:** this does NOT create edge (directional discovery is exhausted) — it maximises
+  what each bot TEACHES per unit of fleet. Still paper, still no proven edge, still §18-gated.
+- **SHIP:** lint clean · committed+pushed main · CI green · redeploy (bots.json bind-mount → restart)
+  · FULL RESET (heartbeats wiped up-front, backfill, restart, verify 120 / trades=0) · system event.
 
 ### Iteration 5 — 2026-06-18 (user-directed active maintenance)
 

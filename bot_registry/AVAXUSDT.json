@@ -1,0 +1,2764 @@
+{
+  "version": 1,
+  "pair": "AVAXUSDT",
+  "configs": [
+    {
+      "fingerprint": "1feb151fac1d",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "672fae23620c",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "689c80aa35e4",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "84be47e5ccb6",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "b9ddf26a1d55",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "cdb424884397",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "eadcc5ceba14",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "faf25f60d1f2",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "0f3247356043",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t24s14h4-01"
+    },
+    {
+      "fingerprint": "13e662c1030f",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t24s7h4-01"
+    },
+    {
+      "fingerprint": "188d42fae014",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t24s10h4-01"
+    },
+    {
+      "fingerprint": "1a0330a56c46",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t30s14h4-01"
+    },
+    {
+      "fingerprint": "21f23f0f44ee",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t24s7h8-01"
+    },
+    {
+      "fingerprint": "35b13cac38a7",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t16s14h8-01"
+    },
+    {
+      "fingerprint": "441b8803e721",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t10s10h4-01"
+    },
+    {
+      "fingerprint": "4e50ff3b6b4f",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t10s14h8-01"
+    },
+    {
+      "fingerprint": "5a6a1e54285b",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t10s7h8-01"
+    },
+    {
+      "fingerprint": "5dd2ed028124",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t30s14h8-01"
+    },
+    {
+      "fingerprint": "6a5c4e79cd86",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t10s14h4-01"
+    },
+    {
+      "fingerprint": "6ab63c3c6e0a",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t30s10h8-01"
+    },
+    {
+      "fingerprint": "6d39be2c3a82",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t16s7h4-01"
+    },
+    {
+      "fingerprint": "82027eb3c875",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t16s14h4-01"
+    },
+    {
+      "fingerprint": "8761caa328c6",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t30s7h8-01"
+    },
+    {
+      "fingerprint": "b24c434797cf",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t16s7h8-01"
+    },
+    {
+      "fingerprint": "b7a0375bd7c1",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t30s10h4-01"
+    },
+    {
+      "fingerprint": "c1ff9264c6a2",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t24s10h8-01"
+    },
+    {
+      "fingerprint": "d01d2776bb55",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t24s14h8-01"
+    },
+    {
+      "fingerprint": "e163678c42cc",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t10s7h4-01"
+    },
+    {
+      "fingerprint": "ea855135cdcb",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t16s10h8-01"
+    },
+    {
+      "fingerprint": "f0016f092936",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t10s10h8-01"
+    },
+    {
+      "fingerprint": "f21ccf7d0b03",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t30s7h4-01"
+    },
+    {
+      "fingerprint": "f3c409c8f862",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-t16s10h4-01"
+    },
+    {
+      "fingerprint": "1011104d13a2",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-AVAXUSDT-5m-ride-01"
+    },
+    {
+      "fingerprint": "29238061a745",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-AVAXUSDT-5m-flip-01"
+    },
+    {
+      "fingerprint": "e443e54f4399",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-AVAXUSDT-5m-scalp-01"
+    },
+    {
+      "fingerprint": "0db6cf72ca12",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_agg",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-flip_agg-01"
+    },
+    {
+      "fingerprint": "246f6ef96833",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_con",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 4,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-flip_con-01"
+    },
+    {
+      "fingerprint": "2a8d4513ed07",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_agg",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-ride_agg-01"
+    },
+    {
+      "fingerprint": "a92124ebe34f",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_bal",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-scalp_bal-01"
+    },
+    {
+      "fingerprint": "b89f04455d7c",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_bal",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-flip_bal-01"
+    },
+    {
+      "fingerprint": "bbe2fd1c888e",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_con",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 8,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-ride_con-01"
+    },
+    {
+      "fingerprint": "c1eb7a1e0ecf",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_agg",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-scalp_agg-01"
+    },
+    {
+      "fingerprint": "dd4d9d7b9f8d",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_bal",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-ride_bal-01"
+    },
+    {
+      "fingerprint": "e934ad3d8185",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_con",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 3,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-scalp_con-01"
+    },
+    {
+      "fingerprint": "052c10d83fdb",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "6f67a2fdf286",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "9c19bd0d790c",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "0305be187616",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "1662c55899a8",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-ride-01"
+    },
+    {
+      "fingerprint": "442086a4bdc7",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-flip-01"
+    },
+    {
+      "fingerprint": "4efc31ee546e",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "618a68026b96",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-scalp-01"
+    },
+    {
+      "fingerprint": "811a5cc458f3",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "90edfb3bdd4a",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_pt",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-flip_pt-01"
+    },
+    {
+      "fingerprint": "9bf7df6f6960",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_p",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-ride_p-01"
+    },
+    {
+      "fingerprint": "a77fbfc6615e",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_pt",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-ride_pt-01"
+    },
+    {
+      "fingerprint": "c0434a058aab",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_p",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-flip_p-01"
+    },
+    {
+      "fingerprint": "e5ee66be5d98",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_pt",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-scalp_pt-01"
+    },
+    {
+      "fingerprint": "eee9ff37d9cf",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_p",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAX-5m-scalp_p-01"
+    },
+    {
+      "fingerprint": "7506876535d7",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "93b8c7cce2d6",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "2c87629f69c8",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-AVAXUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "a9ab48aa6625",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-AVAXUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "29f53e20fb93",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-AVAXUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "e3fddbf31fa9",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-AVAXUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "6bda5b902edf",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "2b49079ef6be66e6966b060d5d2d3748e0752724",
+      "first_seen_date": "2026-06-15T05:37:35+00:00",
+      "first_seen_subject": "chore(lab): add permissive trend_momentum strategy for 5m activity (still -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-AVAXUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "335ee0ebdb8f",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "434e21872d05",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "47858eb85d27",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "50eae3bf0be2",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "5b482f02a5cb",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "a5e3ba9ce522",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "ef93fda5e596",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "303d8bed3e6c",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "3f75de223e0e",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "47ca6aca1c2f",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "5c97140901e5",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "77478dab176c",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "82a2418f8821",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "951d44047da5",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "967aaf427f6e",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "d654fd6fa0fb",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "dd96e3ed2bf7",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "e8ad5c462398",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "ea54a03a1735",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-AVAXUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "0275772f8c4c",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-AVAXUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "0ea3ee338970",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-AVAXUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "1b8c2c22b467",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-AVAXUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "2bf09fd715c4",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-AVAXUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "30a41b701281",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-AVAXUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "5de501ffef2c",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-AVAXUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "645a9c1a3157",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-AVAXUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "bf5290c79ef0",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-AVAXUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "deb53deb53c9",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-AVAXUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "e7d5cbb7fd50",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-AVAXUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "f1e6a9acaef7",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-AVAXUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "f56e18e3d390",
+      "config": {
+        "pair": "AVAXUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-AVAXUSDT-4h-triple_mom-01"
+    }
+  ]
+}

@@ -1,0 +1,3222 @@
+{
+  "version": 1,
+  "pair": "SOLUSDT",
+  "configs": [
+    {
+      "fingerprint": "29391f1ecbbf",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "3e8420510164",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "639c483422e3",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "911c7b2642b3",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "9357bf47bf19",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "f073b6cf6973",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "f093eaeda9a7",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "f4fbd742c79e",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "17cb87cf82be",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "multi",
+        "patterns": [],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-multi-01"
+    },
+    {
+      "fingerprint": "2223bf136632",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-mom-01"
+    },
+    {
+      "fingerprint": "3778e6fd6458",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "mompatient",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-mompatient-01"
+    },
+    {
+      "fingerprint": "3840e70249a2",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momtight",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "sl_atr_multiplier": 0.8,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-momtight-01"
+    },
+    {
+      "fingerprint": "4a30a09e9d92",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momhiconf",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "body_ratio_min": 0.55,
+          "min_confidence": 0.7
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-momhiconf-01"
+    },
+    {
+      "fingerprint": "8571dbe6de2b",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momhivol",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "volume_ratio_min": 1.8
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-momhivol-01"
+    },
+    {
+      "fingerprint": "abe942d19666",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momwide",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-momwide-01"
+    },
+    {
+      "fingerprint": "bf4600fcd0bf",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "classic",
+        "patterns": [
+          "impulse_retracement",
+          "momentum_continuation"
+        ],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-classic-01"
+    },
+    {
+      "fingerprint": "15c2322851f7",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t16s10h4-01"
+    },
+    {
+      "fingerprint": "1824cc7591bb",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t24s14h8-01"
+    },
+    {
+      "fingerprint": "1f3d3953b4a1",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t30s7h8-01"
+    },
+    {
+      "fingerprint": "2b6c08c7d627",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t24s10h8-01"
+    },
+    {
+      "fingerprint": "39606baebe69",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t16s14h8-01"
+    },
+    {
+      "fingerprint": "4a0efc6699b7",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t24s14h4-01"
+    },
+    {
+      "fingerprint": "4fbb909400b3",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t10s7h8-01"
+    },
+    {
+      "fingerprint": "53feb7f5cc2e",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t10s10h8-01"
+    },
+    {
+      "fingerprint": "617334968b6b",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t30s14h4-01"
+    },
+    {
+      "fingerprint": "6ebfa24cec5d",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t24s10h4-01"
+    },
+    {
+      "fingerprint": "7092e31d09e8",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t24s7h8-01"
+    },
+    {
+      "fingerprint": "7ffdb63fd21a",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t30s14h8-01"
+    },
+    {
+      "fingerprint": "83bd32257028",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t16s7h8-01"
+    },
+    {
+      "fingerprint": "98a93de5c841",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t10s10h4-01"
+    },
+    {
+      "fingerprint": "a2e560e51046",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t30s10h4-01"
+    },
+    {
+      "fingerprint": "b7973085ee5f",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t10s14h4-01"
+    },
+    {
+      "fingerprint": "be0e728199ff",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t16s14h4-01"
+    },
+    {
+      "fingerprint": "c51c3ff821e3",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t10s7h4-01"
+    },
+    {
+      "fingerprint": "d1c191ae1de8",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t10s14h8-01"
+    },
+    {
+      "fingerprint": "db4eaa0eb341",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t30s7h4-01"
+    },
+    {
+      "fingerprint": "dcefd08e1c01",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t24s7h4-01"
+    },
+    {
+      "fingerprint": "e2cec45847d3",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t30s10h8-01"
+    },
+    {
+      "fingerprint": "e6c1050aa8ba",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t16s10h8-01"
+    },
+    {
+      "fingerprint": "eb798c125410",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-t16s7h4-01"
+    },
+    {
+      "fingerprint": "3c8ec59581f0",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-5m-ride-01"
+    },
+    {
+      "fingerprint": "abb7281b9a1f",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-5m-flip-01"
+    },
+    {
+      "fingerprint": "d499dfa5cbc4",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-5m-scalp-01"
+    },
+    {
+      "fingerprint": "13f6b5f8a61f",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_agg",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-ride_agg-01"
+    },
+    {
+      "fingerprint": "16dd8e56a3b7",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_bal",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-ride_bal-01"
+    },
+    {
+      "fingerprint": "3d9f441d5ea5",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_bal",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-flip_bal-01"
+    },
+    {
+      "fingerprint": "8818c093a32a",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_con",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 8,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-ride_con-01"
+    },
+    {
+      "fingerprint": "900988a33cc2",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_con",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 4,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-flip_con-01"
+    },
+    {
+      "fingerprint": "a7f256e25215",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_con",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 3,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-scalp_con-01"
+    },
+    {
+      "fingerprint": "cf646ff32d5c",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_agg",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-flip_agg-01"
+    },
+    {
+      "fingerprint": "deb9eeebd768",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_agg",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-scalp_agg-01"
+    },
+    {
+      "fingerprint": "fbe107b198b9",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_bal",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-scalp_bal-01"
+    },
+    {
+      "fingerprint": "13a73d134603",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "377f50c8c319",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "aee209392ee7",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "0be6dfdf2199",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_p",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-scalp_p-01"
+    },
+    {
+      "fingerprint": "2f3cd7ec3b59",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "438615789791",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "58dbbbaa60cb",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "5a6e30b545af",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-flip-01"
+    },
+    {
+      "fingerprint": "95228f68bf96",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_pt",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-scalp_pt-01"
+    },
+    {
+      "fingerprint": "af742ab864d9",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_pt",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-flip_pt-01"
+    },
+    {
+      "fingerprint": "bee305635a86",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-ride-01"
+    },
+    {
+      "fingerprint": "cc5accb46f65",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-scalp-01"
+    },
+    {
+      "fingerprint": "f08c159c8dfd",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_p",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-flip_p-01"
+    },
+    {
+      "fingerprint": "f684f83a58c9",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_p",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-ride_p-01"
+    },
+    {
+      "fingerprint": "fc3e8fe351af",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_pt",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOL-5m-ride_pt-01"
+    },
+    {
+      "fingerprint": "6666f69af7fa",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "c3776beac3f2",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "557ffb7f7708",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "cb34cd1d92e8",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "2b099239ef08",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-SOLUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "fc4690bd87d1",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-SOLUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "a218f65377a4",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "2b49079ef6be66e6966b060d5d2d3748e0752724",
+      "first_seen_date": "2026-06-15T05:37:35+00:00",
+      "first_seen_subject": "chore(lab): add permissive trend_momentum strategy for 5m activity (still -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "07c4b858734b",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "413e64b5c3d5",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "5efa8387d3f8",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "6281a18f8c58",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "7f63b6d812a9",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "a208239855ba",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "e431a4e25f9a",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "04e5ce7057cc",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "63ea2e4db658",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "7217393a5d2f",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "79779853736d",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "7dd75c86d959",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "82f1e6e65271",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "8935a1fb4713",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "8b35a7c26b65",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "8d1d717b5011",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "a0652bb11bb2",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "f11246ee42bf",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "f9c8e4113d69",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "0d63e80c2f13",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-SOLUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "198ca8d6e3ec",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-SOLUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "2b78db3b9c18",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-SOLUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "340446595a56",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-SOLUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "41d301c20497",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-SOLUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "64349cefb255",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-SOLUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "83b063cbfe1f",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-SOLUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "8964815fd7cf",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-SOLUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "8b3cb9710718",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-SOLUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "ab7a5ba9549b",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-SOLUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "cebd7240072e",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-SOLUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "eb0c16f70453",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-SOLUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "6f4058262011",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "exp_qual_mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 35.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.7
+        }
+      },
+      "first_seen_commit": "7f0005995c0fba444a81db946a4a5957f71c755f",
+      "first_seen_date": "2026-06-17T10:48:07+00:00",
+      "first_seen_subject": "research(loop): experimental cohort \u2014 visible live A/B without touching baseline",
+      "last_seen_commit": "7f0005995c0fba444a81db946a4a5957f71c755f",
+      "last_seen_date": "2026-06-17T10:48:07+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-exp_qual_mom_adx-01"
+    },
+    {
+      "fingerprint": "cc5708f071e2",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_htf_mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "7f0005995c0fba444a81db946a4a5957f71c755f",
+      "first_seen_date": "2026-06-17T10:48:07+00:00",
+      "first_seen_subject": "research(loop): experimental cohort \u2014 visible live A/B without touching baseline",
+      "last_seen_commit": "7f0005995c0fba444a81db946a4a5957f71c755f",
+      "last_seen_date": "2026-06-17T10:48:07+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_htf_mom_adx-01"
+    },
+    {
+      "fingerprint": "e24fba866500",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "exp_qual_triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 35.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.7
+        }
+      },
+      "first_seen_commit": "7f0005995c0fba444a81db946a4a5957f71c755f",
+      "first_seen_date": "2026-06-17T10:48:07+00:00",
+      "first_seen_subject": "research(loop): experimental cohort \u2014 visible live A/B without touching baseline",
+      "last_seen_commit": "7f0005995c0fba444a81db946a4a5957f71c755f",
+      "last_seen_date": "2026-06-17T10:48:07+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-5m-exp_qual_triple_mom-01"
+    },
+    {
+      "fingerprint": "e3cdb03911d6",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_htf_triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "7f0005995c0fba444a81db946a4a5957f71c755f",
+      "first_seen_date": "2026-06-17T10:48:07+00:00",
+      "first_seen_subject": "research(loop): experimental cohort \u2014 visible live A/B without touching baseline",
+      "last_seen_commit": "7f0005995c0fba444a81db946a4a5957f71c755f",
+      "last_seen_date": "2026-06-17T10:48:07+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_htf_triple_mom-01"
+    },
+    {
+      "fingerprint": "83604d6ea56b",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_h1tp_mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "c5f1221ef431e8740554716447c5bd3a51638751",
+      "first_seen_date": "2026-06-17T16:52:46+00:00",
+      "first_seen_subject": "research(loop) iter 2: 1h is least-bad TF but fails lockbox \u2014 rotate cohort to 1h A/B",
+      "last_seen_commit": "a4d67ba2c6cc939a0cbb93e93bb80d54d4c1f3cd",
+      "last_seen_date": "2026-06-18T23:39:44+00:00",
+      "snapshot_count": 4,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_h1tp_mom_adx-01"
+    },
+    {
+      "fingerprint": "92665e0d5212",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_h1run_mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "c5f1221ef431e8740554716447c5bd3a51638751",
+      "first_seen_date": "2026-06-17T16:52:46+00:00",
+      "first_seen_subject": "research(loop) iter 2: 1h is least-bad TF but fails lockbox \u2014 rotate cohort to 1h A/B",
+      "last_seen_commit": "c5f1221ef431e8740554716447c5bd3a51638751",
+      "last_seen_date": "2026-06-17T16:52:46+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_h1run_mom_adx-01"
+    },
+    {
+      "fingerprint": "a67adad30c25",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_h1run_triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "c5f1221ef431e8740554716447c5bd3a51638751",
+      "first_seen_date": "2026-06-17T16:52:46+00:00",
+      "first_seen_subject": "research(loop) iter 2: 1h is least-bad TF but fails lockbox \u2014 rotate cohort to 1h A/B",
+      "last_seen_commit": "c5f1221ef431e8740554716447c5bd3a51638751",
+      "last_seen_date": "2026-06-17T16:52:46+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_h1run_triple_mom-01"
+    },
+    {
+      "fingerprint": "efd3e42a6c69",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_h1tp_triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "c5f1221ef431e8740554716447c5bd3a51638751",
+      "first_seen_date": "2026-06-17T16:52:46+00:00",
+      "first_seen_subject": "research(loop) iter 2: 1h is least-bad TF but fails lockbox \u2014 rotate cohort to 1h A/B",
+      "last_seen_commit": "a4d67ba2c6cc939a0cbb93e93bb80d54d4c1f3cd",
+      "last_seen_date": "2026-06-18T23:39:44+00:00",
+      "snapshot_count": 4,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_h1tp_triple_mom-01"
+    },
+    {
+      "fingerprint": "bd4bd8ecd647",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_tod_seas",
+        "patterns": [
+          "session_seasonal"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "seasonal_entry_hour_start": 18,
+          "seasonal_entry_window_hours": 7,
+          "sl_atr_multiplier": 2.0,
+          "tp_atr_multiplier": 3.0,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "6edf50a94b043e70303ba98152f47070402ea675",
+      "first_seen_date": "2026-06-18T01:08:23+00:00",
+      "first_seen_subject": "research(loop) iter 3: time-of-day seasonality \u2014 first lockbox-survivor (marginal)",
+      "last_seen_commit": "6edf50a94b043e70303ba98152f47070402ea675",
+      "last_seen_date": "2026-06-18T01:08:23+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_tod_seas-01"
+    }
+  ]
+}

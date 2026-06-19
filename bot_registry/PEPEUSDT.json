@@ -1,0 +1,2944 @@
+{
+  "version": 1,
+  "pair": "PEPEUSDT",
+  "configs": [
+    {
+      "fingerprint": "5abe59fd00a2",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "77530298aaa0",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "95bd8c737116",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "991e92235423",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "9fb94ed24526",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "d34481490b6d",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "ee72ec505590",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "fd6e331b58c5",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "1a82cc43cb20",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momhiconf",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "body_ratio_min": 0.55,
+          "min_confidence": 0.7
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-momhiconf-01"
+    },
+    {
+      "fingerprint": "1c8f526d60f6",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momwide",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-momwide-01"
+    },
+    {
+      "fingerprint": "28cca36ed8e8",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momtight",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "sl_atr_multiplier": 0.8,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-momtight-01"
+    },
+    {
+      "fingerprint": "650971a9df19",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momhivol",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "volume_ratio_min": 1.8
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-momhivol-01"
+    },
+    {
+      "fingerprint": "75084071637b",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "mompatient",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-mompatient-01"
+    },
+    {
+      "fingerprint": "7a24eea7bdf1",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "multi",
+        "patterns": [],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-multi-01"
+    },
+    {
+      "fingerprint": "d917878dce20",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-mom-01"
+    },
+    {
+      "fingerprint": "f59694ec61b3",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "classic",
+        "patterns": [
+          "impulse_retracement",
+          "momentum_continuation"
+        ],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-classic-01"
+    },
+    {
+      "fingerprint": "0b9182fa24d6",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t10s7h8-01"
+    },
+    {
+      "fingerprint": "11e6a153d774",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t16s14h8-01"
+    },
+    {
+      "fingerprint": "2279e26c4b3b",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t30s10h4-01"
+    },
+    {
+      "fingerprint": "22a6b5a3054c",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t10s14h8-01"
+    },
+    {
+      "fingerprint": "27b0806339e6",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t30s14h4-01"
+    },
+    {
+      "fingerprint": "35792282bc10",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t24s7h4-01"
+    },
+    {
+      "fingerprint": "49a86a85b130",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t10s10h4-01"
+    },
+    {
+      "fingerprint": "4f3fcc5eb4b0",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t30s10h8-01"
+    },
+    {
+      "fingerprint": "53736a2e4bde",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t16s14h4-01"
+    },
+    {
+      "fingerprint": "590476d7c417",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t10s10h8-01"
+    },
+    {
+      "fingerprint": "5b0124b399e8",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t16s10h4-01"
+    },
+    {
+      "fingerprint": "5d3f48618850",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t30s14h8-01"
+    },
+    {
+      "fingerprint": "5e585b9db785",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t16s7h8-01"
+    },
+    {
+      "fingerprint": "75daad5ffb63",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t16s10h8-01"
+    },
+    {
+      "fingerprint": "9bdf162409aa",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t10s14h4-01"
+    },
+    {
+      "fingerprint": "9e3114daef40",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t24s14h4-01"
+    },
+    {
+      "fingerprint": "aacaa5703823",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t10s7h4-01"
+    },
+    {
+      "fingerprint": "ae8cf0a85988",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t24s10h8-01"
+    },
+    {
+      "fingerprint": "befc81a5db8c",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t16s7h4-01"
+    },
+    {
+      "fingerprint": "c5826fc9bf4b",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t24s7h8-01"
+    },
+    {
+      "fingerprint": "cc6acfe47256",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t30s7h4-01"
+    },
+    {
+      "fingerprint": "d6a9572eae07",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t24s14h8-01"
+    },
+    {
+      "fingerprint": "dc38e6421739",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t30s7h8-01"
+    },
+    {
+      "fingerprint": "ecece3a05c2d",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-t24s10h4-01"
+    },
+    {
+      "fingerprint": "167baf708a2d",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-PEPEUSDT-5m-scalp-01"
+    },
+    {
+      "fingerprint": "7e6eb4b72bfc",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-PEPEUSDT-5m-ride-01"
+    },
+    {
+      "fingerprint": "a20c2e615a50",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-PEPEUSDT-5m-flip-01"
+    },
+    {
+      "fingerprint": "0180502f4244",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_con",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 3,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-scalp_con-01"
+    },
+    {
+      "fingerprint": "0d668d071977",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_agg",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-ride_agg-01"
+    },
+    {
+      "fingerprint": "0f0f33667658",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_agg",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-scalp_agg-01"
+    },
+    {
+      "fingerprint": "3c6e8a0940fd",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_bal",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-flip_bal-01"
+    },
+    {
+      "fingerprint": "6db8b91d300e",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_bal",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-scalp_bal-01"
+    },
+    {
+      "fingerprint": "920080710514",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_agg",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-flip_agg-01"
+    },
+    {
+      "fingerprint": "93c39bfba614",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_bal",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-ride_bal-01"
+    },
+    {
+      "fingerprint": "bc11a9e9c648",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_con",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 8,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-ride_con-01"
+    },
+    {
+      "fingerprint": "d6a9d7aaa8df",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_con",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 4,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-flip_con-01"
+    },
+    {
+      "fingerprint": "87916caa056f",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "abe1cd9bd5ac",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "d5ab5fb519df",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "1a884c404289",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_p",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-scalp_p-01"
+    },
+    {
+      "fingerprint": "1fe385cc0b7b",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_pt",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-flip_pt-01"
+    },
+    {
+      "fingerprint": "2d6fb1849ee9",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "431414cd6dae",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_pt",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-scalp_pt-01"
+    },
+    {
+      "fingerprint": "49b334120809",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "4a30d59eddcc",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "6e48d990fdb6",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-scalp-01"
+    },
+    {
+      "fingerprint": "90b3e3500e60",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-ride-01"
+    },
+    {
+      "fingerprint": "9d6cf1dda2fe",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_p",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-ride_p-01"
+    },
+    {
+      "fingerprint": "a4573e410d84",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_p",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-flip_p-01"
+    },
+    {
+      "fingerprint": "e6e8dd84963c",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-flip-01"
+    },
+    {
+      "fingerprint": "ea848d9e54d1",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_pt",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPE-5m-ride_pt-01"
+    },
+    {
+      "fingerprint": "00ae21669f8b",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "5218c8d3935e",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "034ec0c9e875",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-PEPEUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "b8827af001d1",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-PEPEUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "37635c7524ea",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-PEPEUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "a63d1719e490",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-PEPEUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "879801469229",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "2b49079ef6be66e6966b060d5d2d3748e0752724",
+      "first_seen_date": "2026-06-15T05:37:35+00:00",
+      "first_seen_subject": "chore(lab): add permissive trend_momentum strategy for 5m activity (still -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-PEPEUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "03924eecfdfe",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "736b05757c3b",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "79e88ad7853f",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "9e9f28430971",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "a03766641820",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "b14021591d7a",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "bc3459c21de5",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "2b4a65753b95",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "342a4839ab65",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "5f2a1da4ec66",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "61ac42ddce9c",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "71b5b7d39753",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "77e61a4717d2",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "a7af7c95e030",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "b848e9c21269",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "c6c18be77474",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "e40924801c98",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "eec59b0bdb1a",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "f203bc02320f",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-PEPEUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "015c03eb0131",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-PEPEUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "0f8a78c312e8",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-PEPEUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "3aedc705730c",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-PEPEUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "4e1b8dfc4fdf",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-PEPEUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "606b2471f4a5",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-PEPEUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "6fdaa4fc47ef",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-PEPEUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "702fde1b68a1",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-PEPEUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "cb0ee6337073",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-PEPEUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "d555a12d145a",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-PEPEUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "e548bf44aa03",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-PEPEUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "e9cd5d90a0cf",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-PEPEUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "eeb74569714a",
+      "config": {
+        "pair": "PEPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-PEPEUSDT-1h-trend_mom-01"
+    }
+  ]
+}

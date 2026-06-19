@@ -1,0 +1,507 @@
+{
+  "version": 1,
+  "pair": "XAUUSD",
+  "configs": [
+    {
+      "fingerprint": "1cd0f941d5cf",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.05,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "last_seen_date": "2026-06-06T19:35:21+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-scalp-01"
+    },
+    {
+      "fingerprint": "46af71d1f313",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.05,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "last_seen_date": "2026-06-06T19:35:21+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-flip-01"
+    },
+    {
+      "fingerprint": "48debd00240d",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.05,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "last_seen_date": "2026-06-06T19:35:21+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "52633867d781",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-XAUUSD-5m-scalp-02"
+    },
+    {
+      "fingerprint": "69fecccf3629",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-XAUUSD-5m-flip_t-02"
+    },
+    {
+      "fingerprint": "70c75d2412b2",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.05,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "last_seen_date": "2026-06-06T19:35:21+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-ride-01"
+    },
+    {
+      "fingerprint": "79474b741fc7",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-XAUUSD-5m-ride_t-02"
+    },
+    {
+      "fingerprint": "c2e5e0dbdcad",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-XAUUSD-5m-ride-02"
+    },
+    {
+      "fingerprint": "c659df3c66d7",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-XAUUSD-5m-scalp_t-02"
+    },
+    {
+      "fingerprint": "e5c01fa1471f",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-XAUUSD-5m-flip-02"
+    },
+    {
+      "fingerprint": "e87683952539",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.05,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "last_seen_date": "2026-06-06T19:35:21+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "f3fe72f593e8",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.05,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "first_seen_date": "2026-06-06T19:35:21+00:00",
+      "first_seen_subject": "feat(exness+risk): migrate fleet to Exness real-underlying instruments + per-trade risk cap",
+      "last_seen_commit": "bd76bb04aa8aed15d993e7f1e0bd3618941fae36",
+      "last_seen_date": "2026-06-06T19:35:21+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "0050bac8fadf",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_pt",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "first_seen_date": "2026-06-07T10:29:01+00:00",
+      "first_seen_subject": "feat(exit): fixed-percent reward:risk TP/SL mode + liquidation-safe clamp; A/B lab vs ATR",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-flip_pt-01"
+    },
+    {
+      "fingerprint": "1f43ec88d899",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_p",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "first_seen_date": "2026-06-07T10:29:01+00:00",
+      "first_seen_subject": "feat(exit): fixed-percent reward:risk TP/SL mode + liquidation-safe clamp; A/B lab vs ATR",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-ride_p-01"
+    },
+    {
+      "fingerprint": "43f01d3a7515",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_pt",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "first_seen_date": "2026-06-07T10:29:01+00:00",
+      "first_seen_subject": "feat(exit): fixed-percent reward:risk TP/SL mode + liquidation-safe clamp; A/B lab vs ATR",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-ride_pt-01"
+    },
+    {
+      "fingerprint": "613cf5bb2ebf",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_p",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "first_seen_date": "2026-06-07T10:29:01+00:00",
+      "first_seen_subject": "feat(exit): fixed-percent reward:risk TP/SL mode + liquidation-safe clamp; A/B lab vs ATR",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-flip_p-01"
+    },
+    {
+      "fingerprint": "de7fd56c084d",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_pt",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "first_seen_date": "2026-06-07T10:29:01+00:00",
+      "first_seen_subject": "feat(exit): fixed-percent reward:risk TP/SL mode + liquidation-safe clamp; A/B lab vs ATR",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-scalp_pt-01"
+    },
+    {
+      "fingerprint": "e6ad4daff789",
+      "config": {
+        "pair": "XAUUSD",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_p",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "first_seen_date": "2026-06-07T10:29:01+00:00",
+      "first_seen_subject": "feat(exit): fixed-percent reward:risk TP/SL mode + liquidation-safe clamp; A/B lab vs ATR",
+      "last_seen_commit": "9af5f18bc2f7b9bbe9881567db074c849021d3ce",
+      "last_seen_date": "2026-06-07T10:29:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-XAUUSD-5m-scalp_p-01"
+    }
+  ]
+}

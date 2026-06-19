@@ -1,0 +1,2794 @@
+{
+  "version": 1,
+  "pair": "BNBUSDT",
+  "configs": [
+    {
+      "fingerprint": "1d171bb277a4",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "2cb09fe4562b",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "6e9a16000d60",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "7ce34d46d352",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "80e7b28659ff",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "d52343a0997a",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "e44955ebc4dc",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "f4fe3686a8f6",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "030932720cbe",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t24s10h8-01"
+    },
+    {
+      "fingerprint": "0d01bcec3622",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t10s14h4-01"
+    },
+    {
+      "fingerprint": "1765f2dbee64",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t24s14h4-01"
+    },
+    {
+      "fingerprint": "223320eeb6af",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t30s7h4-01"
+    },
+    {
+      "fingerprint": "28a35a736435",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t10s7h8-01"
+    },
+    {
+      "fingerprint": "3c78804c59d0",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t10s10h4-01"
+    },
+    {
+      "fingerprint": "46160621b1a7",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t24s14h8-01"
+    },
+    {
+      "fingerprint": "549e88e0befa",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t24s7h4-01"
+    },
+    {
+      "fingerprint": "6e349d4fbd58",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t10s10h8-01"
+    },
+    {
+      "fingerprint": "6e4f55a099c8",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t10s14h8-01"
+    },
+    {
+      "fingerprint": "7bc85ab3b2e8",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t30s10h4-01"
+    },
+    {
+      "fingerprint": "7c0450917f2b",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t30s7h8-01"
+    },
+    {
+      "fingerprint": "84b5d06251cf",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t10s7h4-01"
+    },
+    {
+      "fingerprint": "86ce8bffeb85",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t16s7h8-01"
+    },
+    {
+      "fingerprint": "8f24f7b72878",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t30s14h8-01"
+    },
+    {
+      "fingerprint": "953b10748915",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t16s14h4-01"
+    },
+    {
+      "fingerprint": "b2199111debe",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t30s10h8-01"
+    },
+    {
+      "fingerprint": "bd5bf5dc5bbd",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t16s10h8-01"
+    },
+    {
+      "fingerprint": "bf279dcfaf58",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t16s7h4-01"
+    },
+    {
+      "fingerprint": "cb80d6988e17",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t16s14h8-01"
+    },
+    {
+      "fingerprint": "cebb76e5b9c6",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t16s10h4-01"
+    },
+    {
+      "fingerprint": "d022f2b1e236",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t24s7h8-01"
+    },
+    {
+      "fingerprint": "e9ab467d201b",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t24s10h4-01"
+    },
+    {
+      "fingerprint": "f86e6a1a68e6",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-t30s14h4-01"
+    },
+    {
+      "fingerprint": "42fca3222f9a",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-BNBUSDT-5m-scalp-01"
+    },
+    {
+      "fingerprint": "6deb4b1b2c7c",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-BNBUSDT-5m-flip-01"
+    },
+    {
+      "fingerprint": "92b92eec83cc",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-BNBUSDT-5m-ride-01"
+    },
+    {
+      "fingerprint": "156ee21f0474",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_con",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 8,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-ride_con-01"
+    },
+    {
+      "fingerprint": "1b7c01e56f68",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_agg",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-scalp_agg-01"
+    },
+    {
+      "fingerprint": "2292873ea6df",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_agg",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-ride_agg-01"
+    },
+    {
+      "fingerprint": "32d1b0f8a018",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_bal",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-ride_bal-01"
+    },
+    {
+      "fingerprint": "4600c652e2f1",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_bal",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-scalp_bal-01"
+    },
+    {
+      "fingerprint": "5fe16ddd73d7",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_bal",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-flip_bal-01"
+    },
+    {
+      "fingerprint": "c33d97a09382",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_con",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 4,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-flip_con-01"
+    },
+    {
+      "fingerprint": "f80159ab17d4",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_con",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 3,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-scalp_con-01"
+    },
+    {
+      "fingerprint": "ff5bab6be100",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_agg",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-flip_agg-01"
+    },
+    {
+      "fingerprint": "44216c96ea65",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "d0e2798eb148",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "f840f5030a8b",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "0f0c368f701c",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "4195c3091919",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_pt",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-scalp_pt-01"
+    },
+    {
+      "fingerprint": "4be2974d76b2",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "4daf72b3766f",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-ride-01"
+    },
+    {
+      "fingerprint": "534112f0daa6",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-scalp-01"
+    },
+    {
+      "fingerprint": "53a02621d2dc",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "7b2533098605",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-flip-01"
+    },
+    {
+      "fingerprint": "7f9e14349acc",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_p",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-scalp_p-01"
+    },
+    {
+      "fingerprint": "9d60dc2fcbb4",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_pt",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-flip_pt-01"
+    },
+    {
+      "fingerprint": "ce0295263062",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_p",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-flip_p-01"
+    },
+    {
+      "fingerprint": "dae91d35c16e",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_p",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-ride_p-01"
+    },
+    {
+      "fingerprint": "dbd213e62b21",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_pt",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNB-5m-ride_pt-01"
+    },
+    {
+      "fingerprint": "8151d14a6311",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "b12ae927b1a7",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "a46f56e94de0",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-BNBUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "c51414f3dac2",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-BNBUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "8907b89b51ee",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-BNBUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "9e69a676883c",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-BNBUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "cb5a82186c25",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "2b49079ef6be66e6966b060d5d2d3748e0752724",
+      "first_seen_date": "2026-06-15T05:37:35+00:00",
+      "first_seen_subject": "chore(lab): add permissive trend_momentum strategy for 5m activity (still -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-BNBUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "4123acea47ed",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "7b2a2eb64a94",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "885d8780e74a",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "92138af4dfc8",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "9c41e7b06dd5",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "c0fa91ef2a2c",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "f2f2ad292252",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "14c09bd4bc04",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "182fe4214136",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "39d73114b91e",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "54f8b0c263c5",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "58148c50beff",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "7af464f01705",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "7fcd98300a53",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "8c7ca38ccb99",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "935aed638ce9",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "c5b12e2069c8",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "d9562dce722d",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "ed4b1ca31ab9",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "3ad00d397635",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-BNBUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "3e1fc3f3e5b1",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-BNBUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "4ace6f8a1918",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-BNBUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "591ddf817110",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-BNBUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "9b97af2cbe7e",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-BNBUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "9e44238cb7f9",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-BNBUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "cbdcdf9b2980",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-BNBUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "cdb86fc5aca7",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-BNBUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "da7cbdbe6793",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-BNBUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "e07dfbc3fe95",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-BNBUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "f4793e909dfd",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-BNBUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "fbed78c5be8e",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-BNBUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "3febdae04006",
+      "config": {
+        "pair": "BNBUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_tod_seas",
+        "patterns": [
+          "session_seasonal"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "seasonal_entry_hour_start": 18,
+          "seasonal_entry_window_hours": 7,
+          "sl_atr_multiplier": 2.0,
+          "tp_atr_multiplier": 3.0,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "6edf50a94b043e70303ba98152f47070402ea675",
+      "first_seen_date": "2026-06-18T01:08:23+00:00",
+      "first_seen_subject": "research(loop) iter 3: time-of-day seasonality \u2014 first lockbox-survivor (marginal)",
+      "last_seen_commit": "6edf50a94b043e70303ba98152f47070402ea675",
+      "last_seen_date": "2026-06-18T01:08:23+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-BNBUSDT-1h-exp_tod_seas-01"
+    }
+  ]
+}

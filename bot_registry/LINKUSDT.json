@@ -1,0 +1,285 @@
+{
+  "version": 1,
+  "pair": "LINKUSDT",
+  "configs": [
+    {
+      "fingerprint": "2bff4dfcb122",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_bal",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-scalp_bal-01"
+    },
+    {
+      "fingerprint": "53b08e98d31e",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_bal",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-ride_bal-01"
+    },
+    {
+      "fingerprint": "6714c6060187",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_agg",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-scalp_agg-01"
+    },
+    {
+      "fingerprint": "81cef724ca3d",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_con",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 4,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-flip_con-01"
+    },
+    {
+      "fingerprint": "88d252f9f9b1",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_agg",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-ride_agg-01"
+    },
+    {
+      "fingerprint": "9327796fbbfa",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_bal",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-flip_bal-01"
+    },
+    {
+      "fingerprint": "aa3970d00058",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_agg",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-flip_agg-01"
+    },
+    {
+      "fingerprint": "d3385efdb6f9",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_con",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 8,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-ride_con-01"
+    },
+    {
+      "fingerprint": "f7e00a755797",
+      "config": {
+        "pair": "LINKUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_con",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 3,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-LINKUSDT-5m-scalp_con-01"
+    }
+  ]
+}
