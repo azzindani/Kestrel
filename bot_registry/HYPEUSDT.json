@@ -1,0 +1,2944 @@
+{
+  "version": 1,
+  "pair": "HYPEUSDT",
+  "configs": [
+    {
+      "fingerprint": "0129e9d38ee3",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "2f9fe9c37d45",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "4377f2051871",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "498b28a642c2",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "61ead1de4eaa",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "6e67ad128053",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "8637c86f508b",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "c825ff384f06",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "11c3beb6a920",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "classic",
+        "patterns": [
+          "impulse_retracement",
+          "momentum_continuation"
+        ],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-classic-01"
+    },
+    {
+      "fingerprint": "1aaaeffc65bc",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momhiconf",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "body_ratio_min": 0.55,
+          "min_confidence": 0.7
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-momhiconf-01"
+    },
+    {
+      "fingerprint": "375ac6baea83",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momtight",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "sl_atr_multiplier": 0.8,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-momtight-01"
+    },
+    {
+      "fingerprint": "76eccfecd32d",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-mom-01"
+    },
+    {
+      "fingerprint": "8bae1b3ed0c7",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "mompatient",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-mompatient-01"
+    },
+    {
+      "fingerprint": "9b4aadec3529",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "multi",
+        "patterns": [],
+        "max_active_buckets": 1,
+        "params": {}
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-multi-01"
+    },
+    {
+      "fingerprint": "f411e5a8e057",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momhivol",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "volume_ratio_min": 1.8
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-momhivol-01"
+    },
+    {
+      "fingerprint": "f43bc40cafd3",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "momwide",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "first_seen_date": "2026-06-03T06:52:28+00:00",
+      "first_seen_subject": "feat: trend-following bake-off \u2014 per-bot strategies, trend_momentum, richer telemetry",
+      "last_seen_commit": "404ace2b8f7ec7755d73850eb3b44115b9e26089",
+      "last_seen_date": "2026-06-03T06:52:28+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-momwide-01"
+    },
+    {
+      "fingerprint": "22efc1b558e3",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t10s10h8-01"
+    },
+    {
+      "fingerprint": "2470e6b2227e",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t30s14h4-01"
+    },
+    {
+      "fingerprint": "33687bf13f80",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t24s14h8-01"
+    },
+    {
+      "fingerprint": "3d932dcef5eb",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t24s10h8-01"
+    },
+    {
+      "fingerprint": "414518d2a48e",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t10s14h8-01"
+    },
+    {
+      "fingerprint": "4b5343c20af5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t16s7h4-01"
+    },
+    {
+      "fingerprint": "5bc37aada190",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t24s7h8-01"
+    },
+    {
+      "fingerprint": "650f69c58eef",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t24s14h4-01"
+    },
+    {
+      "fingerprint": "6eb33ab5423f",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t10s7h8-01"
+    },
+    {
+      "fingerprint": "7a6ee0a3ef81",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t24s7h4-01"
+    },
+    {
+      "fingerprint": "7f4b9c01aee8",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t24s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.4
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t24s10h4-01"
+    },
+    {
+      "fingerprint": "8935de97a54e",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t30s7h8-01"
+    },
+    {
+      "fingerprint": "9a8a0db470c5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t10s10h4-01"
+    },
+    {
+      "fingerprint": "a6e2dcd39ec1",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t30s10h4-01"
+    },
+    {
+      "fingerprint": "aecbc08bee5d",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t30s14h8-01"
+    },
+    {
+      "fingerprint": "bd055010152a",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t16s14h4-01"
+    },
+    {
+      "fingerprint": "bdd74ed78f51",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t16s10h4-01"
+    },
+    {
+      "fingerprint": "bf2f69322434",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t30s10h8-01"
+    },
+    {
+      "fingerprint": "ce3723c87c98",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s14h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t10s14h4-01"
+    },
+    {
+      "fingerprint": "d8fe77d1a197",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t30s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t30s7h4-01"
+    },
+    {
+      "fingerprint": "dd1b68f1ad33",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s14h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t16s14h8-01"
+    },
+    {
+      "fingerprint": "e27073b98a0a",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s10h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t16s10h8-01"
+    },
+    {
+      "fingerprint": "f45abcd3f8b5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t16s7h8",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t16s7h8-01"
+    },
+    {
+      "fingerprint": "fab372da2526",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "t10s7h4",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 0.7,
+          "tp_atr_multiplier": 1.0
+        }
+      },
+      "first_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "first_seen_date": "2026-06-03T10:59:40+00:00",
+      "first_seen_subject": "feat: backtest grid sweep + full trade-detail Grafana panels",
+      "last_seen_commit": "b4f0567978aea472805f0e90fa872404db7411cd",
+      "last_seen_date": "2026-06-03T10:59:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-t10s7h4-01"
+    },
+    {
+      "fingerprint": "14d485c33a3f",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-HYPEUSDT-5m-ride-01"
+    },
+    {
+      "fingerprint": "1a3494a0adcb",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-HYPEUSDT-5m-scalp-01"
+    },
+    {
+      "fingerprint": "44e3642c268c",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "53b5a0bc51b4d102b3c5462a413358828dff5ed6",
+      "first_seen_date": "2026-06-04T01:39:23+00:00",
+      "first_seen_subject": "chore(lab): switch bots.json to 30-bot wave lab (ride/scalp/flip \u00d7 10 pairs)",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-HYPEUSDT-5m-flip-01"
+    },
+    {
+      "fingerprint": "161e564815aa",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_bal",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-scalp_bal-01"
+    },
+    {
+      "fingerprint": "17898888b5e5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_con",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 4,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-flip_con-01"
+    },
+    {
+      "fingerprint": "1935c068890c",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_bal",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-flip_bal-01"
+    },
+    {
+      "fingerprint": "24d6ac3766e5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_bal",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 3,
+          "consec_loss_factor": 0.5,
+          "drawdown_derisk_factor": 0.5,
+          "drawdown_derisk_threshold": 0.2,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.5,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-ride_bal-01"
+    },
+    {
+      "fingerprint": "789c8de64fcb",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_agg",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 8,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-ride_agg-01"
+    },
+    {
+      "fingerprint": "a7d047550252",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_con",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 8,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-ride_con-01"
+    },
+    {
+      "fingerprint": "bdb0b6404218",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_con",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 2,
+          "consec_loss_factor": 0.3,
+          "drawdown_derisk_factor": 0.3,
+          "drawdown_derisk_threshold": 0.1,
+          "max_hold_candles": 3,
+          "size_fraction_full": 0.5,
+          "size_fraction_half": 0.3,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-scalp_con-01"
+    },
+    {
+      "fingerprint": "c775c04b18b3",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_agg",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 4,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-flip_agg-01"
+    },
+    {
+      "fingerprint": "e5d9a675923e",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_agg",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "consec_loss_cooloff": 5,
+          "consec_loss_factor": 0.7,
+          "drawdown_derisk_factor": 0.7,
+          "drawdown_derisk_threshold": 0.3,
+          "max_hold_candles": 3,
+          "size_fraction_full": 1.0,
+          "size_fraction_half": 0.7,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "first_seen_date": "2026-06-04T03:47:06+00:00",
+      "first_seen_subject": "feat(lab): scale wave lab to 234 bots (3 strategies \u00d7 3 sizing \u00d7 26 markets)",
+      "last_seen_commit": "798abb656fc11c2a4a9fae2d4bf40858b39c9884",
+      "last_seen_date": "2026-06-04T03:47:06+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-scalp_agg-01"
+    },
+    {
+      "fingerprint": "5da2f875f547",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "83441f864f27",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "d0bfb77a1cb4",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "first_seen_date": "2026-06-04T06:08:03+00:00",
+      "first_seen_subject": "feat(exec): trailing-close exit + per-bot exit-param wiring + 60-bot A/B lab",
+      "last_seen_commit": "93e2e0968274e15462e3cdc0816cf30170321d3a",
+      "last_seen_date": "2026-06-04T06:08:03+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "0677a98d15a5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-ride-01"
+    },
+    {
+      "fingerprint": "0a177c70f003",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-scalp-01"
+    },
+    {
+      "fingerprint": "1313cc4a6f00",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_pt",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-scalp_pt-01"
+    },
+    {
+      "fingerprint": "36274ce944f3",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-flip-01"
+    },
+    {
+      "fingerprint": "479ad950e67d",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_t",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-flip_t-01"
+    },
+    {
+      "fingerprint": "a5f380a9c124",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_t",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.6,
+          "tp_atr_multiplier": 3.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-ride_t-01"
+    },
+    {
+      "fingerprint": "aadb82987cea",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_p",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-ride_p-01"
+    },
+    {
+      "fingerprint": "b27bc2a9739f",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_t",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.6,
+          "trail_activation_r": 0.8,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-scalp_t-01"
+    },
+    {
+      "fingerprint": "b469ebc6b6f5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "ride_pt",
+        "patterns": [
+          "wave_ride"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 24,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.025,
+          "tp_pct": 0.05,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-ride_pt-01"
+    },
+    {
+      "fingerprint": "b7ce9c4a9c85",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_pt",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 8,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 0.8,
+          "trailing_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-flip_pt-01"
+    },
+    {
+      "fingerprint": "b8a998cf6c96",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "flip_p",
+        "patterns": [
+          "wave_flip"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.015,
+          "tp_pct": 0.03,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-flip_p-01"
+    },
+    {
+      "fingerprint": "d0635ef4095e",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "15m",
+        "strategy": "scalp_p",
+        "patterns": [
+          "vol_burst"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_pct": 0.01,
+          "tp_pct": 0.02,
+          "tp_sl_pct_enabled": true
+        }
+      },
+      "first_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "first_seen_date": "2026-06-07T10:39:59+00:00",
+      "first_seen_subject": "feat(lab): deploy refined exit-mode lab on live gate crypto pairs",
+      "last_seen_commit": "63e4e6eab75cabdda53ae1774f0276e1c08e2f37",
+      "last_seen_date": "2026-06-07T10:39:59+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPE-5m-scalp_p-01"
+    },
+    {
+      "fingerprint": "729790cd96ab",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "8c0311fc28c5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "first_seen_date": "2026-06-13T09:34:01+00:00",
+      "first_seen_subject": "feat(signal): promote confluence-momentum (mom_adx/triple_mom) to production; 4h paper lab",
+      "last_seen_commit": "dab94c0c409d06a174a9d92f8ef2ea49fa5ce1a5",
+      "last_seen_date": "2026-06-13T09:34:01+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "166ddc1ec044",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-HYPEUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "99629d5b1ef8",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "201c386dfb5fff46ce5bd85996b378e1ce48d8ed",
+      "first_seen_date": "2026-06-14T15:06:14+00:00",
+      "first_seen_subject": "feat(feed): REST-polling feed for reliable high-TF closes; promote best-exit momentum lab",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-HYPEUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "0da3118b7efa",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-HYPEUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "2d8dd5ff5a36",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9f527fcaf511b8c77eb81429562715984cbd5325",
+      "first_seen_date": "2026-06-15T00:40:10+00:00",
+      "first_seen_subject": "chore(lab): move momentum lab to 5m for activity (NOT for edge \u2014 5m is -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-HYPEUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "d32d18e55b7b",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "2b49079ef6be66e6966b060d5d2d3748e0752724",
+      "first_seen_date": "2026-06-15T05:37:35+00:00",
+      "first_seen_subject": "chore(lab): add permissive trend_momentum strategy for 5m activity (still -EV)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-HYPEUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "348111916504",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "35c752423b4c",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "619431bcd3b4",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "bd74625525bb",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "c12690cbe2f6",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "d92b0e7ad0c0",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "fe7ca816066c",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "first_seen_date": "2026-06-16T03:31:32+00:00",
+      "first_seen_subject": "deploy(lab): 120-bot multi-TF landscape lab (3 patterns \u00d7 4 TF \u00d7 10 pairs)",
+      "last_seen_commit": "5c1b2080b213ce405cab51e648a85f201d86a112",
+      "last_seen_date": "2026-06-16T03:31:32+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "20b2425e9f60",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "2c05facfec02",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "31837bd6b9f5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "4b7582d8dc11",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "69b4a02d703d",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "8641b5dcaef8",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-trend_mom-01"
+    },
+    {
+      "fingerprint": "8d735176cc7a",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "a435962b2ad4",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "dc59b0c13355",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "ee74bba53cb2",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "f1e2573cdb83",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "fbf68c6559af",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 12,
+          "max_loss_pct_per_trade": 0.02,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trail_activation_r": 1.0,
+          "trail_distance_r": 1.0,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "first_seen_date": "2026-06-16T12:38:51+00:00",
+      "first_seen_subject": "feat(engine): trailing-close on lab + portfolio guard (\"manager bot\")",
+      "last_seen_commit": "f0be6b6959311b3c1f92c88facee4e2d78519e66",
+      "last_seen_date": "2026-06-16T12:38:51+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-HYPEUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "12edbcbe02e6",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-HYPEUSDT-1h-mom_adx-01"
+    },
+    {
+      "fingerprint": "231c87649aae",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-HYPEUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "5098bd57ab9d",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-HYPEUSDT-4h-mom_adx-01"
+    },
+    {
+      "fingerprint": "5a5ba6364031",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-HYPEUSDT-4h-triple_mom-01"
+    },
+    {
+      "fingerprint": "61b906b4928f",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-HYPEUSDT-15m-mom_adx-01"
+    },
+    {
+      "fingerprint": "6485897788af",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-HYPEUSDT-15m-trend_mom-01"
+    },
+    {
+      "fingerprint": "669a22fe5c04",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-HYPEUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "7031df9a092e",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "15m",
+        "timeframe_regime": "15m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-HYPEUSDT-15m-triple_mom-01"
+    },
+    {
+      "fingerprint": "7bd65806339a",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-HYPEUSDT-5m-trend_mom-01"
+    },
+    {
+      "fingerprint": "8308049a22df",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-HYPEUSDT-4h-trend_mom-01"
+    },
+    {
+      "fingerprint": "8c0107fb00df",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 7,
+      "example_bot_id": "dev-HYPEUSDT-1h-triple_mom-01"
+    },
+    {
+      "fingerprint": "b86c3a2256d5",
+      "config": {
+        "pair": "HYPEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "trend_mom",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
+      "first_seen_date": "2026-06-16T22:54:48+00:00",
+      "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
+      "last_seen_commit": "39c475a5c7534510f61efdf5f5a037dbc8467c2b",
+      "last_seen_date": "2026-06-18T08:54:02+00:00",
+      "snapshot_count": 5,
+      "example_bot_id": "dev-HYPEUSDT-1h-trend_mom-01"
+    }
+  ]
+}

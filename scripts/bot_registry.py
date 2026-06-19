@@ -10,19 +10,23 @@ measured. The DB stores outcomes keyed by bot_id but no params at all.
 
 WHAT THIS DOES: reconstructs a config-fingerprint archive from the FULL git history
 of bots.json (every committed fleet snapshot) plus the current working tree, and
-writes it to `bot_registry.json` (committed, append-only in practice). Each unique
-config gets a stable fingerprint over its BEHAVIORAL fields — pair (normalised),
-entry/regime timeframe, strategy, patterns, params, max_active_buckets — and
-explicitly NOT the bot_id label (two bots with the same behaviour but different
-labels are the same bot). For each fingerprint it records when it was first seen,
-last seen, and in how many fleet snapshots it appeared.
+writes it SHARDED into the `bot_registry/` directory — one JSON file per instrument
+(`bot_registry/BTCUSDT.json`, ...) plus a `bot_registry/_index.json` summary. The
+old monolithic `bot_registry.json` (~1.3 MB) was too bulky to read or diff; per-
+instrument shards are small, browsable, and let a check load only the relevant
+pair. Each unique config gets a stable fingerprint over its BEHAVIORAL fields —
+pair (normalised), entry/regime timeframe, strategy, patterns, params,
+max_active_buckets — and explicitly NOT the bot_id label (two bots with the same
+behaviour but different labels are the same bot). For each fingerprint it records
+when it was first seen, last seen, and in how many fleet snapshots it appeared.
 
 Layer: this is a research/ops tool (scripts/), stdlib only, no DB or network. It
 does NOT touch any frozen file and adds NO database table (db/schema.py is frozen;
-§4 schema changes are human-gated) — the registry is a plain JSON file in the repo.
+§4 schema changes are human-gated) — the registry is plain JSON files in the repo.
 
 Commands:
-    build           rebuild bot_registry.json from git history + current bots.json
+    build           rebuild bot_registry/ (sharded by pair) from git history +
+                    current bots.json; removes the legacy monolith if present
     check [PATH]    classify each config in PATH (default bots.json) as NEW or SEEN
                     against the registry; exit 1 if any are SEEN (usable as a guard
                     in the loop: "don't re-create a bot we already tested")
@@ -44,8 +48,16 @@ import sys
 
 _ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 _BOTS = os.path.join(_ROOT, "bots.json")
-_REGISTRY = os.path.join(_ROOT, "bot_registry.json")
+_REGISTRY_DIR = os.path.join(_ROOT, "bot_registry")  # sharded: one file per pair
+_LEGACY_MONOLITH = os.path.join(_ROOT, "bot_registry.json")  # removed on build
+_INDEX = "_index.json"  # summary file inside _REGISTRY_DIR
 _TRACKED = "bots.json"  # path as tracked by git, relative to repo root
+
+
+def _shard_name(pair: str) -> str:
+    """Filename for a pair's shard; empty/odd pairs bucket into _MISC."""
+    safe = "".join(ch for ch in pair if ch.isalnum())
+    return f"{safe}.json" if safe else "_MISC.json"
 
 
 def _norm_pair(pair: str) -> str:
@@ -136,23 +148,65 @@ def build() -> int:
             current = json.load(f)
         _ingest(reg, current, "WORKING_TREE", "", "(uncommitted working tree)")
 
-    entries = sorted(reg.values(), key=lambda r: (r["first_seen_date"], r["fingerprint"]))
-    with open(_REGISTRY, "w") as f:
-        json.dump({"version": 1, "configs": entries}, f, indent=2)
+    # Shard by instrument. Each fingerprint includes the pair, so a config lives in
+    # exactly one shard — no cross-shard duplication.
+    shards: dict[str, list] = {}
+    for rec in reg.values():
+        shards.setdefault(_shard_name(rec["config"]["pair"]), []).append(rec)
+
+    # Rebuild the directory from scratch so dropped configs don't linger as stale shards.
+    if os.path.isdir(_REGISTRY_DIR):
+        for fn in os.listdir(_REGISTRY_DIR):
+            if fn.endswith(".json"):
+                os.remove(os.path.join(_REGISTRY_DIR, fn))
+    else:
+        os.makedirs(_REGISTRY_DIR)
+
+    index: dict[str, int] = {}
+    for shard, recs in sorted(shards.items()):
+        recs.sort(key=lambda r: (r["first_seen_date"], r["fingerprint"]))
+        pair = recs[0]["config"]["pair"] or "_MISC"
+        with open(os.path.join(_REGISTRY_DIR, shard), "w") as f:
+            json.dump({"version": 1, "pair": pair, "configs": recs}, f, indent=2)
+        index[shard] = len(recs)
+
+    with open(os.path.join(_REGISTRY_DIR, _INDEX), "w") as f:
+        json.dump(
+            {
+                "version": 1,
+                "source": "git history of bots.json + working tree",
+                "total_configs": len(reg),
+                "committed_snapshots": len(snaps),
+                "shards": dict(sorted(index.items(), key=lambda kv: -kv[1])),
+            },
+            f,
+            indent=2,
+        )
+
+    # Drop the legacy bulk file if it's still around.
+    if os.path.exists(_LEGACY_MONOLITH):
+        os.remove(_LEGACY_MONOLITH)
+
     print(
-        f"wrote {os.path.relpath(_REGISTRY, _ROOT)}: {len(entries)} unique configs "
-        f"across {len(snaps)} committed fleet snapshots"
+        f"wrote {os.path.relpath(_REGISTRY_DIR, _ROOT)}/: {len(reg)} unique configs "
+        f"across {len(index)} instrument shards ({len(snaps)} committed fleet snapshots)"
     )
     return 0
 
 
 def _load_registry() -> dict:
-    if not os.path.exists(_REGISTRY):
-        print(f"no registry at {_REGISTRY}; run: bot_registry.py build", file=sys.stderr)
+    if not os.path.isdir(_REGISTRY_DIR):
+        print(f"no registry at {_REGISTRY_DIR}/; run: bot_registry.py build", file=sys.stderr)
         sys.exit(2)
-    with open(_REGISTRY) as f:
-        data = json.load(f)
-    return {r["fingerprint"]: r for r in data.get("configs", [])}
+    reg: dict = {}
+    for fn in os.listdir(_REGISTRY_DIR):
+        if fn == _INDEX or not fn.endswith(".json"):
+            continue
+        with open(os.path.join(_REGISTRY_DIR, fn)) as f:
+            data = json.load(f)
+        for r in data.get("configs", []):
+            reg[r["fingerprint"]] = r
+    return reg
 
 
 def check(path: str) -> int:
