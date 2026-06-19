@@ -143,14 +143,19 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
 8. **REDEPLOY** — code change → `docker compose up -d --build kestrel`; config-only
    (bots.json/params.json) → `docker compose restart kestrel`. Confirm container `(healthy)`.
 9. **FULL RESET (the ritual I kept missing — `feedback_reset_after_new_algorithm`)** — whenever a
-   new/changed config was deployed this iteration: `reset_dev.py --yes` (wipe trades/signals/
-   events/trade_context/pattern_memory) → **`DELETE FROM heartbeats;` (full wipe, BEFORE restart —
-   do NOT use a post-restart age threshold; if the fleet shrank, orphans from dropped bots are only
-   seconds old at restart and a `ts < now-90s` delete misses them, leaving phantom bots in Grafana.
-   Wiping all heartbeats up-front means only the live fleet repopulates → no orphan race)** →
-   `backfill_history.py --source gate` → `docker compose up -d --build`/`restart`. **KEEP candles.**
-   Verify clean: `trades=0`, heartbeats == intended fleet size (e.g. 120 = the diversity fleet),
-   cohort present, `errors=0`. (Skip ONLY when step 5 deployed nothing new.)
+   new/changed config was deployed this iteration, IN THIS ORDER:
+   `reset_dev.py --yes` (wipe trades/signals/events/trade_context/pattern_memory) →
+   `backfill_history.py --source gate` → `docker compose up -d --build`/`restart` →
+   **THEN `DELETE FROM heartbeats;` (full wipe, AFTER the restart — this is the only safe spot).**
+   **KEEP candles.** Wait ~40s, then verify clean: `trades=0`, heartbeats == intended fleet size
+   (e.g. 120 = the diversity fleet), all expected patterns present, `errors=0`.
+   *Heartbeat-orphan lesson (bit me twice):* the OLD container keeps writing heartbeats for its
+   bots until the restart actually kills it. So a wipe BEFORE restart is useless if any long step
+   (backfill takes ~3 min) runs between the wipe and the restart — the dropped bots' ids repopulate
+   and linger as phantom "live" rows. And a post-restart `ts < now-90s` age-threshold delete misses
+   them too (they're only seconds old). Only a FULL `DELETE FROM heartbeats` AFTER the restart is
+   safe: the old fleet is dead, so just the new fleet repopulates within 30s. (Skip ONLY when step 5
+   deployed nothing new.)
 10. **RECORD** — append an iteration entry below (date, hypothesis, backtest result, what was
     deployed, reset done?, new best) + update the REFUTED LEDGER if an idea died. **Write a
     `system` event** so it shows in Grafana (Recent Events / Events-by-Category):
