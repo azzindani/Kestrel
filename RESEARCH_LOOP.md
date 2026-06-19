@@ -289,6 +289,21 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 7 — 2026-06-19 (8h cron — justified NO-OP, fleet too fresh)
+
+- **MEASURE:** the iter-6 diversity fleet (120 bots = 6 patterns × 2 TF × 10 pairs) was deployed
+  THIS session and is brand-new: heartbeat age ~0 min, **0 closed trades, 0 signals** (no 1h/4h
+  candle has closed since the restart), **120/120 live, 0 errors**. Slate is the post-reset clean.
+- **DIAGNOSE:** no bleed exists yet — the fleet hasn't traded. Every (pattern × TF) cell has 0
+  trades, so the cell-viability rule (≥50 closed) cannot fire on anything.
+- **MAINTAIN — justified NO-OP:** nothing to prune (no losers yet), no param/enforcement gap
+  surfaced by data, and the protocol forbids manufacturing marginal directional variants
+  (refuted/exhausted). Re-validation is not weekly-due — extensive walk-forward+lockbox validation
+  ran through iter 6. Correct action is to let the diverse fleet accumulate so the NEXT pass has
+  real per-pattern cells to compare (esp. whether the 4 new shape-specific patterns fire enough at
+  1h/4h — the historical "patterns never fire" risk). No fleet/code change → no deploy/reset.
+- **STOP CHECK:** not met (0 trades; no lockbox edge). Continue.
+
 ### Iteration 6 — 2026-06-19 (user-directed: pivot to hypothesis diversity)
 
 - **TRIGGER:** user — "with current 40 bots setup is not effective, we didn't learn more about
