@@ -289,6 +289,30 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 9 — 2026-06-19 (8h cron — FIXED a feed outage: WS→poll, root cause)
+
+- **MEASURE:** ~16h runtime. 4 closed trades (3W/1L, net +$0.095, n far too small to mean anything),
+  2 open. BUT the dominant signal was **370 CRITICAL `connection` errors** (was 0 at iter 8):
+  `WS feed {pair}/{tf} exceeded max retries (5) … gate … TimeoutError`, ~18 per (pair,tf) × 20
+  feeds, concentrated 11:00–12:00 UTC (362/370), last at 16:25. Daemon stayed alive (heartbeats
+  fresh) but the **1h candle went 114 min stale** — feeds were starved.
+- **DIAGNOSE (root cause, not symptom):** `FEED_MODE=ws`. ccxt.pro WebSocket is reliable only for
+  LOW TF (5m); at 1h/4h its sparse rollover pushes get missed, the per-(pair,tf) subs hit max
+  retries (5) and **permanently give up** → candle closes stop arriving (0 errors in the last
+  15 min = not still failing, but *dead*). This is the documented WS-vs-poll history; the `ws`
+  setting was leftover from the old 5m labs. The diversity fleet is 1h/4h → wrong transport.
+- **MAINTAIN (real fix):** switched `FEED_MODE: ws → poll` in `docker-compose.override.yml`
+  (gitignored/host-local, NOT a frozen file) → `docker compose up -d kestrel` (compose env change
+  needs recreate, not restart) → `backfill_history.py --source gate` to heal the candle gap.
+  **NO `reset_dev`** — a feed-transport fix is operational, not a strategy change, so the
+  accumulated sample (4 closed + 2 open + 6 signals) was KEPT on purpose.
+- **VERIFY (recovered):** poll active, container healthy, **0 new errors**, 120 heartbeats live,
+  1h/4h candles 61 min fresh (within one period; was 114), 2 open positions reconciled, candles
+  kept. The old WS CRITICALs remain in history (pre-fix) but nothing new accrues.
+- **FLAG:** at go-live on bingx, 4h candles must also come from poll/aggregation (bingx WS 4h
+  unsupported) — already noted in the override. No §4 item touched.
+- **STOP CHECK:** not met. Continue.
+
 ### Iteration 8 — 2026-06-19 (8h cron — justified NO-OP, trades open but none closed)
 
 - **MEASURE:** diversity fleet ran ~7.9h (one cron cycle). 120/120 live, **0 errors**. **5 signals
