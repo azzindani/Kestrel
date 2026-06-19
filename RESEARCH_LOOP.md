@@ -289,6 +289,24 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 8 — 2026-06-19 (8h cron — justified NO-OP, trades open but none closed)
+
+- **MEASURE:** diversity fleet ran ~7.9h (one cron cycle). 120/120 live, **0 errors**. **5 signals
+  fired + 1 rejected → 5 positions OPEN, 0 CLOSED.** Firing bots: `mom_adx` (3), `triple_mom` (1),
+  `impulse_retracement` (1), all 1h. Open ages 3–7h; oldest (mom_adx ADA 1h) just hitting its
+  6-candle timeout boundary (~414 min ≈ 6×1h from a mid-candle entry) — consistent, not a stuck pos.
+- **DATA-QUIRK confirmed (not a bug):** the signals `pattern` column logs the PatternType enum, so
+  `mom_adx`/`triple_mom` bots show `pattern='momentum_continuation'`. The real bot identity is
+  `split_part(bot_id,'-',4)`. Verified each signal's bot matches its strategy — no cross-firing.
+- **DIAGNOSE:** no realized PnL yet (0 closed) → no bleed to cut, and the cell-viability rule
+  (≥50 closed) can't evaluate any cell. WATCH-ITEM (not actionable at 8h): 3 of 6 patterns
+  (`compression_breakout`, `anomaly_fade`, `wick_rejection`) have NOT fired — expected (they need
+  VOLATILE/RANGING regimes that may not have occurred yet), but track vs the "patterns never fire"
+  risk; if still zero after the fleet has closed a meaningful sample, that's a real signal.
+- **MAINTAIN — justified NO-OP:** nothing to prune/enforce on 0 closed trades; no marginal variants
+  (exhausted). Re-validation not weekly-due. No fleet/code change → no deploy/reset.
+- **STOP CHECK:** not met (0 closed trades). Continue.
+
 ### Iteration 7 — 2026-06-19 (8h cron — justified NO-OP, fleet too fresh)
 
 - **MEASURE:** the iter-6 diversity fleet (120 bots = 6 patterns × 2 TF × 10 pairs) was deployed
