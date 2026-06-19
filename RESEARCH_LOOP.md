@@ -289,6 +289,33 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 10 — 2026-06-19 (incident: FIXED a Postgres OOM crash — root cause)
+
+- **TRIGGER:** user — "suddenly not working and getting worse, so many telegram error
+  notifications, everything is collapsing, fix it all."
+- **MEASURE/TRACE:** three distinct issues, none of them the strategy:
+  (1) the Telegram flood = the iter-9 WS outage (370 CRITICAL, 11:00–16:25), already fixed by
+  WS→poll — 0 new feed errors since.
+  (2) "collapsing now" = a **Postgres crash at 23:27**: daemon log `asyncpg …
+  CannotConnectNowError: the database system is in recovery mode`; pg log `all server processes
+  terminated; reinitializing` + `database system was not properly shut down; automatic recovery`.
+  **Root cause: `docker stats` showed `kestrel-postgres` at 249.1MiB / **256m** (97%)** — the base
+  cap (docker-compose.yml, sized for a 1GB prod VPS) is far too small for 120 bots × the connection
+  pool → a backend was OOM-killed → crash recovery → every bot's DB conn dropped → watchdog restart
+  (120 `daemon_ready`, ONE bucket, not a crash loop). The "frozen feed" was just the daemon
+  re-initialising seconds before measurement.
+  (3) "75% win / 4 trades / no 15%" = the honest no-edge reality (3W/1L, net +$0.09, statistically
+  meaningless; 15%/day remains impossible).
+- **MAINTAIN (real fix):** added a `postgres: mem_limit: 1g` override in
+  `docker-compose.override.yml` (gitignored/host-local; the committed 256m prod-safe default stays)
+  → `docker compose up -d postgres` (pgdata volume persists, NO data loss) → restart kestrel for a
+  clean reconnect → `backfill_history.py` to heal the gap. **NO `reset_dev`** — infra fix, sample kept.
+- **VERIFY (recovered + stable):** postgres now **283.7MiB / 1g (27.7%)**, i.e. it needed >256m all
+  along; 0 new recovery/OOM in logs; daemon restarts only at 23:27 (crash) + 23:30 (fix), none
+  after; 120 heartbeats; **8 trades + 306k candles KEPT**; 0 errors; 1h/4h candles fresh.
+- **STOP CHECK:** not met. Continue. The crashes were INFRASTRUCTURE (feed transport iter 9 + DB
+  memory iter 10), now root-fixed; the lack of returns is the unchanged no-edge truth.
+
 ### Iteration 9 — 2026-06-19 (8h cron — FIXED a feed outage: WS→poll, root cause)
 
 - **MEASURE:** ~16h runtime. 4 closed trades (3W/1L, net +$0.095, n far too small to mean anything),
