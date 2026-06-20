@@ -36,12 +36,12 @@ import os
 import sys
 
 # Exit + risk profile for staging bots. KEEP IN SYNC with
-# scripts/build_momentum_lab.py:_EXIT (2026-06-20 hyper-scalp bracket: tight
-# 1.4/0.9-ATR tp/sl R/R~1.55, short 4-candle/20-min hold, 0.5R trail, adx_strong_min
-# at its 20 floor for more 5m fires, 0.01 per-trade risk cap — see that file's note).
+# scripts/build_momentum_lab.py:_EXIT (2026-06-20 iter-13 hyper-scalp bracket:
+# WIDENED stop 1.9/1.3-ATR tp/sl R/R~1.46 to cut the 0.9-ATR stop-out bleed, short
+# 4-candle/20-min hold, 0.5R trail, adx_strong_min 20, 0.01 risk cap — see that note).
 _EXIT = {
-    "tp_atr_multiplier": 1.4,
-    "sl_atr_multiplier": 0.9,
+    "tp_atr_multiplier": 1.9,
+    "sl_atr_multiplier": 1.3,
     "max_hold_candles": 4,
     "trailing_enabled": True,
     "trail_activation_r": 0.5,
