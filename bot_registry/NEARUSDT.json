@@ -3,162 +3,7 @@
   "pair": "NEARUSDT",
   "configs": [
     {
-      "fingerprint": "5de466248ed1",
-      "config": {
-        "pair": "NEARUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "triple_mom",
-        "patterns": [
-          "triple_mom"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 0.9,
-          "tp_atr_multiplier": 1.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-NEARUSDT-5m-triple_mom-01"
-    },
-    {
-      "fingerprint": "7efdfffe539b",
-      "config": {
-        "pair": "NEARUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "wick_rejection",
-        "patterns": [
-          "wick_rejection"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 0.9,
-          "tp_atr_multiplier": 1.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-NEARUSDT-5m-wick_rejection-01"
-    },
-    {
-      "fingerprint": "865f5106027a",
-      "config": {
-        "pair": "NEARUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "anomaly_fade",
-        "patterns": [
-          "anomaly_fade"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 0.9,
-          "tp_atr_multiplier": 1.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-NEARUSDT-5m-anomaly_fade-01"
-    },
-    {
-      "fingerprint": "a7bb8bbf4a9e",
-      "config": {
-        "pair": "NEARUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "trend_momentum",
-        "patterns": [
-          "trend_momentum"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 0.9,
-          "tp_atr_multiplier": 1.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-NEARUSDT-5m-trend_momentum-01"
-    },
-    {
-      "fingerprint": "a88ac4672077",
-      "config": {
-        "pair": "NEARUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "compression_breakout",
-        "patterns": [
-          "compression_breakout"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 0.9,
-          "tp_atr_multiplier": 1.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-NEARUSDT-5m-compression_breakout-01"
-    },
-    {
-      "fingerprint": "d53e06f5c966",
+      "fingerprint": "022ad9452c33",
       "config": {
         "pair": "NEARUSDT",
         "timeframe_entry": "5m",
@@ -172,8 +17,8 @@
           "adx_strong_min": 20.0,
           "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 0.9,
-          "tp_atr_multiplier": 1.4,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -189,7 +34,69 @@
       "example_bot_id": "dev-NEARUSDT-5m-impulse_retracement-01"
     },
     {
-      "fingerprint": "e15af4daa912",
+      "fingerprint": "1843a2762fdb",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-compression_breakout-01"
+    },
+    {
+      "fingerprint": "37c69a458887",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "50473a14903b",
       "config": {
         "pair": "NEARUSDT",
         "timeframe_entry": "5m",
@@ -203,8 +110,8 @@
           "adx_strong_min": 20.0,
           "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 0.9,
-          "tp_atr_multiplier": 1.4,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -218,6 +125,99 @@
       "last_seen_date": "",
       "snapshot_count": 1,
       "example_bot_id": "dev-NEARUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "5c45dfa3f5da",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_momentum",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-trend_momentum-01"
+    },
+    {
+      "fingerprint": "c8831f5f2fa0",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-wick_rejection-01"
+    },
+    {
+      "fingerprint": "dd516b3e9e9f",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-triple_mom-01"
     },
     {
       "fingerprint": "07098a80df44",
@@ -497,6 +497,223 @@
       "last_seen_date": "2026-06-04T03:47:06+00:00",
       "snapshot_count": 1,
       "example_bot_id": "dev-NEARUSDT-5m-flip_bal-01"
+    },
+    {
+      "fingerprint": "5de466248ed1",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "first_seen_date": "2026-06-20T01:50:40+00:00",
+      "first_seen_subject": "feat(scalp): pivot to hyper-scalp fleet \u2014 238 bots, 5m (CLAUDE.md v2.1)",
+      "last_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "last_seen_date": "2026-06-20T01:50:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "7efdfffe539b",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "first_seen_date": "2026-06-20T01:50:40+00:00",
+      "first_seen_subject": "feat(scalp): pivot to hyper-scalp fleet \u2014 238 bots, 5m (CLAUDE.md v2.1)",
+      "last_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "last_seen_date": "2026-06-20T01:50:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-wick_rejection-01"
+    },
+    {
+      "fingerprint": "865f5106027a",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "first_seen_date": "2026-06-20T01:50:40+00:00",
+      "first_seen_subject": "feat(scalp): pivot to hyper-scalp fleet \u2014 238 bots, 5m (CLAUDE.md v2.1)",
+      "last_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "last_seen_date": "2026-06-20T01:50:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "a7bb8bbf4a9e",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_momentum",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "first_seen_date": "2026-06-20T01:50:40+00:00",
+      "first_seen_subject": "feat(scalp): pivot to hyper-scalp fleet \u2014 238 bots, 5m (CLAUDE.md v2.1)",
+      "last_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "last_seen_date": "2026-06-20T01:50:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-trend_momentum-01"
+    },
+    {
+      "fingerprint": "a88ac4672077",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "first_seen_date": "2026-06-20T01:50:40+00:00",
+      "first_seen_subject": "feat(scalp): pivot to hyper-scalp fleet \u2014 238 bots, 5m (CLAUDE.md v2.1)",
+      "last_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "last_seen_date": "2026-06-20T01:50:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-compression_breakout-01"
+    },
+    {
+      "fingerprint": "d53e06f5c966",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "first_seen_date": "2026-06-20T01:50:40+00:00",
+      "first_seen_subject": "feat(scalp): pivot to hyper-scalp fleet \u2014 238 bots, 5m (CLAUDE.md v2.1)",
+      "last_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "last_seen_date": "2026-06-20T01:50:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "e15af4daa912",
+      "config": {
+        "pair": "NEARUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "first_seen_date": "2026-06-20T01:50:40+00:00",
+      "first_seen_subject": "feat(scalp): pivot to hyper-scalp fleet \u2014 238 bots, 5m (CLAUDE.md v2.1)",
+      "last_seen_commit": "5f65ba885dc8266652225334d2cea588f0235a81",
+      "last_seen_date": "2026-06-20T01:50:40+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-NEARUSDT-5m-mom_adx-01"
     }
   ]
 }

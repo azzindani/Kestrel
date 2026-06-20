@@ -76,19 +76,25 @@ SCALP_PAIRS = [
 # Back-compat alias (older tooling / memory references MOMENTUM_PAIRS).
 MOMENTUM_PAIRS = SCALP_PAIRS
 
-# SCALP exit/sizing profile — fast in, fast out (5m). Tight bracket, short hold:
-#   tp 1.4 / sl 0.9 ATR  : R/R ~1.55 (>= risk Rule 3's 1.2), small quick targets.
-#   max_hold 4 (20 min)  : a scalp — don't sit in a 5m trade for hours.
-#   trail 0.5R@0.5R      : lock a small gain once +0.5R, scratch near BE on reversal.
-#   adx_strong_min 20    : the LOW end of its range — more mom_adx/triple_mom fires
-#                          at 5m (activity is the goal; 25 was the slow-TF setting).
+# SCALP exit/sizing profile — fast in, fast out (5m). WIDENED STOP (iter 13,
+# 2026-06-20): the first run's 0.9-ATR stop sat INSIDE 5m noise and was the
+# dominant bleed — over 145 closed trades: 52 stop-outs at −$0.18 avg (−$9.47)
+# vs timeouts slightly POSITIVE (+$2.13) and take-profit NEVER hit (winners come
+# from the trail). So widen the stop to let trades breathe and convert premature
+# stops into trail/timeout survivors (also lifts win rate toward the owner's 70%):
+#   tp 1.9 / sl 1.3 ATR  : R/R ~1.46 (>= risk Rule 3's 1.2); tp is rarely touched
+#                          (the trail books the winners), but kept R/R-valid.
+#   max_hold 4 (20 min)  : still a scalp — single-variable change is the stop bracket.
+#   trail 0.5R@0.5R      : arm at +0.5R, trail 0.5R behind peak (the profit mechanism).
+#   adx_strong_min 20    : LOW end — more mom_adx/triple_mom fires at 5m (activity).
 #   volume_ratio_min 1.1 : floor — keep the volume gate near pass-through.
-#   max_loss_pct 0.01    : per-trade equity-risk cap (notional ~1.1x equity).
+#   max_loss_pct 0.01    : per-trade equity-risk cap (wider stop ⇒ smaller notional).
 # MAKER_EXECUTION=true (override.yml) is what makes scalps clear risk Rule 4's fee
-# gate — without it most 5m moves are below the ~0.18% taker round trip.
+# gate. HONEST: this RESHAPES variance / cuts the stop-out bleed — it does NOT create
+# edge (the book is ~coin-flip); the no-edge reality is unchanged.
 _EXIT = {
-    "tp_atr_multiplier": 1.4,
-    "sl_atr_multiplier": 0.9,
+    "tp_atr_multiplier": 1.9,
+    "sl_atr_multiplier": 1.3,
     "max_hold_candles": 4,
     "trailing_enabled": True,
     "trail_activation_r": 0.5,
