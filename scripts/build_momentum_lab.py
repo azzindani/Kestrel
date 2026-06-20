@@ -1,43 +1,30 @@
 #!/usr/bin/env python3
 """
-Generate bots.json for the DIVERSITY lab — many distinct hypotheses, not one idea.
+Generate bots.json for the HYPER-SCALP FLEET (owner directive 2026-06-20, CLAUDE.md v2.1).
 
-WHY THIS CHANGED (2026-06-19, loop iter 6 — "40 bots not effective, we didn't
-learn more"): the prior 40-bot fleet was 2 entry patterns (mom_adx, triple_mom)
-× 2 TF × 10 pairs — i.e. WIDE on instruments but NARROW on ideas. Every bot tested
-a variant of confluence momentum, which the research loop already refuted across
-recent + lockbox. Spraying one refuted idea across more pairs (or, worse, the old
-120 = the SAME 3 momentum patterns × 4 TF, half of them sub-cost-floor 5m/15m)
-teaches nothing new — the bot_registry confirms those configs are already SEEN.
+PURPOSE: Kestrel is a high-frequency scalping fleet — *hundreds* of bots scalping a
+fast timeframe (5m) across many liquid markets, maximizing trade ACTIVITY. This is
+the design (CLAUDE.md §6/§13), not a research deviation. Earlier loop iterations
+shrank the fleet to slow 1h/4h "to lose less"; that is explicitly the wrong default
+here (the owner can trade slow by hand). The job is to find net-of-fee edge WITHIN
+the active-scalping design, not to reduce activity.
 
-The fix for "learn more" is hypothesis DIVERSITY, not bot count. This fleet runs
-SIX distinct entry patterns spanning all four regime buckets (§22), at the two
-least-bad timeframes, across the 10 crypto pairs:
+FLEET: 7 patterns × 5m × 34 liquid USDT pairs = 238 bots. WS feeds are SHARED per
+(pair, timeframe), so 238 bots ride only 34 streams — many bots on few streams is
+cheap. The activity comes mainly from `trend_momentum` (permissive trend-follower,
+fires on ~9% of candles) + `mom_adx`/`triple_mom` (self-directing momentum); the
+four shape patterns add breadth and occasionally fire at 5m.
 
-    mom_adx            trend momentum (ADX-gated streak)        — VALIDATED control
-    triple_mom         trend momentum + expanding ATR           — VALIDATED control
-    impulse_retracement trend pullback continuation (TRENDING)  — barely tested live
-    compression_breakout volatility breakout (VOLATILE)         — NEVER deployed
-    anomaly_fade       counter-trend mean-revert (VOLATILE/RANGING) — NEVER deployed
-    wick_rejection     mean-reversion at support (RANGING)      — NEVER deployed
+TRANSPORT: FEED_MODE=ws (docker-compose.override.yml) — WebSocket is the proven
+real-time transport for LOW timeframes (5m pushes every rollover reliably). poll is
+for high TF only. MAKER_EXECUTION=true is REQUIRED: scalping only clears the fee
+floor on the maker path (~0.04% round trip vs ~0.18% taker).
 
-The bot_registry showed wick_rejection / compression_breakout / anomaly_fade have
-NEVER run as live bots — they are genuinely untested hypotheses, so each adds new
-information. The two momentum patterns are kept as VALIDATED CONTROLS (registry =
-SEEN, intentionally) so the new patterns are measured against a known baseline on
-the same pairs, TFs, and risk profile.
+HONEST CAVEAT (kept): more activity is NOT more profit — there is no proven net-of-
+fee edge yet, and faster trading bleeds fees faster. This is PAPER (ENV=dev) until
+§18. The fleet exists to hunt edge at scale + speed, with eyes open.
 
-6 patterns × 2 timeframes × 10 markets = 120 bots.
-
-UNIFORM exit/risk profile across all six (the risk-shaped bracket from iter 5) so
-the comparison isolates each pattern's directional signal, not its exit tuning:
-tp 2.4 / sl 1.5 ATR (R/R 1.6), max_hold 6, trail arms +0.5R / 0.5R behind peak,
-volume_ratio_min at floor 1.1, max_loss_pct 0.01. Pattern-shape params
-(wick_ratio_min, body_ratio_min, compression_factor, ...) come from params.json.
-This is a DEV/PAPER forward-test for LEARNING — NOT a live deployment and NOT an
-edge claim; the project still has no proven edge.
-
-bot_id: dev-{PAIR}-{tf}-{pattern}-01   e.g. dev-ETHUSDT-4h-wick_rejection-01
+bot_id: dev-{PAIR}-5m-{pattern}-01   e.g. dev-SOLUSDT-5m-trend_momentum-01
 split_part(bot_id,'-',4) = the pattern, the dashboard leaderboard key.
 
 Run:  python3 scripts/build_momentum_lab.py
@@ -48,66 +35,89 @@ from __future__ import annotations
 import json
 import os
 
-# The 10 pairs the lab runs across (all exist on BingX, the live paper feed).
-MOMENTUM_PAIRS = [
+# 34 liquid USDT spot pairs, all VERIFIED present + active on gate (the paper feed)
+# 2026-06-20 (leveraged tokens like *5L/*3S excluded; TON dropped — not on gate).
+SCALP_PAIRS = [
     "BTC/USDT",
     "ETH/USDT",
     "SOL/USDT",
-    "DOGE/USDT",
-    "PEPE/USDT",
-    "HYPE/USDT",
     "XRP/USDT",
     "BNB/USDT",
+    "DOGE/USDT",
     "ADA/USDT",
     "AVAX/USDT",
+    "HYPE/USDT",
+    "PEPE/USDT",
+    "LINK/USDT",
+    "DOT/USDT",
+    "ATOM/USDT",
+    "NEAR/USDT",
+    "LTC/USDT",
+    "BCH/USDT",
+    "TRX/USDT",
+    "SUI/USDT",
+    "FIL/USDT",
+    "OP/USDT",
+    "ARB/USDT",
+    "APT/USDT",
+    "INJ/USDT",
+    "UNI/USDT",
+    "GALA/USDT",
+    "CHZ/USDT",
+    "ETC/USDT",
+    "APE/USDT",
+    "XLM/USDT",
+    "AAVE/USDT",
+    "FET/USDT",
+    "SEI/USDT",
+    "TIA/USDT",
+    "WLD/USDT",
 ]
+# Back-compat alias (older tooling / memory references MOMENTUM_PAIRS).
+MOMENTUM_PAIRS = SCALP_PAIRS
 
-# RISK-SHAPED exit + sizing profile (2026-06-16 revision), applied UNIFORMLY to all
-# six patterns so the lab compares directional signal quality on equal footing. The
-# prior "medium + trailing" bracket ran 31.7% win with 54% of trades hitting a FULL
-# 1-ATR stop and ~3.3x-equity notional; these values cut exposure and reshape the
-# win/loss profile (they do NOT create edge — the book is ~coin-flip):
-#   sl 1.0 -> 1.5 ATR  : 1 ATR sits inside the noise band (premature stop-outs);
-#                        1.5 ATR lets price breathe.
-#   tp 2.0 -> 2.4 ATR  : keep planned R/R = 1.6 (>= risk Rule 3's 1.2).
-#   trail 1R@1R -> 0.5R@0.5R : a trade that goes +0.5R then reverses scratches near
-#                        BE instead of riding back to a full stop.
-#   max_loss 0.02 -> 0.01 : halves per-trade notional from ~3.3x to ~1.1x equity.
-#   max_hold 12 -> 6   : mean-reversion decays in 3-5 bars; shorter exits win.
-# NOTE: the single BIGGEST lever (leverage 20x -> ~5x) is .env/§4 human-gated and is
-# NOT applied here. adx_strong_min is only read by mom_adx/triple_mom; it is a no-op
-# for the other four patterns (harmless, kept for a uniform profile).
+# SCALP exit/sizing profile — fast in, fast out (5m). Tight bracket, short hold:
+#   tp 1.4 / sl 0.9 ATR  : R/R ~1.55 (>= risk Rule 3's 1.2), small quick targets.
+#   max_hold 4 (20 min)  : a scalp — don't sit in a 5m trade for hours.
+#   trail 0.5R@0.5R      : lock a small gain once +0.5R, scratch near BE on reversal.
+#   adx_strong_min 20    : the LOW end of its range — more mom_adx/triple_mom fires
+#                          at 5m (activity is the goal; 25 was the slow-TF setting).
+#   volume_ratio_min 1.1 : floor — keep the volume gate near pass-through.
+#   max_loss_pct 0.01    : per-trade equity-risk cap (notional ~1.1x equity).
+# MAKER_EXECUTION=true (override.yml) is what makes scalps clear risk Rule 4's fee
+# gate — without it most 5m moves are below the ~0.18% taker round trip.
 _EXIT = {
-    "tp_atr_multiplier": 2.4,
-    "sl_atr_multiplier": 1.5,
-    "max_hold_candles": 6,
+    "tp_atr_multiplier": 1.4,
+    "sl_atr_multiplier": 0.9,
+    "max_hold_candles": 4,
     "trailing_enabled": True,
     "trail_activation_r": 0.5,
     "trail_distance_r": 0.5,
-    "volume_ratio_min": 1.1,  # floor — keep the prod volume gate near pass-through
-    "adx_strong_min": 25.0,  # validated strong-trend threshold (mom_adx/triple_mom only)
-    "max_loss_pct_per_trade": 0.01,  # per-trade equity-risk cap
+    "volume_ratio_min": 1.1,
+    "adx_strong_min": 20.0,
+    "max_loss_pct_per_trade": 0.01,
 }
 
-# Least-bad timeframes (5m/15m pruned iter 5 — moves sit below the cost floor).
-_TIMEFRAMES = ["1h", "4h"]
+# Scalp timeframe. 5m = the fast "like before" entry; the proven low-TF WS transport.
+_TIMEFRAMES = ["5m"]
 
-# Six distinct entry patterns spanning all four regime buckets (§22). The two
-# momentum patterns are VALIDATED CONTROLS (bot_registry = SEEN); the other four are
-# under/never-tested hypotheses (registry = NEW) and are why this fleet learns more.
+# Seven entry patterns. The ACTIVITY drivers are trend_momentum (permissive, ~9% of
+# candles) + mom_adx/triple_mom (self-directing momentum). The four shape patterns
+# add breadth across regimes (they fire more at 5m than at 1h/4h). 7 × 5m × 34 = 238.
 STRATEGIES = [
-    {"name": "mom_adx", "patterns": ["mom_adx"]},  # control (trend momentum)
-    {"name": "triple_mom", "patterns": ["triple_mom"]},  # control (momentum + vol)
-    {"name": "impulse_retracement", "patterns": ["impulse_retracement"]},  # TRENDING pullback
-    {"name": "compression_breakout", "patterns": ["compression_breakout"]},  # VOLATILE breakout
-    {"name": "anomaly_fade", "patterns": ["anomaly_fade"]},  # VOLATILE/RANGING fade
-    {"name": "wick_rejection", "patterns": ["wick_rejection"]},  # RANGING mean-revert
+    {"name": "trend_momentum", "patterns": ["trend_momentum"]},  # primary scalp driver
+    {"name": "mom_adx", "patterns": ["mom_adx"]},  # momentum scalp
+    {"name": "triple_mom", "patterns": ["triple_mom"]},  # momentum + vol scalp
+    {"name": "impulse_retracement", "patterns": ["impulse_retracement"]},
+    {"name": "compression_breakout", "patterns": ["compression_breakout"]},
+    {"name": "anomaly_fade", "patterns": ["anomaly_fade"]},
+    {"name": "wick_rejection", "patterns": ["wick_rejection"]},
 ]
 
 
 def main() -> None:
     bots = []
-    for pair in MOMENTUM_PAIRS:
+    for pair in SCALP_PAIRS:
         token_pair = pair.replace("/", "")
         for tf in _TIMEFRAMES:
             for s in STRATEGIES:
@@ -129,8 +139,8 @@ def main() -> None:
         json.dump(bots, f, indent=2)
     print(
         f"wrote {os.path.normpath(out)}: {len(bots)} bots = "
-        f"{len(STRATEGIES)} patterns × {len(_TIMEFRAMES)} timeframes "
-        f"× {len(MOMENTUM_PAIRS)} markets"
+        f"{len(STRATEGIES)} patterns × {len(_TIMEFRAMES)} timeframe(s) "
+        f"× {len(SCALP_PAIRS)} markets"
     )
 
 

@@ -7,23 +7,29 @@
 
 ---
 
-## MODE: ACTIVE MAINTENANCE (since iter 5, 2026-06-18) — user directive
+## MODE: HYPER-SCALP MAINTENANCE (since iter 12, 2026-06-20) — owner directive + CLAUDE.md v2.1
 
-Discovery of a *new* directional edge is exhausted (everything refuted across recent + lockbox —
-see the MILESTONE). But the user explicitly **expanded the mandate** ("you can replace unproductive
-bots, add new parameters or any statistical enforcements") after the slate worsened. So the loop is
-no longer passive monitoring — each run it actively MAINTAINS the fleet to cut bleed:
+**PURPOSE CHANGE (read CLAUDE.md §6/§13 v2.1):** Kestrel is now officially a HIGH-FREQUENCY
+SCALPING FLEET — hundreds of bots, 5m, many markets, maximizing ACTIVITY. The owner was explicit:
+"there is no point building a bot if not to do hyper-speed scalping with hundreds of bots; if we
+do it slow I can do it myself and won't need you." So the loop's prior instinct — prune to slow /
+few-trade / high-TF to "lose less" — is now **WRONG and forbidden**. Find net-of-fee edge WITHIN
+the active scalp design; ✗ shrink the fleet or its activity to reduce bleed.
 
-**Expanded authorities (every run may, within agent scope — never touch frozen files):**
-1. **Replace / prune unproductive bots** — drop cells that fail the cell-viability rule below;
-   reallocate toward the least-bad. (bots.json / `build_momentum_lab.py`.)
-2. **Add new parameters** — within their declared `params.json` ranges + full contract.
-3. **Add statistical enforcements** — significance/sample gates, suppression of chronically-losing
-   `(pattern, regime, session)` cells (`signal/memory.py`), min-trade thresholds, etc.
+**Authorities (every run may, within agent scope — never touch frozen files EXCEPT CLAUDE.md when
+the owner explicitly authorizes it, as on 2026-06-20):**
+1. **Improve entries/exits/fees/sizing/pair+pattern selection** — to lift edge WITHOUT cutting
+   activity. (bots.json / `build_momentum_lab.py` / `signal/*` / params.json.)
+2. **Add new parameters** — within declared `params.json` ranges + full contract.
+3. **Add statistical enforcements** — significance/sample gates, suppress a `(pattern,regime,
+   session)` cell ONLY if it is a genuine dead-weight loser (`signal/memory.py`).
+4. **Add bots / pairs / patterns** — scaling UP activity is encouraged; keep WS feeds shared.
 
-**Cell-viability rule (the standing statistical enforcement for pruning):** a `(strategy × TF)`
-cell is **unproductive → prune** once it has **≥ 50 closed trades** AND **net PnL < 0** AND
-**profit factor < 1.0**. Applied iter 5 → pruned 5m, 15m, and `trend_mom` (all met it decisively).
+**Cell-viability rule (NARROWED — activity is now a goal):** prune a `(strategy × TF)` cell ONLY if
+it is **structurally dead**: either it has **≥ 50 closed trades** AND **net < 0** AND **profit
+factor < 1.0** AND no param/fee fix is plausible, OR it **essentially never fires** (a shape pattern
+that is dormant for days). Prefer FIXING (maker fees, exit tuning, looser gate) over removing. ✗
+prune a cell merely for being "slow" or to make the fleet calmer — that contradicts the purpose.
 
 - **Cadence: every 8h** (re-activated from the daily monitoring pause — the fleet needs active
   upkeep now, not once-a-day watching).
@@ -288,6 +294,30 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 12 — 2026-06-20 (owner pivot: HYPER-SCALP fleet, hundreds of bots)
+
+- **TRIGGER:** owner — "yes like before, we built it for this; no point building a bot if not
+  hyper-speed scalping with hundreds of bots; if slow I can do it myself and won't need you.
+  If important, update CLAUDE.md." Explicit authorization to edit the frozen CLAUDE.md.
+- **CLAUDE.md v2.1 (owner-authorized):** §6 Purpose set to HIGH-FREQUENCY SCALPING FLEET; §13
+  Timeframes → 1m–5m scalp (5m default), Fleet scale → hundreds of bots, maker fees REQUIRED.
+  Honest no-edge/paper caveat preserved (✗ delete).
+- **FLEET REBUILD:** `build_momentum_lab.py` → **238 bots = 7 patterns × 5m × 34 liquid pairs**
+  (pairs VERIFIED on gate; leveraged tokens excluded). Activity drivers: `trend_momentum`
+  (permissive ~9% of candles) + `mom_adx`/`triple_mom`; 4 shape patterns add breadth. Scalp exit:
+  tp 1.4 / sl 0.9 ATR (R/R 1.55), max_hold 4 (20 min), trail 0.5R, adx_strong_min 20 (low end →
+  more 5m fires), maker on. WS feeds shared per (pair,5m) = 34 streams for 238 bots.
+- **INFRA:** override.yml → FEED_MODE poll→**ws** (proven 5m transport), postgres 1g→**2g** +
+  kestrel 1g→**2g**/cpus 3 (238 bots write far more at 5m; pre-empt the iter-10 OOM at scale).
+- **LOOP MANDATE REALIGNED:** banner → HYPER-SCALP MAINTENANCE; pruning-to-slow is now forbidden;
+  cell-viability NARROWED to structurally-dead cells only; scaling activity UP is encouraged.
+- **HONEST FRAME (unchanged):** more activity ≠ more profit; 5m scalping bleeds fees faster with no
+  proven edge. This is the owner's directed design for PAPER research; the job is to hunt edge at
+  speed+scale, not to pretend speed creates it.
+- **SHIP:** lint → commit+push main → CI green → deploy (up -d, recreate w/ 2g + ws + new bots.json)
+  → FULL RESET (clean slate) → verify ~238 heartbeats / trades=0 / activity firing / 0 errors.
+- **STOP CHECK:** not met. Continue.
 
 ### Iteration 11 — 2026-06-20 (8h cron — justified NO-OP; infra held; feed-stale alarm was a measurement artifact)
 

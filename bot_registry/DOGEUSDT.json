@@ -3,53 +3,22 @@
   "pair": "DOGEUSDT",
   "configs": [
     {
-      "fingerprint": "0d5839cfc5cf",
+      "fingerprint": "347e9e721a76",
       "config": {
         "pair": "DOGEUSDT",
-        "timeframe_entry": "4h",
-        "timeframe_regime": "4h",
-        "strategy": "compression_breakout",
-        "patterns": [
-          "compression_breakout"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-DOGEUSDT-4h-compression_breakout-01"
-    },
-    {
-      "fingerprint": "2092def5cf56",
-      "config": {
-        "pair": "DOGEUSDT",
-        "timeframe_entry": "4h",
-        "timeframe_regime": "4h",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
         "strategy": "impulse_retracement",
         "patterns": [
           "impulse_retracement"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -62,25 +31,25 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-DOGEUSDT-4h-impulse_retracement-01"
+      "example_bot_id": "dev-DOGEUSDT-5m-impulse_retracement-01"
     },
     {
-      "fingerprint": "2cf0eee48d2b",
+      "fingerprint": "702657a235ae",
       "config": {
         "pair": "DOGEUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
         "strategy": "anomaly_fade",
         "patterns": [
           "anomaly_fade"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -93,25 +62,56 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-DOGEUSDT-1h-anomaly_fade-01"
+      "example_bot_id": "dev-DOGEUSDT-5m-anomaly_fade-01"
     },
     {
-      "fingerprint": "6a3b4a2ddbc2",
+      "fingerprint": "a218f451c420",
       "config": {
         "pair": "DOGEUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "c4cef799ad1d",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
         "strategy": "wick_rejection",
         "patterns": [
           "wick_rejection"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -124,25 +124,25 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-DOGEUSDT-1h-wick_rejection-01"
+      "example_bot_id": "dev-DOGEUSDT-5m-wick_rejection-01"
     },
     {
-      "fingerprint": "9fbc3548f6dd",
+      "fingerprint": "cd12dc6307d6",
       "config": {
         "pair": "DOGEUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
-        "strategy": "impulse_retracement",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_momentum",
         "patterns": [
-          "impulse_retracement"
+          "trend_momentum"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -155,87 +155,25 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-DOGEUSDT-1h-impulse_retracement-01"
+      "example_bot_id": "dev-DOGEUSDT-5m-trend_momentum-01"
     },
     {
-      "fingerprint": "cd5ebbaf8db1",
+      "fingerprint": "d39a4219a6fa",
       "config": {
         "pair": "DOGEUSDT",
-        "timeframe_entry": "4h",
-        "timeframe_regime": "4h",
-        "strategy": "wick_rejection",
-        "patterns": [
-          "wick_rejection"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-DOGEUSDT-4h-wick_rejection-01"
-    },
-    {
-      "fingerprint": "db045f32c56b",
-      "config": {
-        "pair": "DOGEUSDT",
-        "timeframe_entry": "4h",
-        "timeframe_regime": "4h",
-        "strategy": "anomaly_fade",
-        "patterns": [
-          "anomaly_fade"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-DOGEUSDT-4h-anomaly_fade-01"
-    },
-    {
-      "fingerprint": "fcaf9096f77f",
-      "config": {
-        "pair": "DOGEUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
         "strategy": "compression_breakout",
         "patterns": [
           "compression_breakout"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -248,7 +186,38 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-DOGEUSDT-1h-compression_breakout-01"
+      "example_bot_id": "dev-DOGEUSDT-5m-compression_breakout-01"
+    },
+    {
+      "fingerprint": "d7f4e52265cc",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-5m-triple_mom-01"
     },
     {
       "fingerprint": "176435034351",
@@ -2594,8 +2563,8 @@
       "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
       "first_seen_date": "2026-06-16T22:54:48+00:00",
       "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
       "snapshot_count": 7,
       "example_bot_id": "dev-DOGEUSDT-1h-triple_mom-01"
     },
@@ -2811,8 +2780,8 @@
       "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
       "first_seen_date": "2026-06-16T22:54:48+00:00",
       "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
       "snapshot_count": 7,
       "example_bot_id": "dev-DOGEUSDT-1h-mom_adx-01"
     },
@@ -2873,8 +2842,8 @@
       "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
       "first_seen_date": "2026-06-16T22:54:48+00:00",
       "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
       "snapshot_count": 7,
       "example_bot_id": "dev-DOGEUSDT-4h-mom_adx-01"
     },
@@ -2904,8 +2873,8 @@
       "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
       "first_seen_date": "2026-06-16T22:54:48+00:00",
       "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
       "snapshot_count": 7,
       "example_bot_id": "dev-DOGEUSDT-4h-triple_mom-01"
     },
@@ -3217,6 +3186,254 @@
       "last_seen_date": "2026-06-18T01:08:23+00:00",
       "snapshot_count": 1,
       "example_bot_id": "dev-DOGEUSDT-1h-exp_tod_seas-01"
+    },
+    {
+      "fingerprint": "0d5839cfc5cf",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-4h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "2092def5cf56",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-4h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "2cf0eee48d2b",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-1h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "6a3b4a2ddbc2",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-1h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "9fbc3548f6dd",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-1h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "cd5ebbaf8db1",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-4h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "db045f32c56b",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-4h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "fcaf9096f77f",
+      "config": {
+        "pair": "DOGEUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-DOGEUSDT-1h-compression_breakout-01"
     }
   ]
 }
