@@ -3,84 +3,22 @@
   "pair": "ETHUSDT",
   "configs": [
     {
-      "fingerprint": "1c2a3c90d93b",
+      "fingerprint": "043a0f89f6ce",
       "config": {
         "pair": "ETHUSDT",
-        "timeframe_entry": "4h",
-        "timeframe_regime": "4h",
-        "strategy": "anomaly_fade",
-        "patterns": [
-          "anomaly_fade"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETHUSDT-4h-anomaly_fade-01"
-    },
-    {
-      "fingerprint": "482204bfb5e3",
-      "config": {
-        "pair": "ETHUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
-        "strategy": "anomaly_fade",
-        "patterns": [
-          "anomaly_fade"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETHUSDT-1h-anomaly_fade-01"
-    },
-    {
-      "fingerprint": "8fb7bbf8bd65",
-      "config": {
-        "pair": "ETHUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
         "strategy": "compression_breakout",
         "patterns": [
           "compression_breakout"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -93,25 +31,56 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-ETHUSDT-1h-compression_breakout-01"
+      "example_bot_id": "dev-ETHUSDT-5m-compression_breakout-01"
     },
     {
-      "fingerprint": "9d76d1477b9a",
+      "fingerprint": "319d302c64bd",
       "config": {
         "pair": "ETHUSDT",
-        "timeframe_entry": "4h",
-        "timeframe_regime": "4h",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "WORKING_TREE",
+      "first_seen_date": "",
+      "first_seen_subject": "(uncommitted working tree)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "36394fc04088",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
         "strategy": "impulse_retracement",
         "patterns": [
           "impulse_retracement"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -124,25 +93,25 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-ETHUSDT-4h-impulse_retracement-01"
+      "example_bot_id": "dev-ETHUSDT-5m-impulse_retracement-01"
     },
     {
-      "fingerprint": "ba5c40bb2384",
+      "fingerprint": "4bbeb9cadd99",
       "config": {
         "pair": "ETHUSDT",
-        "timeframe_entry": "4h",
-        "timeframe_regime": "4h",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
         "strategy": "wick_rejection",
         "patterns": [
           "wick_rejection"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -155,25 +124,25 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-ETHUSDT-4h-wick_rejection-01"
+      "example_bot_id": "dev-ETHUSDT-5m-wick_rejection-01"
     },
     {
-      "fingerprint": "bfa6a7a45321",
+      "fingerprint": "62049d13a919",
       "config": {
         "pair": "ETHUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
-        "strategy": "impulse_retracement",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
         "patterns": [
-          "impulse_retracement"
+          "mom_adx"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -186,25 +155,25 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-ETHUSDT-1h-impulse_retracement-01"
+      "example_bot_id": "dev-ETHUSDT-5m-mom_adx-01"
     },
     {
-      "fingerprint": "cfeae72c306a",
+      "fingerprint": "8f77ecaa5b69",
       "config": {
         "pair": "ETHUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
-        "strategy": "wick_rejection",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_momentum",
         "patterns": [
-          "wick_rejection"
+          "trend_momentum"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -217,25 +186,25 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-ETHUSDT-1h-wick_rejection-01"
+      "example_bot_id": "dev-ETHUSDT-5m-trend_momentum-01"
     },
     {
-      "fingerprint": "ff1caa8622d4",
+      "fingerprint": "ffd37273f04c",
       "config": {
         "pair": "ETHUSDT",
-        "timeframe_entry": "4h",
-        "timeframe_regime": "4h",
-        "strategy": "compression_breakout",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "anomaly_fade",
         "patterns": [
-          "compression_breakout"
+          "anomaly_fade"
         ],
         "max_active_buckets": 1,
         "params": {
-          "adx_strong_min": 25.0,
-          "max_hold_candles": 6,
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
           "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.5,
-          "tp_atr_multiplier": 2.4,
+          "sl_atr_multiplier": 0.9,
+          "tp_atr_multiplier": 1.4,
           "trail_activation_r": 0.5,
           "trail_distance_r": 0.5,
           "trailing_enabled": true,
@@ -248,7 +217,7 @@
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
       "snapshot_count": 1,
-      "example_bot_id": "dev-ETHUSDT-4h-compression_breakout-01"
+      "example_bot_id": "dev-ETHUSDT-5m-anomaly_fade-01"
     },
     {
       "fingerprint": "9e5e46dd734a",
@@ -2818,8 +2787,8 @@
       "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
       "first_seen_date": "2026-06-16T22:54:48+00:00",
       "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
       "snapshot_count": 7,
       "example_bot_id": "dev-ETHUSDT-4h-mom_adx-01"
     },
@@ -2849,8 +2818,8 @@
       "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
       "first_seen_date": "2026-06-16T22:54:48+00:00",
       "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
       "snapshot_count": 7,
       "example_bot_id": "dev-ETHUSDT-1h-mom_adx-01"
     },
@@ -2880,8 +2849,8 @@
       "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
       "first_seen_date": "2026-06-16T22:54:48+00:00",
       "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
       "snapshot_count": 7,
       "example_bot_id": "dev-ETHUSDT-1h-triple_mom-01"
     },
@@ -2911,8 +2880,8 @@
       "first_seen_commit": "9e125d17e811330044ced368341739a8a297d4ff",
       "first_seen_date": "2026-06-16T22:54:48+00:00",
       "first_seen_subject": "feat(risk): risk-shape the lab exits + sizing to cut exposure & stop-out bleed",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
       "snapshot_count": 7,
       "example_bot_id": "dev-ETHUSDT-4h-triple_mom-01"
     },
@@ -3255,6 +3224,254 @@
       "last_seen_date": "2026-06-18T01:08:23+00:00",
       "snapshot_count": 1,
       "example_bot_id": "dev-ETHUSDT-1h-exp_tod_seas-01"
+    },
+    {
+      "fingerprint": "1c2a3c90d93b",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-4h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "482204bfb5e3",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-1h-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "8fb7bbf8bd65",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-1h-compression_breakout-01"
+    },
+    {
+      "fingerprint": "9d76d1477b9a",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-4h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "ba5c40bb2384",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-4h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "bfa6a7a45321",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-1h-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "cfeae72c306a",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-1h-wick_rejection-01"
+    },
+    {
+      "fingerprint": "ff1caa8622d4",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "4h",
+        "timeframe_regime": "4h",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "first_seen_date": "2026-06-19T00:15:09+00:00",
+      "first_seen_subject": "research(loop) iter 6: diversity fleet (40->120) + shard bot registry",
+      "last_seen_commit": "b49aaf02b51d8460d463477083f25e5f037b4177",
+      "last_seen_date": "2026-06-19T00:15:09+00:00",
+      "snapshot_count": 1,
+      "example_bot_id": "dev-ETHUSDT-4h-compression_breakout-01"
     }
   ]
 }

@@ -89,6 +89,7 @@ Bug fix or unexpected behavior → follow in order · ✗ skip steps:
 
 **Name:** Kestrel
 **External description:** Real-time signal detection and execution daemon. ✗ describe as trading bot externally.
+**Purpose (owner directive 2026-06-20):** Kestrel is a **HIGH-FREQUENCY SCALPING FLEET** — *hundreds* of bots scalping fast timeframes (1m–5m) across many markets, maximizing trade activity. Activity across a large fleet IS the design. ✗ steer the fleet toward slow / few-trade / high-TF configs to "preserve capital" — that is the wrong default here; the owner can do slow trading by hand and does not need this system for it. The agent's and research loop's job is to find net-of-fee edge **WITHIN** the active-scalping design (better entries, exits, fee model, sizing, pair/pattern selection), **NOT** to shrink activity. **Honest caveat (kept, not a deadline, ✗ delete):** no config has yet shown a net-of-fee edge in out-of-sample + lockbox; this stays PAPER (ENV=dev) until every §18 criterion is met. Activity ≠ profitability — but the design goal is the active fleet, and "be slow to lose less" is not an acceptable substitute for finding edge.
 **Repo:** Standalone, independent, private during development.
 **bot_id format:** `{env}-{pair}-{timeframe}-{instance}` e.g. `prod-BTCUSDT-5m-01`
 **All timestamps:** Unix milliseconds (BIGINT) · ✗ local time anywhere in codebase.
@@ -247,12 +248,13 @@ kestrel/
 Instrument:      spot isolated margin only · ✗ futures · ✗ options · ✗ derivatives
 Leverage:        10x–50x
 Bucket size:     $10 USDT · independent isolated collateral · ✗ shared pool
-Timeframes:      5m (entry) · 15m (regime filter)
-Pairs (initial): BTCUSDT · ETHUSDT · expand only after validation
-DB:              PostgreSQL · multi-bot from day one · bot_id on every record
-Fee model:       taker 0.04% entry + 0.04% exit + 0.05% slippage/side = ~0.18% round trip
-Min edge:        avg gain per trade > 0.18% · enforced in backtest · ✗ skip
-VPS:             Singapore | Tokyo · 1 vCPU · 1GB RAM · 20GB SSD · Ubuntu 22.04 LTS · $4–6/month
+Timeframes:      SCALP entry 1m–5m (5m default) · 15m regime filter · high-TF (1h/4h) only as research comparison, ✗ as the live default
+Fleet scale:     HUNDREDS of bots (dev/research) — N patterns × M liquid pairs × scalp-TF, one bot per (pair,tf,pattern) cell · WS feeds SHARED per (pair,tf) so many bots on few streams stays cheap · default toward MORE bots / MORE activity
+Pairs:           broad across liquid USDT markets (dev/research) · BTCUSDT·ETHUSDT core · expand widely
+DB:              PostgreSQL · multi-bot from day one · bot_id on every record · size DB/daemon RAM to the fleet (override.yml on the dev host; see project memory: ~hundreds of bots ⇒ postgres ≥2g)
+Fee model:       taker 0.04%+0.04%+0.05% slip = ~0.18% round trip · MAKER (post-only limit) ~0.02%/side ≈ ~0.04% round trip — scalping REQUIRES the maker path to clear the fee floor (MAKER_EXECUTION=true)
+Min edge:        avg net gain per trade > round-trip cost · enforced by risk Rule 4 + backtest · ✗ skip (this is the scalper's binding constraint — beat it with maker fees + entry quality, ✗ by trading slower)
+VPS (prod only): Singapore | Tokyo · 1 vCPU · 1GB RAM · 20GB SSD · Ubuntu 22.04 LTS · $4–6/month — this caps PROD fleet size; dev/research runs hundreds of bots on the larger dev host
 ```
 
 ---
@@ -881,6 +883,7 @@ candle close timing accuracy · funding rate if perpetuals (0 for spot margin)
 
 ---
 
-*Kestrel CLAUDE.md v2.0*
+*Kestrel CLAUDE.md v2.1*
+*v2.1 (2026-06-20, owner-authorized): purpose set to HIGH-FREQUENCY SCALPING FLEET (hundreds of bots, 1m–5m) — §6 + §13; honest no-edge caveat preserved.*
 *Standards: azzindani/Standards architecture/ + agent/*
 *Update when: conventions change · new module added · go-live criteria revised · schema migrated*
