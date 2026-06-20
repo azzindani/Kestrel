@@ -269,6 +269,18 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 - **Regime-conditional momentum @ 5m** (iter 1) — restricting `mom_adx/triple_mom` to trending or
   volatile regimes does NOT rescue expectancy (0/2 each OOS, maker fees). 5m is dead in every
   regime.
+- **High-ADX entry gate @ 5m** (iter 14) — raising the trend-strength bar (`--regime trending` /
+  higher `adx_strong_min`) on `mom_adx/triple_mom` cuts trade count ~15% but per-trade economics
+  are flat (≈ −$0.007/trade, maker, both configs), win% slightly LOWER, 0/4 clear §30. "Fewer
+  trades, same −EV" → shrink-activity-with-no-benefit. Don't re-try as an edge lever.
+- **Widening the 5m stop (sl 0.9→1.3 ATR)** (iter 13 deployed, iter 14 refuted) — does NOT cut the
+  stop-out rate (share of closes unchanged ~36–37%) or lift win rate; just makes each stop a bigger
+  % loss. Exit-distance tuning reshapes variance, never creates edge (same as Trailing/Risk-shaping).
+- **Lockbox validation is DATA-INFEASIBLE at 5m** (iter 14, methodology limit, not a strategy) — no
+  exchange (gate/kraken/okx) retains year-old 5m candles, so stop-condition #2 (prior-year untouched
+  lockbox) cannot be evidenced for the 5m fleet by backtest. The lockbox that refuted 1h/4h momentum
+  has no 5m data. The 5m fleet can only accumulate LIVE paper; recent-window backtests lack an
+  out-of-era check (data-mining-prone). Tension with the owner's 5m hyper-scalp mandate — flagged.
 - **1h momentum** (iter 2) — the LEAST-BAD TF but still NOT an edge: `mom_adx`/wide is recent-year
   OOS +EV (n=747, win 45.6%, net +$5.03, expR +0.10, R/R 1.37, maker) but the **lockbox
   (prior year) is breakeven/negative** (win 43.0%, net −$0.50, expR +0.02); tight variants clearly
@@ -299,6 +311,49 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 14 — 2026-06-20 (8h firing — iter-13 stop-widen REFUTED; high-ADX entry gate REFUTED; lockbox is data-infeasible at 5m)
+
+- **MEASURE (slate since the iter-13 reset + an intervening session OOM/auto-recover, ~?h):**
+  **63 closed · 19.0% win · −$4.87 · PF 0.14** (20 open, 238 live, 0 crash-loop). Close-reason:
+  **stop_loss 23 @ 0% win / −14.3% avg = −$3.71 (the whole bleed)**, timeout 26 @ 34.6% / −$0.85,
+  trailing_stop 14 @ 21.4% / −$0.31. take-profit still NEVER hits. By pattern: momentum_continuation
+  58 / −$4.45 (the bulk), wick_rejection 3 / −$0.24, impulse_retracement 2 / −$0.17.
+- **DIAGNOSE #1 — iter-13's stop-widen (sl 0.9→1.3 ATR) is REFUTED by live data.** Stop-out SHARE
+  of closes is unchanged (iter-13 52/145=36% → iter-14 23/63=37%); win rate did NOT improve
+  (29%→19%, small-sample noise but certainly not up); per-trade net is slightly WORSE
+  (−$0.059→−$0.077, because each wider stop loses more % when hit). Widening the stop reshaped
+  variance without cutting the stop-out rate or lifting win — the bleed is ENTRY-EDGE, not
+  stop-distance. (Same conclusion as the Wave/Trailing/Risk-shaping ledger entries, now confirmed
+  at 5m.) Did NOT thrash the stop back to 0.9 (that was also −EV) — left at 1.3 (R/R 1.46 ≥ Rule 3).
+- **HYPOTHESIZE + BACKTEST (the arbiter) — high-ADX "better entries" lever, the one in-scope entry
+  knob not yet recorded.** The live fleet runs `adx_strong_min=20` (lowered iter-12 for max fires),
+  so momentum fires on weak trends. Tested raising the bar via `--regime trending` (high-ADX
+  subset) vs all-regime baseline, 5m, maker, 4 pairs, walk-forward OOS (okx, 6048 candles, OOS=2420):
+  - baseline:  mom_adx/wide n=279 win 40.9% avg −$0.0072 R/R 1.20 expR +0.06 · triple_mom/wide n=167 win 41.9% −$0.0080
+  - trending:  mom_adx/wide n=235 win 40.0% avg −$0.0073 R/R 1.26 expR +0.08 · triple_mom/wide n=141 win 41.1% −$0.0073
+  → **REFUTED:** the high-ADX gate cuts trade count ~15% but per-trade economics are flat
+  (≈ −$0.007/trade either way), win% is slightly LOWER, 0/4 clear §30. It is "fewer trades, same
+  −EV" = shrink-activity-with-no-benefit (mandate-forbidden, and pointless). Do NOT raise the gate.
+- **DIAGNOSE #2 — STRUCTURAL: lockbox validation is DATA-INFEASIBLE at 5m.** The proper arbiter
+  (stop-cond #2 = prior-year untouched lockbox) cannot be run at 5m: gate returns "Candlestick too
+  long ago", kraken caps at 721 candles, okx serves only ~21d of 5m. **No exchange retains year-old
+  5m history.** The lockbox method that refuted 4h/1h momentum simply has no data at 5m. So the
+  iter-12 pivot to 5m means the fleet can NEVER produce stop-cond-#2 evidence by backtest — only the
+  live paper slate accumulates. Recent-window-only backtests are data-mining-prone (no out-of-era
+  check). This is a real tension between the owner's 5m hyper-scalp mandate and rigorous validation.
+- **MAINTAIN — JUSTIFIED HOLD (no deploy, no reset).** The one new in-scope lever tested (high-ADX
+  entry) is refuted; deploying it would cut activity for no benefit (anti-mandate). No param/
+  enforcement gap; cell-viability needs structurally-dead cells (momentum is the activity driver,
+  ✗ prune). Nothing new is byte-worthy → fleet unchanged (238 bots, adx_strong_min 20, stop 1.3).
+  Per protocol step 9, skip reset when nothing deployed. Deliverable this firing = the two
+  refutations recorded (real knowledge), not a churn deploy.
+- **RE-ESCALATE (the binding lever, human-gated §4):** the book is negative-skew at **20× leverage**
+  — stops are 0% win / −14.3% each. Lowering leverage to 5–10× would shrink each stop's % hit and
+  reshape the skew; it is the dominant remaining lever and is `.env`/§4 human-only. The other real
+  lever is a non-directional STRUCTURAL edge (funding-rate harvesting), a large build, also flagged.
+  Both stay flagged, not started.
+- **STOP CHECK:** NOT met (19% win ≪ 70%; net −$4.87; lockbox edge unprovable at 5m). Continue.
 
 ### Iteration 13 — 2026-06-20 (8h cron — first real scalp data; widen stop to cut the bleed)
 
