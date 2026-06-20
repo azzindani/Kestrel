@@ -463,6 +463,13 @@ class AppConfig:
     # = a lost candle). Optional/back-compatible: absent ⇒ "ws".
     feed_mode: str = "ws"
 
+    # Telegram noise control. When True, routine WS connection events (per-attempt
+    # reconnect WARN + max-retry CRITICAL) are still written to the events table for
+    # Grafana but NOT pushed to Telegram. Default False preserves §27 behavior; set
+    # TELEGRAM_SUPPRESS_CONNECTION=true on large fleets where per-stream reconnect
+    # pings flood Telegram (trade open/close + non-connection CRITICAL still send).
+    telegram_suppress_connection: bool = False
+
     # Execution cost model. False (default) = TAKER: market fills with taker fee +
     # slippage on every entry and exit (the live-safe model). True = MAKER: model
     # post-only LIMIT fills — entries and take-profit exits pay the maker fee with
@@ -537,6 +544,7 @@ class AppConfig:
             telegram_chat_id=m["TELEGRAM_CHAT_ID"],
             log_level=m["LOG_LEVEL"].upper(),
             feed_mode=(m.get("FEED_MODE") or "ws").lower(),
+            telegram_suppress_connection=(m.get("TELEGRAM_SUPPRESS_CONNECTION") or "").lower() in ("1", "true", "yes"),
             maker_execution=(m.get("MAKER_EXECUTION") or "").lower() in ("1", "true", "yes"),
             portfolio_tp_pct=float(m.get("PORTFOLIO_TP_PCT") or 0.0),
             portfolio_dd_pct=float(m.get("PORTFOLIO_DD_PCT") or 0.0),
