@@ -44,9 +44,10 @@ prune a cell merely for being "slow" or to make the fleet calmer — that contra
 
 ## STOPPING CONDITIONS — stop the loop (delete cron, Telegram CRITICAL) when EITHER holds
 
-1. **Win-rate target (user's bar):** rolling win rate **≥ 70%** over **≥ 100** out-of-sample /
-   live trades on the *currently deployed* config.
-2. **Significant improvement (the real bar):** a candidate that, on **walk-forward OOS +
+1. **OWNER'S TARGET (the stated goal, 2026-06-20):** on the *currently deployed* config,
+   rolling win rate **≥ 70%** over **≥ 100** out-of-sample / live trades **AND** average
+   **≥ 15% daily return**. This is the owner's explicit bar — hit BOTH and the mission is done.
+2. **Significant improvement (the realistic edge bar):** a candidate that, on **walk-forward OOS +
    an untouched lockbox** (prior-year data, never searched), shows **positive expectancy**,
    **profit factor ≥ 1.3**, and **deflated Sharpe > 0** across **≥ 3 pairs** — i.e. a genuine
    edge, not a single-regime / data-mined artifact.
@@ -54,12 +55,16 @@ prune a cell merely for being "slow" or to make the fleet calmer — that contra
 Until then: keep iterating. Each iteration either deploys a validated winner or logs a negative
 result and retains the baseline. **Never churn the live lab with an unvalidated config.**
 
-> **Honest framing (keep alive, do not delete):** the project has **NO proven edge**. Win rate
-> is a poor optimization target — profitable momentum systems routinely win < 50% with positive
-> expectancy; the §18/§30 "win > 55%" bar is itself flagged as wrong (see memory
-> `project_maker_fee_meanrev_research`). Condition 2 is the metric that actually matters; 70%
-> win rate is included because the user asked for it, but is unlikely to be reachable without a
-> structural change. Report progress honestly; do not fabricate an edge to satisfy the bar.
+> **Honest framing (keep alive, ✗ delete — owner is told this repeatedly):** the project has **NO
+> proven edge**, and **15%/day is not realistically achievable** — it compounds to ~66× in a month
+> and ~10^22 in a year; the best *real, out-of-sample* result this project has ever produced is a
+> fraction of a percent per day, and even that died in the lockbox. 70% win rate is likewise a poor
+> optimization target (profitable momentum systems routinely win < 50% with positive expectancy;
+> the §18/§30 "win > 55%" bar is itself flagged wrong — see `project_maker_fee_meanrev_research`).
+> Condition 1 is recorded because it is the OWNER'S stated target and he owns the decision;
+> Condition 2 is the metric that actually matters and is the only realistic path to a real stop.
+> The loop's job is to maximize genuine risk-adjusted return WITHIN the hyper-scalp design (CLAUDE.md
+> v2.1) and report progress **honestly** — ✗ fabricate an edge or a return figure to satisfy a bar.
 
 ---
 
