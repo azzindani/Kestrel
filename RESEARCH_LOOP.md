@@ -300,6 +300,31 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 13 — 2026-06-20 (8h cron — first real scalp data; widen stop to cut the bleed)
+
+- **MEASURE (first real scalp slate, 238-bot 5m fleet, ~7h):** **145 closed · 29.0% win · −$8.58 ·
+  PF poor.** By pattern (all −EV): trend_momentum 61 tr −$3.90 (PF 0.34, worst & most active),
+  mom_adx 44 −$2.49, triple_mom 31 −$1.02 (least-bad), impulse_retracement 6 −$0.86 (0% win),
+  wick_rejection 3 −$0.30; compression_breakout + anomaly_fade 0 closed (rare setups). 0 crashes,
+  238 live, Telegram reconnect spam suppressed (iter-12b).
+- **DIAGNOSE (dominant bleed):** STOP-OUTS. Close-reason mix: **stop_loss 52 @ −$0.18 = −$9.47**
+  (the killer) vs **timeout 51 @ +$0.04 = +$2.13** (slightly positive) vs trailing_stop 42 @ −$0.03.
+  **take-profit NEVER hit (0 closes)** — winners come only from the trail. The 0.9-ATR stop sits
+  INSIDE 5m noise and gets picked off before trades develop (same lesson as the iter-5 1-ATR fix,
+  now at 5m).
+- **MAINTAIN (fix exits, ✗ shrink fleet — per hyper-scalp mandate):** widened the stop bracket
+  **sl 0.9→1.3, tp 1.4→1.9 ATR** (R/R 1.46 ≥ Rule 3's 1.2) to let trades breathe and convert
+  premature stops into trail/timeout survivors — which also lifts win rate toward the owner's 70%
+  bar. SINGLE-variable change (the stop bracket); fleet/activity unchanged (238 bots). Did NOT prune
+  trend_momentum despite being the worst cell — it is the primary activity driver and the mandate
+  forbids pruning-to-slow; the bleed is an exit problem, not a "too many bots" problem.
+- **SHIP:** promote_to_staging._EXIT synced (sync test), registry resharded, lint+CI green,
+  committed+pushed, restart (config) + FULL RESET (wiped 155 trades, candles kept, 238 live,
+  trades=0, transient candle_processor_error during reset self-healed).
+- **HONEST:** this RESHAPES variance / cuts the stop-out bleed — it does NOT create edge (the book
+  is ~coin-flip). Next pass measures whether win rate + net actually improved on the wider stop.
+- **STOP CHECK:** NOT met (29% win ≪ 70%; net −$8.58; no lockbox edge). Continue.
+
 ### Iteration 12 — 2026-06-20 (owner pivot: HYPER-SCALP fleet, hundreds of bots)
 
 - **TRIGGER:** owner — "yes like before, we built it for this; no point building a bot if not
