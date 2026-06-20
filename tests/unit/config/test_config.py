@@ -318,6 +318,16 @@ class TestAppConfigFromMapping:
         cfg = AppConfig.from_mapping(env)
         assert cfg.testnet is False
 
+    def test_app_config_telegram_suppress_connection_defaults_false(self):
+        cfg = AppConfig.from_mapping(self._valid_env())
+        assert cfg.telegram_suppress_connection is False
+
+    def test_app_config_telegram_suppress_connection_true_parses_to_bool(self):
+        env = self._valid_env()
+        env["TELEGRAM_SUPPRESS_CONNECTION"] = "true"
+        cfg = AppConfig.from_mapping(env)
+        assert cfg.telegram_suppress_connection is True
+
     def test_app_config_from_mapping_missing_key_raises_value_error(self):
         env = self._valid_env()
         del env["API_KEY"]

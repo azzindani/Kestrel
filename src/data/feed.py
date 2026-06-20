@@ -182,9 +182,13 @@ class MarketFeed:
                 notify = subs[0].notify if subs else None
                 log_event = subs[0].log_event if subs else None
                 retry_count += 1
+                # Routine reconnect churn floods Telegram on large fleets (many
+                # streams), so optionally suppress the Telegram push while ALWAYS
+                # keeping the events-table record for Grafana (cfg flag, default off).
+                tg = not self.cfg.telegram_suppress_connection
                 if retry_count > _MAX_RETRIES:
                     msg = f"WS feed {pair}/{timeframe} exceeded max retries ({_MAX_RETRIES}). Last error: {exc}"
-                    if notify:
+                    if notify and tg:
                         notify("CRITICAL", msg)
                     if log_event:
                         log_event(
@@ -206,7 +210,7 @@ class MarketFeed:
                     f"WS feed {pair}/{timeframe} disconnected "
                     f"(attempt {retry_count}/{_MAX_RETRIES}). Reconnecting in {delay}s. err={exc}"
                 )
-                if notify:
+                if notify and tg:
                     notify("WARN", msg)
                 if log_event:
                     log_event(
