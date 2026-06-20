@@ -289,6 +289,24 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 11 — 2026-06-20 (8h cron — justified NO-OP; infra held; feed-stale alarm was a measurement artifact)
+
+- **MEASURE:** ~1h after the iter-10 clean reset (23:47). Infra fixes HELD: postgres 22% of 1g
+  (calm), kestrel restarts=0 (no crash), **0 errors**, 120 heartbeats. 0 trades / 0 signals so far.
+- **NEAR-MISS (logged so I don't repeat it):** the per-TF "candle freshness" read 1h=114min /
+  4h=294min stale, which looked like the feed had died again. **It had NOT.** Candle `ts` is the
+  candle's OPEN time; the poll feed (`new_closed_rows`) emits a candle only once it has CLOSED
+  (`ts + period ≤ now`). The latest 1h candle `ts=23:00` CLOSED at 00:00 — 59 min ago, perfectly
+  fresh (next close 01:00). Measuring staleness from open-ts inflates it by a full period. The poll
+  feed even wrote the 23:00 candle live after the 23:47 backfill — it is working. Reading the source
+  (src/data/providers/polling.py) before acting prevented a wrong "revert the feed" fix.
+  **DIAGNOSTIC FIX:** freshness must be `now − (max(ts) + period_ms)`, NOT `now − max(ts)`.
+- **DIAGNOSE:** no bleed; 0 trades is simply ~1h post-reset + only ONE 1h close (00:00) + zero 4h
+  closes yet + selective patterns (ADX>25 etc.) not firing on a single candle. Expected.
+- **MAINTAIN — justified NO-OP:** cell-viability needs ≥50 closed (have 0); nothing to prune; no
+  param/enforcement gap; no marginal variants (exhausted). No fleet/code change → no deploy/reset.
+- **STOP CHECK:** not met. Continue; let the clean run accumulate.
+
 ### Iteration 10 — 2026-06-19 (incident: FIXED a Postgres OOM crash — root cause)
 
 - **TRIGGER:** user — "suddenly not working and getting worse, so many telegram error
