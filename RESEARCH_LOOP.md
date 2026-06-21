@@ -312,6 +312,24 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 17 — 2026-06-21 (owner-triggered ~90min after iter-16 — health/cadence pass; cadence 8h→2h)
+
+- **TRIGGER:** owner ran it manually — "8h is too long, run it now." (The session-only cron only
+  fires when the REPL is fully idle, which isn't reliable while the owner is active, so firings have
+  effectively been manual. Addressed below.)
+- **MEASURE:** 367 closed · **25.1% win · −$18.05 · PF 0.32** (38 open, 238 live, healthy). Only
+  **26 new closes** since iter-16 (~90min) — same −EV book, same −$0.07/trade. iter-15 poll fix
+  STILL holding: **0 CRITICAL in 90min**. No infra fault, no structural change in 90 min (expected).
+- **DIAGNOSE:** nothing new — too little time elapsed for new signal; strategy converged (iter-14
+  search exhausted, iter-16 leverage shown variance-not-edge). The loop's ongoing value is now
+  primarily OPERATIONAL: keep the fleet healthy + catch infra faults FAST (as iter-15's feed-flap
+  catch proved) + accumulate the live paper sample. A 2h cadence serves that monitoring better than
+  8h; it will NOT find edge faster (there is none to find) — it tightens fault-detection + activity
+  visibility, which is what the owner actually wants from "run it more often."
+- **MAINTAIN — JUSTIFIED HOLD on strategy; OPERATIONAL change = cadence 8h→2h.** No deploy/reset
+  (fleet byte-identical to live). Re-armed the loop cron to every 2h (was 8h).
+- **STOP CHECK:** NOT met (25.1% win ≪ 70%; net −$18.05). Continue, now every 2h.
+
 ### Iteration 16 — 2026-06-21 (8h firing — iter-15 poll fix VERIFIED held; leverage quantified as variance-not-edge; justified hold)
 
 - **MEASURE:** 347 closed · **25.4% win · −$16.26 · PF 0.34** (24 open, 238 live, healthy; swap
