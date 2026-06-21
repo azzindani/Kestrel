@@ -350,6 +350,16 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   · FULL RESET (wipe dev slate, KEEP candles, restart, heartbeats wiped after) · system event.
 - **STOP CHECK:** NOT met — macd_cross is a forward-test lead, not a confirmed stop-#2 edge (modest,
   1h, per-pair borderline). Continue; let the live 1h cohort + the OOS backtests accumulate evidence.
+- **MICROSTRUCTURE DATA LAYER (owner-authorized, same session):** owner asked about bid/ask + order
+  flow — Kestrel had NEVER used it (OHLCV + candle-volume only). Built `scripts/record_microstructure.py`
+  (standalone Layer-3 recorder, no trading): banks gate order-book depth (top-5/20 + imbalance),
+  spread, and aggressor trade-delta every 10s for 6 pairs into its OWN `microstructure` table (NOT in
+  frozen db/schema.py). Runs as the `microstructure-recorder` override.yml service (restart:
+  unless-stopped). **Can't be backtested (no historical L2) → records LIVE; validate a sweep/imbalance
+  signal after weeks accumulate.** GOTCHA caught+fixed: image entrypoint hardcodes the daemon & ignores
+  `command:` → the service first ran a 2nd daemon (contaminated slate, re-reset); fix = override
+  `entrypoint`. See memory [[project_microstructure_recorder]]. Honest: order flow is the most credible
+  untested scalp lever BUT also the most latency-disadvantaged for retail — not a guaranteed win.
 
 ### Iteration 17 — 2026-06-21 (owner-triggered ~90min after iter-16 — health/cadence pass; cadence 8h→2h)
 
