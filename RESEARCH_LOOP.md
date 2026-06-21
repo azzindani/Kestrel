@@ -315,6 +315,34 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 20 — 2026-06-21 (BUG FIX: the iter-18 MACD cohort was SILENTLY DARK — never backfilled → fixed)
+
+- **MEASURE:** 244 live, err8h=**0** (iter-19 fix held, swap recovered). 5m fleet: 242 closed, 26.9%
+  win, −$12.14 (same −EV). Recorder banking well (20,514 rows / 11.4h). **MACD cohort: 0 trades, 0
+  signals after ~10h** — investigated (NOT "just early").
+- **DIAGNOSE (deep, read-first):** the pattern WORKS (simulated 2–6 fires/120-candles per pair, incl.
+  a DOGE cross 3.6h ago at the exact 120-candle daemon window) — yet 0 live signals. Root cause:
+  `db.load_recent_candles` filters **`WHERE bot_id = $1`** (candles are stored per-bot, UNIQUE
+  (bot_id,pair,tf,ts)). The 6 cohort bot_ids are NEW and were **never backfilled** — I skipped the
+  backfill in the iter-18 deploy because the 5m candles looked "fresh," but new bot_ids have ZERO
+  candles under their own id. So each cohort bot saw only the ~6 1h candles it had written since
+  startup — far below MACD's 36 → `detect_macd_cross` returned None (insufficient data) every close,
+  silently (pattern-stage rejections only write an event, not a signal row → invisible in `signals`).
+- **FIX (operational, no code change):** backfilled 720 1h candles per cohort bot_id
+  (`backfill_history.py --bots <cohort-only>`). VERIFIED via the exact daemon path
+  (`load_recent_candles(bot_id,pair,'1h',120)` → 120 candles, `macd_computes=True`, `fires_now=None`
+  = no cross right now, correct). No restart needed — `_process_candle` reloads the window from DB
+  each close, so the next 1h cross will fire. Cohort is now genuinely live.
+- **LESSON (codified):** a deploy that introduces NEW bot_ids (new cohort/strategy) MUST run
+  `backfill_history.py` even if existing candles look fresh — candles are per-bot_id, so a new bot
+  starts blind until backfilled. "candles kept" across a reset only covers EXISTING bot_ids. The
+  standard reset ritual's backfill step (on full bots.json) covers this; iter-18 erred by SKIPPING it.
+- **NO NEW STRATEGY:** fixing the dark cohort (the active experiment) was the priority; deploying
+  another while this one wasn't even running would be churn. 5m slate kept (legit), no reset needed
+  (data-population fix, not a new algorithm).
+- **STOP CHECK:** NOT met (5m −EV; macd cohort now live but no trades yet; no lockbox-confirmed edge).
+  Continue — the cohort should produce its first real forward-test trades within ~1–2 days.
+
 ### Iteration 19 — 2026-06-21 (INFRA FIX: candle_processor_error flood from a reset-without-restart; clean reset; MACD cohort awaiting 1h data)
 
 - **MEASURE:** 244 live, recorder banking well (9,312 rows, 6 pairs, 3s fresh). 5m fleet: 69 closed,
