@@ -329,6 +329,14 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 - **MAINTAIN — JUSTIFIED HOLD on strategy; OPERATIONAL change = cadence 8h→2h.** No deploy/reset
   (fleet byte-identical to live). Re-armed the loop cron to every 2h (was 8h).
 - **STOP CHECK:** NOT met (25.1% win ≪ 70%; net −$18.05). Continue, now every 2h.
+- **OWNER-DIRECTED RESET (post-iter-17, owner: "keep the leverage but I don't see any reset"):**
+  leverage CONFIRMED unchanged at 20× (§4 human-gated, never touched). Performed a FULL dev reset —
+  the slate had grown across iters 13–17 and (per iter-15) spanned TWO feed regimes (throttled ws +
+  poll), so it wasn't clean. Wiped 413 trades / 1126 signals / 76,238 events / 228,870 trade_context
+  / 0 pattern_memory; **candles KEPT** (369,687 5m rows, fresh → no backfill needed); restart →
+  `DELETE FROM heartbeats` AFTER restart (orphan-safe). Clean slate now accumulates entirely under
+  the stable poll feed for a methodologically clean forward measurement. No code/config change, no
+  edge created — a clean measurement baseline only.
 
 ### Iteration 16 — 2026-06-21 (8h firing — iter-15 poll fix VERIFIED held; leverage quantified as variance-not-edge; justified hold)
 
