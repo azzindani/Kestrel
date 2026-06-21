@@ -312,6 +312,35 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 15 — 2026-06-21 (8h firing — INFRA FIX: WS flapping was THROTTLING ⅓ of the fleet → FEED_MODE ws→poll)
+
+- **MEASURE (slate since iter-13 reset, ~?h — iter-14 held/no-reset so it accumulated):**
+  **209 closed · 23.9% win · −$8.86 · PF 0.38** (18 open, 238 live). Close-reason: **stop_loss 47 @
+  0% win / −13.0% = −$7.43** (the bleed), timeout 128 @ 28.1% / −$2.12, trailing_stop 34 @ 41.2% /
+  +$0.69 (only positive). By pattern: momentum_continuation 197 / −$8.09, impulse 6 / −$0.46, wick 6
+  / −$0.31. Same negative-skew no-edge book — strategy conclusion unchanged from iter-14.
+- **DOMINANT SIGNAL — 352 CRITICAL `connection` events in 8h** (iter-13/14 had ~0–5), ongoing
+  (22 in last 30min). ALL "WS feed {PAIR}/5m exceeded max retries (5)" on the SMALL-CAP gate streams
+  (SEI/ATOM/APE/CHZ/APT/BCH/TIA/ETC/FIL/OP/ARB/DOT). Telegram NOT flooded (TELEGRAM_SUPPRESS_CONNECTION
+  still on, iter-12b) — DB-only noise.
+- **DIAGNOSE (read-first, iter-11 lesson):** NOT a full outage — 33/35 pairs FRESH (candles closed
+  4.4min ago); only TIA stale (29min). gate's ccxt.pro WS *flaps* on the 34 small-cap streams,
+  recovers, re-flaps. The iter-12 premise "WS pushes each 5m rollover reliably" is EMPIRICALLY
+  REFUTED. **Second-order harm (the real cost):** each WS reconnect trips §16 "no orders within 60s
+  of reconnect" → the flapping pairs are THROTTLED. Confirmed: **flapping pairs 3.1 trades/pair vs
+  stable pairs 9.1/pair (3× less)** — SEI/ATOM/APE/BCH each only 1 trade. So the WS instability is
+  actively SUPPRESSING ⅓ of the fleet's activity = directly anti-mandate.
+- **MAINTAIN (infra fix, evidence-driven — NOT strategy, NOT thrash):** `FEED_MODE ws→poll` in
+  docker-compose.override.yml (host-local). poll = the iter-9 proven-stable REST transport; it
+  removes the reconnect churn AND the §16 reconnect-throttle, RESTORING activity on the small-caps.
+  The ~60s entry-lag tradeoff is acceptable for a no-edge research fleet (stability+completeness >
+  microsecond scalp timing). Config-only → `docker compose up -d kestrel` (recreate, no rebuild,
+  memory-safe under the full-swap pressure). **NO reset** (infra fix, not a new algorithm — iter-10
+  precedent; the 209-trade sample stays valid, just spans the pre/post-fix feed boundary).
+- **HONEST:** this does NOT create edge — the book is still −EV (no-edge truth unchanged). It fixes
+  an OPERATIONAL throttle so the fleet actually runs at full activity (the owner's core ask).
+- **STOP CHECK:** NOT met (23.9% win ≪ 70%; net −$8.86; no edge). Continue.
+
 ### Iteration 14 — 2026-06-20 (8h firing — iter-13 stop-widen REFUTED; high-ADX entry gate REFUTED; lockbox is data-infeasible at 5m)
 
 - **MEASURE (slate since the iter-13 reset + an intervening session OOM/auto-recover, ~?h):**
