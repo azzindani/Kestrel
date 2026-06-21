@@ -312,6 +312,39 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 16 — 2026-06-21 (8h firing — iter-15 poll fix VERIFIED held; leverage quantified as variance-not-edge; justified hold)
+
+- **MEASURE:** 347 closed · **25.4% win · −$16.26 · PF 0.34** (24 open, 238 live, healthy; swap
+  recovered 1602/2047). Close-reason: **stop_loss 84 @ 0% win / −12.2% = −$14.27** (still the whole
+  bleed), timeout 192 @ 32.8% / −$2.18, trailing_stop 70 @ 35.7% / +$0.30. Same negative-skew book.
+- **VERIFY iter-15 (the poll fix HELD — deliverable #1):** **connection-CRITICAL last 6h = 0** (was
+  352/8h on ws). Throttle GONE: the previously-starved small-cap pairs now trade **5.4/pair vs 5.2
+  for stable** (was 3.1 vs 9.1) — the §16 reconnect-throttle is removed, the fleet runs at full,
+  even activity. The fix did exactly what was predicted. Note: restoring that activity on a −EV book
+  is WHY absolute loss grew −$8.86→−$16.26 — honest "activity ≠ profit" in action, not a regression.
+- **DIAGNOSE:** nothing is broken (infra clean post-poll); strategy search is exhausted (iter-14
+  milestone). Stops remain the entire bleed, structurally, at 20× leverage (−12.2%/stop).
+- **LEVERAGE QUANTIFIED HONESTLY (deliverable #2 — corrects the "dominant lever" framing):** PnL
+  scales ~linearly with leverage and **win rate is leverage-INVARIANT** (TP/SL are ATR PRICE levels;
+  leverage only scales the $/% magnitude, not which exit triggers). From the 347 real trades:
+  20x −$16.26 · 10x −$8.13 · 5x −$4.06 · 3x −$2.44 — same trades, same win rate, **−EV at every
+  level**. Fees scale with notional too, so the fee-to-PnL ratio is leverage-invariant → leverage
+  does NOT help the cost floor either. **CONCLUSION: leverage is a VARIANCE / survival lever, NOT an
+  edge lever.** Lowering it = slower bleed AND smaller gains; on a −EV book it just loses more slowly
+  (which is the "be slow to lose less" the §6 mandate explicitly rejects as a goal). So even the one
+  human-gated lever I kept flagging cannot CREATE edge — it only changes how fast the (negative)
+  expectancy compounds. The honest set of edge-creating levers is now **empty** within current
+  constraints (spot-only §13 rules out funding-rate; every entry/exit/regime refuted; leverage is
+  variance-only). A real edge would need a constraint change (instrument class / structural
+  mechanism), which is human-gated §4 — flagged, not started.
+- **MAINTAIN — JUSTIFIED HOLD (no deploy, no reset).** No infra fault; no new edge lever exists;
+  no structurally-dead cell to prune (compression_breakout + anomaly_fade fire ~0 at 5m but are
+  inert, not loss-making — removing them helps nothing; loosening them would only add KNOWN −EV
+  activity, which serves the loss column, not the search). Manufacturing a strategy change here would
+  be theater (honesty preference #8 > ship-something). Fleet byte-identical to live → skip deploy+reset.
+- **STOP CHECK:** NOT met (25.4% win ≪ 70%; net −$16.26; no edge, and now shown leverage can't make
+  one). Continue / monitor — the binding constraint is human-gated.
+
 ### Iteration 15 — 2026-06-21 (8h firing — INFRA FIX: WS flapping was THROTTLING ⅓ of the fleet → FEED_MODE ws→poll)
 
 - **MEASURE (slate since iter-13 reset, ~?h — iter-14 held/no-reset so it accumulated):**
