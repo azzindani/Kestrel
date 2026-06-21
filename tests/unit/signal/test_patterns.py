@@ -8,6 +8,7 @@ from src.signal.patterns import (
     detect_anomaly_fade,
     detect_compression_breakout,
     detect_impulse_retracement,
+    detect_macd_cross,
     detect_mom_adx,
     detect_momentum_continuation,
     detect_session_seasonal,
@@ -38,6 +39,7 @@ class TestRegistry:
             "mom_adx",
             "triple_mom",
             "session_seasonal",
+            "macd_cross",
         }
         assert expected == set(registry.keys())
 
@@ -645,3 +647,42 @@ class TestSessionSeasonal:
 
     def test_empty_candles_returns_none(self):
         assert detect_session_seasonal([], make_params()) is None
+
+
+# ---------------------------------------------------------------------------
+# macd_cross (trend-aligned MACD signal-line cross) — iter 18
+# ---------------------------------------------------------------------------
+
+
+class TestMacdCross:
+    @staticmethod
+    def _candles(closes):
+        return [make_candle(close=c, ts=i * 3_600_000) for i, c in enumerate(closes)]
+
+    def test_insufficient_candles_returns_none(self):
+        # needs > macd_slow + macd_signal (26 + 9) candles
+        assert detect_macd_cross(self._candles([100.0] * 20), make_params()) is None
+
+    def test_no_cross_flat_series_returns_none(self):
+        # a perfectly flat series has macd == signal == 0 → no cross, no fire
+        assert detect_macd_cross(self._candles([100.0] * 50), make_params()) is None
+
+    def test_bullish_cross_above_zero_fires_long(self):
+        # flat (MACD == signal == 0) then a strong up-jump on the last bar: MACD pops
+        # positive and crosses up through its (lagging) signal line = trend-aligned long.
+        closes = [100.0] * 40 + [112.0]
+        r = detect_macd_cross(self._candles(closes), make_params())
+        assert r is not None
+        assert r.direction == Direction.LONG
+        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.details["variant"] == "macd_cross"
+
+    def test_bearish_cross_below_zero_fires_short(self):
+        # mirror: flat then a strong down-jump = MACD crosses down below signal, MACD<0.
+        closes = [100.0] * 40 + [88.0]
+        r = detect_macd_cross(self._candles(closes), make_params())
+        assert r is not None
+        assert r.direction == Direction.SHORT
+
+    def test_is_self_directing(self):
+        assert "macd_cross" in SELF_DIRECTING_PATTERNS

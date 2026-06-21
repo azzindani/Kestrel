@@ -194,6 +194,129 @@ _make_rsi2("rsi2_ct5", 5.0, 95.0, True)  # stricter (fewer, higher-quality dips)
 _make_rsi2("rsi2_raw", 10.0, 90.0, False)  # no trend filter — isolates the SMA-200 contribution
 
 
+# --- MACD (owner directive 2026-06-21: "permitted to use indexes like macd, rsi") -----
+# MACD has never been tested in Kestrel. Candles store ema9/ema21 but not ema12/26 or the
+# MACD/signal lines, so compute them inline from closes (same inline approach as RSI-2).
+# The detector/backtest pass only the last 120 candles; MACD(12,26,9) warms up in ~35, so
+# it fits the window comfortably.
+def _ema_series(values: Sequence[float], period: int) -> list[float]:
+    if len(values) < period:
+        return []
+    k = 2.0 / (period + 1)
+    ema = sum(values[:period]) / period
+    out = [ema]
+    for v in values[period:]:
+        ema = v * k + ema * (1.0 - k)
+        out.append(ema)
+    return out
+
+
+def _macd(
+    closes: Sequence[float], fast: int = 12, slow: int = 26, signal: int = 9
+) -> Optional[tuple[float, float, float, float]]:
+    """Return (macd_last, macd_prev, signal_last, signal_prev), or None if too short."""
+    if len(closes) < slow + signal + 1:
+        return None
+    ef = _ema_series(closes, fast)
+    es = _ema_series(closes, slow)
+    off = len(ef) - len(es)  # fast warms up earlier; align tails before subtracting
+    macd_line = [ef[i + off] - es[i] for i in range(len(es))]
+    if len(macd_line) < signal + 1:
+        return None
+    sig = _ema_series(macd_line, signal)
+    if len(sig) < 2:
+        return None
+    return (macd_line[-1], macd_line[-2], sig[-1], sig[-2])
+
+
+@_algo("macd_cross", PatternType.MOMENTUM_CONTINUATION)
+def _macd_cross(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    m = _macd([c.close for c in C])
+    if m is None:
+        return None
+    ml, mp, sl, sp = m
+    if mp <= sp and ml > sl:
+        return Direction.LONG  # MACD line crosses up through its signal line
+    if mp >= sp and ml < sl:
+        return Direction.SHORT
+    return None
+
+
+@_algo("macd_cross_ct", PatternType.MOMENTUM_CONTINUATION)
+def _macd_cross_ct(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # trend-aligned: only take the signal cross on the correct side of zero (MACD>0=uptrend)
+    m = _macd([c.close for c in C])
+    if m is None:
+        return None
+    ml, mp, sl, sp = m
+    if ml > 0 and mp <= sp and ml > sl:
+        return Direction.LONG
+    if ml < 0 and mp >= sp and ml < sl:
+        return Direction.SHORT
+    return None
+
+
+@_algo("macd_zero", PatternType.MOMENTUM_CONTINUATION)
+def _macd_zero(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # MACD line crossing the zero line = momentum-regime flip
+    m = _macd([c.close for c in C])
+    if m is None:
+        return None
+    ml, mp, _sl, _sp = m
+    if mp <= 0.0 < ml:
+        return Direction.LONG
+    if mp >= 0.0 > ml:
+        return Direction.SHORT
+    return None
+
+
+@_algo("macd_hist", PatternType.MOMENTUM_CONTINUATION)
+def _macd_hist(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # histogram momentum: hist = macd - signal; enter when it is positive & expanding
+    m = _macd([c.close for c in C])
+    if m is None:
+        return None
+    ml, mp, sl, sp = m
+    hist, hist_prev = ml - sl, mp - sp
+    if hist > 0 and hist > hist_prev:
+        return Direction.LONG
+    if hist < 0 and hist < hist_prev:
+        return Direction.SHORT
+    return None
+
+
+# --- moving-average crosses (owner directive 2026-06-21: "use moving average, any period") ---
+# Classic fast/slow MA crossover (golden/death cross). Computed inline from closes so any
+# period/method (SMA or EMA) works within the 120-candle window (slow must be < ~115).
+def _make_ma_cross(fast: int, slow: int, kind: str) -> None:
+    @_algo(f"{kind}_cross_{fast}_{slow}", PatternType.MOMENTUM_CONTINUATION)
+    def _fn(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+        closes = [c.close for c in C]
+        if len(closes) < slow + 1:
+            return None
+        if kind == "sma":
+            f_now, f_prev = _sma(closes, fast), _sma(closes[:-1], fast)
+            s_now, s_prev = _sma(closes, slow), _sma(closes[:-1], slow)
+        else:  # ema
+            fe, se = _ema_series(closes, fast), _ema_series(closes, slow)
+            if len(fe) < 2 or len(se) < 2:
+                return None
+            f_now, f_prev, s_now, s_prev = fe[-1], fe[-2], se[-1], se[-2]
+        if None in (f_now, f_prev, s_now, s_prev):
+            return None
+        if f_prev <= s_prev and f_now > s_now:
+            return Direction.LONG  # fast MA crosses up through slow MA (golden cross)
+        if f_prev >= s_prev and f_now < s_now:
+            return Direction.SHORT
+        return None
+
+
+for _maf, _mas in [(9, 21), (10, 30), (20, 50), (20, 100), (50, 100)]:
+    _make_ma_cross(_maf, _mas, "sma")
+for _maf, _mas in [(9, 21), (12, 26), (20, 50)]:
+    _make_ma_cross(_maf, _mas, "ema")
+
+
 @_algo("bb_fade", PatternType.ANOMALY_FADE)
 def _bb_fade(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     c = C[-1]

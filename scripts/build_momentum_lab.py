@@ -121,6 +121,24 @@ STRATEGIES = [
 ]
 
 
+# --- 1h MACD research-comparison cohort (iter-18 2026-06-21) -----------------------
+# macd_cross (trend-aligned MACD signal cross) is the project's FIRST signal +EV in BOTH
+# the recent year AND the untouched prior-year LOCKBOX (1h, maker; RESEARCH_LOOP iter 18).
+# §13 permits high-TF ONLY as a research-comparison arm, so this runs at 1h ALONGSIDE — not
+# replacing — the 5m hyper-scalp fleet (the 238 above are untouched). Live FORWARD-TEST of a
+# modest lead, NOT a validated edge. Exit = the validated harness "tight" bracket
+# (tp 1.4 / sl 1.0 ATR / max_hold 4); pairs = the 6 backtested.
+_MACD_COHORT_PAIRS = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "XRP/USDT", "ADA/USDT"]
+_MACD_EXIT = {
+    "tp_atr_multiplier": 1.4,
+    "sl_atr_multiplier": 1.0,
+    "max_hold_candles": 4,
+    "trailing_enabled": False,
+    "volume_ratio_min": 1.1,
+    "max_loss_pct_per_trade": 0.01,
+}
+
+
 def main() -> None:
     bots = []
     for pair in SCALP_PAIRS:
@@ -140,13 +158,29 @@ def main() -> None:
                     }
                 )
 
+    n_scalp = len(bots)
+    for pair in _MACD_COHORT_PAIRS:
+        token_pair = pair.replace("/", "")
+        bots.append(
+            {
+                "bot_id": f"dev-{token_pair}-1h-macd_cross-01",
+                "pair": pair,
+                "timeframe_entry": "1h",
+                "timeframe_regime": "1h",
+                "max_active_buckets": 1,
+                "strategy": "macd_cross",
+                "patterns": ["macd_cross"],
+                "params": dict(_MACD_EXIT),
+            }
+        )
+
     out = os.path.join(os.path.dirname(__file__), "..", "bots.json")
     with open(out, "w") as f:
         json.dump(bots, f, indent=2)
     print(
         f"wrote {os.path.normpath(out)}: {len(bots)} bots = "
-        f"{len(STRATEGIES)} patterns × {len(_TIMEFRAMES)} timeframe(s) "
-        f"× {len(SCALP_PAIRS)} markets"
+        f"{n_scalp} scalp ({len(STRATEGIES)} patterns × {len(_TIMEFRAMES)} tf × "
+        f"{len(SCALP_PAIRS)} markets) + {len(_MACD_COHORT_PAIRS)} 1h macd_cross cohort"
     )
 
 

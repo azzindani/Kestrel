@@ -292,5 +292,26 @@
     "range": [1, 12],
     "description": "Length in hours of the session_seasonal entry window starting at seasonal_entry_hour_start (7 = hours 18,19,20,21,22,23,0 UTC).",
     "impact": "wider = more seasonal entries (dilutes toward the always-on baseline); narrower = only the strongest hours"
+  },
+  "macd_fast": {
+    "value": 12,
+    "type": "int",
+    "range": [5, 20],
+    "description": "Fast EMA period for the macd_cross pattern's MACD line (MACD = EMA(fast) - EMA(slow)).",
+    "impact": "lower = more responsive MACD line, more/earlier crosses; higher = smoother, fewer signals"
+  },
+  "macd_slow": {
+    "value": 26,
+    "type": "int",
+    "range": [20, 50],
+    "description": "Slow EMA period for the macd_cross pattern's MACD line.",
+    "impact": "higher = slower MACD line, fewer crosses; lower = more crosses"
+  },
+  "macd_signal": {
+    "value": 9,
+    "type": "int",
+    "range": [5, 15],
+    "description": "Signal-line EMA period (EMA of the MACD line) for the macd_cross pattern; a cross of MACD over its signal line is the trigger.",
+    "impact": "lower = more responsive signal line, more crosses; higher = fewer, higher-conviction crosses"
   }
 }

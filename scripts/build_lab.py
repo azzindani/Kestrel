@@ -22,13 +22,23 @@ import json
 import os
 
 # 10 pairs — mix of large-cap and high-volatility (where ATR clears cost more often)
-PAIRS = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "PEPE/USDT",
-         "HYPE/USDT", "XRP/USDT", "BNB/USDT", "ADA/USDT", "AVAX/USDT"]
+PAIRS = [
+    "BTC/USDT",
+    "ETH/USDT",
+    "SOL/USDT",
+    "DOGE/USDT",
+    "PEPE/USDT",
+    "HYPE/USDT",
+    "XRP/USDT",
+    "BNB/USDT",
+    "ADA/USDT",
+    "AVAX/USDT",
+]
 
 # Grid over the params most able to flip profitability given the fee/edge math.
-TP_GRID = [1.0, 1.6, 2.4, 3.0]   # take-profit ATR multiple
-SL_GRID = [0.7, 1.0, 1.4]        # stop-loss ATR multiple
-HOLD_GRID = [4, 8]               # max candles held
+TP_GRID = [1.0, 1.6, 2.4, 3.0]  # take-profit ATR multiple
+SL_GRID = [0.7, 1.0, 1.4]  # stop-loss ATR multiple
+HOLD_GRID = [4, 8]  # max candles held
 
 
 def _tok(tp: float, sl: float, hold: int) -> str:
@@ -43,27 +53,31 @@ def main() -> None:
             for sl in SL_GRID:
                 for hold in HOLD_GRID:
                     strat = _tok(tp, sl, hold)
-                    bots.append({
-                        "bot_id": f"dev-{token_pair}-5m-{strat}-01",
-                        "pair": pair,
-                        "timeframe_entry": "5m",
-                        "timeframe_regime": "15m",
-                        "max_active_buckets": 1,
-                        "strategy": strat,
-                        "patterns": ["trend_momentum"],
-                        "params": {
-                            "tp_atr_multiplier": tp,
-                            "sl_atr_multiplier": sl,
-                            "max_hold_candles": hold,
-                        },
-                    })
+                    bots.append(
+                        {
+                            "bot_id": f"dev-{token_pair}-5m-{strat}-01",
+                            "pair": pair,
+                            "timeframe_entry": "5m",
+                            "timeframe_regime": "15m",
+                            "max_active_buckets": 1,
+                            "strategy": strat,
+                            "patterns": ["trend_momentum"],
+                            "params": {
+                                "tp_atr_multiplier": tp,
+                                "sl_atr_multiplier": sl,
+                                "max_hold_candles": hold,
+                            },
+                        }
+                    )
 
     out = os.path.join(os.path.dirname(__file__), "..", "bots.json")
     with open(out, "w") as f:
         json.dump(bots, f, indent=2)
     cells = len(TP_GRID) * len(SL_GRID) * len(HOLD_GRID)
-    print(f"wrote {os.path.normpath(out)}: {len(bots)} bots = {cells} grid cells × {len(PAIRS)} pairs "
-          f"(TP×SL×hold = {len(TP_GRID)}×{len(SL_GRID)}×{len(HOLD_GRID)})")
+    print(
+        f"wrote {os.path.normpath(out)}: {len(bots)} bots = {cells} grid cells × {len(PAIRS)} pairs "
+        f"(TP×SL×hold = {len(TP_GRID)}×{len(SL_GRID)}×{len(HOLD_GRID)})"
+    )
 
 
 if __name__ == "__main__":

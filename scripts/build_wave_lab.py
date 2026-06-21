@@ -37,30 +37,74 @@ import os
 # Synthetic mock-feed markets (EXCHANGE=mock generates a per-pair random walk, so
 # any ticker works; these are real liquid crypto names for a realistic dashboard).
 WAVE_PAIRS = [
-    "BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "PEPE/USDT",
-    "HYPE/USDT", "XRP/USDT", "BNB/USDT", "ADA/USDT", "AVAX/USDT",
+    "BTC/USDT",
+    "ETH/USDT",
+    "SOL/USDT",
+    "DOGE/USDT",
+    "PEPE/USDT",
+    "HYPE/USDT",
+    "XRP/USDT",
+    "BNB/USDT",
+    "ADA/USDT",
+    "AVAX/USDT",
 ]
 
 # Each variant: entry pattern + exit param profile. Trailing variants set
 # trailing_enabled and widen max_hold_candles so a runner isn't cut short.
 VARIANTS = [
     # --- fixed-exit baselines ---
-    {"name": "ride", "patterns": ["wave_ride"],
-     "params": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.6, "max_hold_candles": 8}},
-    {"name": "scalp", "patterns": ["vol_burst"],
-     "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 3}},
-    {"name": "flip", "patterns": ["wave_flip"],
-     "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 4}},
+    {
+        "name": "ride",
+        "patterns": ["wave_ride"],
+        "params": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.6, "max_hold_candles": 8},
+    },
+    {
+        "name": "scalp",
+        "patterns": ["vol_burst"],
+        "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 3},
+    },
+    {
+        "name": "flip",
+        "patterns": ["wave_flip"],
+        "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 4},
+    },
     # --- trailing-close variants (same entries, exit rides the trail) ---
-    {"name": "ride_t", "patterns": ["wave_ride"],
-     "params": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.6, "max_hold_candles": 24,
-                "trailing_enabled": True, "trail_activation_r": 1.0, "trail_distance_r": 1.0}},
-    {"name": "scalp_t", "patterns": ["vol_burst"],
-     "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 8,
-                "trailing_enabled": True, "trail_activation_r": 0.8, "trail_distance_r": 0.5}},
-    {"name": "flip_t", "patterns": ["wave_flip"],
-     "params": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0, "max_hold_candles": 8,
-                "trailing_enabled": True, "trail_activation_r": 1.0, "trail_distance_r": 0.8}},
+    {
+        "name": "ride_t",
+        "patterns": ["wave_ride"],
+        "params": {
+            "tp_atr_multiplier": 3.0,
+            "sl_atr_multiplier": 1.6,
+            "max_hold_candles": 24,
+            "trailing_enabled": True,
+            "trail_activation_r": 1.0,
+            "trail_distance_r": 1.0,
+        },
+    },
+    {
+        "name": "scalp_t",
+        "patterns": ["vol_burst"],
+        "params": {
+            "tp_atr_multiplier": 1.6,
+            "sl_atr_multiplier": 1.0,
+            "max_hold_candles": 8,
+            "trailing_enabled": True,
+            "trail_activation_r": 0.8,
+            "trail_distance_r": 0.5,
+        },
+    },
+    {
+        "name": "flip_t",
+        "patterns": ["wave_flip"],
+        "params": {
+            "tp_atr_multiplier": 1.6,
+            "sl_atr_multiplier": 1.0,
+            "max_hold_candles": 8,
+            "trailing_enabled": True,
+            "trail_activation_r": 1.0,
+            "trail_distance_r": 0.8,
+        },
+    },
 ]
 
 
@@ -69,22 +113,23 @@ def main() -> None:
     for pair in WAVE_PAIRS:
         token_pair = pair.replace("/", "")
         for v in VARIANTS:
-            bots.append({
-                "bot_id": f"dev-{token_pair}-5m-{v['name']}-01",
-                "pair": pair,
-                "timeframe_entry": "5m",
-                "timeframe_regime": "15m",
-                "max_active_buckets": 1,
-                "strategy": v["name"],
-                "patterns": v["patterns"],
-                "params": v["params"],
-            })
+            bots.append(
+                {
+                    "bot_id": f"dev-{token_pair}-5m-{v['name']}-01",
+                    "pair": pair,
+                    "timeframe_entry": "5m",
+                    "timeframe_regime": "15m",
+                    "max_active_buckets": 1,
+                    "strategy": v["name"],
+                    "patterns": v["patterns"],
+                    "params": v["params"],
+                }
+            )
 
     out = os.path.join(os.path.dirname(__file__), "..", "bots.json")
     with open(out, "w") as f:
         json.dump(bots, f, indent=2)
-    print(f"wrote {os.path.normpath(out)}: {len(bots)} bots = "
-          f"{len(VARIANTS)} variants × {len(WAVE_PAIRS)} markets")
+    print(f"wrote {os.path.normpath(out)}: {len(bots)} bots = {len(VARIANTS)} variants × {len(WAVE_PAIRS)} markets")
 
 
 if __name__ == "__main__":

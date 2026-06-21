@@ -88,7 +88,7 @@ cfg = AppConfig(
 # ---------------------------------------------------------------------------
 
 TS_START = 1_736_154_000_000  # 2025-01-06 09:00:00 UTC in ms
-TS_STEP = 300_000              # 5 minutes per candle
+TS_STEP = 300_000  # 5 minutes per candle
 
 _ts_idx = [0]
 
@@ -103,10 +103,10 @@ def _next_ts() -> int:
 # Candle builder — fixed volumes prevent vol_ratio edge cases
 # ---------------------------------------------------------------------------
 
-BASE_VOL = 200.0      # arbitrary unit; only ratios matter
-_VOL_NORMAL  = 1.1    # ×BASE — min stored vol_ratio ≈ 0.85 > 0.70
-_VOL_TRIGGER = 3.5    # ×BASE — stored vol_ratio ≈ 2.48 >> 1.30
-_VOL_RETRACE = 2.5    # ×BASE — stored vol_ratio ≈ 1.69 ≥ 1.56 (Asian session)
+BASE_VOL = 200.0  # arbitrary unit; only ratios matter
+_VOL_NORMAL = 1.1  # ×BASE — min stored vol_ratio ≈ 0.85 > 0.70
+_VOL_TRIGGER = 3.5  # ×BASE — stored vol_ratio ≈ 2.48 >> 1.30
+_VOL_RETRACE = 2.5  # ×BASE — stored vol_ratio ≈ 1.69 ≥ 1.56 (Asian session)
 
 buf: deque[Candle] = deque(maxlen=200)
 candles: list[Candle] = []
@@ -125,8 +125,16 @@ def _make(o: float, h: float, l: float, c: float, v: float) -> Candle:
 
     # Step 1: add raw candle to buf so compute_all_indicators sees full history
     raw = Candle(
-        bot_id="sim", ts=ts, pair="BTCUSDT", timeframe="5m",
-        open=o, high=h, low=l, close=c, volume=max(v, 1.0), **geom,
+        bot_id="sim",
+        ts=ts,
+        pair="BTCUSDT",
+        timeframe="5m",
+        open=o,
+        high=h,
+        low=l,
+        close=c,
+        volume=max(v, 1.0),
+        **geom,
     )
     buf.append(raw)
 
@@ -136,9 +144,18 @@ def _make(o: float, h: float, l: float, c: float, v: float) -> Candle:
     # Step 3: build intermediate candle WITH indicators so classify_regime
     #         sees the real volume_ratio (not None → fallback 1.0)
     intermediate = Candle(
-        bot_id="sim", ts=ts, pair="BTCUSDT", timeframe="5m",
-        open=o, high=h, low=l, close=c, volume=max(v, 1.0),
-        regime=None, **geom, **inds,
+        bot_id="sim",
+        ts=ts,
+        pair="BTCUSDT",
+        timeframe="5m",
+        open=o,
+        high=h,
+        low=l,
+        close=c,
+        volume=max(v, 1.0),
+        regime=None,
+        **geom,
+        **inds,
     )
     buf[-1] = intermediate
 
@@ -148,9 +165,18 @@ def _make(o: float, h: float, l: float, c: float, v: float) -> Candle:
 
     # Step 5: final candle with correct regime
     full = Candle(
-        bot_id="sim", ts=ts, pair="BTCUSDT", timeframe="5m",
-        open=o, high=h, low=l, close=c, volume=max(v, 1.0),
-        regime=rs, **geom, **inds,
+        bot_id="sim",
+        ts=ts,
+        pair="BTCUSDT",
+        timeframe="5m",
+        open=o,
+        high=h,
+        low=l,
+        close=c,
+        volume=max(v, 1.0),
+        regime=rs,
+        **geom,
+        **inds,
     )
     buf[-1] = full
     candles.append(full)
@@ -170,7 +196,7 @@ def _normal_candle(drift_pct: float = 0.08, noise_pct: float = 0.11) -> Candle:
     """
     global price
     o = price
-    move  = o * drift_pct / 100.0
+    move = o * drift_pct / 100.0
     noise = o * noise_pct / 100.0
     c = o + move + random.uniform(-noise, noise)
     body = abs(c - o)
@@ -185,7 +211,7 @@ def _trigger_candle() -> Candle:
     """
     global price
     o = price
-    body = o * 0.70 / 100.0   # 0.70% of price
+    body = o * 0.70 / 100.0  # 0.70% of price
     c = o + body
     h = c + random.uniform(body * 0.03, body * 0.06)
     l = o - random.uniform(body * 0.02, body * 0.04)
@@ -235,8 +261,7 @@ for _ in range(160):
 
 w = candles[-1]
 print(f"  price={w.close:,.0f}  ema9={w.ema9:,.0f}  ema21={w.ema21:,.0f}")
-print(f"  adx={w.adx:.1f}  rsi14={w.rsi14:.1f}  atr14={w.atr14:.0f}"
-      f"  vol_ratio={w.volume_ratio:.3f}  regime={w.regime}")
+print(f"  adx={w.adx:.1f}  rsi14={w.rsi14:.1f}  atr14={w.atr14:.0f}  vol_ratio={w.volume_ratio:.3f}  regime={w.regime}")
 
 # ---------------------------------------------------------------------------
 # Phase 2: 50 trigger+retrace cycles (12 candles each = 600 more candles)
@@ -260,8 +285,9 @@ print(f"  Generated {len(trigger_pairs)} trigger+retrace pairs")
 print(f"  Total candles: {len(candles):,}")
 
 last = candles[-1]
-print(f"  Final: price={last.close:,.0f}  atr14={last.atr14:.0f}"
-      f"  vol_ratio={last.volume_ratio:.3f}  regime={last.regime}")
+print(
+    f"  Final: price={last.close:,.0f}  atr14={last.atr14:.0f}  vol_ratio={last.volume_ratio:.3f}  regime={last.regime}"
+)
 
 # ---------------------------------------------------------------------------
 # Spot-check: verify first 4 pairs meet all pattern + validate() constraints
@@ -269,10 +295,13 @@ print(f"  Final: price={last.close:,.0f}  atr14={last.atr14:.0f}"
 
 print()
 print("Spot-check: first 4 trigger+retrace pairs")
-print(f"  {'Pair':>4}  {'t_br':>5}  {'t_vr':>5}  {'ret_frac':>8}  "
-      f"{'r_vr':>5}  {'r≥t_o':>6}  {'atr14':>6}  {'tp_pct':>7}  {'fee_ok':>6}")
+print(
+    f"  {'Pair':>4}  {'t_br':>5}  {'t_vr':>5}  {'ret_frac':>8}  "
+    f"{'r_vr':>5}  {'r≥t_o':>6}  {'atr14':>6}  {'tp_pct':>7}  {'fee_ok':>6}"
+)
 for i, (ti, ri) in enumerate(trigger_pairs[:4]):
-    t = candles[ti]; r = candles[ri]
+    t = candles[ti]
+    r = candles[ri]
     tb = t.close - t.open
     rb = abs(r.close - r.open)
     ret_frac = rb / tb if tb > 0 else 0.0
@@ -280,11 +309,13 @@ for i, (ti, ri) in enumerate(trigger_pairs[:4]):
     atr = r.atr14 or 0.0
     entry = r.close
     tp_pct = (atr * params.tp_atr_multiplier / entry * 100.0) if entry > 0 else 0.0
-    fee_ok = tp_pct > 0.18 * 1.5   # 0.27%
+    fee_ok = tp_pct > 0.18 * 1.5  # 0.27%
     above_open = r.close >= t.open
-    print(f"  {i+1:>4}  {t.body_ratio:>5.3f}  {t.volume_ratio:>5.3f}  "
-          f"{ret_frac:>8.3f}  {r.volume_ratio:>5.3f}  {str(above_open):>6}  "
-          f"{atr:>6.0f}  {tp_pct:>6.3f}%  {'OK' if fee_ok else 'FAIL':>6}")
+    print(
+        f"  {i + 1:>4}  {t.body_ratio:>5.3f}  {t.volume_ratio:>5.3f}  "
+        f"{ret_frac:>8.3f}  {r.volume_ratio:>5.3f}  {str(above_open):>6}  "
+        f"{atr:>6.0f}  {tp_pct:>6.3f}%  {'OK' if fee_ok else 'FAIL':>6}"
+    )
 
 # ---------------------------------------------------------------------------
 # Diagnostic: evaluation-window statistics
@@ -295,34 +326,35 @@ print("Diagnostic: evaluation-window candle statistics (skip warmup)...")
 eval_c = candles[60:]
 n = len(eval_c)
 
-vols  = [c.volume_ratio for c in eval_c if c.volume_ratio is not None]
-atrs  = [c.atr14        for c in eval_c if c.atr14        is not None]
-adxs  = [c.adx          for c in eval_c if c.adx          is not None]
-rsis  = [c.rsi14        for c in eval_c if c.rsi14        is not None]
+vols = [c.volume_ratio for c in eval_c if c.volume_ratio is not None]
+atrs = [c.atr14 for c in eval_c if c.atr14 is not None]
+adxs = [c.adx for c in eval_c if c.adx is not None]
+rsis = [c.rsi14 for c in eval_c if c.rsi14 is not None]
 
 regime_counts = {}
 for c in eval_c:
     regime_counts[c.regime or "None"] = regime_counts.get(c.regime or "None", 0) + 1
 
-n_vol_ok   = sum(1 for v in vols if v >= 1.30)
-n_vol_70   = sum(1 for v in vols if v >= 0.70)
+n_vol_ok = sum(1 for v in vols if v >= 1.30)
+n_vol_70 = sum(1 for v in vols if v >= 0.70)
 n_ema_bull = sum(1 for c in eval_c if c.ema9 and c.ema21 and c.ema9 > c.ema21)
-n_adx_ok   = sum(1 for a in adxs if a > 20)
+n_adx_ok = sum(1 for a in adxs if a > 20)
 
 print(f"  Evaluated: {n} candles")
 print(f"  Regime: { {k: v for k, v in sorted(regime_counts.items())} }")
-print(f"  vol_ratio ≥ 1.30: {n_vol_ok}/{n} ({100*n_vol_ok/n:.1f}%)")
-print(f"  vol_ratio ≥ 0.70: {n_vol_70}/{n} ({100*n_vol_70/n:.1f}%)  "
-      f"[QUIET if < 0.70, min={min(vols):.3f}]")
-print(f"  EMA9 > EMA21:     {n_ema_bull}/{n} ({100*n_ema_bull/n:.1f}%)")
-print(f"  ADX > 20:         {n_adx_ok}/{n} ({100*n_adx_ok/n:.1f}%)")
+print(f"  vol_ratio ≥ 1.30: {n_vol_ok}/{n} ({100 * n_vol_ok / n:.1f}%)")
+print(f"  vol_ratio ≥ 0.70: {n_vol_70}/{n} ({100 * n_vol_70 / n:.1f}%)  [QUIET if < 0.70, min={min(vols):.3f}]")
+print(f"  EMA9 > EMA21:     {n_ema_bull}/{n} ({100 * n_ema_bull / n:.1f}%)")
+print(f"  ADX > 20:         {n_adx_ok}/{n} ({100 * n_adx_ok / n:.1f}%)")
 if atrs:
     atr_pcts = [a / c.close * 100 for a, c in zip(atrs, eval_c)]
-    tp_pcts  = [p * params.tp_atr_multiplier for p in atr_pcts]
+    tp_pcts = [p * params.tp_atr_multiplier for p in atr_pcts]
     n_fee_ok = sum(1 for p in tp_pcts if p > 0.27)
-    print(f"  ATR14%:    min={min(atr_pcts):.3f}%  mean={sum(atr_pcts)/len(atr_pcts):.3f}%  max={max(atr_pcts):.3f}%")
-    print(f"  tp_pct:    min={min(tp_pcts):.3f}%  mean={sum(tp_pcts)/len(tp_pcts):.3f}%  "
-          f"  > 0.27% threshold: {n_fee_ok}/{n} ({100*n_fee_ok/n:.0f}%)")
+    print(f"  ATR14%:    min={min(atr_pcts):.3f}%  mean={sum(atr_pcts) / len(atr_pcts):.3f}%  max={max(atr_pcts):.3f}%")
+    print(
+        f"  tp_pct:    min={min(tp_pcts):.3f}%  mean={sum(tp_pcts) / len(tp_pcts):.3f}%  "
+        f"  > 0.27% threshold: {n_fee_ok}/{n} ({100 * n_fee_ok / n:.0f}%)"
+    )
 
 # ---------------------------------------------------------------------------
 # Rejection probe: full pipeline (evaluate + validate) on first 360 candles
@@ -332,8 +364,8 @@ print()
 print("Rejection probe: full pipeline on 360 evaluation candles...")
 
 PROBE = min(360, n)
-rej_eval:  dict[str, int] = {}
-rej_risk:  dict[str, int] = {}
+rej_eval: dict[str, int] = {}
+rej_risk: dict[str, int] = {}
 fired = 0
 
 for i in range(60, 60 + PROBE):
@@ -359,16 +391,16 @@ for i in range(60, 60 + PROBE):
         fired += 1
 
 passed_eval = sum(rej_risk.values()) + fired
-print(f"  Passed evaluate():  {passed_eval}/{PROBE} ({100*passed_eval/PROBE:.1f}%)")
-print(f"  Passed validate():  {fired}/{PROBE} ({100*fired/PROBE:.1f}%)")
+print(f"  Passed evaluate():  {passed_eval}/{PROBE} ({100 * passed_eval / PROBE:.1f}%)")
+print(f"  Passed validate():  {fired}/{PROBE} ({100 * fired / PROBE:.1f}%)")
 if rej_eval:
     print("  evaluate() rejections:")
     for k, v in sorted(rej_eval.items(), key=lambda x: -x[1]):
-        print(f"    {k:<55s} {v:3d} ({100*v/PROBE:.1f}%)")
+        print(f"    {k:<55s} {v:3d} ({100 * v / PROBE:.1f}%)")
 if rej_risk:
     print("  validate() rejections:")
     for k, v in sorted(rej_risk.items(), key=lambda x: -x[1]):
-        print(f"    {k:<30s} {v:3d} ({100*v/PROBE:.1f}%)")
+        print(f"    {k:<30s} {v:3d} ({100 * v / PROBE:.1f}%)")
 
 # ---------------------------------------------------------------------------
 # Walk-forward backtest (60% train / 40% test)
@@ -378,8 +410,8 @@ print()
 print("Running walk-forward backtest (60% train / 40% test)...")
 
 result = walk_forward(candles, params, cfg)
-is_   = result["in_sample"]
-os_   = result["out_sample"]
+is_ = result["in_sample"]
+os_ = result["out_sample"]
 trades_out = result["trades_out"]
 
 split = int(len(candles) * 0.60)
@@ -389,17 +421,21 @@ print("  BACKTEST RESULTS")
 print("=" * 64)
 print()
 print(f"  IN-SAMPLE  (first 60%): {split} candles")
-print(f"    trades={is_['total_trades']:3d}  win={is_['win_rate']:.1%}  "
-      f"pnl={is_['total_pnl_usdt']:+.4f} USDT  "
-      f"sharpe={is_['sharpe_ratio']:.3f}  "
-      f"max_dd={is_['max_drawdown_usdt']:.4f} USDT")
+print(
+    f"    trades={is_['total_trades']:3d}  win={is_['win_rate']:.1%}  "
+    f"pnl={is_['total_pnl_usdt']:+.4f} USDT  "
+    f"sharpe={is_['sharpe_ratio']:.3f}  "
+    f"max_dd={is_['max_drawdown_usdt']:.4f} USDT"
+)
 print(f"    close_reasons: {is_['close_reasons']}")
 print()
 print(f"  OUT-OF-SAMPLE (last 40%): {len(candles) - split} candles")
-print(f"    trades={os_['total_trades']:3d}  win={os_['win_rate']:.1%}  "
-      f"pnl={os_['total_pnl_usdt']:+.4f} USDT  "
-      f"sharpe={os_['sharpe_ratio']:.3f}  "
-      f"max_dd={os_['max_drawdown_usdt']:.4f} USDT")
+print(
+    f"    trades={os_['total_trades']:3d}  win={os_['win_rate']:.1%}  "
+    f"pnl={os_['total_pnl_usdt']:+.4f} USDT  "
+    f"sharpe={os_['sharpe_ratio']:.3f}  "
+    f"max_dd={os_['max_drawdown_usdt']:.4f} USDT"
+)
 print(f"    close_reasons: {os_['close_reasons']}")
 
 if not trades_out:
@@ -408,15 +444,17 @@ if not trades_out:
 else:
     print()
     print(f"  Out-of-sample trade log ({len(trades_out)} trades):")
-    print(f"  {'#':>3}  {'pattern':<25}  {'dir':<5}  {'reason':<13}"
-          f"  {'entry':>9}  {'tp':>9}  {'sl':>9}  {'pnl_net':>10}")
-    print(f"  {'-'*3}  {'-'*25}  {'-'*5}  {'-'*13}"
-          f"  {'-'*9}  {'-'*9}  {'-'*9}  {'-'*10}")
+    print(
+        f"  {'#':>3}  {'pattern':<25}  {'dir':<5}  {'reason':<13}  {'entry':>9}  {'tp':>9}  {'sl':>9}  {'pnl_net':>10}"
+    )
+    print(f"  {'-' * 3}  {'-' * 25}  {'-' * 5}  {'-' * 13}  {'-' * 9}  {'-' * 9}  {'-' * 9}  {'-' * 10}")
     for i, t in enumerate(trades_out, 1):
-        print(f"  {i:3d}  {t['pattern']:<25}  {t['direction']:<5}  "
-              f"{t['close_reason']:<13}  {t['entry_price']:9.0f}  "
-              f"{t['tp_price']:9.0f}  {t['sl_price']:9.0f}  "
-              f"{t['pnl_net_usdt']:+10.4f}")
+        print(
+            f"  {i:3d}  {t['pattern']:<25}  {t['direction']:<5}  "
+            f"{t['close_reason']:<13}  {t['entry_price']:9.0f}  "
+            f"{t['tp_price']:9.0f}  {t['sl_price']:9.0f}  "
+            f"{t['pnl_net_usdt']:+10.4f}"
+        )
 
 # ---------------------------------------------------------------------------
 # Go-live criteria (CLAUDE.md §18 / §30)
@@ -427,16 +465,16 @@ print("=" * 64)
 print("  GO-LIVE CRITERIA (out-of-sample — CLAUDE.md §30)")
 print("=" * 64)
 
-os_tr  = os_["total_trades"]
+os_tr = os_["total_trades"]
 os_win = os_["win_rate"]
-os_pf  = os_["profit_factor"]
+os_pf = os_["profit_factor"]
 os_pnl = os_["total_pnl_usdt"]
-os_sr  = os_["sharpe_ratio"]
-os_dd  = os_["max_drawdown_pct"]
+os_sr = os_["sharpe_ratio"]
+os_dd = os_["max_drawdown_pct"]
 
-cr_trades  = os_tr  >= 5
+cr_trades = os_tr >= 5
 cr_winrate = os_win >= 0.55
-cr_pf      = os_pf is not None and os_pf >= 1.2
+cr_pf = os_pf is not None and os_pf >= 1.2
 
 print(f"  Min 5 OOS trades:       {'PASS' if cr_trades else 'FAIL':4s}  ({os_tr})")
 print(f"  Win rate ≥ 55%:         {'PASS' if cr_winrate else 'FAIL':4s}  ({os_win:.1%})")
