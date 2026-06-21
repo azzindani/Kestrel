@@ -315,6 +315,33 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 19 — 2026-06-21 (INFRA FIX: candle_processor_error flood from a reset-without-restart; clean reset; MACD cohort awaiting 1h data)
+
+- **MEASURE:** 244 live, recorder banking well (9,312 rows, 6 pairs, 3s fresh). 5m fleet: 69 closed,
+  24.6% win, −$3.63 (trend_momentum −$2.60 worst, others small −; same −EV book). **macd_cross
+  cohort: 0 trades / 0 signals** — only ~1–2 1h candles have closed since the iter-18 reset, and a
+  MACD cross is infrequent, so 0 is expected this early (NOT a fault — verified below).
+- **DOMINANT SIGNAL — `candle_processor_error` flood: 868/8h, ONGOING ~2.8/min** (42 last 15min). NOT
+  the new MACD pattern (read the payload, iter-5 protocol): it's a **trade_context FK violation** —
+  `Key (trade_id)=(20xx) is not present in table "trades"` — on 5m fleet bots (PEPE/UNI/ADA).
+- **ROOT CAUSE:** the iter-18 rogue-daemon cleanup ran `reset_dev` (wiping `trades`) **without
+  restarting the kestrel daemon**. The daemon kept in-memory open-position refs to the deleted trades
+  and tried to write the `trade_context` "during"-window row every candle → FK violation each tick,
+  forever. The reset ritual REQUIRES the restart precisely to drop that stale state; I skipped it in
+  the hurry to clear the rogue-daemon contamination.
+- **FIX (proper reset, the step skipped before):** `reset_dev` → **`docker compose restart kestrel`**
+  (daemon reconciles to the empty trades table, no ghost refs) → `DELETE heartbeats` after restart.
+  VERIFIED: candle_processor_error last 60s = **0** (flood stopped); 244 heartbeats; trades=0;
+  recorder unaffected. This also gives the macd_cross cohort + 5m fleet a genuinely clean slate.
+- **NO NEW STRATEGY THIS FIRING (justified):** the macd_cross 1h cohort is the active experiment and
+  has not yet had data (needs 1h closes with a cross); deploying ANOTHER indicator now would be churn
+  before the last one produced a single result. Recorder accumulating toward a future microstructure
+  test. So: fix the fault, clean the slate, let macd + the recorder run. Not a HOLD-for-nothing — a
+  real infra fault was root-caused and fixed.
+- **LESSON (codified):** `reset_dev` MUST be paired with a daemon restart, or orphaned open positions
+  flood candle_processor_error with trade_context FK violations. Symptom to recognize next time.
+- **STOP CHECK:** NOT met (5m −EV; macd cohort no data yet; no lockbox-confirmed edge). Continue.
+
 ### Iteration 18 — 2026-06-21 (owner-directed STRATEGY SEARCH — MACD found +EV cross-era at 1h → deployed 1h macd_cross cohort)
 
 - **TRIGGER:** owner — "your job is to find algorithm and strategy; permitted to use indexes like
