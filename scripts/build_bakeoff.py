@@ -24,14 +24,14 @@ PAIRS = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "PEPE/USDT", "HYPE/USD
 
 # strategy -> {patterns: [...] | None (all),  params: {override-key: value}}
 STRATEGIES: dict[str, dict] = {
-    "mom":        {"patterns": ["trend_momentum"], "params": {}},
-    "momwide":    {"patterns": ["trend_momentum"], "params": {"tp_atr_multiplier": 2.4, "sl_atr_multiplier": 1.0}},
-    "momtight":   {"patterns": ["trend_momentum"], "params": {"tp_atr_multiplier": 1.0, "sl_atr_multiplier": 0.8}},
+    "mom": {"patterns": ["trend_momentum"], "params": {}},
+    "momwide": {"patterns": ["trend_momentum"], "params": {"tp_atr_multiplier": 2.4, "sl_atr_multiplier": 1.0}},
+    "momtight": {"patterns": ["trend_momentum"], "params": {"tp_atr_multiplier": 1.0, "sl_atr_multiplier": 0.8}},
     "mompatient": {"patterns": ["trend_momentum"], "params": {"max_hold_candles": 8}},
-    "momhiconf":  {"patterns": ["trend_momentum"], "params": {"min_confidence": 0.7, "body_ratio_min": 0.55}},
-    "momhivol":   {"patterns": ["trend_momentum"], "params": {"volume_ratio_min": 1.8}},
-    "multi":      {"patterns": None, "params": {}},  # all registered patterns
-    "classic":    {"patterns": ["impulse_retracement", "momentum_continuation"], "params": {}},
+    "momhiconf": {"patterns": ["trend_momentum"], "params": {"min_confidence": 0.7, "body_ratio_min": 0.55}},
+    "momhivol": {"patterns": ["trend_momentum"], "params": {"volume_ratio_min": 1.8}},
+    "multi": {"patterns": None, "params": {}},  # all registered patterns
+    "classic": {"patterns": ["impulse_retracement", "momentum_continuation"], "params": {}},
 }
 
 

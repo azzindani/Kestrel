@@ -3,223 +3,6 @@
   "pair": "ETCUSDT",
   "configs": [
     {
-      "fingerprint": "53fe7c6ad4f2",
-      "config": {
-        "pair": "ETCUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "anomaly_fade",
-        "patterns": [
-          "anomaly_fade"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.3,
-          "tp_atr_multiplier": 1.9,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETCUSDT-5m-anomaly_fade-01"
-    },
-    {
-      "fingerprint": "5e0d7e3d5492",
-      "config": {
-        "pair": "ETCUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "mom_adx",
-        "patterns": [
-          "mom_adx"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.3,
-          "tp_atr_multiplier": 1.9,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETCUSDT-5m-mom_adx-01"
-    },
-    {
-      "fingerprint": "632cc0fdc407",
-      "config": {
-        "pair": "ETCUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "compression_breakout",
-        "patterns": [
-          "compression_breakout"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.3,
-          "tp_atr_multiplier": 1.9,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETCUSDT-5m-compression_breakout-01"
-    },
-    {
-      "fingerprint": "6bba5a484f7c",
-      "config": {
-        "pair": "ETCUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "triple_mom",
-        "patterns": [
-          "triple_mom"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.3,
-          "tp_atr_multiplier": 1.9,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETCUSDT-5m-triple_mom-01"
-    },
-    {
-      "fingerprint": "936c038c10ae",
-      "config": {
-        "pair": "ETCUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "wick_rejection",
-        "patterns": [
-          "wick_rejection"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.3,
-          "tp_atr_multiplier": 1.9,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETCUSDT-5m-wick_rejection-01"
-    },
-    {
-      "fingerprint": "ac6eb4df0f48",
-      "config": {
-        "pair": "ETCUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "impulse_retracement",
-        "patterns": [
-          "impulse_retracement"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.3,
-          "tp_atr_multiplier": 1.9,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETCUSDT-5m-impulse_retracement-01"
-    },
-    {
-      "fingerprint": "db905b3d0696",
-      "config": {
-        "pair": "ETCUSDT",
-        "timeframe_entry": "5m",
-        "timeframe_regime": "5m",
-        "strategy": "trend_momentum",
-        "patterns": [
-          "trend_momentum"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "adx_strong_min": 20.0,
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.3,
-          "tp_atr_multiplier": 1.9,
-          "trail_activation_r": 0.5,
-          "trail_distance_r": 0.5,
-          "trailing_enabled": true,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ETCUSDT-5m-trend_momentum-01"
-    },
-    {
       "fingerprint": "07792aea86c0",
       "config": {
         "pair": "ETCUSDT",
@@ -435,6 +218,223 @@
       "last_seen_date": "2026-06-20T01:50:40+00:00",
       "snapshot_count": 1,
       "example_bot_id": "dev-ETCUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "53fe7c6ad4f2",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "anomaly_fade",
+        "patterns": [
+          "anomaly_fade"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "eb16f48489a7bf403d5cd0542f05829b83b7ca14",
+      "first_seen_date": "2026-06-20T08:56:40+00:00",
+      "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-5m-anomaly_fade-01"
+    },
+    {
+      "fingerprint": "5e0d7e3d5492",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "eb16f48489a7bf403d5cd0542f05829b83b7ca14",
+      "first_seen_date": "2026-06-20T08:56:40+00:00",
+      "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-5m-mom_adx-01"
+    },
+    {
+      "fingerprint": "632cc0fdc407",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "compression_breakout",
+        "patterns": [
+          "compression_breakout"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "eb16f48489a7bf403d5cd0542f05829b83b7ca14",
+      "first_seen_date": "2026-06-20T08:56:40+00:00",
+      "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-5m-compression_breakout-01"
+    },
+    {
+      "fingerprint": "6bba5a484f7c",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "triple_mom",
+        "patterns": [
+          "triple_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "eb16f48489a7bf403d5cd0542f05829b83b7ca14",
+      "first_seen_date": "2026-06-20T08:56:40+00:00",
+      "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "936c038c10ae",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "wick_rejection",
+        "patterns": [
+          "wick_rejection"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "eb16f48489a7bf403d5cd0542f05829b83b7ca14",
+      "first_seen_date": "2026-06-20T08:56:40+00:00",
+      "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-5m-wick_rejection-01"
+    },
+    {
+      "fingerprint": "ac6eb4df0f48",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "impulse_retracement",
+        "patterns": [
+          "impulse_retracement"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "eb16f48489a7bf403d5cd0542f05829b83b7ca14",
+      "first_seen_date": "2026-06-20T08:56:40+00:00",
+      "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-5m-impulse_retracement-01"
+    },
+    {
+      "fingerprint": "db905b3d0696",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "trend_momentum",
+        "patterns": [
+          "trend_momentum"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 20.0,
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.3,
+          "tp_atr_multiplier": 1.9,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "eb16f48489a7bf403d5cd0542f05829b83b7ca14",
+      "first_seen_date": "2026-06-20T08:56:40+00:00",
+      "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-5m-trend_momentum-01"
     }
   ]
 }

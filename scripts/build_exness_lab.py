@@ -39,8 +39,8 @@ import os
 # are MUI-conditional commodities. Forex pairs and indices are deliberately excluded
 # (fiat / basket — no real underlying).
 SYMBOLS = [
-    "USOIL",   # WTI crude   — energy, cleanest real-underlying + swap-free
-    "UKOIL",   # Brent crude — energy
+    "USOIL",  # WTI crude   — energy, cleanest real-underlying + swap-free
+    "UKOIL",  # Brent crude — energy
     "XNGUSD",  # natural gas — energy
     "XAUUSD",  # gold        — metal (sarf caveat), swap-free, high-leverage tier
     "XAGUSD",  # silver      — metal (sarf caveat), swap-free
@@ -54,18 +54,33 @@ SYMBOLS = [
 # PCT reward:risk values are sized for the configured leverage so the stop sits
 # inside the liquidation distance (detector also clamps as a backstop). R:R = 2:1.
 _ENTRIES = [
-    {"name": "ride", "patterns": ["wave_ride"],
-     "atr": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.6},
-     "pct": {"tp_pct": 0.05, "sl_pct": 0.025},          # 5% / 2.5% — the user's example
-     "hold_fixed": 8, "hold_trail": 24, "trail": (1.0, 1.0)},
-    {"name": "scalp", "patterns": ["vol_burst"],
-     "atr": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0},
-     "pct": {"tp_pct": 0.02, "sl_pct": 0.01},           # tight scalp R:R
-     "hold_fixed": 3, "hold_trail": 8, "trail": (0.8, 0.5)},
-    {"name": "flip", "patterns": ["wave_flip"],
-     "atr": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0},
-     "pct": {"tp_pct": 0.03, "sl_pct": 0.015},
-     "hold_fixed": 4, "hold_trail": 8, "trail": (1.0, 0.8)},
+    {
+        "name": "ride",
+        "patterns": ["wave_ride"],
+        "atr": {"tp_atr_multiplier": 3.0, "sl_atr_multiplier": 1.6},
+        "pct": {"tp_pct": 0.05, "sl_pct": 0.025},  # 5% / 2.5% — the user's example
+        "hold_fixed": 8,
+        "hold_trail": 24,
+        "trail": (1.0, 1.0),
+    },
+    {
+        "name": "scalp",
+        "patterns": ["vol_burst"],
+        "atr": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0},
+        "pct": {"tp_pct": 0.02, "sl_pct": 0.01},  # tight scalp R:R
+        "hold_fixed": 3,
+        "hold_trail": 8,
+        "trail": (0.8, 0.5),
+    },
+    {
+        "name": "flip",
+        "patterns": ["wave_flip"],
+        "atr": {"tp_atr_multiplier": 1.6, "sl_atr_multiplier": 1.0},
+        "pct": {"tp_pct": 0.03, "sl_pct": 0.015},
+        "hold_fixed": 4,
+        "hold_trail": 8,
+        "trail": (1.0, 0.8),
+    },
 ]
 
 # Single mindful risk cap across the whole fleet (was a 0.05/0.02 sweep; the freed
@@ -78,15 +93,28 @@ def _variants_for(e: dict) -> list[dict]:
     act, dist = e["trail"]
     return [
         {"suffix": "", "params": {**e["atr"], "max_hold_candles": e["hold_fixed"]}},
-        {"suffix": "_t", "params": {**e["atr"], "max_hold_candles": e["hold_trail"],
-                                    "trailing_enabled": True,
-                                    "trail_activation_r": act, "trail_distance_r": dist}},
-        {"suffix": "_p", "params": {"tp_sl_pct_enabled": True, **e["pct"],
-                                    "max_hold_candles": e["hold_fixed"]}},
-        {"suffix": "_pt", "params": {"tp_sl_pct_enabled": True, **e["pct"],
-                                     "max_hold_candles": e["hold_trail"],
-                                     "trailing_enabled": True,
-                                     "trail_activation_r": act, "trail_distance_r": dist}},
+        {
+            "suffix": "_t",
+            "params": {
+                **e["atr"],
+                "max_hold_candles": e["hold_trail"],
+                "trailing_enabled": True,
+                "trail_activation_r": act,
+                "trail_distance_r": dist,
+            },
+        },
+        {"suffix": "_p", "params": {"tp_sl_pct_enabled": True, **e["pct"], "max_hold_candles": e["hold_fixed"]}},
+        {
+            "suffix": "_pt",
+            "params": {
+                "tp_sl_pct_enabled": True,
+                **e["pct"],
+                "max_hold_candles": e["hold_trail"],
+                "trailing_enabled": True,
+                "trail_activation_r": act,
+                "trail_distance_r": dist,
+            },
+        },
     ]
 
 
@@ -98,16 +126,18 @@ def main() -> None:
                 name = f"{e['name']}{v['suffix']}"
                 params = dict(v["params"])
                 params["max_loss_pct_per_trade"] = _RISK_CAP
-                bots.append({
-                    "bot_id": f"dev-{symbol}-5m-{name}-01",
-                    "pair": symbol,
-                    "timeframe_entry": "5m",
-                    "timeframe_regime": "15m",
-                    "max_active_buckets": 1,
-                    "strategy": name,
-                    "patterns": e["patterns"],
-                    "params": params,
-                })
+                bots.append(
+                    {
+                        "bot_id": f"dev-{symbol}-5m-{name}-01",
+                        "pair": symbol,
+                        "timeframe_entry": "5m",
+                        "timeframe_regime": "15m",
+                        "max_active_buckets": 1,
+                        "strategy": name,
+                        "patterns": e["patterns"],
+                        "params": params,
+                    }
+                )
 
     out = os.path.join(os.path.dirname(__file__), "..", "bots.json")
     with open(out, "w") as f:

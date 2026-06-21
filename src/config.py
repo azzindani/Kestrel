@@ -199,6 +199,14 @@ class Params:
     # a validated edge). Optional; older params.json loads at the validated default window.
     seasonal_entry_hour_start: int = 18
     seasonal_entry_window_hours: int = 7
+    # --- MACD (signal/patterns.py macd_cross) ---
+    # Standard MACD periods. macd_cross (trend-aligned MACD signal-line cross) is the
+    # project's first signal +EV in BOTH the recent year AND the untouched prior-year
+    # lockbox at 1h (maker; see RESEARCH_LOOP iter 18) — a live forward-test arm, not a
+    # validated edge. Optional so older params.json loads unchanged at the standard defaults.
+    macd_fast: int = 12
+    macd_slow: int = 26
+    macd_signal: int = 9
 
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
@@ -297,6 +305,9 @@ class Params:
             seasonal_entry_window_hours=(
                 int(d["seasonal_entry_window_hours"]["value"]) if "seasonal_entry_window_hours" in d else 7
             ),
+            macd_fast=(int(d["macd_fast"]["value"]) if "macd_fast" in d else 12),
+            macd_slow=(int(d["macd_slow"]["value"]) if "macd_slow" in d else 26),
+            macd_signal=(int(d["macd_signal"]["value"]) if "macd_signal" in d else 9),
         )
 
 

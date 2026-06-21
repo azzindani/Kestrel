@@ -242,15 +242,18 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT BEST
 
-- Baseline unchanged (no candidate has FULLY validated).
-- **No remaining lead.** The iter-3 seasonality lead was REFUTED in iter 4 under per-pair +
-  non-overlapping validation (gross drift real but sub-maker-cost; lockbox pooled net-maker
-  −0.008%; only DOGE robust = 1-in-6 luck). Baseline unchanged; cohort = `exp_h1tp` 1h momentum
-  (least-bad) only.
-- **The in-scope directional/seasonal search is exhausted** (see the MILESTONE in the refuted
-  ledger). To make further real progress the loop needs a STRUCTURAL build (funding-rate/basis)
-  or a HUMAN decision on leverage — both flagged to the user. Continuing to spin marginal
-  directional variants would be theater, not progress.
+- **LEAD (iter 18): `macd_cross` (trend-aligned MACD signal cross) @ 1h, maker.** The project's
+  FIRST signal +EV in BOTH the recent year AND the untouched prior-year LOCKBOX (recent expR +0.13 /
+  lockbox +0.17, R/R ~1.2, 51–52% win, IS→OOS positive both; corroborated by sma_cross_9_21 +0.17/
+  +0.12). NOT yet a confirmed stop-#2 edge — modest, wins <55%, at 1h (not the 5m mandate), and clean
+  "both-eras" pairs are only ~2–3 (DOGE/ADA firm). **Status: live FORWARD-TEST** — deployed as a
+  6-bot 1h `macd_cross` cohort alongside the 5m fleet (§13 research arm). Accumulate live + OOS
+  evidence before any promotion. ✗ overclaim as edge.
+- The 5m hyper-scalp baseline is unchanged and remains −EV (no edge at 5m for any indicator incl.
+  MACD — the cost floor dominates short TF). The earlier seasonality lead stays REFUTED (iter 4).
+- **Note:** the 5m search is exhausted; the NEW frontier is INDICATOR strategies at 1h (owner opened
+  macd/rsi/MA). macd_cross is the first hit. Next: validate per-pair deflated-Sharpe / PF, and test
+  more indicator confluences (RSI+MACD, MA-cross variants) at 1h.
 
 ---
 
@@ -311,6 +314,42 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 18 — 2026-06-21 (owner-directed STRATEGY SEARCH — MACD found +EV cross-era at 1h → deployed 1h macd_cross cohort)
+
+- **TRIGGER:** owner — "your job is to find algorithm and strategy; permitted to use indexes like
+  macd, rsi; [also] moving average any period; reset is a must; don't change anything unless I asked;
+  ensure we pass ci, commit, push, deploy. Keep leverage 20×." Cron also reset to 00:00/08:00/16:00.
+- **BUILT (research harness):** added MACD (`macd_cross`, `macd_cross_ct`, `macd_zero`, `macd_hist`)
+  + MA-cross (`sma/ema_cross_*`, periods 9/21…50/100) algos to scripts/algo_search.py (inline MACD/EMA
+  from closes, same method as the live pattern). Backtested maker, walk-forward OOS + LOCKBOX.
+- **RESULT — the first cross-era-positive signal in project history:**
+  - **macd_cross_ct (trend-aligned MACD signal cross) @ 1h: +EV in BOTH eras** — recent expR +0.13
+    (51% win), lockbox expR **+0.17** (52% win), R/R 1.2, IS→OOS positive both. Per-pair lockbox
+    POSITIVE on all 4 with data (DOGE +0.29, XRP +0.26, ADA +0.20, SOL +0.09); recent positive on
+    4/6 (BTC +0.21, ETH +0.16, DOGE +0.12, ADA +0.17).
+  - **sma_cross_9_21 (wide) @ 1h** corroborates: recent +0.17 / lockbox +0.12, R/R ~1.35 (same fast-
+    momentum family).
+  - REFUTED (data-mined, +recent/−lockbox): `ema_cross_12_26`, `ema_cross_9_21`, `macd_zero`. All
+    SLOW MA crosses (20/50, 50/100) −EV both. MACD @ **5m** −EV (cost floor) — edge is TF-specific.
+- **HONEST CAVEATS (no overclaim):** modest (expR +0.1–0.17), wins <55% (fails the known-wrong §30
+  win bar — but stop-cond #2 uses expectancy/PF), and lives at **1h, NOT the mandated 5m**. Clean
+  "positive-in-BOTH-eras" pairs are ~2–3 (DOGE/ADA firm; SOL/XRP lockbox-only; BTC/ETH recent-only).
+  PF/deflated-Sharpe borderline. → a STRONG LEAD to FORWARD-TEST, NOT a confirmed stop-#2 edge.
+- **DEPLOYED (owner wanted a deploy + reset):** built `macd_cross` as a LIVE registered pattern
+  (signal/patterns.py + `_macd_lines` helper + SELF_DIRECTING; config.py macd_fast/slow/signal params
+  + params.json contract + unit tests). Added a **6-bot 1h macd_cross cohort** (BTC/ETH/SOL/DOGE/XRP/
+  ADA) ALONGSIDE the untouched 238-bot 5m fleet — §13 permits high-TF as a research-comparison arm,
+  so this honors "don't change the 5m fleet" + "deploy a new strategy". Fleet 238→**244**. Exit = the
+  validated harness "tight" bracket (tp 1.4/sl 1.0 ATR/max_hold 4, trailing off). Dedup: 6 NEW + 238
+  SEEN (baseline retained as controls). Leverage UNCHANGED 20×.
+  - Known live-vs-backtest divergence (noted): live pipeline still applies volume_confirm (1.1, the
+    floor) + the 0.01 risk cap, which the raw backtest did not — minor, acceptable for a forward-test.
+- **SHIP:** ruff format+check clean · mypy clean · macd+registry+patterns/config/detector suites green
+  (120 local) · _EXIT sync test green · committed+pushed main · CI green · rebuilt image (code change)
+  · FULL RESET (wipe dev slate, KEEP candles, restart, heartbeats wiped after) · system event.
+- **STOP CHECK:** NOT met — macd_cross is a forward-test lead, not a confirmed stop-#2 edge (modest,
+  1h, per-pair borderline). Continue; let the live 1h cohort + the OOS backtests accumulate evidence.
 
 ### Iteration 17 — 2026-06-21 (owner-triggered ~90min after iter-16 — health/cadence pass; cadence 8h→2h)
 

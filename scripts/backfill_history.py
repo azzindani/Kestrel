@@ -80,10 +80,7 @@ def fetch_quote_ohlcv(pair: str, timeframe: str, days: int, source: str = _DEFAU
         if len(batch) < 2:
             break
     # de-dup + convert volume to quote (USDT) to match the live WS feed
-    seen = {
-        int(r[0]): [int(r[0]), r[1], r[2], r[3], r[4], r[5] * r[4]]
-        for r in rows
-    }
+    seen = {int(r[0]): [int(r[0]), r[1], r[2], r[3], r[4], r[5] * r[4]] for r in rows}
     return [seen[k] for k in sorted(seen)]
 
 
@@ -117,8 +114,11 @@ async def run(bots_path: str = "bots.json", source: str = _DEFAULT_SOURCE) -> No
                         wrote += 1
                     except Exception:
                         pass
-            print(f"{pair} {tf}: source={source}(quote) fetched={len(rows)} "
-                  f"bots={len(grp)} candles_written={wrote} avg_vol={avg_vol:,.0f}", flush=True)
+            print(
+                f"{pair} {tf}: source={source}(quote) fetched={len(rows)} "
+                f"bots={len(grp)} candles_written={wrote} avg_vol={avg_vol:,.0f}",
+                flush=True,
+            )
     finally:
         await db_conn.close_pool()
 
@@ -126,6 +126,10 @@ async def run(bots_path: str = "bots.json", source: str = _DEFAULT_SOURCE) -> No
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description="Backfill warmup candle history for a bot fleet.")
     p.add_argument("--bots", default="bots.json", help="fleet file (default bots.json; e.g. bots.staging.json)")
-    p.add_argument("--source", default=_DEFAULT_SOURCE, help=f"candle venue, match the live feed (default {_DEFAULT_SOURCE}; bingx for staging poll feed)")
+    p.add_argument(
+        "--source",
+        default=_DEFAULT_SOURCE,
+        help=f"candle venue, match the live feed (default {_DEFAULT_SOURCE}; bingx for staging poll feed)",
+    )
     args = p.parse_args()
     asyncio.run(run(args.bots, args.source))

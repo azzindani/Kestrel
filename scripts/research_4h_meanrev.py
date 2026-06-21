@@ -34,8 +34,8 @@ import backtest_real as bt
 # Cost assumptions (round-trip, price terms). Labelled — not gospel.
 TAKER_RT = 0.0018  # §13: 0.04% taker ×2 + 0.05% slippage ×2
 MAKER_RT = 0.0006  # optimistic limit entry: ~0 maker fee + ~0.03%/side slippage
-BANDS = [0.15, 0.25]   # fade the most-extreme 15% / 25% tail of ema_spread
-HOLDS = [2, 4]         # candles held (4h each → 8h / 16h)
+BANDS = [0.15, 0.25]  # fade the most-extreme 15% / 25% tail of ema_spread
+HOLDS = [2, 4]  # candles held (4h each → 8h / 16h)
 
 
 def _series(cfg, base, pair, tf, days):
@@ -71,8 +71,10 @@ def _stat(a):
 
 
 def _fmt(tag, s):
-    return (f"    {tag:14s} n={s['n']:4d}  win={s['win']*100:5.1f}%  "
-            f"avg_net={s['avg']*100:+.4f}%  total={s['tot']*100:+.2f}%  t={s['t']:+.2f}")
+    return (
+        f"    {tag:14s} n={s['n']:4d}  win={s['win'] * 100:5.1f}%  "
+        f"avg_net={s['avg'] * 100:+.4f}%  total={s['tot'] * 100:+.2f}%  t={s['t']:+.2f}"
+    )
 
 
 def main() -> None:
@@ -87,16 +89,15 @@ def main() -> None:
     base = load_params("params.json")
 
     print(f"=== 4h ema_spread mean-reversion research ({args.tf}, {args.days}d) ===")
-    print(f"costs: taker_rt={TAKER_RT*100:.3f}%  maker_rt={MAKER_RT*100:.3f}% (optimistic)\n")
+    print(f"costs: taker_rt={TAKER_RT * 100:.3f}%  maker_rt={MAKER_RT * 100:.3f}% (optimistic)\n")
 
     survived = []
     for pair in args.pairs.split(","):
         ex, closes, es = _series(cfg, base, pair, args.tf, args.days)
         split = int(len(closes) * 0.60)
-        print(f"### {pair}  (source={ex}, candles={len(closes)}, "
-              f"train {split}/test {len(closes)-split}) ###")
+        print(f"### {pair}  (source={ex}, candles={len(closes)}, train {split}/test {len(closes) - split}) ###")
         for band in BANDS:
-            hi = float(np.quantile(es[:split], 1 - band))   # thresholds from TRAIN only
+            hi = float(np.quantile(es[:split], 1 - band))  # thresholds from TRAIN only
             lo = float(np.quantile(es[:split], band))
             for H in HOLDS:
                 tr_t = _gen(es, closes, 0, split, hi, lo, H, TAKER_RT)
@@ -116,8 +117,10 @@ def main() -> None:
     if survived:
         print("  configs with POSITIVE out-of-sample taker expectancy (same sign as train, n>=30):")
         for pair, band, H, avg, t, mavg in sorted(survived, key=lambda r: -r[3]):
-            print(f"    {pair} band={band} hold={H}: OOS avg_net(taker)={avg*100:+.4f}% (t={t:+.2f}), "
-                  f"maker={mavg*100:+.4f}%")
+            print(
+                f"    {pair} band={band} hold={H}: OOS avg_net(taker)={avg * 100:+.4f}% (t={t:+.2f}), "
+                f"maker={mavg * 100:+.4f}%"
+            )
         print("\n  >>> 4h ema_spread edge SHOWS OUT-OF-SAMPLE PROMISE — proceed to full strategy build <<<")
     else:
         print("  no config holds positive OOS taker expectancy with adequate sample.")

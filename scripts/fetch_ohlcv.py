@@ -7,23 +7,30 @@ Usage:
   python scripts/fetch_ohlcv.py [--pair BTC/USDT] [--tf 5m] [--days 90]
   python scripts/fetch_ohlcv.py --out /tmp/ohlcv.json
 """
+
 import argparse, json, sys, time
 import ccxt
 
 # Tried in order; first success wins.
 # kucoin and kraken have no geo-restrictions from GCP/Colab.
-EXCHANGES_ORDERED = ['kucoin', 'kraken', 'okx', 'bybit']
+EXCHANGES_ORDERED = ["kucoin", "kraken", "okx", "bybit"]
 
 # Timeframe string → milliseconds (for "are we at the present?" check)
 _TF_MS = {
-    '1m': 60_000, '3m': 180_000, '5m': 300_000, '15m': 900_000,
-    '30m': 1_800_000, '1h': 3_600_000, '4h': 14_400_000, '1d': 86_400_000,
+    "1m": 60_000,
+    "3m": 180_000,
+    "5m": 300_000,
+    "15m": 900_000,
+    "30m": 1_800_000,
+    "1h": 3_600_000,
+    "4h": 14_400_000,
+    "1d": 86_400_000,
 }
 
 
 def _make_exchange(name: str) -> ccxt.Exchange:
     cls = getattr(ccxt, name)
-    return cls({'enableRateLimit': True, 'options': {'defaultType': 'spot'}})
+    return cls({"enableRateLimit": True, "options": {"defaultType": "spot"}})
 
 
 def fetch(pair: str, timeframe: str, days: int) -> list[list]:
@@ -36,7 +43,7 @@ def fetch(pair: str, timeframe: str, days: int) -> list[list]:
         try:
             ohlcvs: list[list] = []
             s = since_ms
-            print(f'Fetching {days}d {pair} {timeframe} via {name}...', file=sys.stderr)
+            print(f"Fetching {days}d {pair} {timeframe} via {name}...", file=sys.stderr)
             while True:
                 batch = ex.fetch_ohlcv(pair, timeframe, since=s, limit=1000)
                 if not batch:
@@ -50,34 +57,34 @@ def fetch(pair: str, timeframe: str, days: int) -> list[list]:
                 now_ms = int(time.time() * 1000)
                 if last_ts >= now_ms - 2 * tf_ms:
                     break
-                print(f'  {len(ohlcvs):,}...', end='\r', file=sys.stderr)
-            print(f'OK  {len(ohlcvs):,} candles', file=sys.stderr)
+                print(f"  {len(ohlcvs):,}...", end="\r", file=sys.stderr)
+            print(f"OK  {len(ohlcvs):,} candles", file=sys.stderr)
             return ohlcvs
         except Exception as exc:
-            print(f'  {name} unavailable: {exc}', file=sys.stderr)
+            print(f"  {name} unavailable: {exc}", file=sys.stderr)
             last_error = exc
             continue
 
-    raise RuntimeError(f'All exchanges failed. Last error: {last_error}')
+    raise RuntimeError(f"All exchanges failed. Last error: {last_error}")
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument('--pair',  default='BTC/USDT')
-    ap.add_argument('--tf',    default='5m')
-    ap.add_argument('--days',  type=int, default=90)
-    ap.add_argument('--out',   default=None, help='write JSON to file instead of stdout')
+    ap.add_argument("--pair", default="BTC/USDT")
+    ap.add_argument("--tf", default="5m")
+    ap.add_argument("--days", type=int, default=90)
+    ap.add_argument("--out", default=None, help="write JSON to file instead of stdout")
     args = ap.parse_args()
 
     ohlcvs = fetch(args.pair, args.tf, args.days)
     data = json.dumps(ohlcvs)
     if args.out:
-        with open(args.out, 'w') as fh:
+        with open(args.out, "w") as fh:
             fh.write(data)
-        print(f'Written to {args.out}', file=sys.stderr)
+        print(f"Written to {args.out}", file=sys.stderr)
     else:
         print(data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -39,7 +39,7 @@ COUNTER_TREND_PATTERNS: frozenset[str] = frozenset({"wave_flip"})
 #     RSI/EMA trend gate (which would drop the strongest, most overbought momentum
 #     entries), so they self-direct to reproduce that validated behaviour.
 SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
-    {"mom_adx", "triple_mom", "session_seasonal"}
+    {"mom_adx", "triple_mom", "session_seasonal", "macd_cross"}
 )
 
 
@@ -106,6 +106,41 @@ def _streak_direction(candles: Sequence[Candle], n: int) -> Optional[Direction]:
     if None in dirs or len(set(dirs)) != 1:
         return None
     return dirs[0]
+
+
+def _ema_series(values: Sequence[float], period: int) -> list[float]:
+    """EMA series over ``values`` (seeded with the SMA of the first ``period``)."""
+    if len(values) < period:
+        return []
+    k = 2.0 / (period + 1)
+    ema = sum(values[:period]) / period
+    out = [ema]
+    for v in values[period:]:
+        ema = v * k + ema * (1.0 - k)
+        out.append(ema)
+    return out
+
+
+def _macd_lines(
+    closes: Sequence[float], fast: int, slow: int, signal: int
+) -> Optional[tuple[float, float, float, float]]:
+    """MACD (macd_last, macd_prev, signal_last, signal_prev) from closes, or None.
+
+    Candles store ema9/ema21 but not the MACD/signal lines, so compute inline (same
+    method as scripts/algo_search.py so the live pattern matches the backtested one).
+    """
+    if len(closes) < slow + signal + 1:
+        return None
+    ef = _ema_series(closes, fast)
+    es = _ema_series(closes, slow)
+    off = len(ef) - len(es)  # fast warms up earlier; align tails before subtracting
+    macd_line = [ef[i + off] - es[i] for i in range(len(es))]
+    if len(macd_line) < signal + 1:
+        return None
+    sig = _ema_series(macd_line, signal)
+    if len(sig) < 2:
+        return None
+    return (macd_line[-1], macd_line[-2], sig[-1], sig[-2])
 
 
 # ---------------------------------------------------------------------------
@@ -738,6 +773,42 @@ def detect_triple_mom(candles: Sequence[Candle], params: Params) -> Optional[Pat
         direction=direction,
         confidence=round(confidence, 3),
         details={"variant": "triple_mom", "adx": round(c.adx, 2)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: macd_cross (trend-aligned MACD signal-line cross) — owner directive
+# 2026-06-21 ("permitted to use indexes like macd, rsi"). This is the project's FIRST
+# signal that is +EV in BOTH the recent year AND the untouched prior-year LOCKBOX (1h,
+# maker fees; scripts/algo_search.py macd_cross_ct; see RESEARCH_LOOP iter 18). It is a
+# live FORWARD-TEST of a modest lead (expR ~+0.13/+0.17, win <55%), deployed at 1h as a
+# §13 research-comparison arm — NOT a validated edge, NOT the 5m live default. Trend-
+# aligned: only take the signal cross on the correct side of zero (MACD>0 = uptrend).
+# Self-directing; still passes volume-confirm, min-confidence, QUIET block + all risk rules.
+# ---------------------------------------------------------------------------
+@register("macd_cross")
+def detect_macd_cross(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter on a trend-aligned MACD signal-line cross (macd_cross_ct, validated 1h)."""
+    if len(candles) < params.macd_slow + params.macd_signal + 1:
+        return None
+    m = _macd_lines([c.close for c in candles], params.macd_fast, params.macd_slow, params.macd_signal)
+    if m is None:
+        return None
+    macd_last, macd_prev, sig_last, sig_prev = m
+
+    direction: Optional[Direction] = None
+    if macd_last > 0 and macd_prev <= sig_prev and macd_last > sig_last:
+        direction = Direction.LONG  # MACD crosses up through signal, above zero (uptrend)
+    elif macd_last < 0 and macd_prev >= sig_prev and macd_last < sig_last:
+        direction = Direction.SHORT
+    if direction is None:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=0.78,  # full-size band, matching how the momentum patterns are sized
+        details={"variant": "macd_cross", "macd": round(macd_last, 8), "signal": round(sig_last, 8)},
     )
 
 
