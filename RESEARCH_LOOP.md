@@ -286,6 +286,12 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   filter to `macd_cross_ct` is REDUNDANT: the zero-line condition (ml>0) already implies RSI>50, so
   `macd_rsi_ct` == `macd_cross_ct` byte-for-byte. RSI only adds information on the RAW (non-zero-
   aligned) cross — that variant is the deployed `macd_rsi`. Don't re-test RSI on the _ct variant.
+- **ADX trend-strength confluence on the MACD family (`macd_adx*`, `macd_rsi_adx*`)** (iter 23) —
+  gating the MACD/RSI cross on an ADX floor (≥20/≥25) does NOT improve the leads out-of-era. The best
+  cell `macd_rsi_adx25`/medium looked strongest in the recent year (expR +0.16) but COLLAPSED to +0.02
+  (breakeven) in the lockbox — a recent-year data-mining artifact. All ADX variants are worse cross-era
+  than plain macd_cross/macd_rsi; the gate cut ~⅔ of trades for no robust gain. adx20 is too loose
+  (−EV recent). Don't re-add an ADX entry gate to the MACD family as an edge lever.
 - **Wave family** (`wave_ride` / `vol_burst` / `wave_flip`) — 0/3 clear §30, ~30% win,
   −$0.18–0.20/trade OOS; wider SL did not lift win rate → no-edge, not tuning.
 - **Trailing-close** — lifts win rate + cuts timeouts but still −EV OOS; variance shaper, not edge.
@@ -336,6 +342,33 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 23 — 2026-06-22 (ACTIVE SEARCH: ADX trend-strength confluence on the MACD family → REFUTED by lockbox; justified HOLD)
+
+- **MEASURE:** post-iter-22 slate, 260 closes, the known −EV 5m book (trend_momentum 28.8% −$4.04,
+  mom_adx −$1.25, triple_mom −$0.89). Both 1h MACD cohorts (macd_cross + the iter-22 macd_rsi) at
+  **0 trades** — only a few 1h candles have closed since the iter-22 backfill and a qualifying cross
+  is rare; expected, not dark (both have 720+ candles/bot). Fleet healthy: 250 hb, 0 errors/1h,
+  postgres 12.5% / kestrel 17% of 2g.
+- **HYPOTHESIS (iter-18's flagged next step):** the MACD crosses that drag macd_cross/macd_rsi win
+  <50% are the ones firing in CHOP — so gate the cross on ADX (real trend strength). Built 4 harness
+  algos: `macd_adx20/25` (MACD cross + ADX floor) and `macd_rsi_adx20/25` (+ RSI-50 confirm), using
+  the stored `adx` column. 1h, maker, 6 pairs, walk-forward OOS + LOCKBOX.
+- **RESULT — REFUTED (data-mining signature):** `macd_rsi_adx25`/medium was the BEST *recent* cell
+  (expR **+0.16**, avg +$0.011/trade, IS→OOS +0.017 — looked great) but **COLLAPSES to expR +0.02
+  (breakeven, 38% win) in the lockbox.** Every ADX variant is WORSE cross-era than the plain leads:
+  lockbox expR — macd_cross_ct +0.16/+0.14, macd_rsi +0.11, vs macd_rsi_adx25 +0.02/+0.08,
+  macd_adx25 +0.04/+0.05. The ADX≥25 gate cut trade count ~⅔ (539→181) WITHOUT adding robust edge —
+  the recent +0.16 was over-fit to recent-year trends. adx20 too loose (−EV recent). The lockbox
+  caught exactly what it exists to catch.
+- **DECISION — JUSTIFIED HOLD (no deploy, no reset).** Nothing beats the deployed macd_cross/macd_rsi
+  cohorts cross-era; deploying an ADX variant would reset the just-deployed (iter-22) macd_rsi cohort
+  before it logged a single trade, to chase a data-mined artifact = churn (ritual 3b). The harness
+  additions (the 4 algos) are committed for reproducibility; no signal/patterns.py, bots.json, or
+  fleet change → no reset (slate byte-identical to live).
+- **HONEST:** the MACD family (macd_cross/macd_rsi) remains the only cross-era +EV signal set; ADX
+  filtering does not improve it out-of-era. Still a forward-test lead, NOT a confirmed edge.
+- **STOP CHECK:** NOT met. Continue — let the two 1h cohorts accumulate live trades (weeks at 1h).
 
 ### Iteration 22 — 2026-06-22 (ACTIVE STRATEGY SEARCH: stochastic + RSI/MACD confluence → deployed macd_rsi, the 2nd cross-era +EV 1h signal)
 

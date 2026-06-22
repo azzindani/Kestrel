@@ -402,6 +402,34 @@ def _macd_rsi_ct(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     return None
 
 
+# --- ADX trend-strength confluence on the MACD family (iter-23) -----------------------
+# Does requiring a real trend (ADX above a floor) on top of the MACD signal cross (+ optional
+# RSI-50 confirm) improve the deployed leads macd_cross/macd_rsi? The hypothesis: MACD crosses
+# in chop (low ADX) are the false signals dragging win<50%; an ADX gate should filter them.
+# Candles store adx (the mom_adx algo uses it), so gate on it directly — no inline compute.
+def _make_macd_adx(tag: str, adx_min: float, use_rsi: bool) -> None:
+    @_algo(tag, PatternType.MOMENTUM_CONTINUATION)
+    def _fn(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+        c = C[-1]
+        if c.adx is None or c.adx < adx_min or (use_rsi and c.rsi14 is None):
+            return None
+        m = _macd([cc.close for cc in C])
+        if m is None:
+            return None
+        ml, mp, sl, sp = m
+        if mp <= sp and ml > sl and (not use_rsi or c.rsi14 > 50.0):
+            return Direction.LONG
+        if mp >= sp and ml < sl and (not use_rsi or c.rsi14 < 50.0):
+            return Direction.SHORT
+        return None
+
+
+_make_macd_adx("macd_adx20", 20.0, False)
+_make_macd_adx("macd_adx25", 25.0, False)
+_make_macd_adx("macd_rsi_adx20", 20.0, True)
+_make_macd_adx("macd_rsi_adx25", 25.0, True)
+
+
 @_algo("bb_fade", PatternType.ANOMALY_FADE)
 def _bb_fade(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     c = C[-1]
