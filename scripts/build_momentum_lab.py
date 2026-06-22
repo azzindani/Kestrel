@@ -138,6 +138,23 @@ _MACD_EXIT = {
     "max_loss_pct_per_trade": 0.01,
 }
 
+# --- 1h macd_rsi research-comparison cohort (iter-22 2026-06-22) --------------------
+# macd_rsi (raw MACD signal cross CONFIRMED by RSI-14 across the 50 centerline) is the
+# project's SECOND cross-era +EV 1h signal — +EV in recent AND lockbox, lockbox-positive
+# on 5/6 pairs (same breadth as macd_cross) with ~50% MORE trades (RESEARCH_LOOP iter 22,
+# scripts/algo_search.py macd_rsi). Deployed at 1h ALONGSIDE — not replacing — the 5m
+# fleet and the macd_cross cohort (§13 research-comparison arm). Live FORWARD-TEST of a
+# modest lead, NOT a validated edge. Exit = the validated harness "medium" bracket
+# (tp 2.0 / sl 1.0 ATR / max_hold 6 — best for this algo: R/R 1.52, lockbox expR +0.12).
+_MACD_RSI_EXIT = {
+    "tp_atr_multiplier": 2.0,
+    "sl_atr_multiplier": 1.0,
+    "max_hold_candles": 6,
+    "trailing_enabled": False,
+    "volume_ratio_min": 1.1,
+    "max_loss_pct_per_trade": 0.01,
+}
+
 
 def main() -> None:
     bots = []
@@ -174,6 +191,21 @@ def main() -> None:
             }
         )
 
+    for pair in _MACD_COHORT_PAIRS:
+        token_pair = pair.replace("/", "")
+        bots.append(
+            {
+                "bot_id": f"dev-{token_pair}-1h-macd_rsi-01",
+                "pair": pair,
+                "timeframe_entry": "1h",
+                "timeframe_regime": "1h",
+                "max_active_buckets": 1,
+                "strategy": "macd_rsi",
+                "patterns": ["macd_rsi"],
+                "params": dict(_MACD_RSI_EXIT),
+            }
+        )
+
     out = os.path.join(os.path.dirname(__file__), "..", "bots.json")
     with open(out, "w") as f:
         json.dump(bots, f, indent=2)
@@ -181,6 +213,7 @@ def main() -> None:
         f"wrote {os.path.normpath(out)}: {len(bots)} bots = "
         f"{n_scalp} scalp ({len(STRATEGIES)} patterns × {len(_TIMEFRAMES)} tf × "
         f"{len(SCALP_PAIRS)} markets) + {len(_MACD_COHORT_PAIRS)} 1h macd_cross cohort"
+        f" + {len(_MACD_COHORT_PAIRS)} 1h macd_rsi cohort"
     )
 
 
