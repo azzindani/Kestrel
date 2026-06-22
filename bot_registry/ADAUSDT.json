@@ -3,34 +3,6 @@
   "pair": "ADAUSDT",
   "configs": [
     {
-      "fingerprint": "b39f8e81a9b6",
-      "config": {
-        "pair": "ADAUSDT",
-        "timeframe_entry": "1h",
-        "timeframe_regime": "1h",
-        "strategy": "macd_cross",
-        "patterns": [
-          "macd_cross"
-        ],
-        "max_active_buckets": 1,
-        "params": {
-          "max_hold_candles": 4,
-          "max_loss_pct_per_trade": 0.01,
-          "sl_atr_multiplier": 1.0,
-          "tp_atr_multiplier": 1.4,
-          "trailing_enabled": false,
-          "volume_ratio_min": 1.1
-        }
-      },
-      "first_seen_commit": "WORKING_TREE",
-      "first_seen_date": "",
-      "first_seen_subject": "(uncommitted working tree)",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 1,
-      "example_bot_id": "dev-ADAUSDT-1h-macd_cross-01"
-    },
-    {
       "fingerprint": "0428634f0b54",
       "config": {
         "pair": "ADAUSDT",
@@ -3033,7 +3005,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ADAUSDT-5m-wick_rejection-01"
     },
     {
@@ -3064,7 +3036,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ADAUSDT-5m-compression_breakout-01"
     },
     {
@@ -3095,7 +3067,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ADAUSDT-5m-mom_adx-01"
     },
     {
@@ -3126,7 +3098,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ADAUSDT-5m-impulse_retracement-01"
     },
     {
@@ -3157,7 +3129,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ADAUSDT-5m-anomaly_fade-01"
     },
     {
@@ -3188,7 +3160,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ADAUSDT-5m-trend_momentum-01"
     },
     {
@@ -3219,8 +3191,64 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ADAUSDT-5m-triple_mom-01"
+    },
+    {
+      "fingerprint": "b39f8e81a9b6",
+      "config": {
+        "pair": "ADAUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "macd_cross",
+        "patterns": [
+          "macd_cross"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "d963870dc0d8ba5388769415dbbfdc401ef5ccb2",
+      "first_seen_date": "2026-06-21T10:45:41+00:00",
+      "first_seen_subject": "research(loop) iter 18: MACD found +EV CROSS-ERA at 1h -> deploy 1h macd_cross cohort",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 3,
+      "example_bot_id": "dev-ADAUSDT-1h-macd_cross-01"
+    },
+    {
+      "fingerprint": "93a970b1ffe4",
+      "config": {
+        "pair": "ADAUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "macd_rsi",
+        "patterns": [
+          "macd_rsi"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "612459c0a60ca82523eff4dbc3c7306fc7f88c69",
+      "first_seen_date": "2026-06-22T00:31:52+00:00",
+      "first_seen_subject": "research(loop) iter 22: deploy macd_rsi (MACD cross + RSI-50 confirm) 1h cohort",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ADAUSDT-1h-macd_rsi-01"
     }
   ]
 }
