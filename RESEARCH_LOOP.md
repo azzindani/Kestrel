@@ -256,6 +256,13 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   "both-eras" pairs are only ~2–3 (DOGE/ADA firm). **Status: live FORWARD-TEST** — deployed as a
   6-bot 1h `macd_cross` cohort alongside the 5m fleet (§13 research arm). Accumulate live + OOS
   evidence before any promotion. ✗ overclaim as edge.
+- **LEAD #2 (iter 22): `macd_rsi` (raw MACD signal cross + RSI-14 confirmation across 50) @ 1h,
+  maker.** The SECOND cross-era +EV signal: recent expR +0.06..+0.09, lockbox **+0.12**, R/R 1.52,
+  lockbox-positive on **5/6 pairs** (same breadth as macd_cross, BTC the lone loser) with ~50% MORE
+  trades. The RSI filter rescues the raw cross (data-mined alone). **Status: live FORWARD-TEST** —
+  6-bot 1h cohort (medium exit) alongside macd_cross + the 5m fleet. Same modest-lead caveats (win
+  <50%, 1h not 5m). NOT a confirmed edge. Note `macd_rsi_ct` (zero-aligned + RSI) == `macd_cross_ct`
+  (RSI redundant there) — only the RAW-cross variant adds information.
 - The 5m hyper-scalp baseline is unchanged and remains −EV (no edge at 5m for any indicator incl.
   MACD — the cost floor dominates short TF). The earlier seasonality lead stays REFUTED (iter 4).
 - **Note:** the 5m search is exhausted; the NEW frontier is INDICATOR strategies at 1h (owner opened
@@ -271,6 +278,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 - **mom_adx / triple_mom @ 4h** — recent-year +EV was a **data-mining / single-regime artifact**;
   cross-year lockbox is NEGATIVE (taker −$19 / maker −$10, IS→OOS < 0).
 - **Connors RSI-2 (`rsi2_ct/ct5/raw`)** — did not generalize; a 2-pair fluke.
+- **Stochastic oscillator (`stoch_revert`, `stoch_ct`)** (iter 22) — 1h, maker, recent + lockbox.
+  `stoch_revert` (mean-revert) ~breakeven/negative both eras → REFUTED. `stoch_ct` (trend-aligned)
+  is +EV both eras but MARGINAL (lockbox expR only +0.06, IS→OOS slightly negative) — below the
+  deploy bar; not promoted. A new indicator family, but no edge (cost floor still dominates).
+- **RSI confluence on the TREND-ALIGNED MACD cross (`macd_rsi_ct`)** (iter 22) — adding an RSI>50/<50
+  filter to `macd_cross_ct` is REDUNDANT: the zero-line condition (ml>0) already implies RSI>50, so
+  `macd_rsi_ct` == `macd_cross_ct` byte-for-byte. RSI only adds information on the RAW (non-zero-
+  aligned) cross — that variant is the deployed `macd_rsi`. Don't re-test RSI on the _ct variant.
 - **Wave family** (`wave_ride` / `vol_burst` / `wave_flip`) — 0/3 clear §30, ~30% win,
   −$0.18–0.20/trade OOS; wider SL did not lift win rate → no-edge, not tuning.
 - **Trailing-close** — lifts win rate + cuts timeouts but still −EV OOS; variance shaper, not edge.
@@ -321,6 +336,46 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 22 — 2026-06-22 (ACTIVE STRATEGY SEARCH: stochastic + RSI/MACD confluence → deployed macd_rsi, the 2nd cross-era +EV 1h signal)
+
+- **MEASURE:** post-iter-21 slate, 38 closes, all −EV (mom_adx −$0.52, trend_momentum 0% win
+  −$0.92, triple_mom −$0.32 — the known 5m no-edge book). MACD 1h cohort 0 trades (rare cross,
+  expected). Fleet healthy: 244 heartbeats, postgres 13% / kestrel 16% of 2g, 0 errors/1h. The 5m
+  live slate warrants no deploy — so this firing's work was the BACKTEST search (owner directive #2,
+  independent of the live slate).
+- **SEARCH (built + backtested):** added 4 new research algos to algo_search.py — `stoch_revert`
+  (stochastic %K/%D mean-revert), `stoch_ct` (trend-aligned stoch), `macd_rsi` (raw MACD signal
+  cross + RSI-14 confirmation across 50), `macd_rsi_ct` (zero-aligned + RSI). 1h, maker, 6 pairs,
+  walk-forward OOS + LOCKBOX.
+- **RESULT:**
+  - **`macd_rsi` is the winner — +EV in BOTH eras** (recent expR +0.06..+0.09, lockbox **+0.12**,
+    R/R 1.52, medium exit), lockbox-positive on **5/6 pairs** (ETH/SOL/DOGE/XRP/ADA; only BTC
+    negative — SAME breadth as the deployed macd_cross), with **~50% MORE trades** (90–102/pair vs
+    53–65). The RSI filter RESCUES the raw MACD cross (which alone was data-mined +recent/−lockbox).
+  - **`macd_rsi_ct` ≡ `macd_cross_ct`** (byte-identical leaderboard rows) — the RSI>50 filter is
+    REDUNDANT for the zero-line-aligned variant (ml>0 already implies RSI>50). Not deployed.
+  - **`stoch_ct`** marginal (+EV both eras but expR only +0.06 lockbox, IS→OOS slightly negative) —
+    not deploy-grade. **`stoch_revert`** ~breakeven/negative — REFUTED.
+- **DEPLOYED `macd_rsi`** as a live pattern (signal/patterns.py detect_macd_rsi + SELF_DIRECTING;
+  reuses macd_* params; RSI-50 centerline is definitional like macd_cross's zero line; unit tests
+  incl. RSI-blocks-the-cross + missing-RSI) and a **6-bot 1h macd_rsi cohort** (medium exit
+  tp2.0/sl1.0/hold6 — its best bracket) ALONGSIDE the 5m fleet + macd_cross cohort (§13 research
+  arm). Fleet 244→**250**. Dedup: **6 NEW** + 244 SEEN (existing fleet retained as controls).
+  Leverage UNCHANGED 20×.
+- **SHIP (full ritual):** ruff format+check clean · **mypy src/ clean (CI parity)** · patterns suite
+  57 green + promote_to_staging _EXIT-sync green · committed+pushed main `612459c` · **CI green** ·
+  rebuilt image (code change) · FULL RESET (stop → wipe dev trades/signals/events/trade_context/
+  pattern_memory, **KEEP candles + microstructure** per owner standing rule → start new image →
+  **backfilled 720 1h candles × 6 NEW macd_rsi bot_ids** (iter-20 lesson: new bot_ids start blind)
+  → DELETE heartbeats after restart). VERIFIED clean: 250 heartbeats, dev trades reset, 0 errors,
+  postgres 13%; cohort LIVE via the exact daemon path (window=120, macd_computes=True, rsi populated
+  54/55/47 — NOT dark).
+- **HONEST CAVEAT:** macd_rsi is a forward-test LEAD like macd_cross — modest (win <50%), at 1h NOT
+  the 5m mandate, BTC negative, PF/deflated-Sharpe borderline. It clears the SAME deploy gate that
+  justified macd_cross (lockbox +EV, ≥3 pairs) but is NOT a confirmed stop-#2 edge. ✗ overclaim.
+- **STOP CHECK:** NOT met (no lockbox-confirmed PF≥1.3/deflated-Sharpe>0 edge; 5m −EV; cohorts are
+  forward-test leads). Continue — let the two 1h cohorts accumulate live trades (weeks at 1h).
 
 ### Iteration 21 — 2026-06-22 (host OOM-reboot recovery + owner-directed FULL RESET keeping bid/offer data; cadence-vs-decision-window discipline codified)
 
