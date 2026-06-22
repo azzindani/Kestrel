@@ -105,6 +105,13 @@ ritual below is non-optional — "evaluate" alone is not a finished iteration.
    dashboard changes; also log the `system` event marker.
 8. **Be honest about edge** — the cohort/visibility is a live testbed, not a profit claim; the
    project still has no proven edge. Do not fake an edge to satisfy the bar.
+9. **Always FULL-RESET each firing** (owner confirmed iter 21: "always remember to do it") — but
+   the 8h cron is the CHECK-IN rhythm, NOT the strategy DECISION window. **Never apply or remove a
+   strategy off an 8h read.** A NEW algo deploys only if it survives the untouched prior-year LOCKBOX
+   (+expectancy, ≥3 pairs) — that gate, not elapsed time, is the fluke-killer. An ALREADY-DEPLOYED
+   live lead is judged on TRADE COUNT not clock (~30+ to read, ~100+ to trust; at 1h that is weeks).
+   The owner's "reset except the offer and bid data" stands: KEEP both `candles` AND the
+   `microstructure` (bid/offer) table on every reset.
 
 ---
 
@@ -314,6 +321,41 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 21 — 2026-06-22 (host OOM-reboot recovery + owner-directed FULL RESET keeping bid/offer data; cadence-vs-decision-window discipline codified)
+
+- **TRIGGER:** owner OOM-rebooted the host, then asked three things: (1) "does the loop still
+  work?", (2) "I don't see any new algorithm/strategy applied or removed, and the data is not
+  reset", (3) "reset — except the offer and bid data." Followed by: "do you need longer before
+  deciding to apply a new algo/strat?" (owner likes the 8h rhythm: "I can see it's working good by
+  8-hour basis").
+- **REBOOT RECOVERY (verified, no fault):** the session-only cron `13177ba9` (0 0,8,16) SURVIVED the
+  reboot (CronList shows it) and all containers auto-restarted ~1h prior (restart: unless-stopped).
+  So BOTH the loop schedule and the fleet self-recovered — nothing was lost. **Codified rule: a host
+  reboot does not kill the loop; verify with `CronList` + `docker compose ps` before assuming damage.**
+- **MEASURE (pre-reset, the slate the owner saw):** 5m fleet 321 closed · 25.2% win · −$13.79 (same
+  −EV book). **MACD 1h cohort: 0 trades** — confirmed NOT dark this time (720 1h candles/bot present,
+  survived the reboot since candles persist in pg) — just no qualifying trend-aligned cross yet
+  (≈13 1h candles since iter-20 backfill; a cross that also clears volume/regime/risk is rare). Live,
+  waiting. Microstructure recorder healthy (22.6k rows, 6 pairs, 3s fresh).
+- **"No new algo applied/removed" is CORRECT, not a miss:** since iter-18 the loop has been
+  forward-testing the MACD 1h lead + monitoring; nothing has cleared stop-cond #2, so nothing should
+  be added or removed. Manufacturing a deploy to look busy would be theater (honesty pref #8). Said so.
+- **OWNER-DIRECTED FULL RESET (microstructure KEPT):** stop kestrel → wipe dev trades/signals/events/
+  trade_context/pattern_memory → restart → `DELETE FROM heartbeats`. **KEPT `candles` (565k) AND the
+  `microstructure` bid/offer table (22.6k)** per the owner's "reset except the offer and bid data."
+  Verified clean: trades/signals/trade_context/pattern_memory = 0, daemon `(healthy)`, recorder
+  untouched. Candles kept means the MACD cohort stays live (no re-backfill needed).
+- **CADENCE vs DECISION-WINDOW (the owner's question, answered + codified in STANDING PREFERENCES):**
+  the 8h cron is the CHECK-IN rhythm, NOT the strategy DECISION window. Two clocks: (1) applying a
+  NEW algo can happen in ONE iteration, but ONLY if it clears the untouched prior-year LOCKBOX with
+  +expectancy across ≥3 pairs — that gate (not elapsed time) blocks an 8h data-mining fluke (cf. the
+  "4h momentum" that looked +EV recent-year and DIED in lockbox); (2) judging an ALREADY-DEPLOYED
+  live lead (the MACD 1h cohort) needs a real TRADE sample — ~30+ closed trades to read, ~100+ to
+  trust — which at 1h with rare crosses is WEEKS. So: NEVER apply/remove a strategy off an 8h read;
+  new deploys must survive the lockbox, deployed leads must accumulate enough trades. Yes — longer.
+- **STOP CHECK:** NOT met (5m −EV; MACD cohort no trades yet; no lockbox-confirmed edge). Continue;
+  next firing 08:00 UTC.
 
 ### Iteration 20 — 2026-06-21 (BUG FIX: the iter-18 MACD cohort was SILENTLY DARK — never backfilled → fixed)
 
