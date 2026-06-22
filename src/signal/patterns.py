@@ -39,7 +39,7 @@ COUNTER_TREND_PATTERNS: frozenset[str] = frozenset({"wave_flip"})
 #     RSI/EMA trend gate (which would drop the strongest, most overbought momentum
 #     entries), so they self-direct to reproduce that validated behaviour.
 SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
-    {"mom_adx", "triple_mom", "session_seasonal", "macd_cross"}
+    {"mom_adx", "triple_mom", "session_seasonal", "macd_cross", "macd_rsi"}
 )
 
 
@@ -809,6 +809,47 @@ def detect_macd_cross(candles: Sequence[Candle], params: Params) -> Optional[Pat
         direction=direction,
         confidence=0.78,  # full-size band, matching how the momentum patterns are sized
         details={"variant": "macd_cross", "macd": round(macd_last, 8), "signal": round(sig_last, 8)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: macd_rsi (MACD signal cross CONFIRMED by RSI-14) — research-loop iter 22.
+# A second cross-era +EV 1h signal: the RAW MACD signal-line cross (NOT zero-aligned)
+# gated by RSI-14 agreeing on the same side of its 50 centerline. The raw cross alone
+# was data-mined (+recent/-lockbox); requiring RSI agreement filters the false crosses
+# and makes it +EV in BOTH eras (1h maker: recent expR +0.06..0.09, lockbox +0.12,
+# R/R 1.52, lockbox-positive on 5/6 pairs — same breadth as macd_cross, ~50% MORE
+# trades; scripts/algo_search.py macd_rsi). Like macd_cross this is a live FORWARD-TEST
+# of a modest lead (win <50%), at 1h as a §13 research-comparison arm — NOT a validated
+# edge, NOT the 5m default. The RSI 50 centerline is definitional (like the MACD zero
+# line in macd_cross), not a tunable. Self-directing; still clears volume/min-conf/risk.
+# ---------------------------------------------------------------------------
+@register("macd_rsi")
+def detect_macd_rsi(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter on a MACD signal-line cross confirmed by RSI-14 (macd_rsi, validated 1h)."""
+    if len(candles) < params.macd_slow + params.macd_signal + 1:
+        return None
+    rsi = candles[-1].rsi14
+    if rsi is None:
+        return None
+    m = _macd_lines([c.close for c in candles], params.macd_fast, params.macd_slow, params.macd_signal)
+    if m is None:
+        return None
+    macd_last, macd_prev, sig_last, sig_prev = m
+
+    direction: Optional[Direction] = None
+    if macd_prev <= sig_prev and macd_last > sig_last and rsi > 50.0:
+        direction = Direction.LONG  # MACD crosses up through signal, RSI confirms (>50)
+    elif macd_prev >= sig_prev and macd_last < sig_last and rsi < 50.0:
+        direction = Direction.SHORT
+    if direction is None:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=0.78,  # full-size band, matching the other momentum patterns
+        details={"variant": "macd_rsi", "macd": round(macd_last, 8), "rsi": round(rsi, 2)},
     )
 
 

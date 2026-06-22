@@ -9,6 +9,7 @@ from src.signal.patterns import (
     detect_compression_breakout,
     detect_impulse_retracement,
     detect_macd_cross,
+    detect_macd_rsi,
     detect_mom_adx,
     detect_momentum_continuation,
     detect_session_seasonal,
@@ -40,6 +41,7 @@ class TestRegistry:
             "triple_mom",
             "session_seasonal",
             "macd_cross",
+            "macd_rsi",
         }
         assert expected == set(registry.keys())
 
@@ -686,3 +688,43 @@ class TestMacdCross:
 
     def test_is_self_directing(self):
         assert "macd_cross" in SELF_DIRECTING_PATTERNS
+
+
+# ---------------------------------------------------------------------------
+# macd_rsi (MACD signal cross confirmed by RSI-14) — iter 22
+# ---------------------------------------------------------------------------
+
+
+class TestMacdRsi:
+    @staticmethod
+    def _candles(closes, rsi=60.0):
+        return [make_candle(close=c, ts=i * 3_600_000, rsi14=rsi) for i, c in enumerate(closes)]
+
+    def test_insufficient_candles_returns_none(self):
+        assert detect_macd_rsi(self._candles([100.0] * 20), make_params()) is None
+
+    def test_no_cross_flat_series_returns_none(self):
+        assert detect_macd_rsi(self._candles([100.0] * 50), make_params()) is None
+
+    def test_bullish_cross_with_rsi_above_50_fires_long(self):
+        # up-jump = MACD crosses up through signal; RSI>50 confirms → long
+        r = detect_macd_rsi(self._candles([100.0] * 40 + [112.0], rsi=62.0), make_params())
+        assert r is not None
+        assert r.direction == Direction.LONG
+        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.details["variant"] == "macd_rsi"
+
+    def test_bearish_cross_with_rsi_below_50_fires_short(self):
+        r = detect_macd_rsi(self._candles([100.0] * 40 + [88.0], rsi=38.0), make_params())
+        assert r is not None
+        assert r.direction == Direction.SHORT
+
+    def test_rsi_disagreement_blocks_the_cross(self):
+        # same bullish MACD cross but RSI < 50 (no confirmation) → no fire
+        assert detect_macd_rsi(self._candles([100.0] * 40 + [112.0], rsi=45.0), make_params()) is None
+
+    def test_missing_rsi_returns_none(self):
+        assert detect_macd_rsi(self._candles([100.0] * 40 + [112.0], rsi=None), make_params()) is None
+
+    def test_is_self_directing(self):
+        assert "macd_rsi" in SELF_DIRECTING_PATTERNS

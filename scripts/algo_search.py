@@ -317,6 +317,91 @@ for _maf, _mas in [(9, 21), (12, 26), (20, 50)]:
     _make_ma_cross(_maf, _mas, "ema")
 
 
+# --- Stochastic oscillator (owner directive 2026-06-21: "stochastic, etc.") -----------
+# Never tested in Kestrel. %K = 100*(close-LL_n)/(HH_n-LL_n); %D = SMA(%K, smooth).
+# Computed inline from candle high/low/close inside the 120-candle window (n+smooth ≪ 120).
+def _stoch(C: Sequence[Candle], n: int = 14, d: int = 3) -> Optional[tuple[float, float, float, float]]:
+    """Return (k_last, k_prev, d_last, d_prev) of the %K/%D stochastic, or None if too short."""
+    L = len(C)
+    if L < n + d:
+        return None
+    highs = [c.high for c in C]
+    lows = [c.low for c in C]
+    closes = [c.close for c in C]
+    ks: list[float] = []
+    for t in range(L - (d + 1), L):  # %K for the last d+1 bars
+        hh = max(highs[t - n + 1 : t + 1])
+        ll = min(lows[t - n + 1 : t + 1])
+        ks.append(50.0 if hh == ll else 100.0 * (closes[t] - ll) / (hh - ll))
+    d_last = sum(ks[-d:]) / d
+    d_prev = sum(ks[-d - 1 : -1]) / d
+    return (ks[-1], ks[-2], d_last, d_prev)
+
+
+@_algo("stoch_revert", PatternType.ANOMALY_FADE)
+def _stoch_revert(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # %K crosses up through %D while OVERSOLD → long; down while OVERBOUGHT → short
+    s = _stoch(C)
+    if s is None:
+        return None
+    kl, kp, dl, dp = s
+    if kl < 25.0 and kp <= dp and kl > dl:
+        return Direction.LONG
+    if kl > 75.0 and kp >= dp and kl < dl:
+        return Direction.SHORT
+    return None
+
+
+@_algo("stoch_ct", PatternType.MOMENTUM_CONTINUATION)
+def _stoch_ct(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # trend-aligned: %K crosses %D (not yet extreme) on the correct side of SMA-100
+    s = _stoch(C)
+    if s is None:
+        return None
+    kl, kp, dl, dp = s
+    ma = _sma([c.close for c in C], 100)
+    if ma is None:
+        return None
+    if C[-1].close > ma and kp <= dp and kl > dl and kl < 80.0:
+        return Direction.LONG
+    if C[-1].close < ma and kp >= dp and kl < dl and kl > 20.0:
+        return Direction.SHORT
+    return None
+
+
+# --- indicator CONFLUENCE (iter-18 flagged next step: "test RSI+MACD confluences") ----
+# Stack two orthogonal momentum reads: the MACD signal cross (the iter-18 lead) confirmed
+# by RSI-14 on the same side of 50. The hypothesis is that requiring agreement filters the
+# false MACD crosses that sink macd_cross's win rate, lifting expectancy without new data.
+@_algo("macd_rsi", PatternType.MOMENTUM_CONTINUATION)
+def _macd_rsi(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    m = _macd([c.close for c in C])
+    if m is None or C[-1].rsi14 is None:
+        return None
+    ml, mp, sl, sp = m
+    r = C[-1].rsi14
+    if mp <= sp and ml > sl and r > 50.0:
+        return Direction.LONG
+    if mp >= sp and ml < sl and r < 50.0:
+        return Direction.SHORT
+    return None
+
+
+@_algo("macd_rsi_ct", PatternType.MOMENTUM_CONTINUATION)
+def _macd_rsi_ct(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # macd_cross_ct (zero-line trend-aligned) + RSI-14 confirmation — the strictest confluence
+    m = _macd([c.close for c in C])
+    if m is None or C[-1].rsi14 is None:
+        return None
+    ml, mp, sl, sp = m
+    r = C[-1].rsi14
+    if ml > 0 and mp <= sp and ml > sl and r > 50.0:
+        return Direction.LONG
+    if ml < 0 and mp >= sp and ml < sl and r < 50.0:
+        return Direction.SHORT
+    return None
+
+
 @_algo("bb_fade", PatternType.ANOMALY_FADE)
 def _bb_fade(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     c = C[-1]
