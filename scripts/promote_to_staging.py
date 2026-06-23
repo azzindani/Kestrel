@@ -55,7 +55,9 @@ SELECT split_part(bot_id, '-', 2)                            AS token,
 FROM trades
 WHERE env = 'dev' AND exit_ts IS NOT NULL AND pnl_net_usdt IS NOT NULL
 GROUP BY 1, 2, 3
-HAVING COUNT(*) >= $1 AND SUM(pnl_net_usdt) > 0
+HAVING COUNT(*) >= $1
+   AND SUM(pnl_net_usdt) > 0
+   AND AVG(CASE WHEN pnl_net_usdt > 0 THEN 1.0 ELSE 0.0 END) >= $2
 ORDER BY AVG(pnl_net_usdt) DESC;
 """
 
@@ -119,7 +121,7 @@ def _lockbox_seed(bots: list[dict]) -> list[dict]:
     return seed
 
 
-async def _leaderboard(min_trades: int) -> list[dict]:
+async def _leaderboard(min_trades: int, min_win_frac: float) -> list[dict]:
     import asyncpg
     from dotenv import load_dotenv
 
@@ -132,7 +134,7 @@ async def _leaderboard(min_trades: int) -> list[dict]:
         password=os.getenv("DB_PASSWORD"),
     )
     try:
-        rows = await conn.fetch(_LEADERBOARD_SQL, min_trades)
+        rows = await conn.fetch(_LEADERBOARD_SQL, min_trades, min_win_frac)
     finally:
         await conn.close()
     return [dict(r) for r in rows]
@@ -162,7 +164,7 @@ async def _run(args: argparse.Namespace) -> int:
         print(f"[promote] manual selection: {len(fleet)} cell(s)", file=sys.stderr)
     else:
         try:
-            board = await _leaderboard(args.min_trades)
+            board = await _leaderboard(args.min_trades, args.min_win / 100.0)
         except ImportError as exc:
             print(f"missing runtime dependency: {exc}. Run inside the container.", file=sys.stderr)
             return 2
@@ -173,8 +175,9 @@ async def _run(args: argparse.Namespace) -> int:
         winners = board[: args.top]
         if winners:
             print(
-                f"[promote] labs leaderboard (>= {args.min_trades} trades, net>0), "
-                f"top {len(winners)} of {len(board)} qualifying cells by expectancy:",
+                f"[promote] labs leaderboard (>= {args.min_trades} trades, net>0, "
+                f"win>= {args.min_win:.0f}%), top {len(winners)} of {len(board)} "
+                "qualifying cells by expectancy:",
                 file=sys.stderr,
             )
             for r in winners:
@@ -191,8 +194,9 @@ async def _run(args: argparse.Namespace) -> int:
         if not fleet:
             print(
                 f"[promote] no qualifying lab cells (need >= {args.min_trades} closed "
-                "trades with net>0). Falling back to LOCKBOX-VALIDATED LEADS "
-                f"({', '.join(_LOCKBOX_LEADS)}) cloned from the dev fleet.",
+                f"trades, net>0, win>= {args.min_win:.0f}%). Falling back to "
+                f"LOCKBOX-VALIDATED LEADS ({', '.join(_LOCKBOX_LEADS)}) cloned from the "
+                "dev fleet as the seed until a live cell qualifies.",
                 file=sys.stderr,
             )
             fleet = _lockbox_seed(bots)
@@ -211,6 +215,13 @@ def main() -> int:
     p = argparse.ArgumentParser(description="Promote lab best-performers into the staging fleet.")
     p.add_argument("--top", type=int, default=8, help="max cells to promote (default 8)")
     p.add_argument("--min-trades", type=int, default=10, help="min closed trades for a cell to qualify (default 10)")
+    p.add_argument(
+        "--min-win",
+        type=float,
+        default=0.0,
+        help="min win-rate %% for a cell to qualify, ON TOP of net>0 (default 0 = expectancy only; "
+        "the loop passes 50 so staging only holds bots that BOTH win >50%% AND make money)",
+    )
     p.add_argument("--bots", type=str, default="bots.json", help="dev fleet to clone winners from (default bots.json)")
     p.add_argument(
         "--manual",
