@@ -310,6 +310,10 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   filter to `macd_cross_ct` is REDUNDANT: the zero-line condition (ml>0) already implies RSI>50, so
   `macd_rsi_ct` == `macd_cross_ct` byte-for-byte. RSI only adds information on the RAW (non-zero-
   aligned) cross — that variant is the deployed `macd_rsi`. Don't re-test RSI on the _ct variant.
+- **MACD family at 4h (`macd_cross_ct`, `macd_rsi`)** (iter 27) — recent-4h looked BETTER than 1h
+  (macd_cross_ct/tight 52% win, expR +0.20) but the prior-year LOCKBOX is NEGATIVE on all variants
+  (−0.06..−0.14), recent→lockbox collapse = data-mined (same signature as mom_adx 4h). The MACD edge
+  is TF-SPECIFIC to 1h (+EV BOTH eras at 1h, dies at 4h). Don't deploy 4h MACD; don't re-test for activity.
 - **ADX trend-strength confluence on the MACD family (`macd_adx*`, `macd_rsi_adx*`)** (iter 23) —
   gating the MACD/RSI cross on an ADX floor (≥20/≥25) does NOT improve the leads out-of-era. The best
   cell `macd_rsi_adx25`/medium looked strongest in the recent year (expR +0.16) but COLLAPSED to +0.02
@@ -366,6 +370,29 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 27 — 2026-06-23 (5m +net REVERTED as predicted; ACTIVE SEARCH: 4h MACD data-mined → REFUTED; 1h confirmed TF-specific; HOLD)
+
+- **MEASURE:** 5m fleet 572 closes, **40.4% win, +$0.66** — the iter-26 +$5.80/47.4% (291 trades)
+  DECAYED to +$0.66/40.4% (572): the extra ~281 trades were net-negative. The +net was VARIANCE
+  reverting to the −EV mean, exactly as iter-26 predicted. MACD cohorts (dev+staging): still 0 trades
+  / 0 signals — armed (iter-26 verified they reach the pattern scan) but no qualifying cross in a
+  non-QUIET 1h regime yet (recent gate 1h market frequently QUIET). 250+12 hb, 0 errors, mem fine.
+- **ACTIVE SEARCH — does the MACD edge improve at 4h? (TF dimension of the validated signal):**
+  ran macd_cross_ct/macd_rsi/sma_cross_9_21 at 4h, maker, 6 pairs, recent + LOCKBOX.
+  - RECENT 4h looked GREAT: macd_cross_ct/tight 52.2% win, expR **+0.20** (higher than 1h's +0.15),
+    IS→OOS +0.022 — tempting.
+  - **LOCKBOX 4h: ALL NEGATIVE** — macd_cross_ct −0.10/−0.06, macd_rsi −0.10/−0.14, sma_cross −0.03.
+    Recent +0.20 → lockbox −0.10 = the CLASSIC data-mining collapse (identical signature to the
+    mom_adx 4h trap that started this project's lockbox discipline).
+  - **VERDICT: 4h MACD REFUTED.** And the contrast is the real finding: the SAME signal is +EV in
+    BOTH eras at 1h (recent +0.15/lockbox +0.14) but +recent/−lockbox at 4h → the MACD edge is
+    **TF-SPECIFIC to 1h**, not "any slow TF." This STRENGTHENS the 1h leads (genuinely cross-era,
+    not a lucky TF) and closes the "try 4h for more activity" tangent. Added to the refuted ledger.
+- **HOLD (no deploy, no reset):** 4h refuted; 1h leads unchanged and armed; 5m +net is variance;
+  search saturated. Nothing byte-worthy → fleet identical to live. Staging seed unchanged (no dev
+  cell clears win>50%+net>0). Deliverable = the 4h refutation + the TF-specificity finding.
+- **STOP CHECK:** NOT met. Continue — let the 1h macd cohorts accumulate their first real crosses.
 
 ### Iteration 26 — 2026-06-23 (iter-25 fix VERIFIED live; 5m +net this window = variance not edge; justified HOLD)
 
