@@ -133,3 +133,12 @@ class TestRegimePermitsPattern:
 
     def test_regime_permits_pattern_unknown_pattern_returns_false(self):
         assert regime_permits_pattern(Regime.TRENDING, "nonexistent_pattern") is False
+
+    def test_regime_permits_macd_in_all_non_quiet(self):
+        # iter-25 fix: macd_cross/macd_rsi must be permitted in every non-QUIET regime
+        # (matching the permit-all-ex-QUIET config they were validated under) — else
+        # `permitted` is always empty for macd bots and they can never fire.
+        for pattern in ("macd_cross", "macd_rsi"):
+            for regime in (Regime.TRENDING, Regime.VOLATILE, Regime.RANGING):
+                assert regime_permits_pattern(regime, pattern) is True
+            assert regime_permits_pattern(Regime.QUIET, pattern) is False

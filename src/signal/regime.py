@@ -79,9 +79,16 @@ def _ema_from_closes(candles: Sequence[Candle], period: int) -> float:
 
 def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
     """Return True if the regime allows the given pattern (CLAUDE.md §22)."""
-    # Confluence-momentum (mom_adx, triple_mom) is permitted in every non-QUIET
-    # regime: its own ADX>adx_strong_min gate already restricts it to strong moves,
-    # which is how it was validated (QUIET stays blocked for all patterns).
+    # Confluence-momentum (mom_adx, triple_mom) and the MACD-family indicator signals
+    # (macd_cross, macd_rsi) are permitted in every non-QUIET regime: each carries its
+    # own restrictive entry gate (ADX>adx_strong_min; a trend-aligned MACD signal-line
+    # cross), which is how they were VALIDATED — the algo_search backtest neutralises the
+    # regime-permit gate (permit-all except QUIET), so the lockbox +EV is for the
+    # ungated-by-regime signal. NOTE (iter-25 bug fix): macd_cross/macd_rsi were
+    # registered + self-directing but never listed here, so `permitted` was always empty
+    # for the macd cohorts → they could NEVER fire (0 trades since iter-18/22). Listing
+    # them in the non-QUIET regimes makes live match the validated config. QUIET stays
+    # blocked for ALL patterns (no tradeable move — kept in the backtest too).
     _allowed: dict[Regime, frozenset[str]] = {
         Regime.TRENDING: frozenset(
             {
@@ -93,6 +100,8 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "vol_burst",
                 "mom_adx",
                 "triple_mom",
+                "macd_cross",
+                "macd_rsi",
             }
         ),
         Regime.VOLATILE: frozenset(
@@ -106,6 +115,8 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "wave_flip",
                 "mom_adx",
                 "triple_mom",
+                "macd_cross",
+                "macd_rsi",
             }
         ),
         Regime.RANGING: frozenset(
@@ -117,6 +128,8 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "wave_flip",
                 "mom_adx",
                 "triple_mom",
+                "macd_cross",
+                "macd_rsi",
             }
         ),
         Regime.QUIET: frozenset(),
