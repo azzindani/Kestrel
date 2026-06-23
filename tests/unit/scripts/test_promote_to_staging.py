@@ -17,57 +17,83 @@ promote = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(promote)
 
 
-class TestTokenToPair:
-    def test_usdt_token(self):
-        assert promote._token_to_pair("ETHUSDT") == "ETH/USDT"
+def _dev_bot(bot_id="dev-ETHUSDT-1h-macd_rsi-01", **over):
+    b = {
+        "bot_id": bot_id,
+        "pair": "ETH/USDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "max_active_buckets": 1,
+        "strategy": "macd_rsi",
+        "patterns": ["macd_rsi"],
+        "params": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 1.0, "max_hold_candles": 6},
+    }
+    b.update(over)
+    return b
 
-    def test_multichar_base(self):
-        assert promote._token_to_pair("DOGEUSDT") == "DOGE/USDT"
 
-    def test_usd_token(self):
-        assert promote._token_to_pair("BTCUSD") == "BTC/USD"
+class TestParseBotId:
+    def test_basic(self):
+        assert promote._parse_bot_id("dev-BTCUSDT-1h-macd_rsi-01") == ("BTCUSDT", "1h", "macd_rsi")
 
-    def test_unknown_quote_raises(self):
+    def test_underscore_strategy_kept_whole(self):
+        assert promote._parse_bot_id("dev-ETHUSDT-5m-trend_momentum-01") == ("ETHUSDT", "5m", "trend_momentum")
+
+    def test_short_id_raises(self):
         with pytest.raises(ValueError):
-            promote._token_to_pair("ETHEUR")
+            promote._parse_bot_id("dev-bad")
 
 
 class TestParseManual:
     def test_basic(self):
-        assert promote._parse_manual("ETHUSDT:triple_mom,DOGEUSDT:mom_adx") == [
-            ("ETHUSDT", "triple_mom"),
-            ("DOGEUSDT", "mom_adx"),
+        assert promote._parse_manual("ETHUSDT:macd_rsi,DOGEUSDT:macd_cross") == [
+            ("ETHUSDT", "macd_rsi"),
+            ("DOGEUSDT", "macd_cross"),
         ]
 
     def test_whitespace_and_case(self):
-        assert promote._parse_manual(" ethusdt : triple_mom ") == [("ETHUSDT", "triple_mom")]
+        assert promote._parse_manual(" ethusdt : macd_rsi ") == [("ETHUSDT", "macd_rsi")]
 
     def test_missing_colon_raises(self):
         with pytest.raises(ValueError):
-            promote._parse_manual("ETHUSDT-triple_mom")
+            promote._parse_manual("ETHUSDT-macd_rsi")
 
 
-class TestBotEntry:
-    def test_shape_and_prefix(self):
-        e = promote._bot_entry("ETHUSDT", "triple_mom")
-        assert e["bot_id"] == "staging-ETHUSDT-4h-triple_mom-01"
-        assert e["pair"] == "ETH/USDT"
-        assert e["timeframe_entry"] == "4h"
-        assert e["timeframe_regime"] == "4h"
-        assert e["strategy"] == "triple_mom"
-        assert e["patterns"] == ["triple_mom"]
+class TestStageClone:
+    def test_prefix_swapped_and_config_preserved(self):
+        dev = _dev_bot()
+        st = promote._stage_clone(dev)
+        assert st["bot_id"] == "staging-ETHUSDT-1h-macd_rsi-01"
+        # Exit/params/tf/patterns come along verbatim — staging keeps the measured bracket.
+        assert st["params"] == dev["params"]
+        assert st["timeframe_entry"] == "1h"
+        assert st["patterns"] == ["macd_rsi"]
 
-    def test_carries_validated_exit_profile(self):
-        e = promote._bot_entry("DOGEUSDT", "mom_adx")
-        # Must carry the exact exit profile the lab ships (the TestExitProfileInSyncWithLab
-        # test pins promote._EXIT == build_momentum_lab._EXIT, so reference it here).
-        assert e["params"] == dict(promote._EXIT)
-        assert e["params"]["trailing_enabled"] is True
+    def test_does_not_mutate_source(self):
+        dev = _dev_bot()
+        promote._stage_clone(dev)
+        assert dev["bot_id"] == "dev-ETHUSDT-1h-macd_rsi-01"
 
 
-class TestExitProfileInSyncWithLab:
-    def test_matches_build_momentum_lab(self):
-        lab_spec = importlib.util.spec_from_file_location("build_momentum_lab", _PATH.parent / "build_momentum_lab.py")
-        lab = importlib.util.module_from_spec(lab_spec)
-        lab_spec.loader.exec_module(lab)
-        assert promote._EXIT == lab._EXIT
+class TestLockboxSeed:
+    def test_clones_only_lead_strategies(self):
+        bots = [
+            _dev_bot("dev-ETHUSDT-1h-macd_rsi-01"),
+            _dev_bot("dev-BTCUSDT-1h-macd_cross-01", strategy="macd_cross", patterns=["macd_cross"]),
+            _dev_bot("dev-SOLUSDT-5m-trend_momentum-01", strategy="trend_momentum", patterns=["trend_momentum"]),
+        ]
+        seed = promote._lockbox_seed(bots)
+        ids = {b["bot_id"] for b in seed}
+        assert ids == {"staging-ETHUSDT-1h-macd_rsi-01", "staging-BTCUSDT-1h-macd_cross-01"}
+
+
+class TestLoadDevFleet:
+    def test_indexes_by_tf_and_tf_agnostic(self, tmp_path):
+        import json
+
+        p = tmp_path / "bots.json"
+        p.write_text(json.dumps([_dev_bot()]))
+        bots, idx = promote._load_dev_fleet(str(p))
+        assert len(bots) == 1
+        assert ("ETHUSDT", "1h", "macd_rsi") in idx
+        assert ("ETHUSDT", "macd_rsi") in idx  # tf-agnostic fallback for --manual

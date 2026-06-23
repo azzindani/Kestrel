@@ -502,6 +502,13 @@ class AppConfig:
     portfolio_tp_pct: float = 0.0
     portfolio_dd_pct: float = 0.0
 
+    # Phase-2 staging execution backend. "live" (default) routes ENV=staging to the
+    # LIVE code path on a demo/testnet venue (BingX VST) — needs keys + TESTNET=true.
+    # "sim" routes staging to SimulationExecution (modeled fills) so the curated
+    # best-performers pool can run NOW, before VST keys exist, fully isolated in
+    # env='staging'. Flip to "live" once demo keys are added. Ignored unless ENV=staging.
+    staging_engine: str = "live"
+
     @classmethod
     def from_mapping(cls, m: Mapping[str, str]) -> "AppConfig":
         """Construct from a string→string mapping (e.g. os.environ).
@@ -559,6 +566,7 @@ class AppConfig:
             maker_execution=(m.get("MAKER_EXECUTION") or "").lower() in ("1", "true", "yes"),
             portfolio_tp_pct=float(m.get("PORTFOLIO_TP_PCT") or 0.0),
             portfolio_dd_pct=float(m.get("PORTFOLIO_DD_PCT") or 0.0),
+            staging_engine=(m.get("STAGING_ENGINE") or "live").lower(),
         )
 
 
