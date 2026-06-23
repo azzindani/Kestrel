@@ -367,6 +367,40 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 25 — 2026-06-23 (BUG FIX: the 1h MACD cohorts were STRUCTURALLY INERT since iter-18 — regime-permit omission → 0 trades ever)
+
+- **MEASURE:** dev 543 5m closes, 30.6% win, −$24.25 (known −EV book). **Both 1h MACD cohorts:
+  STILL 0 trades** — not "rare cross," investigated. Staging 12 bots up, 0 trades. 250+12 heartbeats,
+  postgres 15%/kestrel 16%, 0 errors. CI on prior commits green.
+- **DIAGNOSE (read-first, the real cause):** macd cohort events were dominated by `quiet_regime` (76),
+  `no_pattern_fired` (54), `no_trend_alignment`/`no_trend_streak` (62). Reading detector.evaluate:
+  `permitted = regime_patterns ∩ enabled_patterns`, and **macd_cross/macd_rsi were in NONE of
+  `regime_permits_pattern`'s allowed sets** (they were registered + self-directing in iter-18/22 but
+  never listed in regime.py). So `permitted` was **ALWAYS EMPTY** for macd bots → they could never
+  reach the pattern scan → 0 trades EVER. The `no_pattern_fired` events were empty-permitted (not
+  "evaluated, no cross"); the trend rejections were the empty self-direct set
+  (`permitted & SELF_DIRECTING` = ∅) falling through the trend gate. The cohorts have been INERT the
+  whole time (iter 18→25) — every "0 trades, rare cross, expected" read in iters 19-23 was WRONG.
+- **FIX (regime.py, agent scope):** listed macd_cross/macd_rsi in TRENDING/VOLATILE/RANGING — exactly
+  like mom_adx/triple_mom, and matching the VALIDATION (algo_search neutralises the regime-permit gate
+  = permit-all-ex-QUIET, so the lockbox +EV is for the regime-ungated signal). QUIET stays blocked for
+  all. Only the 24 macd bots affected; the 238-bot 5m fleet is untouched. +regime unit test.
+- **VERIFIED LIVE (new image):** `regime_permits_pattern('macd_cross', …)` → [True,True,True] for
+  non-QUIET; `evaluate()` on a real DOGE/BTC 1h window now reaches **stage=pattern** (`no_pattern_fired`
+  = armed, no cross right now) instead of empty-permitted. The cohorts (dev + staging) are now armed
+  and will fire on the next qualifying cross.
+- **SHIP:** ruff + mypy src/ clean · regime/detector/patterns tests green · committed+pushed `67ed772`
+  · CI green · rebuilt image · FULL RESET (wiped dev+staging slate, KEPT candles + microstructure;
+  bot_ids unchanged → no backfill) · recreated labs + staging on the fixed image · 262 heartbeats,
+  trades=0, 0 errors. Staging maintenance (step 10b) ran: no dev cell clears win>50%+net>0 → staging
+  keeps the 12 lockbox-lead seed (now also un-inerted by the same fix).
+- **LESSON (codified):** adding a new registered pattern is NOT enough to make it fire live — it must
+  ALSO be listed in `regime_permits_pattern` (regime.py) for at least one non-QUIET regime, else
+  detector.evaluate's `permitted` set is empty and the bot is silently inert (no signals row; only
+  signal_rejected events). Same inert-cohort class as the iter-20 backfill bug, different cause.
+- **STOP CHECK:** NOT met (no edge; cohorts now armed but no live trades yet). Continue — the macd
+  forward-test can FINALLY accumulate data; next firings measure real macd trades.
+
 ### Iteration 24 — 2026-06-23 (owner directive: ACTIVATE Phase-2 STAGING — curated best-performers pool, full-verbosity Grafana, loop-maintained)
 
 - **TRIGGER:** owner — "[the 3-phase plan] phase 1 = deploy hundreds to try everything; phase 2 =
