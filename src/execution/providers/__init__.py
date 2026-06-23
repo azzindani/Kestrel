@@ -58,18 +58,12 @@ def get_execution_provider(cfg: AppConfig) -> ExecutionInterface:
         ENV=staging  → real provider, but MUST be a demo/testnet venue (virtual money)
         ENV=prod     → real provider selected by cfg.exchange (real capital, §18 gated)
     """
-    # Phase 2 quarantine safety rail: staging routes to the LIVE code path (it is
-    # not DEV) so it exercises real order placement/fills, but it must run against
-    # a demo/testnet venue. Refuse to start staging on a live (TESTNET=false)
-    # venue — that would place real orders while masquerading as a paper phase.
-    if cfg.env is Env.STAGING and not cfg.testnet:
-        raise ValueError(
-            "ENV=staging requires TESTNET=true — staging must run on a demo/testnet "
-            "venue (e.g. BingX VST) with virtual money, never real capital. Set "
-            "TESTNET=true in the staging .env, or use ENV=prod for real trading."
-        )
-
-    if cfg.env is Env.DEV:
+    # Phase-1 (dev) always simulates. Phase-2 (staging) ALSO simulates while
+    # STAGING_ENGINE=sim (the interim before demo-venue keys exist): the curated
+    # best-performers pool runs on modeled fills, fully isolated in env='staging'
+    # (§19), so the phase can run NOW. Flip STAGING_ENGINE=live (+ VST keys +
+    # TESTNET=true) to upgrade staging to demo-money execution later.
+    if cfg.env is Env.DEV or (cfg.env is Env.STAGING and cfg.staging_engine == "sim"):
         from src.config import load_params
         from src.execution.simulation import SimulationExecution
 
@@ -81,6 +75,18 @@ def get_execution_provider(cfg: AppConfig) -> ExecutionInterface:
         # (load_params) is allowed here (CLAUDE.md §7).
         params = cfg.params if cfg.params is not None else load_params("params.json")
         return SimulationExecution(cfg, params)
+
+    # Phase 2 quarantine safety rail: staging on the LIVE code path (it is not DEV
+    # and STAGING_ENGINE != sim) exercises real order placement/fills, but it must
+    # run against a demo/testnet venue. Refuse to start staging on a live
+    # (TESTNET=false) venue — that would place real orders while masquerading as a
+    # paper phase.
+    if cfg.env is Env.STAGING and not cfg.testnet:
+        raise ValueError(
+            "ENV=staging requires TESTNET=true — staging must run on a demo/testnet "
+            "venue (e.g. BingX VST) with virtual money, never real capital. Set "
+            "TESTNET=true in the staging .env, or use ENV=prod for real trading."
+        )
 
     name = cfg.exchange.lower()
     if name not in _REGISTRY:

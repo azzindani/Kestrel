@@ -1,59 +1,230 @@
 [
   {
-    "bot_id": "staging-ETHUSDT-4h-triple_mom-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "bot_id": "staging-BTCUSDT-1h-macd_cross-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "triple_mom",
+    "strategy": "macd_cross",
     "patterns": [
-      "triple_mom"
+      "macd_cross"
     ],
     "params": {
-      "tp_atr_multiplier": 2.0,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 6,
+      "max_hold_candles": 4,
+      "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "adx_strong_min": 25.0,
-      "max_loss_pct_per_trade": 0.02
+      "max_loss_pct_per_trade": 0.01
     }
   },
   {
-    "bot_id": "staging-ETHUSDT-4h-mom_adx-01",
+    "bot_id": "staging-ETHUSDT-1h-macd_cross-01",
     "pair": "ETH/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "mom_adx",
+    "strategy": "macd_cross",
     "patterns": [
-      "mom_adx"
+      "macd_cross"
     ],
     "params": {
-      "tp_atr_multiplier": 2.0,
+      "tp_atr_multiplier": 1.4,
       "sl_atr_multiplier": 1.0,
-      "max_hold_candles": 6,
+      "max_hold_candles": 4,
+      "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "adx_strong_min": 25.0,
-      "max_loss_pct_per_trade": 0.02
+      "max_loss_pct_per_trade": 0.01
     }
   },
   {
-    "bot_id": "staging-DOGEUSDT-4h-triple_mom-01",
+    "bot_id": "staging-SOLUSDT-1h-macd_cross-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-DOGEUSDT-1h-macd_cross-01",
     "pair": "DOGE/USDT",
-    "timeframe_entry": "4h",
-    "timeframe_regime": "4h",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
     "max_active_buckets": 1,
-    "strategy": "triple_mom",
+    "strategy": "macd_cross",
     "patterns": [
-      "triple_mom"
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-XRPUSDT-1h-macd_cross-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-ADAUSDT-1h-macd_cross-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-BTCUSDT-1h-macd_rsi-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_rsi",
+    "patterns": [
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 2.0,
       "sl_atr_multiplier": 1.0,
       "max_hold_candles": 6,
+      "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "adx_strong_min": 25.0,
-      "max_loss_pct_per_trade": 0.02
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-ETHUSDT-1h-macd_rsi-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_rsi",
+    "patterns": [
+      "macd_rsi"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-SOLUSDT-1h-macd_rsi-01",
+    "pair": "SOL/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_rsi",
+    "patterns": [
+      "macd_rsi"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-DOGEUSDT-1h-macd_rsi-01",
+    "pair": "DOGE/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_rsi",
+    "patterns": [
+      "macd_rsi"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-XRPUSDT-1h-macd_rsi-01",
+    "pair": "XRP/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_rsi",
+    "patterns": [
+      "macd_rsi"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "staging-ADAUSDT-1h-macd_rsi-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_rsi",
+    "patterns": [
+      "macd_rsi"
+    ],
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
     }
   }
 ]

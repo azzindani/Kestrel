@@ -31,13 +31,27 @@ class TestStagingRouting:
             get_execution_provider(cfg)
 
     def test_staging_demo_routes_to_live_execution(self):
-        """Staging on a demo venue resolves the live provider (not simulation)."""
+        """Staging on a demo venue (default STAGING_ENGINE=live) resolves the live provider."""
         pytest.importorskip("ccxt")
         from src.execution.live import LiveExecution
 
         cfg = make_app_config(env=Env.STAGING, testnet=True, exchange="bingx")
         provider = get_execution_provider(cfg)
         assert isinstance(provider, LiveExecution)
+
+    def test_staging_sim_engine_routes_to_simulation(self):
+        """Interim: STAGING_ENGINE=sim runs the curated pool on SimulationExecution (no keys)."""
+        from src.execution.simulation import SimulationExecution
+
+        cfg = make_app_config(env=Env.STAGING, testnet=True, exchange="bingx", staging_engine="sim")
+        assert isinstance(get_execution_provider(cfg), SimulationExecution)
+
+    def test_staging_sim_engine_ignores_testnet_rail(self):
+        """STAGING_ENGINE=sim never touches a venue, so the TESTNET rail does not apply."""
+        from src.execution.simulation import SimulationExecution
+
+        cfg = make_app_config(env=Env.STAGING, testnet=False, exchange="bingx", staging_engine="sim")
+        assert isinstance(get_execution_provider(cfg), SimulationExecution)
 
     def test_dev_still_routes_to_simulation(self):
         """Regression: adding STAGING must not change Phase-1 (dev) routing."""
