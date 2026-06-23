@@ -367,6 +367,35 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 26 — 2026-06-23 (iter-25 fix VERIFIED live; 5m +net this window = variance not edge; justified HOLD)
+
+- **MEASURE (since iter-25 reset):** 5m fleet 291 closes, **47.4% win, +$5.80 net** — broadly positive
+  across ALL momentum strategies (trend_momentum +$4.15/48.1%, triple_mom +$1.19/47.1%, mom_adx
+  +$0.53/47.7%). MACD cohorts (dev+staging): still 0 trades / 0 signals. 250+12 heartbeats, 0 errors,
+  postgres 14% / kestrel 17% / staging 30%.
+- **VERIFY iter-25 fix (the deliverable):** macd signal-event reject mix over the last 3h is now ONLY
+  `quiet_regime` (38) + `no_pattern_fired` (34) — the `no_trend_alignment`/`no_trend_streak`
+  empty-permitted artifacts are GONE. That proves the regime-permit fix works: macd now REACHES the
+  pattern scan and is correctly armed (no_pattern_fired = evaluated, no cross right now). 0 trades is
+  genuine: the recent 1h gate market is frequently QUIET (38 quiet rejections/3h) and a trend-aligned
+  cross is rare — but the cohorts can now finally fire when one occurs.
+- **DIAGNOSE — the 5m +net is VARIANCE, not edge (honest, ✗ overclaim):** nothing changed in the 5m
+  fleet (iter-25 only touched regime.py for macd). The same momentum strategies were −$24 last window
+  (iter-25) and are lockbox-NEGATIVE / refuted across all prior iters. A 47% win / +$5.80 over 291
+  trades is well within a coin-flip momentum book's variance during a favorable (trending) stretch.
+  This is exactly the recent-window positive the lockbox exists to refute — NOT a deployable edge.
+- **STAGING MAINTENANCE (step 10b):** ran `promote --min-win 50`. The +net 5m cells all win <50%, so
+  the win-floor correctly EXCLUDES them (illustrating the owner's win>50% criterion in action — it
+  keeps the most-profitable-this-window cell, trend_momentum +$4.15 @ 48%, OUT of staging). No dev
+  cell clears win>50%+net>0 → staging keeps the 12 lockbox-lead seed UNCHANGED → no churn (skip-if-identical).
+- **JUSTIFIED HOLD (no deploy, no reset):** the macd cohorts JUST got armed (iter-25) and must
+  accumulate — churning now wastes the fix; the 5m +net is variance not a candidate; the obvious
+  indicator search space is saturated (MACD/MA/RSI/stoch/ADX-confluence all tested, last one refuted).
+  Manufacturing a deploy here = theater. Fleet byte-identical to live → no reset.
+- **STOP CHECK:** NOT met (no lockbox-confirmed edge; macd armed but no trades yet; 5m +net is
+  variance). Continue — the macd forward-test can finally accumulate; next firings measure real macd
+  trades + whether the 5m +net persists or reverts (it will revert — no edge).
+
 ### Iteration 25 — 2026-06-23 (BUG FIX: the 1h MACD cohorts were STRUCTURALLY INERT since iter-18 — regime-permit omission → 0 trades ever)
 
 - **MEASURE:** dev 543 5m closes, 30.6% win, −$24.25 (known −EV book). **Both 1h MACD cohorts:
