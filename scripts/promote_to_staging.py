@@ -40,6 +40,13 @@ import sys
 # positive cell yet. Cloned from the dev fleet (so their exit brackets come along).
 _LOCKBOX_LEADS = ["macd_cross", "macd_rsi"]
 
+# The pairs the leads were actually backtested/validated on (iter 18/22). The dev macd
+# cohort was BROADENED to the full liquid universe for forward-test velocity (iter 28),
+# but the staging SEED stays curated to these validated pairs only — staging is the
+# "best performers" tier, so it should hold the validated subset, not every forward-test
+# pair. (Once a broadened pair earns its own win>50%+net>0 it promotes via the leaderboard.)
+_LOCKBOX_SEED_PAIRS = {"BTCUSDT", "ETHUSDT", "SOLUSDT", "DOGEUSDT", "XRPUSDT", "ADAUSDT"}
+
 # Rank by expectancy (avg net PnL/trade) among cells with enough trades AND net>0.
 # bot_id layout is dev-{TOKEN}-{tf}-{strategy}-01; strategies keep their underscores
 # (mom_adx, macd_cross) so split_part('-',4) leaves them whole. Use the timeframe
@@ -109,14 +116,16 @@ def _parse_manual(spec: str) -> list[tuple[str, str]]:
 
 
 def _lockbox_seed(bots: list[dict]) -> list[dict]:
-    """Clone every dev bot whose strategy is a lockbox-validated lead."""
+    """Clone dev bots whose strategy is a lockbox-validated lead AND whose pair was
+    actually validated (keeps staging curated to the validated subset, not every
+    broadened forward-test pair)."""
     seed = []
     for b in bots:
         try:
-            _, _, strategy = _parse_bot_id(b["bot_id"])
+            token, _, strategy = _parse_bot_id(b["bot_id"])
         except (KeyError, ValueError):
             continue
-        if strategy in _LOCKBOX_LEADS:
+        if strategy in _LOCKBOX_LEADS and token in _LOCKBOX_SEED_PAIRS:
             seed.append(_stage_clone(b))
     return seed
 

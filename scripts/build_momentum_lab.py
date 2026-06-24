@@ -127,8 +127,16 @@ STRATEGIES = [
 # §13 permits high-TF ONLY as a research-comparison arm, so this runs at 1h ALONGSIDE — not
 # replacing — the 5m hyper-scalp fleet (the 238 above are untouched). Live FORWARD-TEST of a
 # modest lead, NOT a validated edge. Exit = the validated harness "tight" bracket
-# (tp 1.4 / sl 1.0 ATR / max_hold 4); pairs = the 6 backtested.
-_MACD_COHORT_PAIRS = ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "XRP/USDT", "ADA/USDT"]
+# (tp 1.4 / sl 1.0 ATR / max_hold 4).
+# iter-28 (2026-06-24): BROADENED from the 6 backtested pairs to the FULL liquid universe
+# (SCALP_PAIRS). The 6-pair cohort produced 0 trades in ~1.5 days — the recent 1h gate market
+# is persistently QUIET (~70% of evaluations blocked) so qualifying crosses are too rare to
+# forward-test. More liquid pairs (esp. more-volatile small-caps) = more non-QUIET windows =
+# real forward-test velocity, and aligns with §13 (broad pairs / hundreds of bots / more
+# activity). The SIGNAL is validated cross-era on the 6 tested pairs; applying it to more pairs
+# broadens the live forward-test (NOT a new edge claim). Staging stays curated to the 6
+# lockbox-validated pairs (promote._LOCKBOX_SEED_PAIRS).
+_MACD_COHORT_PAIRS = list(SCALP_PAIRS)
 _MACD_EXIT = {
     "tp_atr_multiplier": 1.4,
     "sl_atr_multiplier": 1.0,
