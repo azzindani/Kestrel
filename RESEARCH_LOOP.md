@@ -376,6 +376,28 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 30 — 2026-06-24 (macd forward-test accumulating — early +, tiny sample = noise; justified HOLD)
+
+- **MEASURE:** macd forward-test is now flowing across the 34 pairs. DEV: 10 macd trades closed —
+  macd_cross **8 @ 75% win / +$0.70** (avg +$0.088), macd_rsi 2 @ 50% / +$0.055. Close reasons:
+  take_profit 4 (+$0.79, **TPs actually hitting** now), timeout 4 (+$0.26), stop_loss 2 (−$0.29).
+  STAGING (curated 6 majors): 4 macd trades, **−$0.67**. 5m fleet 521 closes, 27.8% win, −$24.18
+  (usual −EV). 306+12 heartbeats, 0 errors, postgres 21% / kestrel 18% (fine).
+- **DIAGNOSE — honest read (✗ overclaim):** macd_cross's 75% win / +$0.70 is ENCOURAGING but a TINY
+  sample (8 trades) — the backtest win was ~50–52%, so 75% is high-side small-sample noise that will
+  regress (same lesson as the 5m +$5.80 that round-tripped to −$12 over iters 26→28). The dev(+0.76)
+  vs staging(−0.67) split on ~14 total trades is noise, not a pair-universe signal. NOTHING is
+  readable yet — need ~30–100 macd closes for a real expectancy estimate. The point of this firing:
+  confirm the forward-test ACCUMULATES (it does — 0 for 7 iters, now ~14 trades + TPs hitting).
+- **STAGING MAINTENANCE (step 10b, now self-correcting):** cp-refreshed promote → 12 curated bots,
+  unchanged (no per-pair cell has ≥10 trades clearing win>50%+net>0) → no churn. The cp-first fix
+  (iter-29) held — no stale-script balloon.
+- **JUSTIFIED HOLD (no deploy, no reset):** macd <30 closes, no infra fault, no new candidate beats
+  the validated leads cross-era (search saturated). Let the macd sample build. Fleet byte-identical to
+  live → no reset.
+- **STOP CHECK:** NOT met (≪100 trades, sample meaningless). Continue — accumulate toward a readable
+  macd expectancy across dev (broad) + staging (curated majors).
+
 ### Iteration 29 — 2026-06-24 (iter-28 broadening WORKED — first macd trades ever, from small-caps; HOLD to accumulate + fixed stale-promote tooling)
 
 - **MEASURE — the iter-28 payoff:** the broadened macd cohorts produced the **FIRST macd trades in
