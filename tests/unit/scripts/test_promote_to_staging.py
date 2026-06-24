@@ -76,11 +76,13 @@ class TestStageClone:
 
 
 class TestLockboxSeed:
-    def test_clones_only_lead_strategies(self):
+    def test_clones_only_lead_strategies_on_validated_pairs(self):
         bots = [
             _dev_bot("dev-ETHUSDT-1h-macd_rsi-01"),
             _dev_bot("dev-BTCUSDT-1h-macd_cross-01", strategy="macd_cross", patterns=["macd_cross"]),
             _dev_bot("dev-SOLUSDT-5m-trend_momentum-01", strategy="trend_momentum", patterns=["trend_momentum"]),
+            # macd on a NON-validated (broadened forward-test) pair → excluded from the seed
+            _dev_bot("dev-LINKUSDT-1h-macd_rsi-01", pair="LINK/USDT"),
         ]
         seed = promote._lockbox_seed(bots)
         ids = {b["bot_id"] for b in seed}
