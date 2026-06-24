@@ -247,7 +247,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-ETCUSDT-5m-anomaly_fade-01"
     },
     {
@@ -278,7 +278,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-ETCUSDT-5m-mom_adx-01"
     },
     {
@@ -309,7 +309,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-ETCUSDT-5m-compression_breakout-01"
     },
     {
@@ -340,7 +340,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-ETCUSDT-5m-triple_mom-01"
     },
     {
@@ -371,7 +371,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-ETCUSDT-5m-wick_rejection-01"
     },
     {
@@ -402,7 +402,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-ETCUSDT-5m-impulse_retracement-01"
     },
     {
@@ -433,8 +433,64 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-ETCUSDT-5m-trend_momentum-01"
+    },
+    {
+      "fingerprint": "81bcca0e8695",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "macd_rsi",
+        "patterns": [
+          "macd_rsi"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "1a77e35bd8c7e70ae9842c77fa9e3b3ccace966d",
+      "first_seen_date": "2026-06-24T00:22:24+00:00",
+      "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-1h-macd_rsi-01"
+    },
+    {
+      "fingerprint": "98a89af7d024",
+      "config": {
+        "pair": "ETCUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "macd_cross",
+        "patterns": [
+          "macd_cross"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 1.4,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "1a77e35bd8c7e70ae9842c77fa9e3b3ccace966d",
+      "first_seen_date": "2026-06-24T00:22:24+00:00",
+      "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETCUSDT-1h-macd_cross-01"
     }
   ]
 }
