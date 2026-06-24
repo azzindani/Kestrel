@@ -371,6 +371,31 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 28 — 2026-06-24 (DEPLOY: broaden 1h macd cohorts 6→34 pairs to unblock the stalled forward-test)
+
+- **MEASURE:** 5m fleet 832 closes, 37.0% win, **−$12.19** — the iter-26/27 +net fully reverted to
+  negative (variance round-trip complete, no edge, as predicted). MACD cohorts (dev+staging): STILL
+  0 trades / 0 signals after ~1.5 days armed.
+- **DIAGNOSE (the stall is real, not a bug):** macd reject mix last 24h = `quiet_regime` 394 +
+  `no_pattern_fired` 170. So ~70% of 1h evaluations are QUIET-blocked (legit gate — recent gate 1h
+  market is persistently low-vol) and the other 30% reached the pattern scan with no qualifying cross.
+  The iter-25 fix works (cohorts armed, reaching the scan) but at 6 pairs the qualifying-cross rate is
+  too low to forward-test — "wait longer" has yielded 0 trades for 1.5 days.
+- **ACTION — broaden, don't wait (mandate-aligned):** expanded both macd_cross + macd_rsi from the 6
+  backtested pairs to the FULL liquid universe (SCALP_PAIRS, 34 pairs). More pairs — esp. more-volatile
+  small-caps — = more non-QUIET windows = real forward-test velocity, and directly serves §13 (broad
+  pairs / hundreds of bots / more activity). The SIGNAL is validated cross-era on the 6 tested pairs;
+  broadening is forward-test BREADTH, not a new edge claim (honest). Fleet **250→306** (56 NEW macd
+  bots). Staging SEED stays curated to the 6 lockbox-validated pairs (`promote._LOCKBOX_SEED_PAIRS`) —
+  the broadened forward-test pairs only promote to staging if they earn win>50%+net>0 on their own.
+- **SHIP:** ruff + (no src change, mypy N/A) · promote/regime tests green · dedup 56 NEW + 250 SEEN ·
+  committed+pushed `1a77e35` · CI green · config-only redeploy (bots.json restart, no rebuild) · FULL
+  RESET (wiped dev slate, KEPT candles + microstructure, staging untouched) · backfilled all 68 dev
+  macd bots' 1h candles (iter-20 lesson) · 318 heartbeats wiped→306 dev + 12 staging repopulated,
+  trades=0, 0 errors, postgres 14% / kestrel 16% (host 7.4Gi free — 306 bots fine, 1h bots are light).
+- **STOP CHECK:** NOT met. Continue — the macd forward-test should FINALLY produce trades within days
+  now that it spans 34 pairs; next firings measure real macd activity + per-pair performance.
+
 ### Iteration 27 — 2026-06-23 (5m +net REVERTED as predicted; ACTIVE SEARCH: 4h MACD data-mined → REFUTED; 1h confirmed TF-specific; HOLD)
 
 - **MEASURE:** 5m fleet 572 closes, **40.4% win, +$0.66** — the iter-26 +$5.80/47.4% (291 trades)
