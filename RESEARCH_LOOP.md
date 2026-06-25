@@ -170,7 +170,15 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
 9. **§RESET POLICY — SCOPED, not full-nuke (`feedback_reset_after_new_algorithm`, narrowed
    2026-06-25).** The reset's only job is to keep a CHANGED config from being judged on stale rows.
    It is NOT supposed to erase the running leads' forward-test — doing that every 8h is exactly what
-   kept the live slate stuck at <1 day of data. So decide by deploy KIND:
+   kept the live slate stuck at <1 day of data.
+   **BACKUP FIRST (owner 2026-06-25 "store the database"):** before ANY reset (scoped or full),
+   and at least once every firing regardless, run `python3 scripts/backup_db.py` (LEAN, ~29 MB,
+   excludes re-fetchable candles → the irreplaceable trades/trade_context/microstructure/signals/
+   events/pattern_memory). It rotates (keep 14) and has a disk guard (host is ~94% full — candles
+   are the 800 MB bulk and re-fetchable, so lean keeps the safety net cheap). Take a `--full --keep 3`
+   snapshot occasionally for a complete portable copy. The dumps are the dataset future data-analytic
+   SELECTION runs on, so a scoped reset's deleted cohort is preserved in that firing's lean dump.
+   Then decide reset by deploy KIND:
    - **Additive deploy** (this iteration only ADDED new bot_ids — a new cohort/pair/pattern): those
      rows don't exist yet → **reset NOTHING.** Just `backfill_history.py --bots bots.json --source
      gate` the NEW bot_ids (they need candles), restart, and `DELETE FROM heartbeats` AFTER restart
