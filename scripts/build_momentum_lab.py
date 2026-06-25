@@ -163,6 +163,24 @@ _MACD_RSI_EXIT = {
     "max_loss_pct_per_trade": 0.01,
 }
 
+# --- 1h cci_mom research-comparison cohort (iter-31 2026-06-25) ---------------------
+# cci_mom (CCI breakout through ±100) is the project's THIRD cross-era +EV 1h signal —
+# +EV in recent (expR +0.12) AND lockbox (+0.07), R/R 1.46, lockbox-positive on 4/6 pairs,
+# and ~3x the activity of macd (RESEARCH_LOOP iter 31, scripts/algo_search.py cci_mom).
+# Deployed at 1h ALONGSIDE the 5m fleet + macd cohorts (§13 research arm). Live FORWARD-TEST
+# of a modest lead, NOT a validated edge. Exit = the validated harness "medium" bracket
+# (tp 2.0 / sl 1.0 ATR / max_hold 6 — best for this algo). Broadened to the FULL liquid
+# universe like the macd cohorts (iter-28): its high activity gives a FAST forward-test.
+_CCI_COHORT_PAIRS = list(SCALP_PAIRS)
+_CCI_EXIT = {
+    "tp_atr_multiplier": 2.0,
+    "sl_atr_multiplier": 1.0,
+    "max_hold_candles": 6,
+    "trailing_enabled": False,
+    "volume_ratio_min": 1.1,
+    "max_loss_pct_per_trade": 0.01,
+}
+
 
 def main() -> None:
     bots = []
@@ -214,6 +232,21 @@ def main() -> None:
             }
         )
 
+    for pair in _CCI_COHORT_PAIRS:
+        token_pair = pair.replace("/", "")
+        bots.append(
+            {
+                "bot_id": f"dev-{token_pair}-1h-cci_mom-01",
+                "pair": pair,
+                "timeframe_entry": "1h",
+                "timeframe_regime": "1h",
+                "max_active_buckets": 1,
+                "strategy": "cci_mom",
+                "patterns": ["cci_mom"],
+                "params": dict(_CCI_EXIT),
+            }
+        )
+
     out = os.path.join(os.path.dirname(__file__), "..", "bots.json")
     with open(out, "w") as f:
         json.dump(bots, f, indent=2)
@@ -222,6 +255,7 @@ def main() -> None:
         f"{n_scalp} scalp ({len(STRATEGIES)} patterns × {len(_TIMEFRAMES)} tf × "
         f"{len(SCALP_PAIRS)} markets) + {len(_MACD_COHORT_PAIRS)} 1h macd_cross cohort"
         f" + {len(_MACD_COHORT_PAIRS)} 1h macd_rsi cohort"
+        f" + {len(_CCI_COHORT_PAIRS)} 1h cci_mom cohort"
     )
 
 

@@ -138,7 +138,7 @@ class TestRegimePermitsPattern:
         # iter-25 fix: macd_cross/macd_rsi must be permitted in every non-QUIET regime
         # (matching the permit-all-ex-QUIET config they were validated under) — else
         # `permitted` is always empty for macd bots and they can never fire.
-        for pattern in ("macd_cross", "macd_rsi"):
+        for pattern in ("macd_cross", "macd_rsi", "cci_mom"):
             for regime in (Regime.TRENDING, Regime.VOLATILE, Regime.RANGING):
                 assert regime_permits_pattern(regime, pattern) is True
             assert regime_permits_pattern(Regime.QUIET, pattern) is False

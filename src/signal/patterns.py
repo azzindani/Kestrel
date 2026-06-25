@@ -39,7 +39,7 @@ COUNTER_TREND_PATTERNS: frozenset[str] = frozenset({"wave_flip"})
 #     RSI/EMA trend gate (which would drop the strongest, most overbought momentum
 #     entries), so they self-direct to reproduce that validated behaviour.
 SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
-    {"mom_adx", "triple_mom", "session_seasonal", "macd_cross", "macd_rsi"}
+    {"mom_adx", "triple_mom", "session_seasonal", "macd_cross", "macd_rsi", "cci_mom"}
 )
 
 
@@ -141,6 +141,25 @@ def _macd_lines(
     if len(sig) < 2:
         return None
     return (macd_line[-1], macd_line[-2], sig[-1], sig[-2])
+
+
+def _cci_pair(candles: Sequence[Candle], period: int) -> Optional[tuple[float, float]]:
+    """(cci_now, cci_prev) of the Commodity Channel Index over typical price, or None.
+
+    Inline (same method as scripts/algo_search.py) so the live cci_mom pattern matches
+    the backtested one. Candles don't store CCI; computed from high/low/close.
+    """
+    if len(candles) < period + 1:
+        return None
+    tp = [(float(c.high) + float(c.low) + float(c.close)) / 3.0 for c in candles]
+
+    def _at(idx: int) -> float:
+        window = tp[idx - period + 1 : idx + 1]
+        sma = sum(window) / period
+        mean_dev = sum(abs(x - sma) for x in window) / period
+        return 0.0 if mean_dev == 0.0 else (tp[idx] - sma) / (0.015 * mean_dev)
+
+    return (_at(len(candles) - 1), _at(len(candles) - 2))
 
 
 # ---------------------------------------------------------------------------
@@ -850,6 +869,43 @@ def detect_macd_rsi(candles: Sequence[Candle], params: Params) -> Optional[Patte
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "macd_rsi", "macd": round(macd_last, 8), "rsi": round(rsi, 2)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: cci_mom (CCI momentum breakout) — research-loop iter 31. The project's
+# THIRD cross-era +EV 1h signal: enter when the Commodity Channel Index breaks OUT
+# through its definitional ±100 level (a momentum-confirmation breakout, not a fade).
+# +EV in BOTH recent and the untouched prior-year lockbox (1h maker: recent expR +0.12,
+# lockbox +0.07, R/R 1.46, lockbox-positive on 4/6 pairs) and ~3x the activity of macd
+# (scripts/algo_search.py cci_mom). Like the macd leads this is a live FORWARD-TEST of a
+# modest lead (win <50%), at 1h as a §13 research-comparison arm — NOT a validated edge,
+# NOT the 5m default. The ±100 level is definitional (like the MACD zero line), not a
+# tunable. Self-directing; still clears volume/min-conf/risk.
+# ---------------------------------------------------------------------------
+@register("cci_mom")
+def detect_cci_mom(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter on a CCI momentum breakout through ±100 (cci_mom, validated 1h)."""
+    if len(candles) < params.cci_period + 1:
+        return None
+    pair = _cci_pair(candles, params.cci_period)
+    if pair is None:
+        return None
+    cci_now, cci_prev = pair
+
+    direction: Optional[Direction] = None
+    if cci_prev <= 100.0 and cci_now > 100.0:
+        direction = Direction.LONG  # breaks out above +100 into strong up-momentum
+    elif cci_prev >= -100.0 and cci_now < -100.0:
+        direction = Direction.SHORT
+    if direction is None:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=0.78,  # full-size band, matching the other momentum patterns
+        details={"variant": "cci_mom", "cci": round(cci_now, 2)},
     )
 
 
