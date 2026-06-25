@@ -14,6 +14,7 @@ from src.signal.patterns import (
     detect_mom_adx,
     detect_momentum_continuation,
     detect_session_seasonal,
+    detect_sma_cross,
     detect_trend_momentum,
     detect_triple_mom,
     detect_wick_rejection,
@@ -44,6 +45,7 @@ class TestRegistry:
             "macd_cross",
             "macd_rsi",
             "cci_mom",
+            "sma_cross",
         }
         assert expected == set(registry.keys())
 
@@ -764,3 +766,38 @@ class TestCciMom:
 
     def test_is_self_directing(self):
         assert "cci_mom" in SELF_DIRECTING_PATTERNS
+
+
+# ---------------------------------------------------------------------------
+# sma_cross (9/21 SMA golden/death cross) — iter 32
+# ---------------------------------------------------------------------------
+
+
+class TestSmaCross:
+    @staticmethod
+    def _candles(closes):
+        return [make_candle(close=c, ts=i * 3_600_000) for i, c in enumerate(closes)]
+
+    def test_insufficient_candles_returns_none(self):
+        # needs slow+1 = 22 candles
+        assert detect_sma_cross(self._candles([100.0] * 10), make_params()) is None
+
+    def test_flat_series_no_cross_returns_none(self):
+        # all-flat → fast SMA == slow SMA, neither strict cross condition holds
+        assert detect_sma_cross(self._candles([100.0] * 30), make_params()) is None
+
+    def test_golden_cross_fires_long(self):
+        # 21 flat bars (SMA9==SMA21==100) then one up-bar lifts the fast SMA above the slow
+        r = detect_sma_cross(self._candles([100.0] * 21 + [101.0]), make_params())
+        assert r is not None
+        assert r.direction == Direction.LONG
+        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.details["variant"] == "sma_cross"
+
+    def test_death_cross_fires_short(self):
+        r = detect_sma_cross(self._candles([100.0] * 21 + [99.0]), make_params())
+        assert r is not None
+        assert r.direction == Direction.SHORT
+
+    def test_is_self_directing(self):
+        assert "sma_cross" in SELF_DIRECTING_PATTERNS

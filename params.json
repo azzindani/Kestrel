@@ -320,5 +320,19 @@
     "range": [10, 40],
     "description": "Lookback for the Commodity Channel Index used by the cci_mom pattern; entry fires when CCI breaks out through its definitional +/-100 level.",
     "impact": "lower = more responsive CCI, more breakouts; higher = smoother, fewer higher-conviction breakouts"
+  },
+  "sma_cross_fast": {
+    "value": 9,
+    "type": "int",
+    "range": [5, 20],
+    "description": "Fast SMA period for the sma_cross pattern (9/21 golden/death cross); entry fires when the fast SMA crosses the slow SMA.",
+    "impact": "lower = more responsive, more crosses (noisier); higher = fewer, slower crosses"
+  },
+  "sma_cross_slow": {
+    "value": 21,
+    "type": "int",
+    "range": [15, 50],
+    "description": "Slow SMA period for the sma_cross pattern; the fast SMA crossing this baseline triggers the trend-following entry.",
+    "impact": "lower = earlier crosses, more whipsaw; higher = later, higher-conviction trend confirmation"
   }
 }

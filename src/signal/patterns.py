@@ -39,7 +39,7 @@ COUNTER_TREND_PATTERNS: frozenset[str] = frozenset({"wave_flip"})
 #     RSI/EMA trend gate (which would drop the strongest, most overbought momentum
 #     entries), so they self-direct to reproduce that validated behaviour.
 SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
-    {"mom_adx", "triple_mom", "session_seasonal", "macd_cross", "macd_rsi", "cci_mom"}
+    {"mom_adx", "triple_mom", "session_seasonal", "macd_cross", "macd_rsi", "cci_mom", "sma_cross"}
 )
 
 
@@ -141,6 +141,13 @@ def _macd_lines(
     if len(sig) < 2:
         return None
     return (macd_line[-1], macd_line[-2], sig[-1], sig[-2])
+
+
+def _sma(values: Sequence[float], n: int) -> Optional[float]:
+    """Simple moving average of the last ``n`` values, or None if too few."""
+    if len(values) < n:
+        return None
+    return sum(values[-n:]) / n
 
 
 def _cci_pair(candles: Sequence[Candle], period: int) -> Optional[tuple[float, float]]:
@@ -906,6 +913,49 @@ def detect_cci_mom(candles: Sequence[Candle], params: Params) -> Optional[Patter
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "cci_mom", "cci": round(cci_now, 2)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: sma_cross (9/21 simple-MA golden/death cross) — research-loop iter 32.
+# The project's FOURTH cross-era +EV 1h signal. Of 14 undeployed breakout/momentum
+# algos swept at 1h (maker), it was the ONLY one +EV in BOTH the recent year AND the
+# untouched prior-year lockbox: recent expR +0.14 (net +$4.01, R/R 1.48, n=466), lockbox
+# expR +0.12 (net +$3.92, R/R 1.32, n=535), OOS>IS in both, and +EV on ETH/DOGE/XRP in
+# BOTH eras (≥3-pair breadth gate). Every other breakout (ema_cross, donch_break,
+# breakout_vol…) was the SAME shape as the macd leads' false kin — strong recent, NEGATIVE
+# lockbox = data-mined. SMA(9)/SMA(21) is distinct from MACD's EMA(12/26) signal-cross and
+# fires on different bars. Like the other 1h leads this is a live FORWARD-TEST of a modest
+# lead (win <50%, BTC negative), at 1h as a §13 research-comparison arm — NOT a validated
+# edge, NOT the 5m default. Computed inline (same method as scripts/algo_search.py
+# _make_ma_cross) so the live pattern matches the backtested one. Self-directing.
+# ---------------------------------------------------------------------------
+@register("sma_cross")
+def detect_sma_cross(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter on a fast/slow SMA golden/death cross (sma_cross 9/21, validated 1h)."""
+    fast, slow = params.sma_cross_fast, params.sma_cross_slow
+    if len(candles) < slow + 1:
+        return None
+    closes = [c.close for c in candles]
+    f_now, f_prev = _sma(closes, fast), _sma(closes[:-1], fast)
+    s_now, s_prev = _sma(closes, slow), _sma(closes[:-1], slow)
+    if None in (f_now, f_prev, s_now, s_prev):
+        return None
+    assert f_now is not None and f_prev is not None and s_now is not None and s_prev is not None
+
+    direction: Optional[Direction] = None
+    if f_prev <= s_prev and f_now > s_now:
+        direction = Direction.LONG  # fast SMA crosses up through slow (golden cross)
+    elif f_prev >= s_prev and f_now < s_now:
+        direction = Direction.SHORT
+    if direction is None:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=0.78,  # full-size band, matching the other momentum patterns
+        details={"variant": "sma_cross", "sma_fast": round(f_now, 8), "sma_slow": round(s_now, 8)},
     )
 
 
