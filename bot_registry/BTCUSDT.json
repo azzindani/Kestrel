@@ -3501,7 +3501,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "example_bot_id": "dev-BTCUSDT-5m-triple_mom-01"
     },
     {
@@ -3532,7 +3532,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "example_bot_id": "dev-BTCUSDT-5m-impulse_retracement-01"
     },
     {
@@ -3563,7 +3563,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "example_bot_id": "dev-BTCUSDT-5m-compression_breakout-01"
     },
     {
@@ -3594,7 +3594,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "example_bot_id": "dev-BTCUSDT-5m-anomaly_fade-01"
     },
     {
@@ -3625,7 +3625,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "example_bot_id": "dev-BTCUSDT-5m-mom_adx-01"
     },
     {
@@ -3656,7 +3656,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "example_bot_id": "dev-BTCUSDT-5m-trend_momentum-01"
     },
     {
@@ -3687,7 +3687,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "example_bot_id": "dev-BTCUSDT-5m-wick_rejection-01"
     },
     {
@@ -3715,7 +3715,7 @@
       "first_seen_subject": "research(loop) iter 18: MACD found +EV CROSS-ERA at 1h -> deploy 1h macd_cross cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-BTCUSDT-1h-macd_cross-01"
     },
     {
@@ -3743,8 +3743,36 @@
       "first_seen_subject": "research(loop) iter 22: deploy macd_rsi (MACD cross + RSI-50 confirm) 1h cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 3,
+      "snapshot_count": 4,
       "example_bot_id": "dev-BTCUSDT-1h-macd_rsi-01"
+    },
+    {
+      "fingerprint": "bbb53392a862",
+      "config": {
+        "pair": "BTCUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "cci_mom",
+        "patterns": [
+          "cci_mom"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "680864848a2f2f54287a2740822df52dbf3ce3e3",
+      "first_seen_date": "2026-06-25T00:29:45+00:00",
+      "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-BTCUSDT-1h-cci_mom-01"
     }
   ]
 }

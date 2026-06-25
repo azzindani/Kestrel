@@ -292,6 +292,13 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   6-bot 1h cohort (medium exit) alongside macd_cross + the 5m fleet. Same modest-lead caveats (win
   <50%, 1h not 5m). NOT a confirmed edge. Note `macd_rsi_ct` (zero-aligned + RSI) == `macd_cross_ct`
   (RSI redundant there) — only the RAW-cross variant adds information.
+- **LEAD #3 (iter 31): `cci_mom` (CCI(20) momentum breakout through ±100) @ 1h, maker.** The THIRD
+  cross-era +EV signal and the FIRST genuinely-new family in a while: recent expR +0.12, lockbox
+  **+0.07**, R/R 1.46, lockbox-positive on **4/6 pairs** (ETH/SOL/DOGE/XRP; BTC marginal, ADA −), and
+  **~3× the activity of macd** (1182 vs 364 trades/yr) — the high activity serves the scalp mandate +
+  gives a fast forward-test. **Status: live FORWARD-TEST** — 34-pair 1h cohort (medium exit) +
+  6 in staging. Momentum-BREAKOUT works; the mean-reversion sibling `cci_revert` and `supertrend` were
+  refuted same iter. Same modest-lead caveats (win <50%, 1h, ADA −). NOT a confirmed edge.
 - The 5m hyper-scalp baseline is unchanged and remains −EV (no edge at 5m for any indicator incl.
   MACD — the cost floor dominates short TF). The earlier seasonality lead stays REFUTED (iter 4).
 - **Note:** the 5m search is exhausted; the NEW frontier is INDICATOR strategies at 1h (owner opened
@@ -319,6 +326,11 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   (macd_cross_ct/tight 52% win, expR +0.20) but the prior-year LOCKBOX is NEGATIVE on all variants
   (−0.06..−0.14), recent→lockbox collapse = data-mined (same signature as mom_adx 4h). The MACD edge
   is TF-SPECIFIC to 1h (+EV BOTH eras at 1h, dies at 4h). Don't deploy 4h MACD; don't re-test for activity.
+- **CCI mean-reversion (`cci_revert`) + Supertrend (`supertrend`)** (iter 31) — 1h, maker, recent +
+  lockbox. `cci_revert` (fade ±100): lockbox ≤0 (mean-rev fails again, consistent with RSI-2/stoch/
+  wick/bb_fade). `supertrend` (ATR trend-flip): lockbox ≤0 / breakeven both exits. Neither deployable.
+  (The SIBLING `cci_mom` — CCI BREAKOUT not fade — DID validate cross-era and was deployed; see CURRENT
+  BEST. Momentum-breakout works, mean-reversion-fade doesn't — the recurring pattern.)
 - **ADX trend-strength confluence on the MACD family (`macd_adx*`, `macd_rsi_adx*`)** (iter 23) —
   gating the MACD/RSI cross on an ADX floor (≥20/≥25) does NOT improve the leads out-of-era. The best
   cell `macd_rsi_adx25`/medium looked strongest in the recent year (expR +0.16) but COLLAPSED to +0.02
@@ -375,6 +387,37 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 31 — 2026-06-25 (ACTIVE SEARCH WIN: deployed cci_mom — the 3rd cross-era +EV 1h signal, high-activity)
+
+- **MEASURE:** macd forward-test ~13 closed (macd_cross 9 @ 66.7% win regressing from 75% as
+  predicted; macd_rsi 4 @ 50%), staging 4 @ −$0.67 — all tiny-sample noise. 5m fleet −$16 (variance).
+  306+12 hb, 0 errors, postgres 22% (creeping but fine). Accumulating slowly (~3 macd/firing).
+- **ACTIVE SEARCH — tested 3 genuinely-new indicator families (CCI, Supertrend):**
+  - **`cci_mom` (CCI(20) breakout through ±100) is a WIN — +EV in BOTH eras:** recent expR +0.12,
+    LOCKBOX **+0.07**, R/R 1.46, IS→OOS ~0. Per-pair lockbox breadth **4/6 positive** (ETH +0.12,
+    SOL +0.08, DOGE +0.10, XRP +0.18; BTC marginal; ADA −) — clears the ≥3-pair deploy gate (same
+    profile as the macd leads). **Crucially ~3× the activity of macd** (1182 vs 364 trades/yr) → serves
+    the scalp mandate AND gives a FAST forward-test. The project's THIRD cross-era +EV signal.
+  - REFUTED same iter: `cci_revert` (mean-rev, lockbox ≤0 — consistent with every mean-rev refutation),
+    `supertrend` (lockbox ≤0).
+- **DEPLOYED cci_mom** as a live pattern: patterns.py `detect_cci_mom` + `_cci_pair` helper +
+  SELF_DIRECTING + **regime_permits_pattern in all non-QUIET regimes (iter-25 lesson — did NOT repeat
+  the inert-cohort bug)** + config `cci_period`=20 param + params.json contract + unit tests. 34-pair
+  1h cohort (medium exit tp2.0/sl1.0/hold6), broadened like macd (iter-28) for fast forward-test.
+  Fleet **306→340** (34 NEW). Staging leads += cci_mom → staging **12→18** (6 each of macd_cross/
+  macd_rsi/cci_mom on the 6 validated pairs).
+- **SHIP:** ruff + mypy src/ clean · patterns/regime/promote/config tests green · dedup 34 NEW + 306
+  SEEN · committed+pushed `6808648` · CI green · rebuilt image · FULL RESET (wiped dev, KEPT candles +
+  microstructure) · backfilled 34 dev + 6 staging cci_mom bot_ids · recreated labs + staging on new
+  image · 340+18 heartbeats, trades=0, 0 errors, postgres 21% (host fine). cci_mom VERIFIED armed
+  (registered/self-direct/permitted=True; reaches the pipeline).
+- **HONEST:** cci_mom is a forward-test LEAD like the macd ones — modest (win <50%, lockbox expR
+  +0.07), at 1h NOT 5m, ADA negative, PF/deflated-Sharpe borderline. Clears the deploy gate but is NOT
+  a confirmed stop-#2 edge. ✗ overclaim. But it IS the first genuinely-new validated signal in a while
+  and a high-activity one — the search is not fully dead.
+- **STOP CHECK:** NOT met. Continue — cci_mom's high activity should produce a readable forward-test
+  fast; next firings get real cci_mom + macd per-pair performance.
 
 ### Iteration 30 — 2026-06-24 (macd forward-test accumulating — early +, tiny sample = noise; justified HOLD)
 
