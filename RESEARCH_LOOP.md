@@ -35,7 +35,7 @@ prune a cell merely for being "slow" or to make the fleet calmer — that contra
   upkeep now, not once-a-day watching).
 - Each run still: MEASURE → DIAGNOSE → (maintain: prune/param/enforce, or re-validate) → if
   anything deployed, the **FULL ritual** (lint format+check → commit/push main → CI green →
-  redeploy → reset_dev+wipe heartbeats+backfill+restart → verify clean) → log a `system` event →
+  redeploy → **SCOPED reset (see §RESET POLICY)** → verify clean) → log a `system` event →
   CHECK STOP. Skip deploy+reset only if the fleet is byte-identical to what's live.
 - Still **no proven edge**; maintenance cuts losers, it does not manufacture one. A new STRUCTURAL
   direction (funding-rate) or leverage change stays **§4 human-gated** — flag, don't start.
@@ -94,9 +94,14 @@ ritual below is non-optional — "evaluate" alone is not a finished iteration.
 2. **Apply a new bot / update** every firing — rotate the experimental cohort to the current
    best candidate so there is always something new and visible (skip only if it is byte-identical
    to what is already live).
-3. **Reset everything** after deploying anything new — `feedback_reset_after_new_algorithm`:
-   wipe trades/signals/events/trade_context/pattern_memory + heartbeats, **KEEP candles**,
-   backfill, restart. A deploy without a reset is the #1 mistake — the slate must visibly zero.
+3. **Reset only what CHANGED** after a deploy — `feedback_reset_after_new_algorithm`, NARROWED
+   (owner 2026-06-25 "the cron resets everything every 8h"): the old full-nuke-every-deploy was
+   *destroying the forward-test* — most deploys are ADDITIVE (a new cohort = new bot_ids, already
+   empty) yet the full wipe erased the running leads' history every time, so the live slate never
+   accumulated past a day. NEW POLICY (see §RESET POLICY): additive deploy → **no reset**; a config
+   change to an existing bot_id → `reset_dev.py --strategy <changed> --yes` (that cohort only,
+   pattern_memory kept); **staging is NEVER reset**. KEEP candles + microstructure always. The
+   forward-test sample is the POINT — stop wiping it.
 4. **Ensure CI passes** — lint to CI scope, push, and confirm `gh` shows `completed/success`
    before declaring done.
 5. **Commit & push to `main`** directly — never a branch (`feedback_no_branches_commit_to_main`).
@@ -105,13 +110,15 @@ ritual below is non-optional — "evaluate" alone is not a finished iteration.
    dashboard changes; also log the `system` event marker.
 8. **Be honest about edge** — the cohort/visibility is a live testbed, not a profit claim; the
    project still has no proven edge. Do not fake an edge to satisfy the bar.
-9. **Always FULL-RESET each firing** (owner confirmed iter 21: "always remember to do it") — but
-   the 8h cron is the CHECK-IN rhythm, NOT the strategy DECISION window. **Never apply or remove a
-   strategy off an 8h read.** A NEW algo deploys only if it survives the untouched prior-year LOCKBOX
+9. **SCOPED reset, NOT full-nuke each firing** (SUPERSEDES the old iter-21 "always full-reset";
+   owner 2026-06-25 caught that resetting everything every 8h destroys the forward-test). The 8h
+   cron is the CHECK-IN rhythm, NOT the strategy DECISION window. **Never apply or remove a strategy
+   off an 8h read.** A NEW algo deploys only if it survives the untouched prior-year LOCKBOX
    (+expectancy, ≥3 pairs) — that gate, not elapsed time, is the fluke-killer. An ALREADY-DEPLOYED
-   live lead is judged on TRADE COUNT not clock (~30+ to read, ~100+ to trust; at 1h that is weeks).
+   live lead is judged on TRADE COUNT not clock (~30+ to read, ~100+ to trust; at 1h that is weeks)
+   — **which means its history MUST survive the next deploy, so additive deploys reset nothing.**
    The owner's "reset except the offer and bid data" stands: KEEP both `candles` AND the
-   `microstructure` (bid/offer) table on every reset.
+   `microstructure` (bid/offer) table — and now KEEP the unchanged cohorts' trades too.
 
 ---
 
@@ -160,20 +167,28 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
    `completed/success`). Do not call the iteration done on a red/in-progress CI.
 8. **REDEPLOY** — code change → `docker compose up -d --build kestrel`; config-only
    (bots.json/params.json) → `docker compose restart kestrel`. Confirm container `(healthy)`.
-9. **FULL RESET (the ritual I kept missing — `feedback_reset_after_new_algorithm`)** — whenever a
-   new/changed config was deployed this iteration, IN THIS ORDER:
-   `reset_dev.py --yes` (wipe trades/signals/events/trade_context/pattern_memory) →
-   `backfill_history.py --source gate` → `docker compose up -d --build`/`restart` →
-   **THEN `DELETE FROM heartbeats;` (full wipe, AFTER the restart — this is the only safe spot).**
-   **KEEP candles.** Wait ~40s, then verify clean: `trades=0`, heartbeats == intended fleet size
-   (e.g. 120 = the diversity fleet), all expected patterns present, `errors=0`.
-   *Heartbeat-orphan lesson (bit me twice):* the OLD container keeps writing heartbeats for its
-   bots until the restart actually kills it. So a wipe BEFORE restart is useless if any long step
-   (backfill takes ~3 min) runs between the wipe and the restart — the dropped bots' ids repopulate
-   and linger as phantom "live" rows. And a post-restart `ts < now-90s` age-threshold delete misses
-   them too (they're only seconds old). Only a FULL `DELETE FROM heartbeats` AFTER the restart is
-   safe: the old fleet is dead, so just the new fleet repopulates within 30s. (Skip ONLY when step 5
-   deployed nothing new.)
+9. **§RESET POLICY — SCOPED, not full-nuke (`feedback_reset_after_new_algorithm`, narrowed
+   2026-06-25).** The reset's only job is to keep a CHANGED config from being judged on stale rows.
+   It is NOT supposed to erase the running leads' forward-test — doing that every 8h is exactly what
+   kept the live slate stuck at <1 day of data. So decide by deploy KIND:
+   - **Additive deploy** (this iteration only ADDED new bot_ids — a new cohort/pair/pattern): those
+     rows don't exist yet → **reset NOTHING.** Just `backfill_history.py --bots bots.json --source
+     gate` the NEW bot_ids (they need candles), restart, and `DELETE FROM heartbeats` AFTER restart
+     (orphan-safe spot, see below). The existing fleet keeps accumulating.
+   - **Config change to an EXISTING bot_id** (same bot_id, different params/exits): surgical only —
+     `reset_dev.py --strategy <changed_strategy[,…]> --yes` (wipes just those cohorts' dev rows;
+     **pattern_memory KEPT** because it is global/shared), then backfill (if new ids) + restart +
+     post-restart heartbeat wipe.
+   - **Full `reset_dev.py --yes`** (wipes ALL dev + pattern_memory) is now reserved for a DELIBERATE
+     whole-program restart the owner asks for — NOT a routine per-deploy step.
+   - **STAGING is NEVER reset** (it is the curated multi-week forward-test accumulation tier — step
+     10b already churns it only when the *selection* changes). KEEP candles + microstructure always.
+   *Heartbeat-orphan lesson (bit me twice):* the OLD container keeps writing heartbeats until the
+   restart kills it, so the `DELETE FROM heartbeats` must come AFTER the restart (a pre-restart wipe
+   repopulates; a post-restart `ts < now-90s` delete misses the seconds-old new rows). After the
+   restart wait ~40s, then verify: scoped/unchanged cohorts' trades intact, changed cohort `trades=0`,
+   heartbeats == intended fleet size, expected patterns present, `errors=0`. (Skip ALL of step 9 when
+   step 5 deployed nothing new — the common case now that leads are in WATCH mode.)
 10. **RECORD** — append an iteration entry below (date, hypothesis, backtest result, what was
     deployed, reset done?, new best) + update the REFUTED LEDGER if an idea died. **Write a
     `system` event** so it shows in Grafana (Recent Events / Events-by-Category):

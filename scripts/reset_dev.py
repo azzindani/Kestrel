@@ -24,20 +24,46 @@ import asyncio
 import os
 import sys
 
-# Order matters: children before parents (FKs), then global learned state.
-_DEV_SCOPED = ("events", "signals")  # have an env column + trade_id FK
-_DELETE_STEPS = [
-    # trade_context has no env column — scope via its parent trades.
-    ("trade_context", "DELETE FROM trade_context WHERE trade_id IN (SELECT id FROM trades WHERE env = 'dev')"),
-    ("events", "DELETE FROM events WHERE env = 'dev'"),
-    ("signals", "DELETE FROM signals WHERE env = 'dev'"),
-    ("trades", "DELETE FROM trades WHERE env = 'dev'"),
-    # pattern_memory is global learned state (no env) — wiped for a clean slate.
-    ("pattern_memory", "DELETE FROM pattern_memory"),
-]
+# strategy segment of bot_id (dev-BTCUSDT-1h-macd_rsi-01 -> macd_rsi); used to SCOPE a
+# surgical reset to only the cohort(s) whose config changed this deploy. An ADDITIVE deploy
+# (brand-new bot_ids) needs no reset at all — those rows don't exist yet — so the loop should
+# reset only when an EXISTING bot_id's config changed, and then only THAT strategy. A full wipe
+# (no --strategy) stays available for a deliberate whole-program restart only.
+_STRAT_SEG = "split_part(bot_id, '-', 4)"
 
 
-async def _run(apply: bool) -> int:
+def _build_steps(strategies: list[str] | None) -> list[tuple[str, str, tuple]]:
+    """Return (table, sql, args) delete steps. Children before parents (FK-safe).
+
+    When `strategies` is given the wipe is SURGICAL — only those cohorts' dev rows, and the
+    GLOBAL pattern_memory is left intact (it is shared across cohorts; wiping it on a surgical
+    reset would corrupt the cohorts that did NOT change). A None scope is the full dev wipe.
+    """
+    if strategies:
+        # trade_context has no bot_id/env — scope it through its parent trades.
+        tctx = (
+            "DELETE FROM trade_context WHERE trade_id IN "
+            f"(SELECT id FROM trades WHERE env='dev' AND {_STRAT_SEG} = ANY($1::text[]))"
+        )
+        row = f"env='dev' AND {_STRAT_SEG} = ANY($1::text[])"
+        return [
+            ("trade_context", tctx, (strategies,)),
+            ("events", f"DELETE FROM events WHERE {row}", (strategies,)),
+            ("signals", f"DELETE FROM signals WHERE {row}", (strategies,)),
+            ("trades", f"DELETE FROM trades WHERE {row}", (strategies,)),
+            # pattern_memory intentionally NOT wiped on a scoped reset (global/shared).
+        ]
+    return [
+        ("trade_context", "DELETE FROM trade_context WHERE trade_id IN (SELECT id FROM trades WHERE env='dev')", ()),
+        ("events", "DELETE FROM events WHERE env='dev'", ()),
+        ("signals", "DELETE FROM signals WHERE env='dev'", ()),
+        ("trades", "DELETE FROM trades WHERE env='dev'", ()),
+        # full wipe only: pattern_memory is global learned state — cleared for a true clean slate.
+        ("pattern_memory", "DELETE FROM pattern_memory", ()),
+    ]
+
+
+async def _run(apply: bool, strategies: list[str] | None) -> int:
     try:
         import asyncpg
         from dotenv import load_dotenv
@@ -58,14 +84,28 @@ async def _run(apply: bool) -> int:
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
     )
+    steps = _build_steps(strategies)
+    scope_txt = f"strategy(s) {strategies}" if strategies else "ALL env='dev'"
     try:
-        # Show pre-counts (dev scope) so the operator sees the blast radius.
-        for table in ("trades", "signals", "events", "trade_context", "pattern_memory"):
-            if table == "pattern_memory":
+        print(f"reset scope: {scope_txt}  (candles + microstructure ALWAYS kept)")
+        # Show pre-counts within the SAME scope so the operator sees the real blast radius.
+        for table, _, _ in steps:
+            if table == "trade_context":
+                if strategies:
+                    n = await conn.fetchval(
+                        "SELECT count(*) FROM trade_context WHERE trade_id IN "
+                        f"(SELECT id FROM trades WHERE env='dev' AND {_STRAT_SEG} = ANY($1::text[]))",
+                        strategies,
+                    )
+                else:
+                    n = await conn.fetchval(
+                        "SELECT count(*) FROM trade_context WHERE trade_id IN (SELECT id FROM trades WHERE env='dev')"
+                    )
+            elif table == "pattern_memory":
                 n = await conn.fetchval("SELECT count(*) FROM pattern_memory")
-            elif table == "trade_context":
+            elif strategies:
                 n = await conn.fetchval(
-                    "SELECT count(*) FROM trade_context WHERE trade_id IN (SELECT id FROM trades WHERE env='dev')"
+                    f"SELECT count(*) FROM {table} WHERE env='dev' AND {_STRAT_SEG} = ANY($1::text[])", strategies
                 )
             else:
                 n = await conn.fetchval(f"SELECT count(*) FROM {table} WHERE env='dev'")
@@ -76,8 +116,8 @@ async def _run(apply: bool) -> int:
             return 0
 
         async with conn.transaction():
-            for name, sql in _DELETE_STEPS:
-                status = await conn.execute(sql)
+            for name, sql, sql_args in steps:
+                status = await conn.execute(sql, *sql_args)
                 print(f"  wiped {name}: {status}")
         print("dev slate reset complete. candles kept. restart the daemon for a clean run.")
         return 0
@@ -88,8 +128,17 @@ async def _run(apply: bool) -> int:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Reset the dev evaluation slate (keeps candles).")
     ap.add_argument("--yes", action="store_true", help="actually delete (default: dry run)")
+    ap.add_argument(
+        "--strategy",
+        type=str,
+        default=None,
+        help="SURGICAL scope: comma-separated strategy label(s) (the 4th bot_id segment, e.g. "
+        "'cci_mom' or 'macd_cross,macd_rsi'). Wipes ONLY those cohorts' dev rows and KEEPS the "
+        "global pattern_memory. Omit for a full dev wipe (deliberate whole-program restart only).",
+    )
     args = ap.parse_args()
-    raise SystemExit(asyncio.run(_run(args.yes)))
+    strategies = [s.strip() for s in args.strategy.split(",") if s.strip()] if args.strategy else None
+    raise SystemExit(asyncio.run(_run(args.yes, strategies)))
 
 
 if __name__ == "__main__":
