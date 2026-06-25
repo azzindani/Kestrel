@@ -181,6 +181,26 @@ _CCI_EXIT = {
     "max_loss_pct_per_trade": 0.01,
 }
 
+# --- 1h sma_cross research-comparison cohort (iter-32 2026-06-25) --------------------
+# sma_cross (9/21 SMA golden/death cross) is the project's FOURTH cross-era +EV 1h signal.
+# Of 14 undeployed breakout/momentum algos swept at 1h (maker), it was the ONLY one +EV in
+# BOTH recent (expR +0.14, net +$4.01, R/R 1.48, n=466) AND the untouched prior-year lockbox
+# (expR +0.12, net +$3.92, R/R 1.32, n=535), OOS>IS both, +EV on ETH/DOGE/XRP in both eras
+# (≥3-pair breadth). Every other breakout (ema_cross, donch_break, breakout_vol…) was strong
+# recent but NEGATIVE lockbox = data-mined (RESEARCH_LOOP iter 32, scripts/algo_search.py
+# sma_cross_9_21). Deployed at 1h ALONGSIDE the 5m fleet + macd/cci cohorts (§13 research arm).
+# Live FORWARD-TEST of a modest lead, NOT a validated edge. Exit = the validated "medium"
+# bracket. Broadened to the full liquid universe like the other 1h cohorts (iter-28).
+_SMA_COHORT_PAIRS = list(SCALP_PAIRS)
+_SMA_EXIT = {
+    "tp_atr_multiplier": 2.0,
+    "sl_atr_multiplier": 1.0,
+    "max_hold_candles": 6,
+    "trailing_enabled": False,
+    "volume_ratio_min": 1.1,
+    "max_loss_pct_per_trade": 0.01,
+}
+
 
 def main() -> None:
     bots = []
@@ -247,6 +267,21 @@ def main() -> None:
             }
         )
 
+    for pair in _SMA_COHORT_PAIRS:
+        token_pair = pair.replace("/", "")
+        bots.append(
+            {
+                "bot_id": f"dev-{token_pair}-1h-sma_cross-01",
+                "pair": pair,
+                "timeframe_entry": "1h",
+                "timeframe_regime": "1h",
+                "max_active_buckets": 1,
+                "strategy": "sma_cross",
+                "patterns": ["sma_cross"],
+                "params": dict(_SMA_EXIT),
+            }
+        )
+
     out = os.path.join(os.path.dirname(__file__), "..", "bots.json")
     with open(out, "w") as f:
         json.dump(bots, f, indent=2)
@@ -256,6 +291,7 @@ def main() -> None:
         f"{len(SCALP_PAIRS)} markets) + {len(_MACD_COHORT_PAIRS)} 1h macd_cross cohort"
         f" + {len(_MACD_COHORT_PAIRS)} 1h macd_rsi cohort"
         f" + {len(_CCI_COHORT_PAIRS)} 1h cci_mom cohort"
+        f" + {len(_SMA_COHORT_PAIRS)} 1h sma_cross cohort"
     )
 
 

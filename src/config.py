@@ -213,6 +213,13 @@ class Params:
     # entry threshold is CCI's definitional overbought/oversold level (not tunable).
     cci_period: int = 20
 
+    # SMA fast/slow periods for sma_cross (RESEARCH_LOOP iter 32) — a 9/21 SMA golden/death
+    # cross, the 4th cross-era +EV 1h signal (recent expR +0.14 / lockbox +0.12, R/R≥1.3,
+    # ≥3 pairs both eras). Distinct from ema_fast/ema_slow (the EMA trend-filter periods);
+    # kept separate so tuning the trend filter never silently moves this entry.
+    sma_cross_fast: int = 9
+    sma_cross_slow: int = 21
+
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
         """Construct Params from the params.json value-dict (extracts 'value' keys).
@@ -314,6 +321,8 @@ class Params:
             macd_slow=(int(d["macd_slow"]["value"]) if "macd_slow" in d else 26),
             macd_signal=(int(d["macd_signal"]["value"]) if "macd_signal" in d else 9),
             cci_period=(int(d["cci_period"]["value"]) if "cci_period" in d else 20),
+            sma_cross_fast=(int(d["sma_cross_fast"]["value"]) if "sma_cross_fast" in d else 9),
+            sma_cross_slow=(int(d["sma_cross_slow"]["value"]) if "sma_cross_slow" in d else 21),
         )
 
 

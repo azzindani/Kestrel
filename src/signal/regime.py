@@ -79,10 +79,11 @@ def _ema_from_closes(candles: Sequence[Candle], period: int) -> float:
 
 def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
     """Return True if the regime allows the given pattern (CLAUDE.md §22)."""
-    # Confluence-momentum (mom_adx, triple_mom) and the MACD-family indicator signals
-    # (macd_cross, macd_rsi) are permitted in every non-QUIET regime: each carries its
-    # own restrictive entry gate (ADX>adx_strong_min; a trend-aligned MACD signal-line
-    # cross), which is how they were VALIDATED — the algo_search backtest neutralises the
+    # Confluence-momentum (mom_adx, triple_mom) and the cross-era indicator leads
+    # (macd_cross, macd_rsi, cci_mom, sma_cross) are permitted in every non-QUIET regime:
+    # each carries its own restrictive entry gate (ADX>adx_strong_min; a trend-aligned MACD
+    # signal-line cross; a CCI ±100 breakout; a 9/21 SMA cross), which is how they were
+    # VALIDATED — the algo_search backtest neutralises the
     # regime-permit gate (permit-all except QUIET), so the lockbox +EV is for the
     # ungated-by-regime signal. NOTE (iter-25 bug fix): macd_cross/macd_rsi were
     # registered + self-directing but never listed here, so `permitted` was always empty
@@ -103,6 +104,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "macd_cross",
                 "macd_rsi",
                 "cci_mom",
+                "sma_cross",
             }
         ),
         Regime.VOLATILE: frozenset(
@@ -119,6 +121,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "macd_cross",
                 "macd_rsi",
                 "cci_mom",
+                "sma_cross",
             }
         ),
         Regime.RANGING: frozenset(
@@ -133,6 +136,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "macd_cross",
                 "macd_rsi",
                 "cci_mom",
+                "sma_cross",
             }
         ),
         Regime.QUIET: frozenset(),

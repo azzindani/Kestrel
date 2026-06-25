@@ -38,7 +38,7 @@ import sys
 # Lockbox-validated leads — the only signals +EV in BOTH recent + prior-year lockbox
 # (RESEARCH_LOOP iter 18/22). Used as the staging seed when the live lab has no
 # positive cell yet. Cloned from the dev fleet (so their exit brackets come along).
-_LOCKBOX_LEADS = ["macd_cross", "macd_rsi", "cci_mom"]
+_LOCKBOX_LEADS = ["macd_cross", "macd_rsi", "cci_mom", "sma_cross"]
 
 # The pairs the leads were actually backtested/validated on (iter 18/22). The dev macd
 # cohort was BROADENED to the full liquid universe for forward-test velocity (iter 28),
