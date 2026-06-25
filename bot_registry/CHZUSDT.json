@@ -247,7 +247,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 6,
+      "snapshot_count": 7,
       "example_bot_id": "dev-CHZUSDT-5m-anomaly_fade-01"
     },
     {
@@ -278,7 +278,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 6,
+      "snapshot_count": 7,
       "example_bot_id": "dev-CHZUSDT-5m-trend_momentum-01"
     },
     {
@@ -309,7 +309,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 6,
+      "snapshot_count": 7,
       "example_bot_id": "dev-CHZUSDT-5m-wick_rejection-01"
     },
     {
@@ -340,7 +340,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 6,
+      "snapshot_count": 7,
       "example_bot_id": "dev-CHZUSDT-5m-triple_mom-01"
     },
     {
@@ -371,7 +371,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 6,
+      "snapshot_count": 7,
       "example_bot_id": "dev-CHZUSDT-5m-compression_breakout-01"
     },
     {
@@ -402,7 +402,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 6,
+      "snapshot_count": 7,
       "example_bot_id": "dev-CHZUSDT-5m-mom_adx-01"
     },
     {
@@ -433,7 +433,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 6,
+      "snapshot_count": 7,
       "example_bot_id": "dev-CHZUSDT-5m-impulse_retracement-01"
     },
     {
@@ -461,7 +461,7 @@
       "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 3,
+      "snapshot_count": 4,
       "example_bot_id": "dev-CHZUSDT-1h-macd_rsi-01"
     },
     {
@@ -489,7 +489,7 @@
       "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 3,
+      "snapshot_count": 4,
       "example_bot_id": "dev-CHZUSDT-1h-macd_cross-01"
     },
     {
@@ -517,8 +517,36 @@
       "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 3,
       "example_bot_id": "dev-CHZUSDT-1h-cci_mom-01"
+    },
+    {
+      "fingerprint": "ba326d9c4dbf",
+      "config": {
+        "pair": "CHZUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "sma_cross",
+        "patterns": [
+          "sma_cross"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.0,
+          "tp_atr_multiplier": 2.0,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "04cff1208ccdd4e5bf015113dda7cc246d617524",
+      "first_seen_date": "2026-06-25T08:38:29+00:00",
+      "first_seen_subject": "research(loop) iter 32: deploy sma_cross \u2014 4th cross-era +EV 1h signal",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-CHZUSDT-1h-sma_cross-01"
     }
   ]
 }

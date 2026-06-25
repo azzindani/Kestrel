@@ -322,6 +322,17 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   gives a fast forward-test. **Status: live FORWARD-TEST** — 34-pair 1h cohort (medium exit) +
   6 in staging. Momentum-BREAKOUT works; the mean-reversion sibling `cci_revert` and `supertrend` were
   refuted same iter. Same modest-lead caveats (win <50%, 1h, ADA −). NOT a confirmed edge.
+- **LEAD #4 (iter 32): `sma_cross` (9/21 SMA golden/death cross) @ 1h, maker.** The FOURTH cross-era
+  +EV signal. Swept 14 UNDEPLOYED breakout/momentum algos at 1h; `sma_cross_9_21` was the ONLY one
+  +EV in BOTH eras: recent expR **+0.14** (net +$4.01, R/R 1.48, n=466), lockbox **+0.12** (net +$3.92,
+  R/R 1.32, n=535), OOS>IS both, +EV on **ETH/DOGE/XRP in BOTH eras** (≥3-pair breadth; BTC − like
+  macd_rsi). Every other breakout (ema_cross +0.16 recent→−0.03 lockbox, donch_break, breakout_vol…)
+  was data-mined. **Status: live FORWARD-TEST** — 34-pair 1h cohort (medium exit) + staging seed.
+  Same modest-lead caveats (win <50%, BTC −, 1h not 5m). NOT a confirmed edge. Distinct from macd_cross
+  (SMA vs EMA(12/26) signal-cross; fires on different bars) — diversifies the validated momentum-cross
+  family. **This was the first deploy under the new SCOPED-reset policy: additive (34 NEW bot_ids), so
+  it reset NOTHING — the existing fleet's 309 trades were PRESERVED through the deploy (proof the
+  no-reset policy works; under the old full-nuke this would read dev=0).**
 - The 5m hyper-scalp baseline is unchanged and remains −EV (no edge at 5m for any indicator incl.
   MACD — the cost floor dominates short TF). The earlier seasonality lead stays REFUTED (iter 4).
 - **Note:** the 5m search is exhausted; the NEW frontier is INDICATOR strategies at 1h (owner opened
@@ -354,6 +365,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   wick/bb_fade). `supertrend` (ATR trend-flip): lockbox ≤0 / breakeven both exits. Neither deployable.
   (The SIBLING `cci_mom` — CCI BREAKOUT not fade — DID validate cross-era and was deployed; see CURRENT
   BEST. Momentum-breakout works, mean-reversion-fade doesn't — the recurring pattern.)
+- **Breakout family minus sma_cross (`ema_cross`, `donch_break_10/20`, `breakout_vol`, `bb_break`,
+  `compress_break`, `mom_align`, `mom_volexp`, `streak_go_3`, `macd_hist`, `rsi_cross_50`,
+  `sma_cross_20_50`)** (iter 32) — 1h, maker, recent + lockbox. ALL +EV-ish in the recent year
+  (ema_cross the TOP at expR +0.16) but NEGATIVE / breakeven in the prior-year lockbox (ema_cross
+  −0.03, donch_break −0.00/−0.02, breakout_vol −0.01) → classic recent-year data-mining, the same
+  false-kin shape as the macd leads' rejects. Only `sma_cross_9_21` survived BOTH eras (deployed; see
+  CURRENT BEST). Momentum-BREAKOUT-cross can validate, but most breakout variants are single-era flukes
+  — the lockbox is the only thing that tells them apart. Don't deploy these for activity.
 - **ADX trend-strength confluence on the MACD family (`macd_adx*`, `macd_rsi_adx*`)** (iter 23) —
   gating the MACD/RSI cross on an ADX floor (≥20/≥25) does NOT improve the leads out-of-era. The best
   cell `macd_rsi_adx25`/medium looked strongest in the recent year (expR +0.16) but COLLAPSED to +0.02
@@ -410,6 +429,43 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 32 — 2026-06-25 (ACTIVE SEARCH WIN: deployed sma_cross — 4th cross-era +EV 1h signal; FIRST additive no-reset deploy)
+
+- **CONTEXT:** between firings the owner had me (a) narrow the reset to SCOPED (additive deploy → reset
+  NOTHING; full nuke every 8h was destroying the forward-test) and (b) add automated rotated DB backups
+  (`scripts/backup_db.py`, lean 29 MB / full 290 MB, disk-aware) — "store the database for future
+  data-analytic selection." This iteration is the first deploy under the new policy.
+- **BACKUP FIRST:** lean dump 30 MB, rotation kept 2. (Per new §RESET POLICY, every firing.)
+- **MEASURE:** dev slate accumulated to **296→309 closed over ~8h** (the no-reset policy WORKING — data
+  not wiped). The earlier green WASHED OUT: +$6.81/t=+3.10 at 5h → **+$0.87/t=+0.34/PF=1.06** at 7.7h —
+  variance reversion, now visible ONLY because we stopped resetting. triple_mom 5m +$2.10/53%, mom_adx
+  +$1.09/46%, trend_momentum −$1.31/37% (the drag), 1h leads n=1 each (too slow). 0 errors, mem healthy.
+- **ACTIVE SEARCH — swept 14 UNDEPLOYED breakout/momentum algos at 1h (maker, 6 pairs, recent+lockbox):**
+  - **`sma_cross_9_21` (9/21 SMA golden/death cross) is a WIN — the ONLY one +EV in BOTH eras:** recent
+    expR +0.14 (net +$4.01, R/R 1.48, n=466), LOCKBOX **+0.12** (net +$3.92, R/R 1.32, n=535), OOS>IS
+    both. Per-pair breadth: ETH/DOGE/XRP +EV in BOTH eras (≥3-pair gate cleared; BTC − both, like
+    macd_rsi). The project's FOURTH cross-era +EV signal.
+  - REFUTED same iter: the whole rest of the breakout family — `ema_cross` (recent TOP +0.16 →
+    lockbox −0.03), `donch_break_10/20` (−0.00/−0.02), `breakout_vol` (−0.01), bb_break/mom_align/
+    macd_hist/rsi_cross_50 all breakeven-negative lockbox = data-mined. The lockbox is the only thing
+    separating sma_cross from its false kin.
+- **DEPLOYED sma_cross** as a live pattern, all THREE firing requirements (iter-25 lesson): patterns.py
+  `detect_sma_cross` + `_sma` helper (matches algo_search `_make_ma_cross` bit-for-bit) + SELF_DIRECTING
+  + regime_permits in all non-QUIET regimes + config `sma_cross_fast`=9/`sma_cross_slow`=21 + params.json
+  contracts + TestSmaCross + regime-permit test. 34-pair 1h cohort (medium exit). promote_to_staging
+  `_LOCKBOX_LEADS += sma_cross`. Fleet **340→374** (34 NEW).
+- **SHIP (first ADDITIVE no-reset deploy):** ruff+mypy clean · patterns/regime/scripts tests green ·
+  dedup **34 NEW + 340 SEEN** · committed+pushed `04cff12` · CI green · rebuilt image · **NO RESET
+  (additive)** — backfilled ONLY the 34 new sma_cross bot_ids (720×34, needed a re-run for a 10-pair
+  gate rate-limit gap) · 374 heartbeats · **existing dev trades PRESERVED (309, even grew from 296)** ·
+  0 errors · sma_cross VERIFIED armed (registered/self-direct/permitted=True). This is the policy proof:
+  deployed a new strategy WITHOUT wiping the forward-test.
+- **HONEST:** sma_cross is a forward-test LEAD like the other three — modest (win <50%, BTC −, 1h not
+  5m), clears the deploy gate but NOT a confirmed stop-#2 edge. ✗ overclaim. Four cross-era leads now
+  forward-testing; the 5m green washing out to breakeven is the honest current state.
+- **STOP CHECK:** NOT met. Continue — four 1h leads accumulating; the scoped-reset + backups mean the
+  evidence now survives between firings for real data-analytic selection.
 
 ### Iteration 31 — 2026-06-25 (ACTIVE SEARCH WIN: deployed cci_mom — the 3rd cross-era +EV 1h signal, high-activity)
 
