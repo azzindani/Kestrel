@@ -430,6 +430,36 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 33 — 2026-06-25 (PIVOT: owner-directed MICROSTRUCTURE analysis — real signal, but sub-cost at every horizon; HOLD)
+
+- **CONTEXT (owner directive this session):** after iter-32 I analyzed all 4 leads on the FULL backtest
+  (year + lockbox, 10 pairs, thousands of trades). Verdict delivered to owner: the 1h candle leads are
+  **real-signed but statistically too thin** — cci_mom lockbox t-stat ≈ **0.65** (need ~2); the edge is
+  INSIDE the noise even at ~1,900 trades. More data won't rescue a sub-noise edge → **OHLCV indicators
+  on candles are MINED OUT** (confirmed). Owner: "testing only is not enough." Pointed me at the one
+  unanalyzed dataset — the microstructure recorder. So this firing = analysis, not another candle sweep.
+- **BACKUP:** lean 34 MB, kept 3. Mem fine (host 7.4 GB avail, postgres 17%). No deploy → no reset.
+- **MICROSTRUCTURE ANALYSIS (183k snapshots, 6 majors, ~4 days @ 12s, order book + tape):** tested
+  whether depth-imbalance / aggressor-delta at t predicts the forward mid move.
+  - **`depth_imb5` (5-level book imbalance) is a REAL predictive signal** — IC **0.136 BTC / 0.101 ETH**
+    at 12s (hugely significant on 30k pts), decaying fast with horizon (mean IC 0.061@12s → 0.016@5min
+    → 0.004@30min). depth_imb20 weaker (0.032); aggressor `trade_delta` ≈ 0 (RESTING imbalance predicts,
+    executed flow does NOT — notable).
+  - **But NOT TRADEABLE at our cost:** the directional quintile move (Q5−Q1 forward return) is only
+    **0.3–1.5 bps** across all horizons 12s→60min, vs a round-trip cost ≈ **5 bps** (maker 4 bps + spread).
+    Tradeable? **NO at every horizon.** The signal decays BEFORE the move grows past the fee floor — the
+    classic HFT squeeze: signal strong where moves are tiny (seconds), moves big where signal is gone.
+- **KEY DISTINCTION (the informative part):** candle indicators have **NO signal** (sub-noise, mined out);
+  microstructure imbalance has a **REAL signal blocked by COST/latency**, not absence. The wall here is
+  FEES, not predictability. Harvesting it needs maker REBATES (negative fees) / colocation / sub-ms
+  latency — HFT-firm infrastructure, not retail paper. At 20× lev + 4 bps maker it's underwater.
+- **DECISION — HOLD (no deploy, no reset).** No candle candidate beats the lockbox (family exhausted);
+  the microstructure edge is real but sub-cost so there's nothing tradeable to deploy. Fleet unchanged
+  (374 dev + 18 staging), 4 leads still forward-testing as slow confirmation. ✗ manufacture churn.
+- **STOP CHECK:** NOT met (no edge clears the bar). Honest state: candles mined out; order book has real
+  but uneconomic structure. Next genuinely-new levers are COST-side (maker-rebate venue / longer holds
+  on the few pairs where imbalance Q-spread is largest) — flag for owner, don't churn.
+
 ### Iteration 32 — 2026-06-25 (ACTIVE SEARCH WIN: deployed sma_cross — 4th cross-era +EV 1h signal; FIRST additive no-reset deploy)
 
 - **CONTEXT:** between firings the owner had me (a) narrow the reset to SCOPED (additive deploy → reset
