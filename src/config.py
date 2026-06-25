@@ -208,6 +208,11 @@ class Params:
     macd_slow: int = 26
     macd_signal: int = 9
 
+    # CCI(period) lookback for cci_mom (RESEARCH_LOOP iter 31) — a 1h momentum signal
+    # +EV in BOTH recent and lockbox (3rd cross-era lead, ~3x macd activity). The ±100
+    # entry threshold is CCI's definitional overbought/oversold level (not tunable).
+    cci_period: int = 20
+
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
         """Construct Params from the params.json value-dict (extracts 'value' keys).
@@ -308,6 +313,7 @@ class Params:
             macd_fast=(int(d["macd_fast"]["value"]) if "macd_fast" in d else 12),
             macd_slow=(int(d["macd_slow"]["value"]) if "macd_slow" in d else 26),
             macd_signal=(int(d["macd_signal"]["value"]) if "macd_signal" in d else 9),
+            cci_period=(int(d["cci_period"]["value"]) if "cci_period" in d else 20),
         )
 
 

@@ -313,5 +313,12 @@
     "range": [5, 15],
     "description": "Signal-line EMA period (EMA of the MACD line) for the macd_cross pattern; a cross of MACD over its signal line is the trigger.",
     "impact": "lower = more responsive signal line, more crosses; higher = fewer, higher-conviction crosses"
+  },
+  "cci_period": {
+    "value": 20,
+    "type": "int",
+    "range": [10, 40],
+    "description": "Lookback for the Commodity Channel Index used by the cci_mom pattern; entry fires when CCI breaks out through its definitional +/-100 level.",
+    "impact": "lower = more responsive CCI, more breakouts; higher = smoother, fewer higher-conviction breakouts"
   }
 }

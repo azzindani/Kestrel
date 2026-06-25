@@ -6,6 +6,7 @@ from src.config import Direction, PatternType
 from src.signal.patterns import (
     SELF_DIRECTING_PATTERNS,
     detect_anomaly_fade,
+    detect_cci_mom,
     detect_compression_breakout,
     detect_impulse_retracement,
     detect_macd_cross,
@@ -42,6 +43,7 @@ class TestRegistry:
             "session_seasonal",
             "macd_cross",
             "macd_rsi",
+            "cci_mom",
         }
         assert expected == set(registry.keys())
 
@@ -728,3 +730,37 @@ class TestMacdRsi:
 
     def test_is_self_directing(self):
         assert "macd_rsi" in SELF_DIRECTING_PATTERNS
+
+
+# ---------------------------------------------------------------------------
+# cci_mom (CCI momentum breakout through ±100) — iter 31
+# ---------------------------------------------------------------------------
+
+
+class TestCciMom:
+    @staticmethod
+    def _candles(closes):
+        return [make_candle(close=c, ts=i * 3_600_000) for i, c in enumerate(closes)]
+
+    def test_insufficient_candles_returns_none(self):
+        assert detect_cci_mom(self._candles([100.0] * 10), make_params()) is None
+
+    def test_flat_series_no_breakout_returns_none(self):
+        # flat typical price → mean deviation 0 → CCI 0, never crosses ±100
+        assert detect_cci_mom(self._candles([100.0] * 30), make_params()) is None
+
+    def test_upside_breakout_fires_long(self):
+        # 20 flat bars (CCI≈0) then a sharp up-bar → CCI breaks out above +100
+        r = detect_cci_mom(self._candles([100.0] * 20 + [110.0]), make_params())
+        assert r is not None
+        assert r.direction == Direction.LONG
+        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.details["variant"] == "cci_mom"
+
+    def test_downside_breakout_fires_short(self):
+        r = detect_cci_mom(self._candles([100.0] * 20 + [90.0]), make_params())
+        assert r is not None
+        assert r.direction == Direction.SHORT
+
+    def test_is_self_directing(self):
+        assert "cci_mom" in SELF_DIRECTING_PATTERNS
