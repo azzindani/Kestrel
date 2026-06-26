@@ -430,6 +430,32 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 34 — 2026-06-26 (microstructure EXTREME-TAIL test — 0/60 cells beat cost; the wall is the fee, quantified; HOLD)
+
+- **RATIONALE:** candles mined out (iter 32-33), microstructure MEAN edge sub-cost (iter 33). Rather than
+  re-sweep a dead family (churn), deepened iter-33: does the EXTREME TAIL of the real imbalance signal
+  (rare strong |imb5|, tight-spread pairs, cost-aware directional rule) ever beat the fee floor? That's
+  where a tradeable corner would hide.
+- **BACKUP:** lean dump, kept 4. **Health:** 392 hb, **0 errors**, 786 dev closes accumulating, mem fine
+  (postgres 27%). 1h leads still tiny-sample noise (cci_mom 6 @17%, macd_cross 4 @50%, macd_rsi 3 @67%,
+  sma_cross 0 — too slow to read; expected). No infra fault.
+- **EXTREME-TAIL ANALYSIS (183k snapshots, 6 majors; |imb5| thresholds 0.3–0.9 × horizons 12s/60s/5min ×
+  6 pairs = 60 cells; directional rule sign(imbalance), net = gross − round-trip cost):**
+  - **0 / 60 cells NET-positive after cost.** The signal is genuinely directional (gross > 0 in essentially
+    every cell — the book predicts), but the move is **0.6–1.5 bps** on the tradeable pairs (BTC/ETH),
+    max ~3.5 bps (rare DOGE 5min), vs a **4 bps maker fee + spread**. Best cell DOGE thr0.7/5min gross
+    +3.57 → NET −1.73; best BTC/ETH ~+1.3 gross → NET −2.7.
+  - **The wall is QUANTIFIED:** the 4 bps maker fee ALONE exceeds the gross edge at every cell. To clear,
+    round-trip fees would need to drop below ~**1.3 bps** (on BTC/ETH, where spread is ~0.02–0.06 bps).
+    Even then it's a fragile ~1 bps edge that adverse-selection/latency would erode — HFT execution, not
+    retail paper.
+- **DECISION — HOLD (no deploy, no reset).** Both levers now rigorously exhausted: candles = no signal;
+  order book = real signal, killed by fee. Nothing tradeable to deploy at our cost structure. Fleet
+  unchanged (374 dev + 18 staging), 4 leads forward-testing. The ONLY genuinely-new direction is
+  COST-SIDE (a sub-1.3bps / maker-rebate venue) — a §4 owner/venue decision, FLAGGED not actioned.
+- **STOP CHECK:** NOT met. Honest state unchanged and now precise: there is a real order-flow signal worth
+  ~1 bps; it does not survive a 4 bps fee. The edge problem is now a COST problem.
+
 ### Iteration 33 — 2026-06-25 (PIVOT: owner-directed MICROSTRUCTURE analysis — real signal, but sub-cost at every horizon; HOLD)
 
 - **CONTEXT (owner directive this session):** after iter-32 I analyzed all 4 leads on the FULL backtest
