@@ -430,6 +430,36 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 35 — 2026-06-26 (accumulated slate confirms fleet is statistically NEGATIVE, t=−7.47 — no-reset policy vindicated; HOLD, ✗ prune)
+
+- **RATIONALE:** both in-scope levers now exhausted (candles sub-noise iter 32-33; order-flow real but
+  sub-cost iter 33-34). Rather than churn a dead family, this firing did the read the no-reset policy was
+  BUILT for: with the slate fully accumulated, has any live cell sharpened into real signal?
+- **BACKUP:** lean, kept 5. **Health:** 392 hb, 0 errors, host 7.8 GB avail. No infra fault.
+- **MEASURE — per-pattern live t-stat on the accumulated slate (1183 closed trades):** the answer is the
+  OPPOSITE of edge — the fleet is now statistically, robustly NEGATIVE:
+  - **FLEET TOTAL: net −$34.20, mean −$0.029/trade, t-stat −7.47.** Every cohort significantly negative:
+    trend_momentum 5m −$14.59 (n=484, t=−4.8, PF 0.55), mom_adx 5m −$9.84 (n=358, t=−4.2, PF 0.56),
+    triple_mom 5m −$6.53 (n=254, t=−3.1, PF 0.60), wick_rejection 5m −$1.43 (t=−3.3, PF 0.22),
+    cci_mom 1h −$1.43 (n=13, t=−1.8). 1h macd leads ~flat tiny-sample (−$0.10/−$0.19, n=9).
+  - **This is the milestone:** the "+$6.81 green" owner saw at iter-32 (5h window, t=+3.1) has, with full
+    accumulation, resolved into a confirmed LOSS (t=−7.47). The no-reset policy did EXACTLY its job —
+    let variance wash out, exposed the true negative expectancy that per-deploy resets had been hiding.
+    The fee floor wins, now with statistical certainty, not just "no positive edge found."
+- **PRUNE? NO (owner §6/§13 directive).** trend_momentum/mom_adx/triple_mom 5m all formally meet the
+  cell-viability prune bar (≥50 trades, net<0, PF<1.0). But the owner is explicit: ✗ shrink the fleet or
+  steer slow to "lose less" — the active fleet IS the design, losses are simulated/PAPER, the job is to
+  find edge WITHIN it. Pruning creates no edge; it's the "slow to lose less" the owner rejected. So HOLD
+  the fleet intact.
+- **DECISION — HOLD (no deploy, no reset, no prune).** The loop has reached the honest limit of its
+  in-scope authority: candles = no signal; order book = real signal killed by fee; 5m fleet = confirmed
+  net-negative (fee floor). The remaining lever is COST-SIDE (sub-1.3bps / maker-rebate venue, §4 owner
+  decision) — re-confirming no-edge every 8h is low marginal value. FLAG for owner: the autonomous search
+  is exhausted; the next move is a venue/cost decision, not more iterations.
+- **STOP CHECK:** NOT met (no positive edge; the confirmed result is a negative one). Honest state, sharp:
+  there is no tradeable edge in candles or order flow at our 4 bps fee; the fleet's loss is now
+  statistically certain (t=−7.47), which is the fee floor, exactly as predicted.
+
 ### Iteration 34 — 2026-06-26 (microstructure EXTREME-TAIL test — 0/60 cells beat cost; the wall is the fee, quantified; HOLD)
 
 - **RATIONALE:** candles mined out (iter 32-33), microstructure MEAN edge sub-cost (iter 33). Rather than
