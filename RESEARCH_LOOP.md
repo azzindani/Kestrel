@@ -365,6 +365,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   wick/bb_fade). `supertrend` (ATR trend-flip): lockbox ≤0 / breakeven both exits. Neither deployable.
   (The SIBLING `cci_mom` — CCI BREAKOUT not fade — DID validate cross-era and was deployed; see CURRENT
   BEST. Momentum-breakout works, mean-reversion-fade doesn't — the recurring pattern.)
+- **Cross-asset lead-lag (BTC just-closed bar → alt next bar)** (iter 36) — 1h, recent + lockbox, 7 alts.
+  Contemporaneous BTC↔alt corr 0.72–0.86 (co-move, NOT tradeable); LEAD IC ~0 recent (0.00–0.018),
+  NEGATIVE lockbox (−0.02..−0.04) → no cross-era lag; 0/7 net-positive after 4 bps cost both eras. At 1h
+  the alt has already co-moved within the bar; lead-lag lives at sub-minute TFs where it hits the same
+  sub-cost wall as order-flow (and isn't lockbox-testable at 5m). Don't re-test at ≥1h.
+- **Microstructure order-flow imbalance, standalone** (iter 33-34) — real signal (depth_imb5 IC 0.14 BTC)
+  but 0/60 cost-aware cells net-positive; gross 0.3–1.5 bps vs 4 bps maker fee. Needs round-trip < ~1.3 bps
+  (venue/§4), not a signal to re-search. Aggressor `trade_delta` ≈ 0 (resting book predicts, flow doesn't).
 - **Breakout family minus sma_cross (`ema_cross`, `donch_break_10/20`, `breakout_vol`, `bb_break`,
   `compress_break`, `mom_align`, `mom_volexp`, `streak_go_3`, `macd_hist`, `rsi_cross_50`,
   `sma_cross_20_50`)** (iter 32) — 1h, maker, recent + lockbox. ALL +EV-ish in the recent year
@@ -429,6 +437,30 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 36 — 2026-06-26 (genuinely-new family tested: cross-asset BTC→alt lead-lag — REFUTED both eras; HOLD)
+
+- **RATIONALE:** candles + order-flow + 5m fleet all exhausted/confirmed-negative (iter 32-35). Rather
+  than re-confirm, tested a signal FAMILY never tried and not in the ledger: cross-asset lead-lag (BTC's
+  just-closed 1h bar → alt's NEXT bar). Different kind of signal (cross-sectional, not single-asset
+  indicator); crucially alt moves are big enough that a real lead-lag COULD clear the 4 bps fee — unlike
+  the ~1 bps order-flow signal. Worth a rigorous shot.
+- **BACKUP:** lean, kept 6. **Health:** 392 hb, 0 errors, mem fine. Fleet net **−$45.39** (was −$34.20
+  iter-35 → still bleeding, exactly as the t=−7.47 fee-floor predicts). No infra fault.
+- **LEAD-LAG TEST (1h, BTC→7 alts, ~8.8k bars/era, recent + lockbox, cost-aware directional net):**
+  - **Contemporaneous** BTC↔alt corr is HUGE (0.72–0.86) — alts co-move with BTC, well known, NOT
+    tradeable (same-instant info).
+  - **Lead** IC (the tradeable part) is ~0 recent (0.000–0.018) and **NEGATIVE in lockbox** (−0.016..
+    −0.039) — no cross-era lag signal; the tiny recent IC flips sign in the prior year = noise. By the
+    time a 1h bar closes the alt has ALREADY moved with BTC; nothing unreflected remains.
+  - Strategy net after 4 bps cost: **0/7 pairs positive in BOTH eras** (−3 to −7 bps). REFUTED.
+- **DECISION — HOLD (no deploy, no reset).** Third distinct signal FAMILY refuted (candles, order-flow,
+  lead-lag). Lead-lag in crypto lives at sub-minute TFs (already arbitraged by 1h) — and there it hits
+  the SAME sub-cost wall as order-flow (tiny moves vs 4 bps fee), and isn't lockbox-testable at 5m. So no
+  tradeable corner. Fleet unchanged (374+18).
+- **STOP CHECK:** NOT met. The pattern is now overwhelming: every genuinely-new family (indicator,
+  order-flow, cross-asset) is either no-signal or real-but-sub-cost. The binding constraint is the 4 bps
+  fee, not signal discovery — the unlock is a cost-side venue decision (§4 owner), flagged not actioned.
 
 ### Iteration 35 — 2026-06-26 (accumulated slate confirms fleet is statistically NEGATIVE, t=−7.47 — no-reset policy vindicated; HOLD, ✗ prune)
 
