@@ -436,6 +436,16 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   (1-in-6 luck). The iter-3 "8/120 net-maker survivors" was a multiple-testing/threshold artifact.
   Not a net-of-cost edge. `session_seasonal` pattern stays registered (tested) but undeployed.
 
+- **Cost-clearing VOLATILITY-FLOOR filter on the 1h leads** (iter 39) — 1h, maker, recent + lockbox,
+  10 pairs. Restricting macd_cross/cci_mom/sma_cross to the high-volatility regime (`--regime
+  volatile`, ATR14>ATR50×1.5 — the "only fire when the move clears the fee" idea iter-1's NEXT
+  flagged) does NOT lift expectancy and **starves the sample to n=3–6 trades/yr across 10 pairs**
+  (RECENT macd_cross −$0.06/t n=3; LOCKBOX cci_mom +$0.05/t n=6) — statistically unusable, the same
+  thinness that killed `--regime volatile` at 5m. SAME firing measured the **unfiltered leads are now
+  flat** (best sma_cross +$0.0096/t recent / +$0.0100/t lockbox, win 44–47%, 0/3 clear the bar) =
+  regressed-to-break-even, original +EV was a single-regime artifact. Closes iter-1's last NEXT item:
+  no volatility/regime gate rescues the leads. Don't re-test a volatility floor as an edge lever.
+
 > **MILESTONE (iter 4): the directional + seasonal entry search space is EXHAUSTED.** Every entry
 > idea testable in this per-bot directional architecture — single-rule, confluence-momentum at
 > 5m/15m/1h/4h, Connors RSI-2, wave/flip, regime-conditional, time-of-day seasonality — has been
@@ -453,6 +463,44 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 39 — 2026-06-27 (cost-clearing VOLATILITY-FLOOR filter on the 1h leads — REFUTED + leads regressed to flat; HOLD)
+
+- **CONTEXT (this session, before the firing):** built the full owner self-service **lab env**
+  (ENV=lab → SimulationExecution; `scripts/lab.py` catalog/add/deploy; Grafana bot catalog +
+  Phase-dropdown `lab`; commit `13e032f`) and the Data-Analysis Grafana board over the restored
+  archive. None of that touched the dev fleet. Fleet steady at **148** (4 leads × 34 pairs @1h:
+  macd_cross/macd_rsi/cci_mom/sma_cross + 12 flowgate @5m), 0 errors, freshly reset → empty dev slate.
+- **MEASURE:** dev 148 / lab 2 / staging 24 heartbeats, **0 errors/5m**; dev slate empty (post-reset).
+  Nothing live to diagnose yet — so this firing did a BACKTEST re-validation instead.
+- **DIAGNOSE:** directional entry search is exhausted (iters 1–38 refuted every momentum + mean-revert
+  family, single-rule and confluence, cross-era). The one cost-aware angle iter-1's NEXT flagged but
+  never tested: an **ATR%-of-price volatility floor** — only let setups fire when the move is big
+  enough to clear the ~4bps maker floor. Tested as the high-volatility-regime proxy (`--regime
+  volatile`, ATR14>ATR50×1.5) on the deployed leads — never run on the 1h leads before.
+- **BACKTEST (1h, maker, 10 pairs, walk-forward OOS + untouched prior-year lockbox; leads
+  macd_cross/cci_mom/sma_cross):**
+  - **Baseline (no filter):** RECENT best sma_cross **+$0.0096/t**, win 47.2%, n=231 → **0/3** clear
+    the bar. LOCKBOX best sma_cross **+$0.0100/t**, win 44.4%, n=214 → **0/3**. The leads have
+    **regressed to flat** (~break-even, ≈0 expectancy) in BOTH eras — their original +EV was a
+    data-mined single-regime artifact, exactly as the ledger predicted.
+  - **Volatile-only (the cost-clearing filter):** RECENT best macd_cross **−$0.0609/t**, win 33.3%,
+    **n=3**; LOCKBOX best cci_mom +$0.0468/t, win 50.0%, **n=6**. The filter does NOT lift expectancy
+    and **starves the sample to n=3–6 trades/yr across 10 pairs** — statistically unusable (same
+    thinness that killed `--regime volatile` at 5m in iter 1).
+- **DECIDE:** **REFUTED.** The volatility-floor filter is dead (no lift + sample collapse) → added to
+  the refuted ledger; closes iter-1's last open NEXT item. The flat leads are break-even, **not**
+  structurally-dead (PF≈1.0, not <1.0) and **not** bleeding → per the cell-viability rule + owner's
+  "✗ shrink to lose less" they STAY as the live forward-test. **Baseline untouched; no new cohort.**
+- **APPLY:** fleet byte-identical to live → **no deploy, no reset** (scoped-reset policy: additive
+  deploy resets nothing; this iteration is additive-nothing). flowgate cohort KEEP-guard honored —
+  let the order-flow forward-test keep accumulating. Visible artifact: committed the iter-31 harness
+  (`cci_mom`/`cci_revert`/`supertrend` algos in `algo_search.py`, never committed) that powers this
+  backtest, + this record + a `system` event row.
+- **CHECK STOP:** **not met.** No edge (best +$0.01/t ≈ break-even, win <55%, 0/3 clear the bar,
+  no lockbox-positive candidate); owner target (≥70% win / ≥15% daily over ≥100 trades) not hit.
+  Remaining levers are §4 owner-gated (sub-1.3bps/rebate venue · funding-rate perps) — flagged, not
+  started. Loop continues in HYPER-SCALP MAINTENANCE / monitoring.
 
 ### Iteration 38 — 2026-06-27 (last untested momentum algos — data-mined / below-bar, REFUTED; fleet leaned; HOLD)
 
