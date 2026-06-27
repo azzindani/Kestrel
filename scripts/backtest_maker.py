@@ -309,6 +309,12 @@ def main() -> None:
         dest="offset_days",
         help="shift window END back N days for a LOCKBOX test (e.g. --days 365 --offset-days 365)",
     )
+    ap.add_argument(
+        "--reverse",
+        action="store_true",
+        help="FLIP every signal (long<->short, TP/SL mirrored around entry): does inverting a "
+        "losing entry win? Tests whether the loss is a real anti-signal or just symmetric cost.",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -325,8 +331,9 @@ def main() -> None:
     trail_dist_r = base.trail_distance_r
 
     window_tag = f"LOCKBOX offset={args.offset_days}d" if args.offset_days else "RECENT"
+    rev_tag = " · REVERSED (signals flipped)" if args.reverse else ""
     print(
-        f"=== Kestrel MAKER-FILL backtest ({args.tf}, {args.days}d, {cfg.leverage}x, {window_tag}) ===\n"
+        f"=== Kestrel MAKER-FILL backtest ({args.tf}, {args.days}d, {cfg.leverage}x, {window_tag}{rev_tag}) ===\n"
         f"strats={strats} pairs={len(pairs)} offset={args.offset_bps}bps fill_window={args.fill_window} "
         f"exit=trailing(tp{base.tp_atr_multiplier}/sl{base.sl_atr_multiplier}/hold{max_hold})",
         flush=True,
@@ -374,15 +381,25 @@ def main() -> None:
                     i += 1
                     continue
 
+                # --reverse flips direction and mirrors TP/SL around entry (2·entry − level),
+                # so the inverted trade has the same R/R shape pointing the other way. The
+                # signal SET is unchanged (same gating) — only the executed side flips.
+                if args.reverse:
+                    direction = Direction.SHORT if sig.direction is Direction.LONG else Direction.LONG
+                    tp = 2.0 * sig.entry_price - sig.tp_price
+                    sl = 2.0 * sig.entry_price - sig.sl_price
+                else:
+                    direction, tp, sl = sig.direction, sig.tp_price, sig.sl_price
+
                 is_oos = candles[i].ts >= split_ts
                 taker = _sim_trade(
                     "taker",
                     candles,
                     i,
                     sig.entry_price,
-                    sig.tp_price,
-                    sig.sl_price,
-                    sig.direction,
+                    tp,
+                    sl,
+                    direction,
                     sig.size_usdt,
                     cfg.leverage,
                     max_hold,
@@ -403,9 +420,9 @@ def main() -> None:
                             candles,
                             i,
                             sig.entry_price,
-                            sig.tp_price,
-                            sig.sl_price,
-                            sig.direction,
+                            tp,
+                            sl,
+                            direction,
                             sig.size_usdt,
                             cfg.leverage,
                             max_hold,
