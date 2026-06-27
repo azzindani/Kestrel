@@ -1,0 +1,55 @@
+# ── OWNER LAB sandbox ────────────────────────────────────────────────────────
+# A SEPARATE compose project that runs a fleet the OWNER hand-picks themselves —
+# the counterpart to the research loop's dev fleet. The owner selects bot configs
+# from the recorded universe (scripts/lab.py catalog → add) and runs them here to
+# try ideas directly, without the loop touching them.
+#
+# Always PAPER (SimulationExecution — ENV=lab routes to sim, same as dev; never a
+# venue, never real money). Runs as its own compose project so it never disturbs
+# the labs or staging stacks; attaches to the shared kestrel_net + postgres. Lab
+# rows are isolated by env='lab' + the `lab-` bot_id prefix (every table carries
+# env + bot_id — §19), so Grafana splits it out via the Phase dropdown.
+#
+# Compose the fleet, then bring it up:
+#   python3 scripts/lab.py catalog                  # browse available bots + past perf
+#   python3 scripts/lab.py add lab-BTCUSDT-5m-mom_adx-01   # or: --pair BTC/USDT --tf 5m --pattern mom_adx
+#   python3 scripts/lab.py deploy                   # backfill + bring this project up
+# Manually:
+#   docker compose -p kestrel-lab -f docker-compose.lab.yml up -d
+#   docker compose -p kestrel-lab -f docker-compose.lab.yml logs -f
+#   docker compose -p kestrel-lab -f docker-compose.lab.yml down   # SIGTERM → close → exit
+services:
+  kestrel-lab:
+    build: .
+    # Reuse the labs-built image when present; same src → same image.
+    image: kestrel-kestrel:${KESTREL_TAG:-latest}
+    env_file: .env.lab
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+    volumes:
+      # The lab runs its own hand-picked fleet at the path the daemon reads.
+      - ./bots.lab.json:/app/bots.json:ro
+      - ./params.json:/app/params.json:ro
+    networks:
+      - kestrel_net
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    # Heartbeat watchdog scoped to lab bots only (shared heartbeats table; scope
+    # by the lab- bot_id prefix).
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "PGPASSWORD=$$DB_PASSWORD psql -h postgres -U $$DB_USER -d $$DB_NAME -tAc \"SELECT (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - MAX(ts) < 90000 FROM heartbeats WHERE bot_id LIKE 'lab-%'\" 2>/dev/null | grep -q ^t || exit 1"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+# The labs stack created this network; the lab joins it as external so the two
+# projects share one postgres without coupling their lifecycles.
+networks:
+  kestrel_net:
+    external: true
+    name: kestrel_net

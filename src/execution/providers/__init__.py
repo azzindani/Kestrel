@@ -55,15 +55,17 @@ def get_execution_provider(cfg: AppConfig) -> ExecutionInterface:
 
     DI rules (CLAUDE.md §14):
         ENV=dev      → SimulationExecution (paper trading, no exchange)
+        ENV=lab      → SimulationExecution (paper trading, owner's hand-picked sandbox)
         ENV=staging  → real provider, but MUST be a demo/testnet venue (virtual money)
         ENV=prod     → real provider selected by cfg.exchange (real capital, §18 gated)
     """
-    # Phase-1 (dev) always simulates. Phase-2 (staging) ALSO simulates while
-    # STAGING_ENGINE=sim (the interim before demo-venue keys exist): the curated
-    # best-performers pool runs on modeled fills, fully isolated in env='staging'
-    # (§19), so the phase can run NOW. Flip STAGING_ENGINE=live (+ VST keys +
-    # TESTNET=true) to upgrade staging to demo-money execution later.
-    if cfg.env is Env.DEV or (cfg.env is Env.STAGING and cfg.staging_engine == "sim"):
+    # Phase-1 (dev) and the owner LAB sandbox always simulate (paper, no venue, no real
+    # money — lab is just the owner's own curated fleet running on modeled fills).
+    # Phase-2 (staging) ALSO simulates while STAGING_ENGINE=sim (the interim before
+    # demo-venue keys exist): the curated best-performers pool runs on modeled fills,
+    # fully isolated in env='staging' (§19), so the phase can run NOW. Flip
+    # STAGING_ENGINE=live (+ VST keys + TESTNET=true) to upgrade staging to demo-money.
+    if cfg.env in (Env.DEV, Env.LAB) or (cfg.env is Env.STAGING and cfg.staging_engine == "sim"):
         from src.config import load_params
         from src.execution.simulation import SimulationExecution
 

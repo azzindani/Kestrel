@@ -310,6 +310,21 @@ ts(
 )
 
 
+# ── Section 1b: Bot catalog — the menu you pick your lab fleet from ─────────────
+section("Bot Catalog — pick bots for your LAB (python3 scripts/lab.py add --pattern <p> --pair <pair> --tf <tf>)")
+use(DS_ARCH)
+table(
+    "Every recorded (pattern · pair · timeframe) cell + how it performed — sorted worst→best",
+    24, 11,
+    "SELECT split_part(bot_id,'-',4) AS pattern, pair, timeframe AS tf, count(*) AS trades, "
+    "ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS win_pct, "
+    "ROUND(SUM(pnl_net_usdt)::numeric,2) AS net_usdt, ROUND(AVG(pnl_net_usdt)::numeric,4) AS avg_usdt, "
+    f"{_PF} AS pf FROM trades WHERE {_CLOSED} GROUP BY 1,2,3 HAVING count(*) >= 3 ORDER BY net_usdt DESC",
+    overrides=[col_override("net_usdt", "currencyUSD"), col_override("avg_usdt", "currencyUSD"),
+               col_override("win_pct", "percent", TH_WIN), col_override("pf", "short", TH_PF)],
+)
+
+
 # ── Section 2: Trade analytics (full history · archive) ────────────────────────
 section("Trade Analytics — full recorded history (archive)")
 use(DS_ARCH)

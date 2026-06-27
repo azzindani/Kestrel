@@ -17,6 +17,10 @@ from typing import Any, Mapping, Optional
 
 class Env(str, Enum):
     DEV = "dev"  # Phase 1 — labs: SimulationExecution (paper), many bots, no venue.
+    LAB = "lab"  # Owner sandbox — SimulationExecution (paper), a hand-picked fleet the
+    #              owner composes themselves (scripts/lab.py) from the recorded universe.
+    #              Isolated from the research loop's dev fleet: env='lab' + lab- bot_id
+    #              prefix, its own compose project (kestrel-lab). Always paper, never real.
     STAGING = "staging"  # Phase 2 — quarantine: LiveExecution on a demo/testnet venue
     #                      (e.g. BingX VST) with virtual money. Routes to the live code
     #                      path (env is not DEV) but TESTNET=true → set_sandbox_mode.

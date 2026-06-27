@@ -13002,13 +13002,18 @@
         "name": "env",
         "label": "Phase",
         "type": "custom",
-        "description": "Phase 1 labs (dev) \u00b7 Phase 2 staging (BingX VST demo) \u00b7 Phase 3 prod (real)",
-        "query": "dev,staging,prod",
+        "description": "Phase 1 labs (dev) \u00b7 lab (owner sandbox) \u00b7 Phase 2 staging (BingX VST demo) \u00b7 Phase 3 prod (real)",
+        "query": "dev,lab,staging,prod",
         "options": [
           {
             "text": "dev",
             "value": "dev",
             "selected": true
+          },
+          {
+            "text": "lab",
+            "value": "lab",
+            "selected": false
           },
           {
             "text": "staging",

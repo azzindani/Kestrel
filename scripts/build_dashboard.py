@@ -1812,10 +1812,11 @@ dashboard = {
                 "name": "env",
                 "label": "Phase",
                 "type": "custom",
-                "description": "Phase 1 labs (dev) · Phase 2 staging (BingX VST demo) · Phase 3 prod (real)",
-                "query": "dev,staging,prod",
+                "description": "Phase 1 labs (dev) · lab (owner sandbox) · Phase 2 staging (BingX VST demo) · Phase 3 prod (real)",
+                "query": "dev,lab,staging,prod",
                 "options": [
                     {"text": "dev", "value": "dev", "selected": True},
+                    {"text": "lab", "value": "lab", "selected": False},
                     {"text": "staging", "value": "staging", "selected": False},
                     {"text": "prod", "value": "prod", "selected": False},
                 ],

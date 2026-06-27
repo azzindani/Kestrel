@@ -1,0 +1,24 @@
+[
+  {
+    "bot_id": "lab-BTCUSDT-5m-mom_adx-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "mom_adx",
+    "patterns": [
+      "mom_adx"
+    ]
+  },
+  {
+    "bot_id": "lab-ETHUSDT-1h-macd_cross-01",
+    "pair": "ETH/USDT",
+    "timeframe_entry": "1h",
+    "timeframe_regime": "1h",
+    "max_active_buckets": 1,
+    "strategy": "macd_cross",
+    "patterns": [
+      "macd_cross"
+    ]
+  }
+]
