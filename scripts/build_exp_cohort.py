@@ -83,6 +83,8 @@ _VALID_PARAM_KEYS = {
     "max_loss_pct_per_trade",
     "seasonal_entry_hour_start",
     "seasonal_entry_window_hours",
+    "flow_gate_enabled",
+    "flow_gate_min_imbalance",
 }
 
 _HERE = os.path.dirname(__file__)

@@ -334,5 +334,19 @@
     "range": [15, 50],
     "description": "Slow SMA period for the sma_cross pattern; the fast SMA crossing this baseline triggers the trend-following entry.",
     "impact": "lower = earlier crosses, more whipsaw; higher = later, higher-conviction trend confirmation"
+  },
+  "flow_gate_enabled": {
+    "value": false,
+    "type": "bool",
+    "range": [false, true],
+    "description": "Order-flow alignment gate: when true, an entry is rejected unless the latest top-5 order-book depth imbalance (depth_imb5, supplied by the daemon from the microstructure recorder) agrees with the trade direction. No-op for pairs with no fresh feed. Set per-bot in bots.json for the flow-gate lab.",
+    "impact": "true = only take entries the live book backs; analyze_microstructure.py measured ~2x win-rate and ~half the per-trade loss on recorded pairs (still net-negative — a risk filter, not an edge)"
+  },
+  "flow_gate_min_imbalance": {
+    "value": 0.0,
+    "type": "float",
+    "range": [0.0, 0.5],
+    "description": "Minimum SIGNED depth imbalance the live book must show in the trade's direction for the flow gate to pass (+depth_imb5 for a long, -depth_imb5 for a short). Only used when flow_gate_enabled.",
+    "impact": "0.0 = book merely has to agree (the measured aligned-vs-against split); higher = demand stronger book backing, fewer but higher-conviction entries"
   }
 }

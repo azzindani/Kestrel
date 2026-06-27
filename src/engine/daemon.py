@@ -315,6 +315,15 @@ class Daemon:
         # (§11) so position size compounds with realised PnL.
         sizing_state = await db.get_sizing_state(self.cfg.bot_id, self.cfg.env.value, self.cfg.bucket_size_usdt)
 
+        # Order-flow gate (optional): supply the latest top-5 depth imbalance so the
+        # pure detector can reject entries that fight the live book. Read only when this
+        # bot enables the gate; meaningful only for the recorder's pairs, and a
+        # stale/missing snapshot returns None so the gate fails closed. Freshness is
+        # measured against wall-clock now (the recorder writes ~every 12s); 120s window.
+        order_flow: Optional[float] = None
+        if self.params.flow_gate_enabled:
+            order_flow = await db.get_latest_order_flow(candle.pair, 120_000, int(time.time() * 1000))
+
         signal, rejection = evaluate(
             candle_window,
             self.params,
@@ -324,6 +333,7 @@ class Daemon:
             enabled_patterns=self.cfg.enabled_patterns,
             sizing_state=sizing_state,
             leverage=self.cfg.leverage,
+            order_flow=order_flow,
         )
 
         if rejection is not None:
