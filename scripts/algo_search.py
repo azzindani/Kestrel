@@ -430,6 +430,96 @@ _make_macd_adx("macd_rsi_adx20", 20.0, True)
 _make_macd_adx("macd_rsi_adx25", 25.0, True)
 
 
+# --- CCI + Supertrend (iter-31 active search — genuinely-new families, never tested) --
+def _cci_pair(C: Sequence[Candle], n: int = 20) -> Optional[tuple[float, float]]:
+    """(cci_now, cci_prev) of the Commodity Channel Index, or None if too short."""
+    if len(C) < n + 1:
+        return None
+    tp = [(c.high + c.low + c.close) / 3.0 for c in C]
+
+    def at(idx: int) -> float:
+        w = tp[idx - n + 1 : idx + 1]
+        sma = sum(w) / n
+        md = sum(abs(x - sma) for x in w) / n
+        return 0.0 if md == 0.0 else (tp[idx] - sma) / (0.015 * md)
+
+    return (at(len(C) - 1), at(len(C) - 2))
+
+
+@_algo("cci_revert", PatternType.ANOMALY_FADE)
+def _cci_revert(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # mean-revert: CCI snaps back across ±100 out of oversold/overbought
+    r = _cci_pair(C)
+    if r is None:
+        return None
+    now, prev = r
+    if prev <= -100.0 and now > -100.0:
+        return Direction.LONG
+    if prev >= 100.0 and now < 100.0:
+        return Direction.SHORT
+    return None
+
+
+@_algo("cci_mom", PatternType.MOMENTUM_CONTINUATION)
+def _cci_mom(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # momentum: CCI breaks OUT through ±100 into a strong move
+    r = _cci_pair(C)
+    if r is None:
+        return None
+    now, prev = r
+    if prev <= 100.0 and now > 100.0:
+        return Direction.LONG
+    if prev >= -100.0 and now < -100.0:
+        return Direction.SHORT
+    return None
+
+
+def _supertrend_dir(C: Sequence[Candle], mult: float = 3.0) -> Optional[tuple[int, int]]:
+    """(dir_now, dir_prev) of Supertrend: +1 uptrend / -1 downtrend. Canonical
+    carry-forward final bands over the window (uses the stored atr14)."""
+    if len(C) < 15:
+        return None
+    f_up: Optional[float] = None
+    f_lo: Optional[float] = None
+    direction = 1
+    dirs: list[int] = []
+    prev_close = C[0].close
+    for c in C:
+        atr = c.atr14
+        if atr is None:
+            dirs.append(direction)
+            prev_close = c.close
+            continue
+        hl2 = (c.high + c.low) / 2.0
+        b_up = hl2 + mult * atr
+        b_lo = hl2 - mult * atr
+        f_up = b_up if (f_up is None or b_up < f_up or prev_close > f_up) else f_up
+        f_lo = b_lo if (f_lo is None or b_lo > f_lo or prev_close < f_lo) else f_lo
+        if direction == 1 and c.close < f_lo:
+            direction = -1
+        elif direction == -1 and c.close > f_up:
+            direction = 1
+        dirs.append(direction)
+        prev_close = c.close
+    if len(dirs) < 2:
+        return None
+    return (dirs[-1], dirs[-2])
+
+
+@_algo("supertrend", PatternType.MOMENTUM_CONTINUATION)
+def _supertrend(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # enter on a Supertrend direction flip (ATR trend-follower)
+    r = _supertrend_dir(C)
+    if r is None:
+        return None
+    now, prev = r
+    if prev == -1 and now == 1:
+        return Direction.LONG
+    if prev == 1 and now == -1:
+        return Direction.SHORT
+    return None
+
+
 @_algo("bb_fade", PatternType.ANOMALY_FADE)
 def _bb_fade(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     c = C[-1]
