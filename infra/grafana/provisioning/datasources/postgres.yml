@@ -16,3 +16,23 @@ datasources:
       timescaledb: false
     isDefault: true
     editable: false
+
+  # Archive datasource — points at the kestrel_archive database, into which a chosen
+  # backup dump is restored (scripts/restore_archive.py). Lets the analysis dashboard
+  # query the FULL recorded history (incl. pre-reset trades/signals/events that the live
+  # DB no longer holds). The live datasource (kestrel-db) still has candles+microstructure.
+  - name: KestrelArchive
+    uid: kestrel-archive
+    type: postgres
+    access: proxy
+    url: postgres:5432
+    database: kestrel_archive
+    user: ${DB_USER}
+    secureJsonData:
+      password: ${DB_PASSWORD}
+    jsonData:
+      sslmode: disable
+      postgresVersion: 1600
+      timescaledb: false
+    isDefault: false
+    editable: false
