@@ -243,6 +243,8 @@ Bucket:  total $100 · $10 isolated/position · max 10 buckets · 1 active at st
 Liquidation (computed+stored on open): long entry×(1 − 1/lev + mmr) · short entry×(1 + 1/lev − mmr) · mmr=0.005
 Fee model (enforced sim+backtest · ✗ skip): taker 0.04%/side · slip 0.05%/side · ~0.18% round trip · min viable: avg gross > 0.18%
 ```
+**Portfolio guard ("manager bot" · engine/portfolio_guard.py · risk-shaping, ✗ edge):** one in-process coordinator sums unrealised PnL across the WHOLE fleet and force-closes EVERY bot's open positions (taker market-out · each bot closes its OWN, one-owner §11) when aggregate unrealised crosses ±threshold of total equity — `PORTFOLIO_DD_PCT` drawdown-stop / `PORTFOLIO_TP_PCT` profit-lock (both 0.10 in the lab · 0 = disabled, live-safe default). FLEET-AGGREGATE, ✗ per-bucket (one bucket at −10% is the per-trade SL's job). **Verdict (2026-06-27): near-DORMANT — a diversified fleet's net unrealised rarely reaches ±10%, so it has never fired (0 events / 0 trades).** The −DD half is legitimate correlated-crash insurance at 20× (flatten before a fleet-wide liquidation cascade) — keep it, it's free when it never trips. The +TP half caps the right tail and fights let-winners-run (§22 trailing) — questionable; consider dropping/widening. It reshapes variance + adds forced-close cost, ✗ creates edge; ✗ mistake it for a return lever. Real bleed is per-trade stop_loss, ✗ the guard.
+
 **Return target (owner · aspiration · ✗ guarantee):** start $100 → compound toward $100K · ~15%/day at 70% win-rate. Contingent on a net-of-fee edge that does not yet exist (§6 STATUS). Phase 1 capex-recovery: $100 → $320 → withdraw $120 · sustain $200. Phase 2: scale capital.
 
 ---
@@ -274,7 +276,7 @@ signals        session_id, pair, timeframe, candle_ts, pattern, direction, confi
                layer_{regime,trend,momentum,volume}, layers_passed, outcome(fired|rejected|expired), reject_reason, trade_id
 trades         session_id, pair/timeframe/direction/pattern, entry/exit_ts, hold_candles,
                entry/exit/tp/sl/liquidation_price, bucket_id, size/notional_usdt, leverage,
-               close_reason(take_profit|stop_loss|timeout|manual|liquidated), pnl_gross/net_usdt, fee_entry/exit_usdt, bucket_balance_before/after
+               close_reason(take_profit|stop_loss|trailing_stop|timeout|manual|liquidated|portfolio_take_profit|portfolio_drawdown_stop), pnl_gross/net_usdt, fee_entry/exit_usdt, bucket_balance_before/after
 trade_context  trade_id↔candle_id link · offset_candles/hours · window(pre|during|post)
 events         level(INFO|WARN|ERROR|CRITICAL), category(signal|order|position|risk|connection|system), message, payload JSONB, trade_id
 heartbeats     bot_id PK · ts · pid · status(running|stopping|error) · note
@@ -419,7 +421,8 @@ Per deployment: all §18 met · clean cold-start verified · Telegram confirmed 
 
 ---
 
-*Kestrel CLAUDE.md v2.3*
+*Kestrel CLAUDE.md v2.4*
+*v2.4 (2026-06-27, owner-authorized): documented the PortfolioGuard ±10% fleet-aggregate force-close in §17 (fleet-aggregate ✗ per-bucket; near-dormant — never fired; −DD = crash insurance, +TP questionable; risk-shaping ✗ edge) + close_reason enum (§19).*
 *v2.3 (2026-06-27, owner-authorized): structural trim — full SQL DDL (§19) → column summary + pointer to src/db/schema.py; cut JSON/SQL/ASCII examples (§20/21/28); compressed §12/16/23/27/30. All rules + constraints preserved; section numbers unchanged.*
 *v2.2 (2026-06-27): HYPER-SPEED minutes-only scalping (1m–5m, ✗ hours) at 20× locked; TARGET $100→$100K / 70% win / ~15%/day (§6+§17); honest STATUS caveat kept; §29 Colab→Docker.*
 *Standards: azzindani/Standards architecture/ + agent/*
