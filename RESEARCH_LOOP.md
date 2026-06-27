@@ -443,6 +443,32 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Deploy — 2026-06-27 (order-flow alignment GATE + exp_flowgate cohort · user-requested, NOT a cron iteration)
+
+- **WHAT:** Built `scripts/analyze_microstructure.py` and mined the never-analysed 245k-row
+  microstructure dataset. Top-5 depth imbalance (`depth_imb5`) is genuinely directionally predictive
+  (BTC/ETH spearman ~0.11–0.15, ~+1.3 bps top-vs-bottom quintile at +12s) — the first real directional
+  signal in project history — AND on the 329 live dev trades with order-flow coverage, entries WITH the
+  book won 37.2% vs 20.5% against (~2× win, ~½ the per-trade loss). Shipped as an optional entry gate.
+- **NOT AN EDGE (consistent with iter-37's order-flow refutation):** the ~1.3 bps signal sits UNDER the
+  ~4 bps cost floor; the non-overlap sim is −EV on every pair/horizon and the gated live trades are still
+  net-negative. This is a risk-QUALITY filter (cuts the 0%-win stop-outs), NOT an edge claim. The cost
+  wall is unchanged — only a sub-1.3 bps / rebate venue (§4) makes order-flow tradeable.
+- **DEPLOYED:** `flow_gate_enabled`/`flow_gate_min_imbalance` params (off by default → fleet unaffected);
+  pure gate in `signal/detector.py` (rejects when signed depth_imb5 < threshold); `db.get_latest_order_flow`
+  reader + daemon wiring (L3 supplies the float, 120 s freshness, fail-closed). Cohort `exp_flowgate` =
+  momentum_continuation + mom_adx at 5m on the 6 RECORDED pairs (BTC/ETH/SOL/DOGE/ADA/XRP), gate on,
+  exits matching the fleet so the gate is the only variable. **12 new bot_ids, baseline 374 untouched**
+  (additive → backfilled, reset nothing). Verified: build green, CI success, 386 hb, 0 errors, read-path
+  returns fresh imbalance for all 6 pairs. Commit 67b0f75.
+- **⚠ KEEP exp_flowgate — DO NOT rotate it out next firing.** The gate can ONLY be evaluated LIVE: a
+  backtest has no historical L2, so `order_flow=None` → the gate is a no-op in `algo_search`/`backtest_*`.
+  Its whole value is the live win-rate of gated vs ungated, which needs to ACCUMULATE (~30+ gated trades;
+  at 5m that is days). Treat `exp_flowgate` as the current exp cohort; `build_exp_cohort.py` would STRIP it,
+  so only replace it if a NEW lockbox-validated backtest winner appears (rare) — and note in the log that
+  doing so ENDS the gate forward-test. MEASURE it each firing: gated cohort win% vs the ungated 5m
+  momentum_continuation baseline (re-run `scripts/analyze_microstructure.py` for the dataset-level read).
+
 ### Iteration 37 — 2026-06-27 (genuinely-new family: pairs/stat-arb ratio mean-reversion — data-mined, REFUTED; HOLD)
 
 - **RATIONALE:** 3 families refuted (indicators/order-flow/lead-lag), all hitting the 4 bps fee. Tested
