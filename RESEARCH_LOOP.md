@@ -365,6 +365,11 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   wick/bb_fade). `supertrend` (ATR trend-flip): lockbox ≤0 / breakeven both exits. Neither deployable.
   (The SIBLING `cci_mom` — CCI BREAKOUT not fade — DID validate cross-era and was deployed; see CURRENT
   BEST. Momentum-breakout works, mean-reversion-fade doesn't — the recurring pattern.)
+- **Pairs / stat-arb ratio mean-reversion** (iter 37) — 1h, 8 cointegration-candidate ratios (ETH/BTC,
+  SOL/ETH, AVAX/ETH, …), z>±2σ entry. RECENT 4/8 +EV (looked good, 56–67% win); LOCKBOX **0/8** — all
+  collapse, several −30..−50 bps/trade. Classic data-mining + the mean-reversion-fade death (decent win%
+  but huge tail losses when the spread trends). 2-leg cost (8 bps) doesn't save it. Don't re-test ratio
+  fades; mean-reversion-FADE of any kind dies in the lockbox (the consistent rule).
 - **Cross-asset lead-lag (BTC just-closed bar → alt next bar)** (iter 36) — 1h, recent + lockbox, 7 alts.
   Contemporaneous BTC↔alt corr 0.72–0.86 (co-move, NOT tradeable); LEAD IC ~0 recent (0.00–0.018),
   NEGATIVE lockbox (−0.02..−0.04) → no cross-era lag; 0/7 net-positive after 4 bps cost both eras. At 1h
@@ -437,6 +442,32 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 37 — 2026-06-27 (genuinely-new family: pairs/stat-arb ratio mean-reversion — data-mined, REFUTED; HOLD)
+
+- **RATIONALE:** 3 families refuted (indicators/order-flow/lead-lag), all hitting the 4 bps fee. Tested
+  the one classically-distinct family left untouched, with a DIFFERENT cost profile: pairs/cointegration
+  mean-reversion (trade the RATIO of two correlated assets back to its mean). Unlike directional scalping,
+  a reverting deviation can capture 50–100 bps — far above even the doubled 8 bps two-leg cost — so it was
+  genuinely worth testing, not assuming.
+- **BACKUP:** lean, kept 7. **Health:** 392 hb, 0 errors, host 7.4 GB avail, postgres 41% (creeping but
+  fine). Fleet net **−$57.26 / 1727 closed** (still bleeding linearly = the t=−7.47 fee floor). No fault.
+- **STAT-ARB TEST (1h, 8 cointegration-candidate ratios, z>±2σ entry / |z|<0.3 exit / 24h cap, 8 bps both
+  legs, recent + lockbox):**
+  - **RECENT: 4/8 net-positive** (ETH/BTC +3.5, AVAX/ETH +6.4, LINK/ETH +5.7, XRP/BTC +0.1 bps; 56–67% win).
+  - **LOCKBOX: 0/8 net-positive** — ALL collapse, several catastrophically (XRP/BTC −50, DOGE/BTC −39,
+    AVAX/ETH +6.4→−34, ETH/BTC +3.5→−0.6). Textbook data-mining: recent-regime artifact, run over in the
+    prior year. REFUTED.
+  - **Failure mode = mean-reversion-fade death (again):** win rates stay decent (53–59%) EVEN in the
+    lockbox while net is deeply negative — small frequent wins, huge tail losses when a spread TRENDS
+    instead of reverting. Same death as RSI-2 / stoch / cci_revert / wick / bb_fade, now on cross-asset
+    ratios. (Also: XRP/BTC 59% win + −50 bps/trade = more proof the win>55% bar is broken.)
+- **DECISION — HOLD (no deploy, no reset).** FOUR distinct families now refuted. The pattern is total and
+  consistent: momentum-breakout = sub-noise; every mean-reversion-FADE (incl. stat-arb) = data-mined,
+  dies in the lockbox; order-flow = real but sub-cost. Fleet unchanged (374+18).
+- **STOP CHECK:** NOT met. Nothing in candles, order-flow, lead-lag, or stat-arb yields a lockbox-surviving
+  +EV edge at 4–8 bps fees. The search space within agent authority is now comprehensively mapped to
+  no-edge; the only untested levers are §4 (cost-side venue / funding-rate / leverage) — owner decisions.
 
 ### Iteration 36 — 2026-06-26 (genuinely-new family tested: cross-asset BTC→alt lead-lag — REFUTED both eras; HOLD)
 
