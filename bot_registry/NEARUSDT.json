@@ -526,7 +526,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-NEARUSDT-5m-impulse_retracement-01"
     },
     {
@@ -557,7 +557,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-NEARUSDT-5m-compression_breakout-01"
     },
     {
@@ -588,7 +588,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-NEARUSDT-5m-anomaly_fade-01"
     },
     {
@@ -619,7 +619,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-NEARUSDT-5m-mom_adx-01"
     },
     {
@@ -650,7 +650,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-NEARUSDT-5m-trend_momentum-01"
     },
     {
@@ -681,7 +681,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-NEARUSDT-5m-wick_rejection-01"
     },
     {
@@ -712,7 +712,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-NEARUSDT-5m-triple_mom-01"
     },
     {
@@ -740,7 +740,7 @@
       "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-NEARUSDT-1h-macd_rsi-01"
     },
     {
@@ -768,7 +768,7 @@
       "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-NEARUSDT-1h-macd_cross-01"
     },
     {
@@ -796,7 +796,7 @@
       "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 3,
+      "snapshot_count": 4,
       "example_bot_id": "dev-NEARUSDT-1h-cci_mom-01"
     },
     {
@@ -824,7 +824,7 @@
       "first_seen_subject": "research(loop) iter 32: deploy sma_cross \u2014 4th cross-era +EV 1h signal",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 3,
       "example_bot_id": "dev-NEARUSDT-1h-sma_cross-01"
     }
   ]

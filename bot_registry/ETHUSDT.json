@@ -3501,7 +3501,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-ETHUSDT-5m-mom_adx-01"
     },
     {
@@ -3532,7 +3532,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-ETHUSDT-5m-compression_breakout-01"
     },
     {
@@ -3563,7 +3563,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-ETHUSDT-5m-trend_momentum-01"
     },
     {
@@ -3594,7 +3594,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-ETHUSDT-5m-anomaly_fade-01"
     },
     {
@@ -3625,7 +3625,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-ETHUSDT-5m-triple_mom-01"
     },
     {
@@ -3656,7 +3656,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-ETHUSDT-5m-wick_rejection-01"
     },
     {
@@ -3687,7 +3687,7 @@
       "first_seen_subject": "research(loop) iter 13: widen scalp stop 0.9->1.3 ATR to cut stop-out bleed",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 7,
+      "snapshot_count": 8,
       "example_bot_id": "dev-ETHUSDT-5m-impulse_retracement-01"
     },
     {
@@ -3715,7 +3715,7 @@
       "first_seen_subject": "research(loop) iter 18: MACD found +EV CROSS-ERA at 1h -> deploy 1h macd_cross cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 6,
+      "snapshot_count": 7,
       "example_bot_id": "dev-ETHUSDT-1h-macd_cross-01"
     },
     {
@@ -3743,7 +3743,7 @@
       "first_seen_subject": "research(loop) iter 22: deploy macd_rsi (MACD cross + RSI-50 confirm) 1h cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 5,
+      "snapshot_count": 6,
       "example_bot_id": "dev-ETHUSDT-1h-macd_rsi-01"
     },
     {
@@ -3771,7 +3771,7 @@
       "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 3,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ETHUSDT-1h-cci_mom-01"
     },
     {
@@ -3799,8 +3799,74 @@
       "first_seen_subject": "research(loop) iter 32: deploy sma_cross \u2014 4th cross-era +EV 1h signal",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 3,
       "example_bot_id": "dev-ETHUSDT-1h-sma_cross-01"
+    },
+    {
+      "fingerprint": "02d0c6ed3404",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "exp_flowgate_mom_adx",
+        "patterns": [
+          "mom_adx"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "flow_gate_enabled": true,
+          "flow_gate_min_imbalance": 0.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "67b0f7556f7f71740c18076c53dcf15399d3f1d6",
+      "first_seen_date": "2026-06-27T04:32:21+00:00",
+      "first_seen_subject": "feat(signal): order-flow alignment gate + exp_flowgate cohort",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETHUSDT-5m-exp_flowgate_mom_adx-01"
+    },
+    {
+      "fingerprint": "da6ed4619a60",
+      "config": {
+        "pair": "ETHUSDT",
+        "timeframe_entry": "5m",
+        "timeframe_regime": "5m",
+        "strategy": "exp_flowgate_momentum_continuation",
+        "patterns": [
+          "momentum_continuation"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "adx_strong_min": 25.0,
+          "flow_gate_enabled": true,
+          "flow_gate_min_imbalance": 0.0,
+          "max_hold_candles": 6,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.5,
+          "tp_atr_multiplier": 2.4,
+          "trail_activation_r": 0.5,
+          "trail_distance_r": 0.5,
+          "trailing_enabled": true,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "67b0f7556f7f71740c18076c53dcf15399d3f1d6",
+      "first_seen_date": "2026-06-27T04:32:21+00:00",
+      "first_seen_subject": "feat(signal): order-flow alignment gate + exp_flowgate cohort",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-ETHUSDT-5m-exp_flowgate_momentum_continuation-01"
     }
   ]
 }
