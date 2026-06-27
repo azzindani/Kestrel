@@ -154,6 +154,68 @@ class TestSignalPipelineIntegration:
             assert signal.sl_price < signal.entry_price
 
 
+class TestOrderFlowGate:
+    """The optional order-flow alignment gate (signal/detector.py).
+
+    Uses the same signal-producing candle series (a LONG setup); the gate sits
+    after the pattern fires, so these assert it accepts/rejects on the supplied
+    depth-imbalance without disturbing the rest of the pipeline.
+    """
+
+    _GATE_PARAMS = dict(
+        body_ratio_min=0.6,
+        volume_ratio_min=1.3,
+        retracement_min=0.2,
+        retracement_max=0.6,
+        min_confidence=0.40,
+        adx_trend_min=20.0,
+        ema_spread_threshold=0.001,
+        atr_quiet_multiplier=0.3,
+    )
+
+    def _baseline_long_signal(self):
+        """Precondition: with the gate OFF the series yields a LONG signal."""
+        candles = _make_impulse_retracement_candles(50)
+        params = make_params(**self._GATE_PARAMS)
+        signal, _ = evaluate(candles, params, "test", "session", "dev")
+        assert signal is not None and signal.direction is Direction.LONG
+        return candles
+
+    def test_gate_off_ignores_order_flow(self):
+        """flow_gate_enabled=False ⇒ order_flow is never consulted (even if hostile)."""
+        candles = self._baseline_long_signal()
+        params = make_params(**self._GATE_PARAMS)  # flow_gate_enabled defaults False
+        signal, rejection = evaluate(candles, params, "test", "session", "dev", order_flow=-0.9)
+        assert signal is not None and rejection is None
+
+    def test_gate_passes_when_book_agrees(self):
+        candles = self._baseline_long_signal()
+        params = make_params(flow_gate_enabled=True, flow_gate_min_imbalance=0.0, **self._GATE_PARAMS)
+        signal, rejection = evaluate(candles, params, "test", "session", "dev", order_flow=0.4)
+        assert signal is not None and rejection is None
+
+    def test_gate_rejects_when_book_disagrees(self):
+        candles = self._baseline_long_signal()
+        params = make_params(flow_gate_enabled=True, flow_gate_min_imbalance=0.0, **self._GATE_PARAMS)
+        signal, rejection = evaluate(candles, params, "test", "session", "dev", order_flow=-0.4)
+        assert signal is None
+        assert rejection is not None and rejection.reason.startswith("flow_against")
+
+    def test_gate_rejects_weak_agreement_below_threshold(self):
+        candles = self._baseline_long_signal()
+        params = make_params(flow_gate_enabled=True, flow_gate_min_imbalance=0.2, **self._GATE_PARAMS)
+        signal, rejection = evaluate(candles, params, "test", "session", "dev", order_flow=0.1)
+        assert signal is None
+        assert rejection is not None and rejection.reason.startswith("flow_against")
+
+    def test_gate_fails_closed_without_feed(self):
+        candles = self._baseline_long_signal()
+        params = make_params(flow_gate_enabled=True, flow_gate_min_imbalance=0.0, **self._GATE_PARAMS)
+        signal, rejection = evaluate(candles, params, "test", "session", "dev", order_flow=None)
+        assert signal is None
+        assert rejection is not None and rejection.reason == "flow_unavailable"
+
+
 class TestBacktestPipelineIntegration:
     def test_backtest_runner_produces_structured_result(self):
         from src.backtest.runner import run_backtest

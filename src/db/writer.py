@@ -480,6 +480,31 @@ async def load_recent_candles(bot_id: str, pair: str, timeframe: str, limit: int
         return [dict(r) for r in reversed(rows)]
 
 
+async def get_latest_order_flow(pair: str, max_age_ms: int, now_ms: int) -> Optional[float]:
+    """Return the most recent top-5 depth imbalance (depth_imb5) for `pair`, or None.
+
+    The microstructure table is written by the separate recorder process
+    (scripts/record_microstructure.py); this is a read-only consumer used by the
+    optional order-flow alignment gate (signal/detector.py). Returns None when the
+    pair is not recorded or the newest snapshot is older than max_age_ms — so the
+    gate fails closed on a stale/absent feed rather than entering on a stale book.
+    """
+    async with acquire() as conn:
+        row = await conn.fetchrow(
+            """
+            SELECT depth_imb5, ts FROM microstructure
+            WHERE pair = $1 AND depth_imb5 IS NOT NULL
+            ORDER BY ts DESC LIMIT 1
+            """,
+            pair,
+        )
+    if row is None or row["depth_imb5"] is None:
+        return None
+    if now_ms - int(row["ts"]) > max_age_ms:
+        return None
+    return float(row["depth_imb5"])
+
+
 async def load_pattern_memory(pattern: str, direction: str, session: str, regime: str) -> Optional[dict]:
     """Load a pattern_memory row or return None if not found."""
     async with acquire() as conn:

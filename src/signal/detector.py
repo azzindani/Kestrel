@@ -233,6 +233,7 @@ def evaluate(
     enabled_patterns: Optional[Sequence[str]] = None,
     sizing_state: Optional[SizingState] = None,
     leverage: int = 0,
+    order_flow: Optional[float] = None,
 ) -> tuple[Signal, None] | tuple[None, Rejection]:
     """
     Run the full signal pipeline on a completed candle list.
@@ -245,6 +246,10 @@ def evaluate(
         env:             'dev' | 'prod'
         pattern_memories: Pre-loaded pattern memory rows keyed 'pattern:direction'.
                           Pass None or {} if unavailable.
+        order_flow:       Latest top-5 order-book depth imbalance (depth_imb5 ∈ [-1,1])
+                          for this pair, supplied by the L3 caller. Only consulted when
+                          params.flow_gate_enabled; None ⇒ no fresh feed → gate rejects
+                          (fail-closed, so a gated cohort never trades blind).
 
     Returns:
         (Signal, None)     — pipeline passed; signal ready for risk validation
@@ -329,8 +334,21 @@ def evaluate(
 
     layer_volume = 1
 
-    # --- Stage 5: Build signal ---
+    # --- Order-flow alignment gate (optional; CLAUDE.md §22 'better entries') ---
+    # Reject when the live top-5 depth imbalance disagrees with — or fails to confirm
+    # by flow_gate_min_imbalance — the trade direction. Pure: the L3 caller supplies
+    # the latest depth_imb5 as `order_flow`. Signed so +order_flow backs a LONG and
+    # -order_flow backs a SHORT; require the signed value to clear the threshold.
+    # None ⇒ no fresh order-flow feed → fail closed (a gated cohort never trades blind).
     direction = pattern_result.direction
+    if params.flow_gate_enabled:
+        if order_flow is None:
+            return None, Rejection(stage="pattern", reason="flow_unavailable")
+        signed_flow = order_flow if direction is Direction.LONG else -order_flow
+        if signed_flow < params.flow_gate_min_imbalance:
+            return None, Rejection(stage="pattern", reason=f"flow_against:{signed_flow:.3f}")
+
+    # --- Stage 5: Build signal ---
     entry = latest.close
 
     # TP/SL: ATR-multiple or fixed-percent reward:risk (params.tp_sl_pct_enabled),

@@ -220,6 +220,17 @@ class Params:
     sma_cross_fast: int = 9
     sma_cross_slow: int = 21
 
+    # --- order-flow alignment gate (signal/detector.py; daemon supplies depth_imb5) ---
+    # When enabled, a candidate entry is rejected unless the latest top-5 order-book
+    # depth imbalance AGREES with the trade direction by at least flow_gate_min_imbalance
+    # (signed: +imbalance for a LONG, -imbalance for a SHORT). scripts/analyze_microstructure.py
+    # found this roughly doubles win-rate and halves per-trade loss on the 6 recorded pairs —
+    # still net-negative, so a risk-QUALITY filter, not an edge. The daemon (L3) reads the
+    # latest snapshot and passes it in; the detector stays pure. Optional/backward-compatible:
+    # off by default, and a no-op for any bot whose pair has no fresh microstructure feed.
+    flow_gate_enabled: bool = False
+    flow_gate_min_imbalance: float = 0.0
+
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
         """Construct Params from the params.json value-dict (extracts 'value' keys).
@@ -323,6 +334,10 @@ class Params:
             cci_period=(int(d["cci_period"]["value"]) if "cci_period" in d else 20),
             sma_cross_fast=(int(d["sma_cross_fast"]["value"]) if "sma_cross_fast" in d else 9),
             sma_cross_slow=(int(d["sma_cross_slow"]["value"]) if "sma_cross_slow" in d else 21),
+            flow_gate_enabled=(bool(d["flow_gate_enabled"]["value"]) if "flow_gate_enabled" in d else False),
+            flow_gate_min_imbalance=(
+                float(d["flow_gate_min_imbalance"]["value"]) if "flow_gate_min_imbalance" in d else 0.0
+            ),
         )
 
 

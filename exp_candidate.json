@@ -1,16 +1,18 @@
 {
-  "iteration": 4,
-  "note": "Iter-4 rigorously validated the iter-3 seasonality lead per-pair (backtest_seasonality.py --validate). The gross time-of-day drift is statistically real (pooled non-overlap t≈4.8 recent / 2.2 lockbox) but the EFFECT SIZE (~0.05% gross) is BELOW maker cost: pooled net-maker is NEGATIVE in the lockbox (-0.008%) and only 1 of 6 pairs (DOGE) is robust across both windows — a 1-in-6 fluke, confirming the iter-3 '8/120 survivors' was a multiple-testing/threshold artifact. REFUTED as a net-of-cost edge. Retired the broad exp_tod arm; cohort reverts to exp_h1tp (1h momentum, the persistent least-bad). The session_seasonal pattern stays registered as a tested capability, just unused. MILESTONE: the directional + seasonal entry search is now exhausted across recent+lockbox; remaining real levers are STRUCTURAL (funding-rate/basis) or HUMAN-GATED (leverage) — flagged to the user.",
+  "iteration": 5,
+  "note": "ORDER-FLOW ALIGNMENT GATE cohort (scripts/analyze_microstructure.py finding). Mining the 245k-row microstructure dataset showed top-5 order-book depth imbalance (depth_imb5) is the first genuinely directional signal in project history — and on the 329 live dev trades that had order-flow coverage, entries where the book AGREED with the trade won 37.2% vs 20.5% when it disagreed (~2x win-rate, ~half the per-trade loss). Still net-negative (the ~1.3bps signal sits under the ~4bps cost floor), so this is a risk-QUALITY filter, not an edge. This cohort forward-TESTS that lift live: momentum_continuation + mom_adx at 5m on exactly the 6 recorded pairs (BTC/ETH/SOL/DOGE/ADA/XRP), flow_gate_enabled=true with min_imbalance=0.0 (the measured aligned-vs-against split). The daemon (L3) reads the latest depth_imb5 snapshot and passes it to the pure detector gate; fail-closed when the feed is stale. Non-gate params match the fleet's risk-shaped profile so the GATE is the only variable. The ungated baseline momentum_continuation fleet is the implicit control — watch whether the cohort's live win-rate clears it. Backtest cannot evaluate this (no historical L2), which is exactly why it ships as a live forward-test arm.",
   "arms": [
     {
-      "label": "exp_h1tp",
-      "timeframe": "1h",
-      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT"],
+      "label": "exp_flowgate",
+      "timeframe": "5m",
+      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "ADA/USDT", "XRP/USDT"],
       "strategies": [
-        {"name": "mom_adx", "patterns": ["mom_adx"]},
-        {"name": "triple_mom", "patterns": ["triple_mom"]}
+        {"name": "momentum_continuation", "patterns": ["momentum_continuation"]},
+        {"name": "mom_adx", "patterns": ["mom_adx"]}
       ],
       "params": {
+        "flow_gate_enabled": true,
+        "flow_gate_min_imbalance": 0.0,
         "tp_atr_multiplier": 2.4,
         "sl_atr_multiplier": 1.5,
         "max_hold_candles": 6,
