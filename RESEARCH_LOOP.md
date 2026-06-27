@@ -436,6 +436,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   (1-in-6 luck). The iter-3 "8/120 net-maker survivors" was a multiple-testing/threshold artifact.
   Not a net-of-cost edge. `session_seasonal` pattern stays registered (tested) but undeployed.
 
+- **The 1h cross-leads at 15m (TF down-shift for activity)** (iter 40) — 15m, maker, recent + lockbox,
+  10 pairs (15m lockbox data IS available, ~35k candles/pair — not the 5m wall). macd_cross/macd_rsi/
+  cci_mom/sma_cross at 15m fire **~20× more** than at 1h (n=5334 recent / 3494 lockbox vs ~200) but go
+  **net-negative-to-flat in BOTH eras** (best −$0.0020/t recent, $0.0000/t lockbox, win 38–42%, 0/4
+  clear the bar). The 1h cross-edge is **TF-SPECIFIC** (like 4h MACD dying; 1h the only survivor TF) —
+  it does NOT extend down to 15m; the lower TF just multiplies the ~4bps cost drag. Don't re-deploy
+  the leads at 15m for activity — more trades, faster bleed.
+
 - **Cost-clearing VOLATILITY-FLOOR filter on the 1h leads** (iter 39) — 1h, maker, recent + lockbox,
   10 pairs. Restricting macd_cross/cci_mom/sma_cross to the high-volatility regime (`--regime
   volatile`, ATR14>ATR50×1.5 — the "only fire when the move clears the fee" idea iter-1's NEXT
@@ -463,6 +471,36 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 40 — 2026-06-27 (do the 1h cross-leads hold at 15m? activity 20× but net-negative — TF-specific, REFUTED; HOLD)
+
+- **CONTEXT:** fleet steady at 148 (4 leads × 34 pairs @1h + 12 flowgate @5m), 0 errors. No code/config
+  change since iter 39; lab (2) + staging (24) healthy.
+- **MEASURE:** since the iter-38 reset the dev slate has only **2 closed trades** (cci_mom + macd_rsi,
+  −$0.16 each) — the 1h leads are **nearly dormant** (1h market mostly QUIET, the cross signals fire
+  rarely). flowgate (5m, order-flow-gated) has 0 closed trades yet (the gate + freshness req is very
+  selective). 0 errors. → almost nothing live to diagnose; this firing is a backtest.
+- **DIAGNOSE → HYPOTHESIZE:** the current *real* problem is the deployed fleet barely trades — which
+  fights the owner's "more ACTIVITY" mandate (§6/§13). The one genuinely-untested, mandate-serving
+  angle: do the validated cross-leads (macd_cross/macd_rsi/cci_mom/sma_cross) hold their economics at
+  **15m** (the canonical regime-filter TF, ~4× the bars of 1h, above the dead 5m)? Never run cross-era
+  for the cross family. (30m was tried first — not in `_TF_MS`, not a canonical Kestrel TF — so 15m.)
+- **BACKTEST (15m, maker, walk-forward OOS + untouched prior-year lockbox, 10 pairs; 15m lockbox data
+  IS available — 35k candles/pair both eras, unlike the 5m data-infeasibility wall):**
+  - **RECENT:** 0/4 clear the bar; best cci_mom/medium **−$0.0020/t**, win 38.4%, **n=5334**.
+  - **LOCKBOX:** 0/4; best macd_rsi/medium **$0.0000/t** (exactly break-even), win 42.2%, **n=3494**.
+  - Activity is hugely there — **~20× the 1h trade count** (n=3494–5334 vs ~200–230) — exactly what the
+    owner wants, BUT the per-trade economics go **net-negative-to-flat in BOTH eras** (win 38–42%).
+- **DECIDE:** **REFUTED as a deploy.** The 1h cross-edge is **TF-specific** (same as 4h MACD dying, and
+  1h being the only survivor TF) — it does NOT extend down to 15m; the lower TF just bleeds faster
+  (more bars × the ~4bps floor). Quantitatively settles "buy activity by dropping to 15m?": yes 20×
+  more trades, but it loses money. Added to the refuted ledger. **Baseline untouched.**
+- **APPLY:** fleet byte-identical → **no deploy, no reset** (additive-nothing; scoped-reset policy).
+  flowgate KEEP-guard honored — order-flow forward-test keeps accumulating. Visible artifact: this
+  record + the refuted-ledger entry + a `system` event row (no code change — used existing algos).
+- **CHECK STOP:** **not met.** No edge (best −$0.002..$0.000/t, win <55%, 0/4 clear the bar, no
+  lockbox-positive candidate); owner target (≥70% win / ≥15% daily over ≥100 trades) not hit. Levers
+  left are §4 owner-gated (sub-1.3bps/rebate venue · funding-rate perps) — flagged, not started.
 
 ### Iteration 39 — 2026-06-27 (cost-clearing VOLATILITY-FLOOR filter on the 1h leads — REFUTED + leads regressed to flat; HOLD)
 
