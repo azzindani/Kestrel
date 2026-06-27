@@ -89,7 +89,9 @@ Bug fix or unexpected behavior → follow in order · ✗ skip steps:
 
 **Name:** Kestrel
 **External description:** Real-time signal detection and execution daemon. ✗ describe as trading bot externally.
-**Purpose (owner directive 2026-06-20):** Kestrel is a **HIGH-FREQUENCY SCALPING FLEET** — *hundreds* of bots scalping fast timeframes (1m–5m) across many markets, maximizing trade activity. Activity across a large fleet IS the design. ✗ steer the fleet toward slow / few-trade / high-TF configs to "preserve capital" — that is the wrong default here; the owner can do slow trading by hand and does not need this system for it. The agent's and research loop's job is to find net-of-fee edge **WITHIN** the active-scalping design (better entries, exits, fee model, sizing, pair/pattern selection), **NOT** to shrink activity. **Honest caveat (kept, not a deadline, ✗ delete):** no config has yet shown a net-of-fee edge in out-of-sample + lockbox; this stays PAPER (ENV=dev) until every §18 criterion is met. Activity ≠ profitability — but the design goal is the active fleet, and "be slow to lose less" is not an acceptable substitute for finding edge.
+**Purpose (owner directive 2026-06-27):** Kestrel is a **HYPER-SPEED SCALPING FLEET** — hundreds of bots hunting the **minutes candles (1m–5m · ✗ hours)** across many liquid markets at **20× leverage**, maximizing trade activity. Activity across a large fleet IS the design. ✗ steer toward slow / few-trade / high-TF "preserve capital" configs · ✗ wind activity down to "lose less" — both are the wrong default here. The agent's and research loop's job is to find net-of-fee edge **WITHIN** the active minutes-scalp design (better entries, exits, fee model, sizing, pair/pattern selection), ✗ by trading slower or shifting to hours.
+**TARGET (owner):** start **$100 → grow to $100K** · aspiration **70% win-rate, ~15%/day**. These are the goals the system aims at — pursue them, ✗ treat as guaranteed.
+**STATUS (honest · kept · ✗ delete):** no config has shown a net-of-fee edge in OOS + lockbox. On 1m–5m the entries are **gross-negative before fees** (no directional edge), and fees deepen it; stays PAPER (ENV=dev) until every §18 criterion is met. The binding wall is the ~0.18% taker / ~0.04% maker round-trip **fee floor** — the only un-exhausted lever is cost-side (maker-rebate / sub-1.3bps venue), a §4 owner decision. State this ONCE when relevant, then get constructive — ✗ re-lecture.
 **Repo:** Standalone, independent, private during development.
 **bot_id format:** `{env}-{pair}-{timeframe}-{instance}` e.g. `prod-BTCUSDT-5m-01`
 **All timestamps:** Unix milliseconds (BIGINT) · ✗ local time anywhere in codebase.
@@ -246,9 +248,9 @@ kestrel/
 
 ```
 Instrument:      spot isolated margin only · ✗ futures · ✗ options · ✗ derivatives
-Leverage:        10x–50x
+Leverage:        20x (owner-locked default · range 10x–50x · ✗ change without §4)
 Bucket size:     $10 USDT · independent isolated collateral · ✗ shared pool
-Timeframes:      SCALP entry 1m–5m (5m default) · 15m regime filter · high-TF (1h/4h) only as research comparison, ✗ as the live default
+Timeframes:      SCALP entry 1m–5m (5m default) · 15m regime filter · ✗ hours (1h/4h) as a live cohort — minutes-candle hunting only · high-TF allowed solely as a backtest comparison number, ✗ deployed
 Fleet scale:     HUNDREDS of bots (dev/research) — N patterns × M liquid pairs × scalp-TF, one bot per (pair,tf,pattern) cell · WS feeds SHARED per (pair,tf) so many bots on few streams stays cheap · default toward MORE bots / MORE activity
 Pairs:           broad across liquid USDT markets (dev/research) · BTCUSDT·ETHUSDT core · expand widely
 DB:              PostgreSQL · multi-bot from day one · bot_id on every record · size DB/daemon RAM to the fleet (override.yml on the dev host; see project memory: ~hundreds of bots ⇒ postgres ≥2g)
@@ -375,9 +377,11 @@ Total round trip: ~0.18%
 Min viable trade: avg gross gain > 0.18%
 ```
 
-**Return context (not a deadline):**
+**Return target (owner · aspiration · ✗ guarantee):**
 ```
-Phase 1: $100 → $320 → withdraw $120 (capex recovery) · sustain $200
+Start $100 → compound toward $100K · aspiration ~15%/day at 70% win-rate.
+Honest: contingent on a net-of-fee edge that does not yet exist (§6 STATUS).
+Phase 1 capex-recovery: $100 → $320 → withdraw $120 · sustain $200
 Phase 2: scale capital · increase risk profile
 ```
 
@@ -816,35 +820,26 @@ system_error:         CRITICAL · error message · bot_id · timestamp
 
 ---
 
-## 29. Colab Development Protocol
+## 29. Dev Host Protocol (Docker)
 
-Colab = disposable cloud server · ✗ notebook · every session cold-starts from zero.
+Dev/research runs as Docker Compose on the dev host (✗ Colab/notebook). `src` is baked into the image; `params.json` + `bots.json` are bind-mounted.
 
-**Session sequence (✗ skip steps):**
 ```
-Cell 1: !git clone <repo> && cd kestrel
-Cell 2: write .env from Colab secrets
-Cell 3: !bash scripts/install.sh          → must print [GO] · abort if [NO-GO]
-Cell 4: !bash scripts/start.sh --env dev
-Cell 5: !bash scripts/status.sh
-Cell 6: !bash scripts/logs.sh --follow
-```
-
-**Backtest cell sequence:**
-```
-Cell A: fetch historical OHLCV via ccxt (free · no auth)
-Cell B: indicator unit tests (verify against known values)
-Cell C: signal detection tests (patterns on historical data)
-Cell D: backtest loop (full simulation · fees + slippage applied)
-Cell E: metrics output (win rate · Sharpe · drawdown · fee impact)
-Cell F: equity curve (matplotlib · one-time · not realtime)
+src change         → rebuild image + `docker compose up -d`
+params/bots change → `docker compose restart` (bind-mount reload, no rebuild)
+fleet build        → scripts/build_momentum_lab.py → bots.json (minutes-candle cohorts)
+backfill new bots  → scripts/backfill_history.py --bots <f> --source gate  (✗ skip → dark bots)
+reset (scoped)     → scripts/reset_dev.py --strategy <x> --yes  (see RESET POLICY / §reset memory)
+backup             → scripts/backup_db.py  (rotated pg_dump · lean excludes candles)
+host overrides     → docker-compose.override.yml (gitignored · postgres ≥2g for hundreds of bots)
 ```
 
-**Simulation realism — all must be modeled (✗ skip any → backtest unreliable):**
+**Backtest harness (free OHLCV via ccxt · no auth):** `scripts/algo_search.py --tf --days --pairs (SLASH fmt BTC/USDT) --algos --exits --fees taker|maker --offset-days 365` (lockbox). Candidate deploys only if +EV in BOTH recent year AND prior-year lockbox across ≥3 pairs.
+
+**Simulation realism — all modeled (✗ skip any → backtest unreliable):**
 ```
-isolated margin per bucket · liquidation price formula · taker fee both sides ·
-slippage 0.05% per side · order rejection scenarios · WS reconnection handling ·
-candle close timing accuracy · funding rate if perpetuals (0 for spot margin)
+isolated margin per bucket · liquidation price formula · taker/maker fee both sides ·
+slippage 0.05% per side · order rejection · WS reconnection · candle-close timing · funding=0 (spot)
 ```
 
 ---
@@ -883,7 +878,8 @@ candle close timing accuracy · funding rate if perpetuals (0 for spot margin)
 
 ---
 
-*Kestrel CLAUDE.md v2.1*
-*v2.1 (2026-06-20, owner-authorized): purpose set to HIGH-FREQUENCY SCALPING FLEET (hundreds of bots, 1m–5m) — §6 + §13; honest no-edge caveat preserved.*
+*Kestrel CLAUDE.md v2.2*
+*v2.2 (2026-06-27, owner-authorized): HYPER-SPEED minutes-only scalping (1m–5m, ✗ hours) at 20× locked; TARGET $100→$100K / 70% win / ~15%/day set in §6+§17; honest STATUS caveat preserved (gross-negative on minutes before fees; fee-floor is the wall); §29 Colab→Docker; trimmed.*
+*v2.1 (2026-06-20): purpose set to scalping fleet.*
 *Standards: azzindani/Standards architecture/ + agent/*
 *Update when: conventions change · new module added · go-live criteria revised · schema migrated*
