@@ -378,6 +378,17 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 - **Microstructure order-flow imbalance, standalone** (iter 33-34) — real signal (depth_imb5 IC 0.14 BTC)
   but 0/60 cost-aware cells net-positive; gross 0.3–1.5 bps vs 4 bps maker fee. Needs round-trip < ~1.3 bps
   (venue/§4), not a signal to re-search. Aggressor `trade_delta` ≈ 0 (resting book predicts, flow doesn't).
+  (Re-confirmed iter 38 + DEPLOYED as a live entry GATE — see the order-flow-gate deploy entry; the gate is
+  a risk-quality filter that needs LIVE accumulation, NOT a backtest-able edge.)
+- **Last untested momentum algos: `compress_vol_break`, `pullback_trend`, `body_go`** (iter 38) — 1h, maker,
+  recent + lockbox, 6 pairs. `compress_vol_break/medium` was the recent-year STAR (expR +0.18, net +$4.36,
+  IS→OOS +0.018) but **COLLAPSED in the lockbox** (−$1.18, avg −0.3 bps, IS→OOS −0.004) = textbook data-mining,
+  same signature as the macd-4h / stat-arb rejects. `compress_vol_break/wide` is +EV in BOTH eras but MARGINAL
+  (expR +0.10→+0.06, ~0.3–0.5 bps/trade) — below the deploy bar, the same non-promotable category as `stoch_ct`.
+  `pullback_trend` (trend-continuation pullback) breakeven/marginal both eras; `body_go` recent-NEGATIVE /
+  lockbox-positive = noise, not a cross-era edge. 0/6 clear §30. These were the last momentum-family algos in
+  algo_search never run cross-era → the breakout-CROSS leads (macd_cross/macd_rsi/cci_mom/sma_cross) remain the
+  ONLY cross-era survivors; momentum-fade and most breakout variants die in the lockbox (the consistent rule).
 - **Breakout family minus sma_cross (`ema_cross`, `donch_break_10/20`, `breakout_vol`, `bb_break`,
   `compress_break`, `mom_align`, `mom_volexp`, `streak_go_3`, `macd_hist`, `rsi_cross_50`,
   `sma_cross_20_50`)** (iter 32) — 1h, maker, recent + lockbox. ALL +EV-ish in the recent year
@@ -442,6 +453,29 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 38 — 2026-06-27 (last untested momentum algos — data-mined / below-bar, REFUTED; fleet leaned; HOLD)
+
+- **CONTEXT (this session, before the firing):** built `scripts/analyze_microstructure.py`, deployed the
+  order-flow GATE + `exp_flowgate` cohort (see the deploy entry below), and — on the owner's call ("it keeps
+  bleeding") — CUT all 238 ungated dead-5m bots (trend_momentum/mom_adx/triple_mom/impulse/wick/compression/
+  anomaly), KEEPING leverage at 20×. Fleet **386 → 148** (136 1h leads + 12 flowgate). Bleed ~−$27/day → ~−$2–3/day.
+- **MEASURE:** lean fleet, 0 errors; the 48h slate still shows the big 5m bleeders (now 0 live bots — pre-cut
+  trades) plus the 1h leads (small −) and flowgate's first 2 (tiny) trades. The bleed is ending by construction.
+- **DIAGNOSE:** the directional entry search is ~exhausted (refuted ledger); only 1h breakout-CROSS validates
+  cross-era, order-flow is real-but-sub-cost (now the live gate). One thing left untested: 3 momentum-family
+  algos in algo_search never run cross-era.
+- **HYPOTHESIZE + BACKTEST (1h, maker, recent + untouched prior-yr lockbox, 6 pairs — `pullback_trend`,
+  `body_go`, `compress_vol_break`):** RECENT `compress_vol_break/medium` looked +EV (expR +0.18, net +$4.36) →
+  **LOCKBOX collapsed it** (−$1.18, avg −0.3 bps) = data-mined. `/wide` +EV both eras but MARGINAL (expR
+  +0.10→+0.06, below bar, = stoch_ct category). `pullback_trend`/`body_go` breakeven/noise. **0/6 clear §30.** REFUTED.
+- **DECIDE / APPLY:** no candidate validates → baseline untouched, added to the REFUTED LEDGER. Deployed
+  **nothing new** — the best live candidate stays the freshly-deployed `exp_flowgate` cohort (KEEP guard; it can
+  only be evaluated LIVE, must accumulate). Skipping the cohort rotation also honors the owner's just-made
+  decision to keep the fleet lean — adding a marginal-losing arm would re-introduce bleed. No deploy → no reset
+  (backup taken regardless). 
+- **CHECK STOP:** not met (0/6 clear bar; best is marginal-below-bar; still no edge). The remaining real levers
+  stay STRUCTURAL/§4 (sub-1.3 bps venue → makes the live order-flow gate tradeable · funding-rate · leverage).
 
 ### Deploy — 2026-06-27 (order-flow alignment GATE + exp_flowgate cohort · user-requested, NOT a cron iteration)
 
