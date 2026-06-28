@@ -967,6 +967,16 @@ def _apply_fee_model(mode: str) -> float:
     import src.backtest.runner as _runner
     import src.risk.manager as _risk
 
+    if mode == "none":
+        # ZERO cost — measures the PURE GROSS directional edge (iter-41 diagnostic). If a
+        # signal is gross-positive cross-era here but ~breakeven under maker, the edge is
+        # REAL and merely eaten by fees → a sub-fee venue (§4) rescues it. If it is flat/
+        # negative even at zero cost, there is no directional edge and no venue can help.
+        _runner._TAKER_FEE_PCT = 0.0
+        _runner._SLIPPAGE_PCT = 0.0
+        _risk.round_trip_fee_pct = lambda: 0.0  # viability gate passes any positive expected gross
+        bg._COST_PCT = 0.0
+        return bg._COST_PCT
     if mode == "maker":
         _runner._TAKER_FEE_PCT = 0.02 / 100.0  # BingX perp maker, per side
         _runner._SLIPPAGE_PCT = 0.0  # post-only limit fills at the set price (no slippage)
@@ -984,7 +994,9 @@ def main() -> None:
     ap.add_argument("--algos", default=None, help="comma list to restrict the algo set")
     ap.add_argument("--exits", default="tight,wide", help="comma list of exit profiles")
     ap.add_argument("--regime", default=None, help="restrict firing to one regime: ranging|trending|volatile")
-    ap.add_argument("--fees", default="taker", choices=["taker", "maker"], help="cost model (see _apply_fee_model)")
+    ap.add_argument(
+        "--fees", default="taker", choices=["taker", "maker", "none"], help="cost model (see _apply_fee_model)"
+    )
     ap.add_argument(
         "--offset-days",
         type=int,

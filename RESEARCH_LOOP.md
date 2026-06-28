@@ -333,6 +333,13 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   family. **This was the first deploy under the new SCOPED-reset policy: additive (34 NEW bot_ids), so
   it reset NOTHING — the existing fleet's 309 trades were PRESERVED through the deploy (proof the
   no-reset policy works; under the old full-nuke this would read dev=0).**
+- **GROSS-EDGE DECOMPOSITION (iter 42):** with the new `--fees none` mode, ALL 4 leads are GROSS-positive
+  in BOTH eras (sma_cross +0.0145/+0.0137, cci_mom +0.0114/+0.0067, macd_rsi/macd_cross weakly + recent /
+  solidly + lockbox) → the 1h directional edge is REAL; the wall is purely the ~4bps fee. Under maker,
+  **sma_cross + cci_mom are the two ROBUST leads (net-positive cross-era)**; **macd_cross/macd_rsi go
+  net-NEGATIVE in the recent year** (gross edge < fee, survive only in lockbox) — they are the weaker
+  pair. A sub-fee venue (§4) would ≈DOUBLE sma_cross's net edge (+0.0065→+0.0145). All still below the
+  formal deploy bar (win <50%) → marginal, not a confirmed edge.
 - The 5m hyper-scalp baseline is unchanged and remains −EV (no edge at 5m for any indicator incl.
   MACD — the cost floor dominates short TF). The earlier seasonality lead stays REFUTED (iter 4).
 - **Note:** the 5m search is exhausted; the NEW frontier is INDICATOR strategies at 1h (owner opened
@@ -480,6 +487,49 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 42 — 2026-06-28 (GROSS-EDGE DECOMPOSITION: the 1h leads ARE gross-positive cross-era — the wall is purely fees; §4 cost-lever quantified; HOLD)
+
+- **CONTEXT:** fleet 148, 0 errors; lab (2) + staging (24) healthy. Built a new `--fees none` (zero-cost)
+  mode in `algo_search.py` to isolate the PURE GROSS directional edge of the leads.
+- **MEASURE (live):** 1h leads accumulating net-slightly-positive — cci_mom **19 trades, 68.4% win,
+  +$0.64** (live standout), macd_rsi 12/58.3%/+$0.31, sma_cross 7/+$0.17, macd_cross 4/−$0.12 (≈+$1.0
+  over 42 trades) — vs the 5m flowgate still bleeding (−$1.41/17 trades, 24% win). Small samples (back-
+  test says marginal), but the 1h leads are NOT dead live.
+- **DIAGNOSE → HYPOTHESIZE:** the single most decision-critical untested question — are the leads
+  **gross-positive** (real directional edge merely EATEN by the ~4bps fee → a sub-fee venue rescues the
+  project, the §4 lever) or **gross-negative** (no edge → no venue helps)? CLAUDE.md asserts gross-neg
+  but only for 1m–5m; never measured at 1h for the leads.
+- **BACKTEST (1h, medium exit, walk-forward OOS + untouched lockbox, 10 pairs; GROSS vs MAKER side-by-
+  side, n nearly identical so the delta is a clean fee measurement):**
+
+  | lead | GROSS recent | GROSS lockbox | MAKER recent | MAKER lockbox |
+  |---|---|---|---|---|
+  | **sma_cross** | +0.0145 | +0.0137 | **+0.0065** | **+0.0087** |
+  | **cci_mom** | +0.0114 | +0.0067 | **+0.0047** | **+0.0016** |
+  | macd_rsi | +0.0026 | +0.0188 | −0.0034 | +0.0124 |
+  | macd_cross | +0.0020 | +0.0158 | −0.0045 | +0.0093 |
+
+  (avg $/trade; PF 1.35–1.56 across the board, IS→OOS positive for sma_cross/cci_mom both eras.)
+- **DECIDE / FINDINGS:**
+  1. **ALL 4 leads are gross-positive in BOTH eras** → a small but REAL directional edge exists at 1h
+     (refines CLAUDE.md §6: gross-negative is a 5m fact, NOT a 1h fact — the wall at 1h is purely fees).
+  2. Under realistic **maker (4bps)**, **sma_cross + cci_mom stay net-positive cross-era** (the two
+     robust leads); **macd_cross/macd_rsi go net-negative recent** (gross edge too thin to clear the fee
+     — they only survive in the lockbox). The maker fee costs **~0.005–0.008/trade**; sma_cross's gross
+     edge is ~0.014, so the fee eats ~40–55% of it.
+  3. **§4 cost-lever QUANTIFIED:** a zero-fee/rebate venue would lift sma_cross from +0.0065/+0.0087
+     (maker) toward +0.0145/+0.0137 (gross) — roughly **DOUBLE** the net edge. This is exactly what the
+     owner's cost-side decision buys, now with a number.
+  4. **Still 0/4 clear the formal bar** (win <50%, ~0.5–0.9¢/trade) → real but MARGINAL, NOT a confirmed
+     stop-#2 edge. Honest: the directional edge is so thin that even halving the fee leaves it below bar.
+- **APPLY:** **no fleet change** (sma_cross/cci_mom already deployed; nothing clears the bar to add;
+  ✗ shrink the macd pair — owner mandate + they're forward-tests). Visible artifact: the new `--fees
+  none` diagnostic (committed) + this decomposition recorded + CURRENT BEST updated + a `system` event.
+  Fleet byte-identical → no reset.
+- **CHECK STOP:** **not met** (0/4 clear the bar; marginal sub-bar signal). But the most CONSTRUCTIVE
+  result in a while: the 1h directional edge is real, the wall is provably fees alone, and the §4 venue
+  lever now has a concrete payoff number (≈2× the best lead's net edge). Loop continues.
 
 ### Iteration 41 — 2026-06-28 (genuinely-new family: VWAP volume-weighted anchor — vwap_mom data-mined, vwap_revert fade-death, REFUTED; HOLD)
 
