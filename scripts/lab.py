@@ -234,8 +234,9 @@ def cmd_deploy(args: argparse.Namespace) -> int:
         )
     )
     print("[lab] backfill:\n" + "\n".join("  " + ln for ln in bf.stdout.strip().splitlines()[-len(bots) :]))
-    # 2. bring up (or reload) the isolated lab compose project
-    up = _run(_dc("-p", "kestrel-lab", "-f", "docker-compose.lab.yml", "up", "-d"))
+    # 2. bring up (or reload) the lab service — the `lab` profile of the shared
+    #    kestrel project (folded in 2026-06-28 so the whole stack groups as one).
+    up = _run(_dc("--profile", "lab", "up", "-d", "lab"))
     print(
         "[lab] " + (up.stdout + up.stderr).strip().splitlines()[-1] if (up.stdout + up.stderr).strip() else "[lab] up"
     )
@@ -244,7 +245,8 @@ def cmd_deploy(args: argparse.Namespace) -> int:
 
 
 def cmd_down(args: argparse.Namespace) -> int:
-    r = _run(_dc("-p", "kestrel-lab", "-f", "docker-compose.lab.yml", "down"))
+    # stop+remove only the lab service (graceful SIGTERM via -s); leaves dev/staging up
+    r = _run(_dc("--profile", "lab", "rm", "-s", "-f", "lab"))
     print("[lab] " + (r.stdout + r.stderr).strip().splitlines()[-1] if (r.stdout + r.stderr).strip() else "[lab] down")
     return 0
 

@@ -72,8 +72,8 @@ kestrel/
 ├── CLAUDE.md · README.md · FINDINGS.md · params.json · bots.json · requirements.txt
 ├── docs/                      ← this documentation
 ├── scripts/                   ← lifecycle (.sh, frozen) + research harness (.py)
-├── docker-compose.yml         ← Phase-1 labs (postgres · kestrel · grafana · pg-backup)
-├── docker-compose.staging.yml ← Phase-2 quarantine (BingX VST demo)
+├── docker-compose.yml         ← one project: dev (postgres·kestrel·grafana·pg-backup·recorder)
+│                                + `staging` & `lab` profiles (Phase-2 quarantine / owner sandbox)
 ├── docker-compose.override.yml← host-local overrides (gitignored)
 └── src/
     ├── config.py              ← Layer 0: types · enums · env schema · pure utils · NO I/O

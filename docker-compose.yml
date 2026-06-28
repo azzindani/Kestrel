@@ -106,6 +106,76 @@ services:
     mem_limit: 64m
     cpus: 0.1
 
+  # ── Phase-2 STAGING (profile: staging) ──────────────────────────────────────
+  # Curated best-performers pool (ENV=staging). Was its own `kestrel-staging`
+  # compose project; folded into THIS project (2026-06-28, owner) so the whole
+  # Kestrel stack shows as ONE group in Docker. Same kestrel image; rows isolated
+  # by env='staging' + the `staging-` bot_id prefix (§19). STAGING_ENGINE=sim
+  # until BingX VST keys exist (paper, no real money). Gated behind the `staging`
+  # profile, so a plain dev `docker compose up -d` does NOT start it; bring it up
+  # explicitly:  docker compose --profile staging up -d staging
+  staging:
+    image: kestrel-kestrel:${KESTREL_TAG:-latest}
+    profiles: ["staging"]
+    env_file: .env.staging
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./bots.staging.json:/app/bots.json:ro
+      - ./params.json:/app/params.json:ro
+    networks:
+      - kestrel_net
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    # Heartbeat watchdog scoped to staging bots only (shared heartbeats table).
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "PGPASSWORD=$$DB_PASSWORD psql -h postgres -U $$DB_USER -d $$DB_NAME -tAc \"SELECT (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - MAX(ts) < 90000 FROM heartbeats WHERE bot_id LIKE 'staging-%'\" 2>/dev/null | grep -q ^t || exit 1"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # ── OWNER LAB sandbox (profile: lab) ─────────────────────────────────────────
+  # The fleet the OWNER hand-picks via scripts/lab.py (catalog → add → deploy).
+  # Was its own `kestrel-lab` compose project; folded into THIS project so it
+  # groups with the rest of the stack. ALWAYS paper (ENV=lab → SimulationExecution,
+  # never a venue). Rows isolated by env='lab' + the `lab-` bot_id prefix. Gated
+  # behind the `lab` profile (a dev `up` won't start it); scripts/lab.py drives it.
+  lab:
+    image: kestrel-kestrel:${KESTREL_TAG:-latest}
+    profiles: ["lab"]
+    env_file: .env.lab
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./bots.lab.json:/app/bots.json:ro
+      - ./params.json:/app/params.json:ro
+    networks:
+      - kestrel_net
+    restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    # Heartbeat watchdog scoped to lab bots only (shared heartbeats table).
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "PGPASSWORD=$$DB_PASSWORD psql -h postgres -U $$DB_USER -d $$DB_NAME -tAc \"SELECT (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - MAX(ts) < 90000 FROM heartbeats WHERE bot_id LIKE 'lab-%'\" 2>/dev/null | grep -q ^t || exit 1"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
 networks:
   kestrel_net:
     name: kestrel_net
