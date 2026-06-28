@@ -12,15 +12,16 @@ ENV=dev                ENV=staging                  ENV=prod
 SimulationExecution    LiveExecution (TESTNET=true) LiveExecution (real keys)
 no venue contact       BingX VST demo (virtual $)   real capital
 many experimental bots curated winners only         curated, §18-gated
-docker-compose.yml     docker-compose.staging.yml   (not provisioned)
+compose (no profile)   compose --profile staging    (not provisioned)
 ```
 
 - **Phase 1 (labs)** — where everything currently lives. `dev` env, simulation execution, no
   exchange contact, large experimental fleets.
 - **Phase 2 (staging)** — a quarantine that runs the **real `LiveExecution` code path** against
   the **BingX VST demo** venue (virtual money), with `TESTNET=true` as a safety rail. It
-  shares the database with the labs (joins the external `kestrel_net`) but is a separate
-  compose project (`-p kestrel-staging`) and is scoped to `bot_id LIKE 'staging-%'`. *Dormant*
+  shares the database with the labs (same `kestrel_net`) and runs as the **`staging` profile**
+  of the one `kestrel` compose project (`docker compose --profile staging up -d staging`), scoped
+  to `bot_id LIKE 'staging-%'`. *Dormant*
   until VST keys are added. **Caveat:** the BingX demo is **futures**, while `CLAUDE.md` §13
   specifies **spot** — reconciling that is a human-only CLAUDE.md amendment required before
   go-live.
