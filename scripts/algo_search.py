@@ -783,6 +783,62 @@ def _compress_vol_break(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     return _dir(c)  # squeeze breakout confirmed by volume
 
 
+# --- VWAP (iter-41 active search — the volume-weighted price anchor, never tested) ----
+# Every algo above is PRICE-ONLY (MA/MACD/RSI/CCI/stoch/BB/ADX/supertrend). VWAP weights
+# price by where volume ACTUALLY transacted — the one institutional reference level Kestrel
+# has never used. Rolling VWAP over the last n candles (a session-reset proxy; n+1 << the
+# 120-candle entry window) = sum(typical*vol)/sum(vol), typical=(h+l+c)/3.
+def _vwap_pair(C: Sequence[Candle], n: int = 20) -> Optional[tuple[float, float]]:
+    """(vwap_now over last n, vwap_prev over the n ending one bar back), or None if short."""
+    if len(C) < n + 1:
+        return None
+
+    def at(end: int) -> Optional[float]:
+        w = C[end - n + 1 : end + 1]
+        vol = sum(c.volume for c in w)
+        if vol <= 0.0:
+            return None
+        return sum(((c.high + c.low + c.close) / 3.0) * c.volume for c in w) / vol
+
+    now, prev = at(len(C) - 1), at(len(C) - 2)
+    if now is None or prev is None:
+        return None
+    return (now, prev)
+
+
+@_algo("vwap_revert", PatternType.ANOMALY_FADE)
+def _vwap_revert(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # mean-revert: price stretched > 1 ATR from VWAP snaps back toward it
+    r = _vwap_pair(C)
+    if r is None:
+        return None
+    vwap_now, _ = r
+    c = C[-1]
+    if c.atr14 is None or c.atr14 <= 0.0:
+        return None
+    dist = c.close - vwap_now
+    if dist < -c.atr14:
+        return Direction.LONG  # far below VWAP -> fade up
+    if dist > c.atr14:
+        return Direction.SHORT  # far above VWAP -> fade down
+    return None
+
+
+@_algo("vwap_mom", PatternType.MOMENTUM_CONTINUATION)
+def _vwap_mom(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    # momentum: close reclaims a RISING VWAP (or loses a FALLING VWAP) = trend with the anchor
+    r = _vwap_pair(C)
+    if r is None:
+        return None
+    vwap_now, vwap_prev = r
+    prev_c, now_c = C[-2], C[-1]
+    if prev_c.close <= vwap_prev and now_c.close > vwap_now and vwap_now > vwap_prev:
+        return Direction.LONG
+    if prev_c.close >= vwap_prev and now_c.close < vwap_now and vwap_now < vwap_prev:
+        return Direction.SHORT
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Neutralise secondary gates so each algo is judged on its own entry edge.
 # (Module-global rebinds — detector resolves these names at call time.)

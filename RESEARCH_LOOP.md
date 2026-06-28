@@ -436,6 +436,15 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   (1-in-6 luck). The iter-3 "8/120 net-maker survivors" was a multiple-testing/threshold artifact.
   Not a net-of-cost edge. `session_seasonal` pattern stays registered (tested) but undeployed.
 
+- **VWAP volume-weighted anchor (`vwap_mom`, `vwap_revert`)** (iter 41) — 1h, maker, recent + lockbox,
+  10 pairs. The one institutional level never tested (all 40 prior families were price-only). `vwap_mom`
+  (reclaim a rising rolling-VWAP) was the recent-year STAR (+$0.0073/t, win 43.5%, n=898, PF 1.45, expR
+  +0.11) but **collapsed in the lockbox** (−$0.0046/t, expR +0.01) = data-mined, same recent-+/prior-−
+  signature as ema_cross / macd-4h / compress_vol_break. `vwap_revert` (fade >1 ATR from VWAP) NEGATIVE
+  both eras (−$0.0036/t) = the mean-reversion-fade death again. 0/4 clear the bar both eras. The volume
+  anchor doesn't beat the cost floor; both algos stay in algo_search (tested) but undeployed. Don't
+  re-deploy VWAP for an edge.
+
 - **The 1h cross-leads at 15m (TF down-shift for activity)** (iter 40) — 15m, maker, recent + lockbox,
   10 pairs (15m lockbox data IS available, ~35k candles/pair — not the 5m wall). macd_cross/macd_rsi/
   cci_mom/sma_cross at 15m fire **~20× more** than at 1h (n=5334 recent / 3494 lockbox vs ~200) but go
@@ -471,6 +480,41 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 41 — 2026-06-28 (genuinely-new family: VWAP volume-weighted anchor — vwap_mom data-mined, vwap_revert fade-death, REFUTED; HOLD)
+
+- **CONTEXT:** fleet steady at 148, 0 errors; lab (2) + staging (24) healthy.
+- **MEASURE (live, ~1 day of accumulation):** the **flowgate forward-test now has 14 trades** —
+  `exp_flowgate_mom_adx` 13 trades 30.8% win **−$1.17** + `exp_flowgate_momentum_continuation` 1
+  trade −$0.08 ⇒ the order-flow alignment gate **does NOT turn 5m positive** (still ~28% win,
+  net-negative, sub-cost) — LIVE confirmation of the iter-33/34 microstructure finding (gate = a
+  risk-quality filter, not an edge; 5m stays below the fee floor). 14 fired / 2 fee_not_viable /
+  2 bucket_limit (gate passes signals fine). The 1h leads are mixed tiny samples (cci_mom +$0.52
+  /62.5% on n=8, macd_cross −$0.12, others ~flat) = net roughly flat, noise.
+- **DIAGNOSE → HYPOTHESIZE:** every entry tested across 40 iters is **price-only** (MA/MACD/RSI/CCI/
+  stoch/BB/ADX/supertrend/donchian). The one major institutional reference level never tested is
+  **VWAP** — a *volume-weighted* price anchor (where liquidity actually transacted), structurally
+  different from all of them. Built two new registered algos in `algo_search.py`: `vwap_mom` (close
+  reclaims a RISING rolling-VWAP / loses a FALLING one = trend with the volume anchor) and
+  `vwap_revert` (price stretched >1 ATR from VWAP fades back = mean-reversion).
+- **BACKTEST (1h, maker, medium+wide exits, walk-forward OOS + untouched prior-year lockbox, 10 pairs):**
+  - **`vwap_mom`/medium:** RECENT **+$0.0073/t, win 43.5%, n=898, PF 1.45, expR +0.11** (the best
+    recent-year showing in a while, ~4× the cross-leads' activity) → **LOCKBOX −$0.0046/t, win 38.4%,
+    expR +0.01** = **collapsed**, textbook data-mining (same recent-+/prior-− signature as ema_cross,
+    macd-4h, compress_vol_break).
+  - **`vwap_revert`/medium:** NEGATIVE in BOTH eras (−$0.0036 recent / −$0.0036 lockbox, win 40–41%,
+    n~4.3k) = the mean-reversion-FADE death, again (consistent with RSI-2/stoch/cci_revert/wick/bb_fade).
+  - **0/4 clear the bar in BOTH eras.**
+- **DECIDE:** **REFUTED.** The volume-weighted anchor doesn't beat the ~4bps cost floor: the momentum
+  variant is a single-era artifact, the fade variant dies like every fade. Added to the refuted ledger.
+  **Baseline untouched.** The 2 VWAP algos stay in `algo_search.py` as tested-but-undeployed (a new
+  family available to the lab catalog / future search).
+- **APPLY:** no live deploy, no reset (the change is research-harness only — `algo_search.py` is not a
+  deployed file; fleet byte-identical; flowgate KEEP-guard honored). Visible artifact: the 2 new VWAP
+  algos committed + this record + refuted-ledger entry + a `system` event row.
+- **CHECK STOP:** **not met.** No edge (best lockbox −$0.0036/t, recent winner collapses cross-era, 0/4
+  clear the bar); owner target (≥70% win / ≥15% daily over ≥100 trades) not hit. Levers left are §4
+  owner-gated (sub-1.3bps/rebate venue · funding-rate perps) — flagged, not started.
 
 ### Iteration 40 — 2026-06-27 (do the 1h cross-leads hold at 15m? activity 20× but net-negative — TF-specific, REFUTED; HOLD)
 
