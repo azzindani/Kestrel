@@ -334,6 +334,12 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   family. **This was the first deploy under the new SCOPED-reset policy: additive (34 NEW bot_ids), so
   it reset NOTHING — the existing fleet's 309 trades were PRESERVED through the deploy (proof the
   no-reset policy works; under the old full-nuke this would read dev=0).**
+- **PER-PAIR BREADTH (iter 43, `--by-pair`):** +EV under maker in BOTH eras — **sma_cross: 5 pairs
+  (ETH/DOGE/PEPE/XRP/BNB)**, **cci_mom: 5 (ETH/DOGE/PEPE/XRP/AVAX)**, macd_rsi: 3 (SOL/DOGE/ADA),
+  **macd_cross: 1 (DOGE only — the weakest lead, recent breadth 1/10)**. Shared robust core =
+  **ETH/DOGE/PEPE/XRP**. **BTC is −EV for ALL leads in BOTH eras** (universal momentum-loser → dilutes
+  the fleet; the pair to drop first). Breadth is real (≥3 pairs for 3 of 4 leads) but the aggregate
+  still fails the formal PF/deflated-Sharpe bar (0/4) → concentrated, not yet a confirmed edge.
 - **GROSS-EDGE DECOMPOSITION (iter 42):** with the new `--fees none` mode, ALL 4 leads are GROSS-positive
   in BOTH eras (sma_cross +0.0145/+0.0137, cci_mom +0.0114/+0.0067, macd_rsi/macd_cross weakly + recent /
   solidly + lockbox) → the 1h directional edge is REAL; the wall is purely the ~4bps fee. Under maker,
@@ -488,6 +494,44 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 43 — 2026-06-28 (PER-PAIR BREADTH: sma_cross/cci_mom have 5 cross-era-robust pairs each; BTC a universal loser; macd_cross weakest; HOLD)
+
+- **CONTEXT:** fleet 148, 0 errors; now ONE `kestrel` compose project (staging+lab folded in last task).
+  Built a reusable `--by-pair` mode in `algo_search.py` (per-pair OOS avg$/trade table) — the breadth
+  check stop-#2 requires ("≥3 pairs +EV") that the aggregate leaderboard never exposed.
+- **MEASURE (live):** cci_mom +$0.51/61.5% (n26) & macd_rsi +$0.48/66.7% (n15) the live winners;
+  sma_cross −$0.11 (n9, DIVERGES from backtest — small-sample noise); 5m flowgate still bleeding
+  (−$1.34/24t, 33% win). 1h leads ≈ +$0.91 / 56 trades. 0 errors.
+- **DIAGNOSE → HYPOTHESIZE:** iter 42 proved the 1h edge is real-but-fee-bound IN AGGREGATE. The rigorous
+  follow-up: WHERE does it live per pair, and is it ≥3-pair cross-era robust (the data-mining-resistant
+  breadth stop-#2 wants)?
+- **BACKTEST (1h, maker, medium, recent + lockbox OOS, --by-pair, 10 pairs / 9 in lockbox):** pairs
+  **+EV under maker in BOTH eras**:
+
+  | lead | robust pairs (both eras) | recent breadth | lockbox breadth |
+  |---|---|---|---|
+  | **sma_cross** | ETH·DOGE·PEPE·XRP·BNB (**5**) | 7/10 | 7/9 |
+  | **cci_mom** | ETH·DOGE·PEPE·XRP·AVAX (**5**) | 7/10 | 6/9 |
+  | macd_rsi | SOL·DOGE·ADA (3) | 3/10 | 7/9 |
+  | **macd_cross** | DOGE only (**1**) | 1/10 | 7/9 |
+
+- **FINDINGS:** (1) **sma_cross & cci_mom have genuine cross-era per-pair breadth (5 robust pairs each)** —
+  the edge is real and concentrated, not a fluke; shared robust core **ETH/DOGE/PEPE/XRP**. (2) **BTC is
+  −EV for ALL 4 leads in BOTH eras** (a universal momentum-loser — too efficient/liquid; including it
+  dilutes the fleet). (3) **macd_cross is the WEAKEST lead** — only DOGE survives both eras (recent
+  breadth 1/10; its lockbox 7/9 collapses in the recent year = the half that's data-mined). macd_rsi
+  similar but 3 both-era pairs. (4) Still **0/4 clear the FORMAL aggregate bar** (PF/deflated-Sharpe/win
+  gate) → real breadth, NOT yet a confirmed stop-#2 edge.
+- **DECIDE / APPLY:** **no fleet churn.** The robust cells (sma_cross/cci_mom on ETH/DOGE/PEPE/XRP…) are
+  ALREADY deployed in the 34-pair fleet; a "concentrated" cohort would DUPLICATE them (dedup-guard) and
+  double-count the same signals — not clean. BTC is a confirmed cross-era loser but live-pruning needs
+  the § MODE structural-dead bar (≥50 live trades, PF<1.0) — not met, and ✗ shrink-for-its-own-sake
+  (owner). So the finding informs FUTURE pair selection, ✗ a deploy now. Visible artifact: the reusable
+  `--by-pair` tool (committed) + this breadth record + CURRENT BEST updated + a `system` event.
+- **CHECK STOP:** **not met** (0/4 clear the formal bar; breadth real but aggregate PF/Sharpe below bar).
+  Most useful structural takeaway: the edge is alt-concentrated (ETH/DOGE/PEPE/XRP), BTC dilutes, and
+  macd_cross is the lead to retire first if/when the fleet is ever trimmed. Loop continues.
 
 ### Iteration 42 — 2026-06-28 (GROSS-EDGE DECOMPOSITION: the 1h leads ARE gross-positive cross-era — the wall is purely fees; §4 cost-lever quantified; HOLD)
 
