@@ -991,6 +991,11 @@ def main() -> None:
     ap.add_argument("--days", type=int, default=45)
     ap.add_argument("--tf", default="5m")
     ap.add_argument("--pairs", default=None, help="comma list to override PAIRS")
+    ap.add_argument(
+        "--by-pair",
+        action="store_true",
+        help="also print a per-pair OOS avg$/trade table (breadth check for stop-#2: ≥3 pairs +EV)",
+    )
     ap.add_argument("--algos", default=None, help="comma list to restrict the algo set")
     ap.add_argument("--exits", default="tight,wide", help="comma list of exit profiles")
     ap.add_argument("--regime", default=None, help="restrict firing to one regime: ranging|trending|volatile")
@@ -1045,6 +1050,8 @@ def main() -> None:
 
     # pooled[(algo,exit)] = {"oos": [...], "ins": [...], "n_oos": int}
     pooled: dict[tuple[str, str], dict] = {c: {"oos": [], "ins": [], "n_oos": 0} for c in combos}
+    # by_pair[(algo,exit,pair)] = list of OOS trades (only when --by-pair)
+    by_pair: dict[tuple[str, str, str], list] = {}
     skipped: list[str] = []
 
     for pi, pair in enumerate(pairs, 1):
@@ -1070,9 +1077,12 @@ def main() -> None:
             ]
             bg._enrich_trades(trades, ts_index, candles)
             d = pooled[(algo, exit_name)]
-            d["oos"].extend(t for t in trades if t["entry_ts"] >= split_ts)
+            oos_trades = [t for t in trades if t["entry_ts"] >= split_ts]
+            d["oos"].extend(oos_trades)
             d["ins"].extend(t for t in trades if t["entry_ts"] < split_ts)
             d["n_oos"] += n_oos
+            if args.by_pair:
+                by_pair[(algo, exit_name, pair)] = oos_trades
 
     # Build leaderboard
     rows = []
@@ -1132,6 +1142,21 @@ def main() -> None:
         )
     if skipped:
         print(f"  NOTE: {len(skipped)} pair(s) skipped (fetch failed): {', '.join(skipped)}", flush=True)
+
+    if args.by_pair and by_pair:
+        print("\n=== PER-PAIR OOS avg$/trade (breadth check — +EV pair count per algo/exit) ===", flush=True)
+        seen_combos = sorted({(a, e) for (a, e, _p) in by_pair})
+        for algo, exit_name in seen_combos:
+            cells = []
+            pos = 0
+            for pair in pairs:
+                trades = by_pair.get((algo, exit_name, pair))
+                if not trades:
+                    continue
+                avg = sum(t["pnl_net_usdt"] for t in trades) / len(trades)
+                pos += 1 if avg > 0 else 0
+                cells.append(f"{pair.split('/')[0]}:{avg:+.4f}(n{len(trades)})")
+            print(f"  {algo}/{exit_name}  [+EV {pos}/{len(cells)} pairs]  " + "  ".join(cells), flush=True)
 
     _write_reports(tag, args, cfg, pairs, rows, survivors, skipped)
 
