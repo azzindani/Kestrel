@@ -339,6 +339,11 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   family. **This was the first deploy under the new SCOPED-reset policy: additive (34 NEW bot_ids), so
   it reset NOTHING — the existing fleet's 309 trades were PRESERVED through the deploy (proof the
   no-reset policy works; under the old full-nuke this would read dev=0).**
+- **FILL-MODEL ROBUSTNESS (iter 46):** `sma_cross/wide` survives even TAKER fees (~0.18%/trade) cross-era
+  (+$0.0027 recent / +$0.0070 lockbox, 6-7/9 pairs) = the most FILL-ROBUST cell on record — does NOT need
+  maker fills, the safest real-money candidate. `cci_mom/wide` DIES at taker (maker-dependent) — its edge
+  is contingent on post-only limits actually filling. Both +EV at maker (live sim model); conviction
+  ordering sma_cross > cci_mom.
 - **PER-PAIR BREADTH (iter 43, `--by-pair`):** +EV under maker in BOTH eras — **sma_cross: 5 pairs
   (ETH/DOGE/PEPE/XRP/BNB)**, **cci_mom: 5 (ETH/DOGE/PEPE/XRP/AVAX)**, macd_rsi: 3 (SOL/DOGE/ADA),
   **macd_cross: 1 (DOGE only — the weakest lead, recent breadth 1/10)**. Shared robust core =
@@ -499,6 +504,32 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 46 — 2026-06-29 (FILL-MODEL STRESS TEST: sma_cross/wide survives TAKER (fill-robust); cci_mom is maker-dependent; HOLD)
+
+- **CONTEXT:** fleet 161, 0 errors. exp cohort = `exp_robustwide` (25 bots, expanded iter 45).
+- **MEASURE (live):** robustwide still **0 closed trades** ~1 day post-deploy — the 1h cross signals + wide
+  exit (hold up to 8h) make it SLOW to close; the live A/B vs medium needs more time (not a fault, just the
+  nature of 1h crosses). Medium leads (sma+cci) **break-even live** (54 trades, 50% win, +$0.0003/t). 0 errors.
+- **DIAGNOSE → HYPOTHESIZE:** the cohort can't be re-backtested (needs live time), so stress its key
+  ASSUMPTION: every validation used MAKER fills, but CLAUDE.md flags post-only limits may not fill on a
+  breakout. Does the robust cohort survive TAKER (worst-case fill, ~0.18%/trade ≈ 4.5× maker)?
+- **BACKTEST (1h, WIDE, TAKER, recent + lockbox, --by-pair, robust core 9 pairs):**
+  - **`sma_cross/wide` SURVIVES taker cross-era** — recent **+$0.0027/t (6/9 pairs)**, lockbox **+$0.0070/t
+    (7/9 pairs)**. Its wide exit (tp3.0/sl1.5) captures moves big enough to clear even the taker cost →
+    the most FILL-ROBUST cell the project has found; does NOT depend on maker fills.
+  - **`cci_mom/wide` DIES at taker** — recent +EV only 1/9 (ETH barely), lockbox 6/9 but tiny. It fires
+    ~2× more often with a thinner per-trade edge, so the higher taker cost wipes it → **MAKER-DEPENDENT**.
+- **FINDING:** sma_cross is the high-conviction, fill-robust signal (real-money-safer — survives if maker
+  fills miss); cci_mom's edge is contingent on getting maker fills (fragile to the fill model). Both stay
+  +EV at MAKER (the live sim's model), so both remain valid forward-test arms — but the conviction ordering
+  is now sma_cross > cci_mom on robustness grounds.
+- **APPLY:** **HOLD** — no fleet change. The cohort expanded last iteration and needs live accumulation; this
+  finding is analytical (refines conviction), it does NOT validate a new config to deploy. Visible artifact:
+  this record + CURRENT BEST/COHORT updated + a `system` event. Fleet byte-identical → no reset.
+- **CHECK STOP:** **not met** (0/4 clear the formal bar; win <55%). But sma_cross/wide is now the most robust
+  signal on record (+EV at BOTH fee models, BOTH eras, 6-7/9 breadth) — the leading real-money candidate IF
+  an edge ever clears the bar. Loop continues.
 
 ### Iteration 45 — 2026-06-29 (EXPAND: robustwide cohort 11→25 — 14 new cross-era-robust pairs from the untested fleet 24)
 
