@@ -1,11 +1,11 @@
 {
-  "iteration": 6,
-  "note": "ROBUST-CORE WIDE-EXIT cohort (iter 44). Retires the conclusively-refuted exp_flowgate 5m order-flow-gate arm (30 live trades, 34.5% win, -$1.61 net = the gate does NOT rescue 5m, matching the iter-33/34 sub-cost finding). Replaces it with the FIRST cohort grounded in a cross-era-validated edge: iters 42-43 proved the 1h leads are gross-positive cross-era (wall is purely fees) and that sma_cross + cci_mom carry genuine per-pair breadth (5 cross-era-robust pairs each), while BTC is a universal loser. iter 44 then backtested the CONCENTRATED robust set (ETH/DOGE/PEPE/XRP/BNB/AVAX) at 1h maker, recent + prior-year lockbox: concentrating ~DOUBLES the per-trade net vs the broad fleet (sma_cross +$0.0065 broad -> +$0.013 concentrated) and a WIDE exit (tp3.0/sl1.5/hold8) beats the deployed medium for sma_cross (best in BOTH eras, +$0.0132 recent / +$0.0147 lockbox, win 49.8%/50.8%, breadth 6/6 recent & 5/6 lockbox). This cohort forward-TESTS that wide-exit + pair-concentration lift live: a clean A/B vs the deployed medium-exit leads on the SAME robust cells (distinct exp_ bot_ids, params differ -> bot_registry NEW). cci_mom drops BNB (its lone consistent loser, -EV all 4 configs). Still NOT a confirmed edge (win <55%, 0/4 clear the formal bar) -> forward-test LEAD, watch live net vs the medium baseline. additive new bot_ids -> resets nothing; baseline 136 leads untouched.",
+  "iteration": 7,
+  "note": "ROBUST-CORE WIDE-EXIT cohort — EXPANDED (iter 45). iter 44 deployed the first cross-era-validated cohort (sma_cross/cci_mom wide-exit on the robust core ETH/DOGE/PEPE/XRP/BNB/AVAX). iter 45 then ran the per-pair --by-pair breadth check on the 24 FLEET pairs never cross-era-validated (the 34-pair fleet minus the 10-pair default), wide exit, 1h maker, recent + prior-year lockbox. New pairs +EV in BOTH eras at wide: sma_cross gains ATOM/DOT/ETC/FIL/INJ/LINK/UNI/XLM (8); cci_mom gains ATOM/DOT/ETC/FET/FIL/INJ (6). ATOM/DOT/ETC/FIL/INJ are robust for BOTH leads in BOTH eras (the strongest). LTC/NEAR/OP/SEI lack 2-yr lockbox history so cannot be cross-era-validated (excluded). This EXPANDS the wide cohort 11->25 bots (additive new bot_ids -> resets nothing; the original 11 unchanged). Owner-mandate aligned (scale UP activity) and evidence-based (same cross-era bar the original core met). Still a forward-test LEAD, NOT a confirmed edge (win <55%, 0/4 clear the formal bar) -> watch live net vs the deployed medium-exit baseline on the same cells. Wide exit = tp3.0/sl1.5/hold8.",
   "arms": [
     {
       "label": "exp_robustwide",
       "timeframe": "1h",
-      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "BNB/USDT", "AVAX/USDT"],
+      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "BNB/USDT", "AVAX/USDT", "ATOM/USDT", "DOT/USDT", "ETC/USDT", "FIL/USDT", "INJ/USDT", "LINK/USDT", "UNI/USDT", "XLM/USDT"],
       "strategies": [
         {"name": "sma_cross", "patterns": ["sma_cross"]}
       ],
@@ -21,7 +21,7 @@
     {
       "label": "exp_robustwide",
       "timeframe": "1h",
-      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "AVAX/USDT"],
+      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "AVAX/USDT", "ATOM/USDT", "DOT/USDT", "ETC/USDT", "FET/USDT", "FIL/USDT", "INJ/USDT"],
       "strategies": [
         {"name": "cci_mom", "patterns": ["cci_mom"]}
       ],
