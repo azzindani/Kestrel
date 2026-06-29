@@ -271,11 +271,15 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **RETIRED iter 6 (2026-06-19).** The `exp_h1tp` 1h-momentum cohort is now a subset of the
-  diverse-120 baseline (which includes 1h mom_adx/triple_mom), so it was folded away — the whole
-  120-bot fleet IS the experiment. The cohort tooling (`build_exp_cohort.py`/`reset_exp.py`) stays
-  available for a future genuinely-distinct arm.
-- ~~Iter 4: `exp_h1tp`~~; ~~Iter 3: `exp_tod` seasonal~~ refuted; ~~Iter 2: `exp_h1run`~~; ~~Iter 1~~.
+- **ACTIVE — `exp_robustwide` (iter 44, 2026-06-29):** 11 bots = sma_cross/wide × {ETH,DOGE,PEPE,XRP,
+  BNB,AVAX} + cci_mom/wide × {ETH,DOGE,PEPE,XRP,AVAX}, WIDE exit (tp3.0/sl1.5/hold8). The first cohort
+  grounded in a cross-era-VALIDATED signal: a live A/B testing whether pair-concentration + a wider exit
+  beat the deployed MEDIUM-exit leads on the same robust cells (iters 42-44). Watch its live net vs the
+  medium baseline. NOT a confirmed edge (win <55%).
+- **RETIRED `exp_flowgate` (iter 5→44):** the 5m order-flow-alignment-gate arm — 30 live trades, 34.5%
+  win, −$1.61 net = the gate does NOT rescue 5m (matches the iter-33/34 sub-cost microstructure finding).
+  Conclusively refuted live; rotated out for `exp_robustwide`. (Its 30 trades kept as history.)
+- ~~Iter 6: folded `exp_h1tp` into baseline~~; ~~Iter 4: `exp_h1tp`~~; ~~Iter 3: `exp_tod` seasonal~~; ~~Iter 2: `exp_h1run`~~; ~~Iter 1~~.
 
 ## BASELINE (diversity fleet, set iter 6 2026-06-19)
 
@@ -494,6 +498,35 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 44 — 2026-06-29 (DEPLOY: robust-core WIDE-exit cohort — first evidence-backed cohort in many iters; retires refuted flowgate)
+
+- **CONTEXT:** fleet 148, 0 errors, one `kestrel` project. exp cohort = flowgate (5m order-flow gate).
+- **MEASURE (live):** flowgate now **30 trades, 34.5% win, −$1.61** — CONCLUSIVELY refuted live (the gate
+  does NOT rescue 5m, matching the iter-33/34 sub-cost backtest). 1h leads net-slightly-+ live but noisy
+  (cci_mom +$0.47/60%, macd_rsi +$0.52/61%, macd_cross +$0.13/57%, **sma_cross −$0.22/36% — live-worst,
+  DIVERGES from backtest-best**; small n). 0 errors.
+- **DIAGNOSE → HYPOTHESIZE:** flowgate's forward-test is DONE (refuted) → rotate it out. Build on iter
+  42-43: the 1h edge is real-but-fee-bound and concentrates on sma_cross/cci_mom × {ETH/DOGE/PEPE/XRP +
+  BNB/AVAX}. Two untested levers on those KNOWN-robust cells: pair-concentration + a WIDER exit (iter-42's
+  fee-efficiency idea — pay the fixed fee fewer times per unit profit).
+- **BACKTEST (1h maker, recent + lockbox, --by-pair, robust 6-pair set, medium vs wide):**
+  - **Concentration ~DOUBLES per-trade net** vs the broad fleet (sma_cross +$0.0065 broad → +$0.013 on
+    the robust set).
+  - **WIDE exit (tp3.0/sl1.5/hold8) beats medium for sma_cross** — aggregate BEST in BOTH eras: recent
+    **+$0.0132/t win 49.8%**, lockbox **+$0.0147/t win 50.8%**, breadth **6/6 recent · 5/6 lockbox**
+    (highest win + breadth the project has seen). cci_mom/wide +EV 5/6 both eras (BNB its lone loser → dropped).
+  - Still **0/4 clear the formal §30 bar** (win <55%) → forward-test LEAD, not a confirmed edge.
+- **APPLY (DEPLOY — first evidence-backed cohort rotation in many iters):** retired `exp_flowgate` (12
+  bots), deployed **`exp_robustwide`** = sma_cross/wide × {ETH,DOGE,PEPE,XRP,BNB,AVAX} (6) + cci_mom/wide ×
+  {ETH,DOGE,PEPE,XRP,AVAX} (5) = **11 bots**. A clean live A/B vs the deployed MEDIUM-exit leads on the
+  SAME robust cells (distinct exp_ bot_ids, params differ → bot_registry NEW; dedup-guard verified all 11
+  NEW). Fleet 148→147. **Additive new bot_ids → reset NOTHING** (baseline 136 + history preserved; flowgate's
+  30 trades kept, only its heartbeat orphans cleaned post-restart per the orphan lesson). Backfilled the 11
+  new bot_ids (720×1h candles each), restarted, verified live (11 heartbeats fresh, 0 errors).
+- **CHECK STOP:** **not met** (0/4 clear the formal bar; win <55%). But this is the first cohort grounded in
+  a cross-era-VALIDATED signal (not a blind forward-test) — watch live whether wide+concentration beats the
+  medium baseline. Loop continues.
 
 ### Iteration 43 — 2026-06-28 (PER-PAIR BREADTH: sma_cross/cci_mom have 5 cross-era-robust pairs each; BTC a universal loser; macd_cross weakest; HOLD)
 

@@ -1,26 +1,36 @@
 {
-  "iteration": 5,
-  "note": "ORDER-FLOW ALIGNMENT GATE cohort (scripts/analyze_microstructure.py finding). Mining the 245k-row microstructure dataset showed top-5 order-book depth imbalance (depth_imb5) is the first genuinely directional signal in project history — and on the 329 live dev trades that had order-flow coverage, entries where the book AGREED with the trade won 37.2% vs 20.5% when it disagreed (~2x win-rate, ~half the per-trade loss). Still net-negative (the ~1.3bps signal sits under the ~4bps cost floor), so this is a risk-QUALITY filter, not an edge. This cohort forward-TESTS that lift live: momentum_continuation + mom_adx at 5m on exactly the 6 recorded pairs (BTC/ETH/SOL/DOGE/ADA/XRP), flow_gate_enabled=true with min_imbalance=0.0 (the measured aligned-vs-against split). The daemon (L3) reads the latest depth_imb5 snapshot and passes it to the pure detector gate; fail-closed when the feed is stale. Non-gate params match the fleet's risk-shaped profile so the GATE is the only variable. The ungated baseline momentum_continuation fleet is the implicit control — watch whether the cohort's live win-rate clears it. Backtest cannot evaluate this (no historical L2), which is exactly why it ships as a live forward-test arm.",
+  "iteration": 6,
+  "note": "ROBUST-CORE WIDE-EXIT cohort (iter 44). Retires the conclusively-refuted exp_flowgate 5m order-flow-gate arm (30 live trades, 34.5% win, -$1.61 net = the gate does NOT rescue 5m, matching the iter-33/34 sub-cost finding). Replaces it with the FIRST cohort grounded in a cross-era-validated edge: iters 42-43 proved the 1h leads are gross-positive cross-era (wall is purely fees) and that sma_cross + cci_mom carry genuine per-pair breadth (5 cross-era-robust pairs each), while BTC is a universal loser. iter 44 then backtested the CONCENTRATED robust set (ETH/DOGE/PEPE/XRP/BNB/AVAX) at 1h maker, recent + prior-year lockbox: concentrating ~DOUBLES the per-trade net vs the broad fleet (sma_cross +$0.0065 broad -> +$0.013 concentrated) and a WIDE exit (tp3.0/sl1.5/hold8) beats the deployed medium for sma_cross (best in BOTH eras, +$0.0132 recent / +$0.0147 lockbox, win 49.8%/50.8%, breadth 6/6 recent & 5/6 lockbox). This cohort forward-TESTS that wide-exit + pair-concentration lift live: a clean A/B vs the deployed medium-exit leads on the SAME robust cells (distinct exp_ bot_ids, params differ -> bot_registry NEW). cci_mom drops BNB (its lone consistent loser, -EV all 4 configs). Still NOT a confirmed edge (win <55%, 0/4 clear the formal bar) -> forward-test LEAD, watch live net vs the medium baseline. additive new bot_ids -> resets nothing; baseline 136 leads untouched.",
   "arms": [
     {
-      "label": "exp_flowgate",
-      "timeframe": "5m",
-      "pairs": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "DOGE/USDT", "ADA/USDT", "XRP/USDT"],
+      "label": "exp_robustwide",
+      "timeframe": "1h",
+      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "BNB/USDT", "AVAX/USDT"],
       "strategies": [
-        {"name": "momentum_continuation", "patterns": ["momentum_continuation"]},
-        {"name": "mom_adx", "patterns": ["mom_adx"]}
+        {"name": "sma_cross", "patterns": ["sma_cross"]}
       ],
       "params": {
-        "flow_gate_enabled": true,
-        "flow_gate_min_imbalance": 0.0,
-        "tp_atr_multiplier": 2.4,
+        "tp_atr_multiplier": 3.0,
         "sl_atr_multiplier": 1.5,
-        "max_hold_candles": 6,
-        "trailing_enabled": true,
-        "trail_activation_r": 0.5,
-        "trail_distance_r": 0.5,
+        "max_hold_candles": 8,
+        "trailing_enabled": false,
         "volume_ratio_min": 1.1,
-        "adx_strong_min": 25.0,
+        "max_loss_pct_per_trade": 0.01
+      }
+    },
+    {
+      "label": "exp_robustwide",
+      "timeframe": "1h",
+      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "AVAX/USDT"],
+      "strategies": [
+        {"name": "cci_mom", "patterns": ["cci_mom"]}
+      ],
+      "params": {
+        "tp_atr_multiplier": 3.0,
+        "sl_atr_multiplier": 1.5,
+        "max_hold_candles": 8,
+        "trailing_enabled": false,
+        "volume_ratio_min": 1.1,
         "max_loss_pct_per_trade": 0.01
       }
     }
