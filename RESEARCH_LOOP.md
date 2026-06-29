@@ -271,11 +271,12 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **ACTIVE — `exp_robustwide` (iter 44, 2026-06-29):** 11 bots = sma_cross/wide × {ETH,DOGE,PEPE,XRP,
-  BNB,AVAX} + cci_mom/wide × {ETH,DOGE,PEPE,XRP,AVAX}, WIDE exit (tp3.0/sl1.5/hold8). The first cohort
-  grounded in a cross-era-VALIDATED signal: a live A/B testing whether pair-concentration + a wider exit
-  beat the deployed MEDIUM-exit leads on the same robust cells (iters 42-44). Watch its live net vs the
-  medium baseline. NOT a confirmed edge (win <55%).
+- **ACTIVE — `exp_robustwide` (iter 44, EXPANDED iter 45):** **25 bots** = sma_cross/wide × {ETH,DOGE,
+  PEPE,XRP,BNB,AVAX,ATOM,DOT,ETC,FIL,INJ,LINK,UNI,XLM} (14) + cci_mom/wide × {ETH,DOGE,PEPE,XRP,AVAX,ATOM,
+  DOT,ETC,FET,FIL,INJ} (11), WIDE exit (tp3.0/sl1.5/hold8). The first cohort grounded in a cross-era-
+  VALIDATED signal: a live A/B testing whether pair-concentration + a wider exit beat the deployed
+  MEDIUM-exit leads on the same robust cells (iters 42-45; every pair +EV in BOTH recent & lockbox).
+  Watch its live net vs the medium baseline. NOT a confirmed edge (win <55%).
 - **RETIRED `exp_flowgate` (iter 5→44):** the 5m order-flow-alignment-gate arm — 30 live trades, 34.5%
   win, −$1.61 net = the gate does NOT rescue 5m (matches the iter-33/34 sub-cost microstructure finding).
   Conclusively refuted live; rotated out for `exp_robustwide`. (Its 30 trades kept as history.)
@@ -498,6 +499,29 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 45 — 2026-06-29 (EXPAND: robustwide cohort 11→25 — 14 new cross-era-robust pairs from the untested fleet 24)
+
+- **CONTEXT:** fleet 147, 0 errors. exp cohort = `exp_robustwide` (deployed iter 44, 11 bots).
+- **MEASURE (live):** the iter-44 robustwide cohort has **0 closed trades yet** (1h + wide exit = hold up
+  to 8h, slow) — nothing to measure there. Baseline leads unchanged/noisy (cci_mom +$0.31/57.9%, macd_rsi
+  +$0.52/61%, sma_cross still live-worst −$0.22/36%). retired flowgate's 30 trades retained as history. 0 errors.
+- **DIAGNOSE → HYPOTHESIZE:** robustwide needs live accumulation (can't backtest L2-free), so the
+  productive new angle is COVERAGE: only **10 of the fleet's 34 pairs** were ever per-pair cross-era
+  validated. The other **24 are deployed (medium) but never validated** — some may be robust enough to
+  EXPAND the wide cohort (more activity, owner-mandate aligned, evidence-based).
+- **BACKTEST (1h maker, WIDE, recent + lockbox, --by-pair, the 24 untested fleet pairs):** new pairs +EV
+  in BOTH eras at wide — **sma_cross: ATOM/DOT/ETC/FIL/INJ/LINK/UNI/XLM (8)**; **cci_mom: ATOM/DOT/ETC/FET/
+  FIL/INJ (6)**. **ATOM/DOT/ETC/FIL/INJ are robust for BOTH leads in BOTH eras** (the strongest). LTC/NEAR/
+  OP/SEI lack 2-yr lockbox history → cannot be cross-era validated → excluded (honest: not "rejected",
+  just unverifiable).
+- **APPLY (EXPAND, additive):** grew `exp_robustwide` **11 → 25 bots** = sma_cross/wide on 14 pairs +
+  cci_mom/wide on 11 pairs. The original 11 unchanged (same bot_ids); **14 NEW** bot_ids (dedup-guard:
+  NEW 14 / SEEN 147 against the iter-44 committed registry). Backfilled the 14 (720×1h candles), restarted,
+  verified live (25 heartbeats fresh, 0 errors, no orphans — pure addition). Fleet 147→161. **Reset nothing.**
+- **CHECK STOP:** **not met** (0/4 clear the formal bar; win <55%). The wide cohort is now a 25-bot,
+  cross-era-validated forward-test across 19 distinct pairs — a faster, broader live read on whether
+  wide+concentration beats the medium baseline. Still a LEAD, not a confirmed edge. Loop continues.
 
 ### Iteration 44 — 2026-06-29 (DEPLOY: robust-core WIDE-exit cohort — first evidence-backed cohort in many iters; retires refuted flowgate)
 
