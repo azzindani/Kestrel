@@ -339,6 +339,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   family. **This was the first deploy under the new SCOPED-reset policy: additive (34 NEW bot_ids), so
   it reset NOTHING — the existing fleet's 309 trades were PRESERVED through the deploy (proof the
   no-reset policy works; under the old full-nuke this would read dev=0).**
+- **DEFLATED SHARPE — the formal stop-#2 verdict (iter 47):** `sma_cross_9_21/wide` is the closest signal ever
+  found: per-trade Sharpe **+0.164**, **PSR(>0)=1.000** (Sharpe genuinely positive in-sample). But the **Deflated
+  Sharpe** (multiple-testing-adjusted) is **0.976 at N=20 → 0.922 at N=60 → 0.813 at N=200**; the project's true
+  search breadth is N≥60-200 (hundreds of backtests over 47 iters), so recent DSR < the 0.95 bar — and the untouched
+  **lockbox FAILS at every N** (DSR 0.66 even at N=20, different winning param) ⇒ **stop-#2's "deflated Sharpe>0" is
+  NOT met cross-era**. The strongest cell is statistically indistinguishable from the best-of-many-random-tries.
+  Computed via the new `algo_search.py --deflated-sharpe` (Bailey & López de Prado). This is the loop's first
+  proper implementation of its own formal edge bar — confirms LEAD, not edge.
 - **FILL-MODEL ROBUSTNESS (iter 46):** `sma_cross/wide` survives even TAKER fees (~0.18%/trade) cross-era
   (+$0.0027 recent / +$0.0070 lockbox, 6-7/9 pairs) = the most FILL-ROBUST cell on record — does NOT need
   maker fills, the safest real-money candidate. `cci_mom/wide` DIES at taker (maker-dependent) — its edge
@@ -504,6 +512,40 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 47 — 2026-06-30 (DEFLATED SHARPE: the first rigorous stop-#2 test — sma_cross/wide is the closest signal ever, but FAILS the multiple-testing bar at the project's true search breadth; HOLD)
+
+- **CONTEXT:** fleet 161, 0 errors. exp cohort = `exp_robustwide` (25 bots).
+- **MEASURE (live):** robustwide produced its **first 2 closed trades — both winners** (sma +$0.14, cci +$0.09);
+  n=2 = noise, but the wide A/B is finally generating data. Medium leads drifted slightly negative
+  (69 trades, 46.4% win, −$0.37). macd_rsi 60.9% / macd_cross 56.3% (small n). 0 errors.
+- **DIAGNOSE:** stop-condition #2 literally requires **deflated Sharpe > 0** across ≥3 pairs OOS+lockbox — but
+  for 47 iterations the loop used the §30 **win>55% proxy** and NEVER computed the deflated Sharpe. The strongest
+  signal (sma_cross/wide, iters 42-46: cross-era +EV, fill-robust, PF~1.4) has never been put to its actual test.
+- **BUILT (visible artifact):** `--deflated-sharpe` in algo_search.py — Probabilistic + **Deflated Sharpe Ratio**
+  (Bailey & López de Prado 2014). It runs a BROAD algo set, uses the cross-sectional Sharpe variance + trial count
+  N as the multiple-testing haircut, and asks: is the best Sharpe higher than the EXPECTED MAX of N random tries?
+- **BACKTEST (1h, WIDE, maker, 20-algo trial set, robust pairs, RECENT):**
+  - best by Sharpe = **sma_cross_9_21/wide**, per-trade Sharpe **+0.164** (T=667, skew +0.44, kurt 1.93).
+  - **PSR(>0) = 1.000** — the Sharpe is genuinely, robustly positive IN-SAMPLE (before any data-mining haircut).
+  - **DSR @ N=20 = 0.976 (PASS)** · **N=60 = 0.922 (FAIL)** · **N=200 = 0.813 (FAIL)** (bar = DSR>0.95).
+- **BACKTEST (LOCKBOX, okx transiently down → only ETH+INJ survived the 2-yr-deep fetch, DOGE skipped):** the
+  best Sharpe variant was **sma_cross_10_30/wide** (+0.187, T=81) — note a DIFFERENT sma param won the lockbox
+  (mild data-mining tell), Var(trial Sharpe) higher (0.0056 vs 0.0022 → harsher haircut), **PSR(>0)=0.957** (weaker;
+  small T). **DSR @ N=20 = 0.659 (FAIL)** · N=60 = 0.541 · N=200 = 0.426 — fails the bar at EVERY N.
+- **FINDING (the honest capstone):** sma_cross/wide is the **closest any signal has come** — its recent Sharpe is
+  real and clears the deflated bar IF you'd only searched ~20-30 configs. But (a) this project has run **hundreds**
+  of backtests over 47 iterations (true N ≥60-200, where recent DSR drops to 0.92→0.81), and (b) the untouched
+  **lockbox FAILS at every N** (DSR 0.66 even at N=20) with a different winning param. ⇒ **stop-#2's "deflated
+  Sharpe > 0" is NOT met, cross-era** — even the best cell is statistically indistinguishable from the
+  best-of-many-random-tries once you honestly count the search. The rigorous, long-overdue confirmation of what the
+  loop kept saying loosely: a forward-test LEAD, not a confirmed edge.
+- **APPLY:** **HOLD** — no candidate clears the rigorous bar, so there is nothing new to deploy; forcing a cohort
+  churn would be noise. Visible artifact = the reusable `--deflated-sharpe` adjudicator + this verdict. Fleet
+  byte-identical → no reset.
+- **CHECK STOP:** **neither condition met** (stop-#1 owner target: no; stop-#2 deflated Sharpe: DSR<0.95 at the
+  project's true N). The loop's own formal edge test now has a proper implementation and a clean negative result.
+  Loop continues — the only un-exhausted lever stays cost-side (sub-1.3bps venue / funding perps, §4 owner).
 
 ### Iteration 46 — 2026-06-29 (FILL-MODEL STRESS TEST: sma_cross/wide survives TAKER (fill-robust); cci_mom is maker-dependent; HOLD)
 

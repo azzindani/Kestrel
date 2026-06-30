@@ -41,6 +41,7 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import json
+import math
 import os
 import statistics
 import sys
@@ -986,6 +987,56 @@ def _apply_fee_model(mode: str) -> float:
     return bg._COST_PCT  # taker default: 0.18% (runner/risk/bg untouched)
 
 
+# --------------------------------------------------------------------------- #
+# Deflated Sharpe Ratio (Bailey & Lopez de Prado 2014) — stop-#2's missing test.
+# RESEARCH_LOOP.md stop-condition #2 requires "deflated Sharpe > 0" but the loop
+# only ever used the §30 win>55% proxy. The DSR answers: is the BEST strategy's
+# Sharpe higher than the EXPECTED MAXIMUM of N random tries? (the multiple-testing
+# / data-mining haircut). A marginal edge that looks fine in isolation usually
+# fails it once you account for how many configs were searched.
+# --------------------------------------------------------------------------- #
+_EULER_GAMMA = 0.5772156649015329
+
+
+def _pertrade_sharpe(returns: list[float]) -> float:
+    n = len(returns)
+    if n < 2:
+        return 0.0
+    m = sum(returns) / n
+    sd = (sum((r - m) ** 2 for r in returns) / (n - 1)) ** 0.5
+    return m / sd if sd > 0 else 0.0
+
+
+def _skew_kurt(returns: list[float]) -> tuple[float, float]:
+    n = len(returns)
+    m = sum(returns) / n
+    sd = (sum((r - m) ** 2 for r in returns) / n) ** 0.5
+    if sd == 0:
+        return 0.0, 3.0
+    skew = sum(((r - m) / sd) ** 3 for r in returns) / n
+    kurt = sum(((r - m) / sd) ** 4 for r in returns) / n
+    return skew, kurt
+
+
+def _psr(sr: float, sr_star: float, t: int, skew: float, kurt: float) -> float:
+    """Probabilistic Sharpe Ratio: P(true Sharpe > sr_star), non-normality-corrected."""
+    if t < 2:
+        return 0.0
+    denom = (max(1e-9, 1.0 - skew * sr + ((kurt - 1.0) / 4.0) * sr * sr)) ** 0.5
+    z = (sr - sr_star) * ((t - 1) ** 0.5) / denom
+    return statistics.NormalDist().cdf(z)
+
+
+def _expected_max_sharpe(var_trials: float, n_trials: int) -> float:
+    """E[max Sharpe] of N independent trials drawn from N(0, var_trials) under the null."""
+    if n_trials < 2 or var_trials <= 0:
+        return 0.0
+    nd = statistics.NormalDist()
+    a = nd.inv_cdf(1.0 - 1.0 / n_trials)
+    b = nd.inv_cdf(1.0 - 1.0 / (n_trials * math.e))
+    return (var_trials**0.5) * ((1.0 - _EULER_GAMMA) * a + _EULER_GAMMA * b)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=45)
@@ -995,6 +1046,12 @@ def main() -> None:
         "--by-pair",
         action="store_true",
         help="also print a per-pair OOS avg$/trade table (breadth check for stop-#2: ≥3 pairs +EV)",
+    )
+    ap.add_argument(
+        "--deflated-sharpe",
+        action="store_true",
+        help="compute PSR + Deflated Sharpe (stop-#2's multiple-testing test) for the top combo; "
+        "run a BROAD --algos set so the trial count N is meaningful",
     )
     ap.add_argument("--algos", default=None, help="comma list to restrict the algo set")
     ap.add_argument("--exits", default="tight,wide", help="comma list of exit profiles")
@@ -1157,6 +1214,52 @@ def main() -> None:
                 pos += 1 if avg > 0 else 0
                 cells.append(f"{pair.split('/')[0]}:{avg:+.4f}(n{len(trades)})")
             print(f"  {algo}/{exit_name}  [+EV {pos}/{len(cells)} pairs]  " + "  ".join(cells), flush=True)
+
+    if args.deflated_sharpe:
+        min_n = 30
+        trials = [
+            ((a, e), [float(t["pnl_net_usdt"]) for t in d["oos"]])
+            for (a, e), d in pooled.items()
+            if len(d["oos"]) >= min_n
+        ]
+        print("\n=== DEFLATED SHARPE (stop-#2 multiple-testing test) ===", flush=True)
+        if len(trials) < 2:
+            print(
+                f"  need ≥2 combos with ≥{min_n} OOS trades (got {len(trials)}) — run a broader --algos set", flush=True
+            )
+        else:
+            sharpes = [_pertrade_sharpe(r) for _, r in trials]
+            var_trials = statistics.pvariance(sharpes)
+            n_trials = len(trials)
+            (balgo, bexit), brets = max(trials, key=lambda x: _pertrade_sharpe(x[1]))
+            bsr = _pertrade_sharpe(brets)
+            skew, kurt = _skew_kurt(brets)
+            t_obs = len(brets)
+            psr0 = _psr(bsr, 0.0, t_obs, skew, kurt)
+            print(
+                f"  trials N={n_trials} (combos ≥{min_n} trades) · Var(trial Sharpe)={var_trials:.5f} · "
+                f"Sharpe spread [{min(sharpes):+.3f},{max(sharpes):+.3f}]",
+                flush=True,
+            )
+            print(
+                f"  BEST by Sharpe: {balgo}/{bexit} — per-trade Sharpe {bsr:+.4f}, T={t_obs}, "
+                f"skew {skew:+.2f}, kurt {kurt:.2f}",
+                flush=True,
+            )
+            print(
+                f"  PSR(>0)={psr0:.3f}  (P the true Sharpe is positive at all, BEFORE the data-mining haircut)",
+                flush=True,
+            )
+            for mult in (1, 3, 10):
+                n_eff = n_trials * mult
+                sr0 = _expected_max_sharpe(var_trials, n_eff)
+                dsr = _psr(bsr, sr0, t_obs, skew, kurt)
+                verdict = "PASS — beats data-mining" if dsr > 0.95 else "FAIL — within data-mining noise"
+                print(f"  DSR @ N={n_eff:<4d}: SR*={sr0:+.4f} → DSR={dsr:.3f}  [{verdict}]", flush=True)
+            print(
+                "  (stop-#2 'deflated Sharpe>0' ⇒ DSR>0.95: Sharpe beats the expected MAX of N random tries)",
+                flush=True,
+            )
 
     _write_reports(tag, args, cfg, pairs, rows, survivors, skipped)
 
