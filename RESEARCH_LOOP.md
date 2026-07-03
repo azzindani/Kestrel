@@ -513,6 +513,30 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 48 — 2026-07-03 (INCIDENT RECOVERY: daemon was DOWN 87min on a host-reboot network race — fixed; live shows the wide cohort UNDERPERFORMING the medium baseline; HOLD)
+
+- **MEASURE → found a LIVE INCIDENT:** the fleet was **DOWN**. Container `kestrel-kestrel-1` was `Up (unhealthy)`,
+  newest heartbeat ~87 min stale (05:08), and the DB showed 2 CRITICAL `daemon_crash` + 1 `candle_processor_error`
+  at 05:49-05:50 (empty payloads). Logs = an endless `postgres:5432 - no response` retry loop — yet `psql` worked.
+- **DIAGNOSE (root cause):** both containers were **recreated at 06:09** today (host-reboot race); `kestrel-kestrel-1`
+  came up **attached to NO network** (`getent hosts postgres` = DNS FAIL, net list empty) while postgres was healthy
+  on `kestrel_net`. So the entrypoint's wait-for-DB never resolved → no boot → no heartbeats → unhealthy, with no
+  auto-recovery (Docker doesn't restart an *unhealthy-but-up* container). The other 6 services reattached fine.
+- **FIX (verified):** `docker compose up -d kestrel` → recreated on `kestrel_net` → DNS OK → `PostgreSQL ready` →
+  161 heartbeats fresh (26s), container `healthy`. Full stack re-checked: all 7 containers running/healthy on
+  `kestrel_net`. **Follow-up flagged (not done):** a host-reboot can leave a container up-but-detached with no
+  auto-heal — an `autoheal`-style restart-on-unhealthy sidecar would close the gap (additive infra, owner call).
+- **FINDING (research — live forward-test now has data):** the `exp_robustwide` **wide-exit** cohort is running
+  **NEGATIVE**: sma_cross/wide −$0.25 (16 trades, 43.8% win), cci_mom/wide −$0.69 (30 trades, **26.7% win**) —
+  while the **medium-exit** leads on the same signals are ~break-even-positive: +$0.37 (140 trades, 47.1% win). The
+  wide-exit concentration bet (iters 44-45) is **underperforming the medium baseline live**, corroborating iter-47's
+  deflated-Sharpe verdict (no real edge). n is still small (16/30) — variance, not yet a clean refutation.
+- **APPLY:** **HOLD** the cohort. No new +EV candidate exists (iter 47 deflated-Sharpe: nothing clears the bar), so
+  there is nothing to rotate TO; forcing a churn would be noise. Let the wide A/B accumulate — **if wide stays
+  net-negative past ~n=50/cohort it gets retired** in favour of the medium baseline. Visible artifact this tick =
+  the incident recovery (fleet down→healthy) + this recorded live result. Fleet byte-identical → no reset.
+- **CHECK STOP:** **neither condition met.** Loop continues; the wall stays cost-side (§4 owner).
+
 ### Iteration 47 — 2026-06-30 (DEFLATED SHARPE: the first rigorous stop-#2 test — sma_cross/wide is the closest signal ever, but FAILS the multiple-testing bar at the project's true search breadth; HOLD)
 
 - **CONTEXT:** fleet 161, 0 errors. exp cohort = `exp_robustwide` (25 bots).
