@@ -339,6 +339,13 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   family. **This was the first deploy under the new SCOPED-reset policy: additive (34 NEW bot_ids), so
   it reset NOTHING — the existing fleet's 309 trades were PRESERVED through the deploy (proof the
   no-reset policy works; under the old full-nuke this would read dev=0).**
+- **LIVE PSR + medium-exit DSR, corroborating (iter 49):** the ACTUAL deployed exit (medium, never
+  before put through the rigorous test) is WEAKER than wide — recent DSR 0.873→0.549 (N20→200, all FAIL),
+  lockbox DSR 0.088→0.004 (near-total collapse). Live forward-test PSR on 296 real trades across the 4
+  medium leads: none clear even the raw (non-deflated) 0.95 bar (best macd_cross 0.810; sma_cross now
+  NEGATIVE live at −0.198/PSR 0.107). Backtest's top cell (sma_cross) is the OPPOSITE of the current live
+  top performer (cci_mom/macd_cross) — backtest-best and live-best disagreeing this sharply is itself the
+  signature of noise, not a hidden edge. Two independent lenses now corroborate iter-47 decisively.
 - **DEFLATED SHARPE — the formal stop-#2 verdict (iter 47):** `sma_cross_9_21/wide` is the closest signal ever
   found: per-trade Sharpe **+0.164**, **PSR(>0)=1.000** (Sharpe genuinely positive in-sample). But the **Deflated
   Sharpe** (multiple-testing-adjusted) is **0.976 at N=20 → 0.922 at N=60 → 0.813 at N=200**; the project's true
@@ -512,6 +519,49 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 49 — 2026-07-05 (loop RESUMED after a manual pause; LIVE PSR check + medium-exit DSR both corroborate iter-47: no lead clears even the raw bar; backtest-best (sma_cross) now diverges from live-best (cci_mom/macd_cross) — the signature of noise, not edge; HOLD)
+
+- **CONTEXT:** the loop had been paused (owner request) and is resumed this firing. fleet 161 dev / 25
+  robustwide / 24 staging / 2 lab. **Incident check:** the iter-48 network fix held — 0 stale heartbeats,
+  0 errors in the last 24h (the 66 errors in the 48h window are ALL pre-fix, 03:48–05:50 on 07-03).
+- **MEASURE (live, grown since iter 48):** `cci_mom`(medium) is now the strongest live performer (121
+  trades, 48.8% win, net **+$1.22**); `macd_cross` +$0.89 (65t); `macd_rsi` +$0.18 (63t, near-flat);
+  **`sma_cross`(medium) flipped NEGATIVE** (47t, 31.9% win, net **−$1.33**) — a reversal from its
+  standing as the strongest backtest cell. Both wide cohorts remain negative (sma −$0.61/22t,
+  cci −$0.66/37t) — still below the n=50 retirement bar set in iter 48.
+- **DIAGNOSE (per-pair, sma_cross/medium):** the loss concentrates in 10 never-per-pair-validated
+  pairs (LTC/UNI/FET/INJ/FIL/AVAX/XLM/TIA/SOL/AAVE), each n=1–5, all 0% win — *suggestive* of the
+  iter-43 finding that only 5/34 pairs were ever cross-era robust for sma_cross, but n is far too thin
+  (1–5/pair) to treat as proof rather than noise. Checked BTC specifically (flagged a "universal loser"
+  in iter 43): live BTC is actually net **+$0.38** across all 4 leads (11 trades) — contradicts the
+  backtest label, but again n too small to mean anything. **Whole dev fleet: 385 closed trades, 41.8%
+  win, net −$1.90 (~−0.5bps/trade avg) — statistically flat, consistent with no edge.**
+- **NEW CHECKPOINT #1 — live Probabilistic Sharpe (never done before; always backtest-only until now):**
+  computed per-trade Sharpe + PSR(>0) directly on the 296 pooled live trades across the 4 medium leads:
+  `sma_cross` Sharpe **−0.198**, PSR=0.107 · `macd_rsi` +0.021, PSR=0.566 · `cci_mom` +0.074, PSR=0.796
+  · `macd_cross` +0.106, PSR=0.810 · **pooled all-4: Sharpe +0.024, PSR=0.662**. NONE clear even the raw
+  (non-deflated) 0.95 bar in real live data — corroborates iter-47's backtest verdict using the actual
+  forward-test, not a backtest assumption.
+- **NEW CHECKPOINT #2 — DSR at the ACTUAL DEPLOYED exit (iter 47 only tested `wide`; medium was never
+  put through the rigorous test):** 1h, medium, maker, 9-pair robust core, 20-algo trial set:
+  - RECENT: best = `sma_cross_9_21/medium`, Sharpe +0.126, PSR=1.000, **DSR 0.873@N20 → 0.732@N60 →
+    0.549@N200 — FAILS at every N** (weaker than the wide-exit iter-47 result, which passed at N=20).
+  - LOCKBOX: best = `sma_cross_9_21/medium`, Sharpe +0.065, PSR=**0.942** (below even the raw bar),
+    **DSR collapses to 0.088@N20 → 0.021@N60 → 0.004@N200** — a near-total failure, markedly worse
+    than the wide-exit lockbox (iter 47: 0.659@N20).
+- **FINDING:** the medium exit (what's actually live) is LESS statistically robust than the wide exit
+  (iter 46-47's test subject) — the live fleet is running the weaker-by-DSR configuration. AND the
+  backtest's top cell (`sma_cross`) is the OPPOSITE of the current live top performer (`cci_mom`/
+  `macd_cross`) — when backtest-best and live-best disagree this sharply, it is the signature of noise
+  dominating a real signal, not evidence of one. Two independent lenses (live PSR, medium-exit DSR)
+  now both corroborate iter-47: **stop-#2 remains unmet, decisively.**
+- **APPLY: HOLD.** No candidate clears the bar in either exit config; nothing to rotate to. Wide
+  cohorts stay below their n=50 retirement threshold — keep accumulating, don't churn off an 8h/one-off
+  read (standing pref #9). Fleet byte-identical → no reset, no redeploy needed.
+- **CHECK STOP:** **neither condition met.** The picture is now unusually well-triangulated (backtest
+  OOS+lockbox at two exits, live PSR) and all say the same thing honestly: no edge yet. Loop continues;
+  the wall stays cost-side (§4 owner).
 
 ### Iteration 48 — 2026-07-03 (INCIDENT RECOVERY: daemon was DOWN 87min on a host-reboot network race — fixed; live shows the wide cohort UNDERPERFORMING the medium baseline; HOLD)
 
