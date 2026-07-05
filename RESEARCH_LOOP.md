@@ -475,6 +475,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   (1-in-6 luck). The iter-3 "8/120 net-maker survivors" was a multiple-testing/threshold artifact.
   Not a net-of-cost edge. `session_seasonal` pattern stays registered (tested) but undeployed.
 
+- **UTC session breakdown on the CURRENT 1h leads (`cci_mom`, `macd_cross`)** (iter 50) — the iter-3/4
+  seasonality test only covered the old 5m/4h `mom_adx`/`triple_mom` patterns; this re-tested session on
+  the leads actually deployed today. 3-way triangulation (recent backtest / lockbox backtest / live
+  forward-test) each nominated a DIFFERENT best/worst session — recent liked London/Asian, lockbox liked
+  US/London with opposite signs, live liked London for unrelated small-n reasons. No session is
+  consistently good or bad across all three views = noise, not a lever. Don't re-test session/time-of-day
+  filters on any current or future lead without a materially new angle.
+
 - **VWAP volume-weighted anchor (`vwap_mom`, `vwap_revert`)** (iter 41) — 1h, maker, recent + lockbox,
   10 pairs. The one institutional level never tested (all 40 prior families were price-only). `vwap_mom`
   (reclaim a rising rolling-VWAP) was the recent-year STAR (+$0.0073/t, win 43.5%, n=898, PF 1.45, expR
@@ -519,6 +527,40 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 50 — 2026-07-05 (fresh angle: UTC-session/time-of-day breakdown of the CURRENT leads (cci_mom/macd_cross) — 3-way triangulation (recent/lockbox/live) each picks a DIFFERENT best session — REFUTED, extends the iter-4 seasonality finding to the new leads; HOLD)
+
+- **CONTEXT:** fleet 161/25/24/2, 0 errors 8h, 0 stale heartbeats — 8h cadence firing cleanly. Live nearly
+  unchanged since iter 49 (only a few hours passed): cci_mom +$1.22/121t, macd_cross +$1.14/66t (up from
+  +$0.89/65t), macd_rsi +$0.18/63t, sma_cross still negative −$1.33/47t; wide cohorts still below n=50
+  (sma 23, cci 38). Whole fleet 388 trades, 41.8% win, net −$1.89 — flat, unchanged from iter 49.
+- **DIAGNOSE:** given so little live drift, chose a genuinely NEW backtest angle rather than re-running
+  iter-49's checks. The project's only time-of-day test (iter 3-4) was on the OLD 5m/4h `mom_adx`/
+  `triple_mom` patterns and was refuted — but nobody has checked whether UTC session matters for the
+  CURRENT 1h leads (`cci_mom`, `macd_cross`).
+- **HYPOTHESIS + BACKTEST:** built a trade-capture wrapper (monkeypatches `run_backtest` to record every
+  trade's `entry_ts`+pnl, independent of algo_search's IS/OOS pooling) and bucketed by UTC hour into
+  Asian(00-08)/London(08-16)/US(16-21)/US_late(21-24), 1h medium exit, maker, 9-pair robust core, recent
+  + lockbox (IS+OOS pooled, ~6-8k trades/era — an exploratory scan, not yet OOS-isolated):
+  - RECENT: cci_mom best=London(+$0.0051) worst=US(−$0.0092); macd_cross best=Asian(+$0.0047)
+    worst=London(−$0.0089).
+  - LOCKBOX: cci_mom best=US(+$0.0065) worst=London(−$0.0018); macd_cross best=London(+$0.0025)
+    worst=US(−$0.0029).
+  - **LIVE** (the real forward-test, cross-checked independently): cci_mom best=**London**
+    (+$0.0483/t, 56.3% win, n=48) worst=US_late (−$0.0825); macd_cross best=**London** (+$0.0571/t,
+    62.5% win, n=24) worst=Asian (−$0.0915, 0% win, n=6).
+- **FINDING:** three independent samples (recent, lockbox, live) each nominate a **different** best/worst
+  session for the same two algos — recent liked London/Asian, lockbox liked US/London (opposite signs on
+  London!), live liked London but for different reasons (small n, high variance). No session wins or
+  loses consistently across all three views — the textbook signature of noise, identical to the iter-3/4
+  seasonality refutation and every other filter tested in this project (ADX confluence, volatility floor).
+  **REFUTES session/time-of-day as a lever for the current 1h leads** — extends the old finding to new
+  signals. (Caveat: this scan pooled IS+OOS for sample size; a formal OOS-only version isn't needed since
+  the cross-era/live disagreement is already decisive — a real effect wouldn't need OOS isolation to show
+  SOME consistency, and this shows none.)
+- **APPLY:** **HOLD.** No session filter to add; nothing new to deploy; fleet byte-identical → no reset.
+  Wide cohorts still below their n=50 retirement bar (23, 38) — keep accumulating, no action off an 8h read.
+- **CHECK STOP:** **neither condition met.** Loop continues; cost-side remains the only un-exhausted lever.
 
 ### Iteration 49 — 2026-07-05 (loop RESUMED after a manual pause; LIVE PSR check + medium-exit DSR both corroborate iter-47: no lead clears even the raw bar; backtest-best (sma_cross) now diverges from live-best (cci_mom/macd_cross) — the signature of noise, not edge; HOLD)
 
