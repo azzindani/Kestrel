@@ -475,6 +475,16 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   (1-in-6 luck). The iter-3 "8/120 net-maker survivors" was a multiple-testing/threshold artifact.
   Not a net-of-cost edge. `session_seasonal` pattern stays registered (tested) but undeployed.
 
+- **Higher-timeframe (4h) EMA9/21 trend confirmation on the 1h leads** (iter 51) — `--htf-confirm` in
+  algo_search.py, 1h maker medium exit, robust core (ETH/DOGE/PEPE/XRP/BTC), recent + lockbox. Filtering
+  entries to agree with a genuinely SEPARATE higher-timeframe's trend (not a same-TF regime gate like ADX/
+  volatility) lifts 3/4 leads in the recent year but **sma_cross — the project's best-ever cell — craters
+  in the lockbox (+0.0112→+0.0028)**; macd_cross gets WORSE recent; only macd_rsi lifts in both (small,
+  noisy, ~35% smaller sample). 0/4 clear win>55% filtered or unfiltered. Same recent-improves/lockbox-
+  collapses signature as every other confluence filter (ADX iter-23, volatility-floor iter-39, session
+  iter-50). Closes the same-TF-vs-cross-TF confluence question — don't re-test HTF trend filters on the
+  current or future leads without a materially new variant (e.g. a different HTF indicator, not EMA9/21).
+
 - **UTC session breakdown on the CURRENT 1h leads (`cci_mom`, `macd_cross`)** (iter 50) — the iter-3/4
   seasonality test only covered the old 5m/4h `mom_adx`/`triple_mom` patterns; this re-tested session on
   the leads actually deployed today. 3-way triangulation (recent backtest / lockbox backtest / live
@@ -527,6 +537,60 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 51 — 2026-07-06 (fresh angle: HIGHER-TIMEFRAME (4h) trend confirmation on the 4 deployed 1h leads — recent-era lift is real but inconsistent per-lead and CRATERS in the lockbox for the best cell (sma_cross); REFUTED, HOLD)
+
+- **CONTEXT:** fleet 161 dev / 2 lab / 24 staging, 0 errors last 24h (cron now daily at 00:00 UTC per the
+  owner's cadence change). Housekeeping: found + deleted one orphaned `heartbeats` row
+  (`labalpha-ETHUSDT-1h-cci_mom-01`, stale ~20h, status still "running") left over from the multi-sandbox
+  `lab.py` verification in the prior session — the sandbox container itself was already torn down cleanly;
+  only its heartbeat row was orphaned. `backup_db.py` run (lean dump, 106 MB, rotation held at 14).
+- **MEASURE (live, split_part(bot_id,'-',4) — trades.pattern is a constant `momentum_continuation` label,
+  NOT per-algo; confirmed the dashboard/analysis convention of reading the algo from bot_id is correct and
+  necessary):** `cci_mom` 134t/48.5%win/**+$1.45** and `macd_cross` 69t/47.8%win/**+$1.45** are now the live
+  co-leaders (both up from iter 50's +$1.22/+$1.14); `macd_rsi` 64t/43.8%/**+$0.03** (down slightly, noise);
+  `sma_cross` 56t/37.5%/**−$0.49** (partial recovery from iter 49-50's −$1.33, still net-negative). Wide
+  cohort (`exp_robustwide`): sma 26t/−$0.62, cci 42t/−$0.87 — **cci is closing in on the n=50 retirement
+  bar** (iter 48's rule: wide retires if it stays net-negative past ~n=50/cohort) but not there yet. Whole
+  dev fleet 421 trades, 42.5% win, net −$0.64 — flat, consistent with every prior iteration's "noise, not
+  edge" read.
+- **DIAGNOSE:** the live picture keeps oscillating around breakeven per-lead with no persistent winner
+  (sma_cross's swing from −$1.33→−$0.49 in 9 trades is itself evidence of noise, not a real recovery).
+  Chose a genuinely NEW backtest angle: every confluence filter tried so far (ADX floor iter-23,
+  volatility floor iter-39, UTC session iter-50) gated on the **SAME timeframe** as the entry. A
+  structurally different, never-tried idea — confirm the 1h entry against the trend on a **genuinely
+  higher, separately-fetched timeframe** (4h) — was still open.
+- **BUILT (visible artifact):** `--htf-confirm {4h,1d}` in `algo_search.py` — fetches the higher timeframe
+  independently (respecting `--offset-days` for lockbox parity), computes an EMA9/21 trend direction per
+  HTF bar (no lookahead: only the most-recently-CLOSED htf bar strictly before entry_ts is used), and
+  reports both the unfiltered and htf-agreement-filtered leaderboards side by side.
+- **BACKTEST (1h, medium exit, maker, robust core ETH/DOGE/PEPE/XRP/BTC, walk-forward OOS + untouched
+  prior-year lockbox, 4h EMA9/21 confirmation):**
+
+  | lead | recent avg$ (all→htf) | lockbox avg$ (all→htf) | kept% |
+  |---|---|---|---|
+  | cci_mom | +0.0052 → +0.0064 | +0.0078 → +0.0076 (flat) | ~54/~54% |
+  | macd_cross | −0.0040 → **−0.0051 (worse)** | +0.0048 → +0.0070 | ~51/~49% |
+  | macd_rsi | −0.0034 → +0.0016 | +0.0076 → +0.0089 | ~65/~64% |
+  | sma_cross_9_21 | +0.0123 → +0.0142 | +0.0112 → **+0.0028 (craters)** | ~44/~43% |
+
+  0/4 clear win>55% either filtered or unfiltered (best win_htf 47.1%, recent sma_cross).
+- **FINDING:** no lead improves consistently in BOTH eras. sma_cross — the project's best-ever backtest
+  cell (iters 32-47) — looks better in the recent year under the filter but **collapses from +0.0112 to
+  +0.0028 in the lockbox**, the same recent-improves/lockbox-collapses signature as every data-mined filter
+  before it (ADX confluence, volatility floor, UTC session). macd_cross even gets WORSE in the recent year.
+  Only macd_rsi shows a same-direction (small) lift in both eras, but from an already-marginal base and on
+  a ~35% smaller sample — within noise, not a robust confluence. **REFUTES cross-timeframe trend
+  confirmation as a lever**, closing the one confluence-filter family (same-TF vs cross-TF) not yet tested.
+- **APPLY: HOLD.** No candidate clears the bar filtered or unfiltered; nothing to rotate to. `exp_robustwide`
+  stays as-is (cci at 42/50 toward retirement, sma at 26/50) — kept accumulating, no churn off a
+  now-24h read (standing pref #9). Fleet byte-identical (only `scripts/algo_search.py`, a research-harness
+  file, changed) → **no reset, no redeploy** (consistent with iter 41/43/46's precedent for harness-only
+  changes).
+- **CHECK STOP:** **neither condition met.** The confluence-filter search (same-TF and cross-TF) is now
+  exhausted; every filter family tried refutes the same way. Loop continues; cost-side (§4 owner) remains
+  the only un-exhausted lever. Cron cadence changed to **daily at 00:00 UTC** this session (was every 8h) —
+  next firing ~24h from this one.
 
 ### Iteration 50 — 2026-07-05 (fresh angle: UTC-session/time-of-day breakdown of the CURRENT leads (cci_mom/macd_cross) — 3-way triangulation (recent/lockbox/live) each picks a DIFFERENT best session — REFUTED, extends the iter-4 seasonality finding to the new leads; HOLD)
 
