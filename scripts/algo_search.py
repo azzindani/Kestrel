@@ -1037,6 +1037,38 @@ def _expected_max_sharpe(var_trials: float, n_trials: int) -> float:
     return (var_trials**0.5) * ((1.0 - _EULER_GAMMA) * a + _EULER_GAMMA * b)
 
 
+# --------------------------------------------------------------------------- #
+# Higher-timeframe trend confirmation (iter 51) — never tested before: every prior
+# regime/confluence filter (ADX floor, volatility floor) gated on the SAME timeframe
+# as the entry. This gates the entry-TF signal on the TREND of a genuinely higher,
+# separately-fetched timeframe (e.g. 1h entries confirmed by 4h EMA9/21 direction) —
+# a structurally different confluence never tried on the deployed cross-leads.
+# --------------------------------------------------------------------------- #
+
+
+def _htf_trend_map(pair: str, htf: str, days: int, offset_days: int, fetch_fn) -> dict[int, str]:
+    """Fetch `htf` OHLCV and return {htf_candle_close_ts: 'long'|'short'} via EMA9/21 cross."""
+    _, rows = fetch_fn(pair, htf, days)
+    closes = [float(r[4]) for r in rows]
+    ema9, ema21 = _ema_series(closes, 9), _ema_series(closes, 21)
+    off = len(ema9) - len(ema21)  # ema9[off+i] aligns with ema21[i] at closes-index (20+i)
+    out: dict[int, str] = {}
+    for i in range(len(ema21)):
+        ts = int(rows[20 + i][0])  # ts of the closes-index the aligned ema9/ema21[i] pair belongs to
+        out[ts] = "long" if ema9[off + i] > ema21[i] else "short"
+    return out
+
+
+def _htf_trend_at(trend_map: dict[int, str], entry_ts: int, htf_ms: int) -> Optional[str]:
+    """The most-recently-CLOSED htf bar strictly before entry_ts (no lookahead)."""
+    bucket_ts = (entry_ts // htf_ms) * htf_ms - htf_ms
+    for _ in range(10):  # tolerate a few missing/gapped bars before giving up
+        if bucket_ts in trend_map:
+            return trend_map[bucket_ts]
+        bucket_ts -= htf_ms
+    return None
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=45)
@@ -1068,6 +1100,14 @@ def main() -> None:
         "= the year before last, never seen by any recent-window search). Crypto only.",
     )
     ap.add_argument("--forex", action="store_true", help="search forex/metals (yfinance) instead of crypto")
+    ap.add_argument(
+        "--htf-confirm",
+        default=None,
+        dest="htf_confirm",
+        choices=["4h", "1d"],
+        help="only keep trades whose direction agrees with the EMA9/21 trend on this HIGHER timeframe "
+        "(genuinely new confluence — never same-TF like the ADX/volatility-regime filters)",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -1107,6 +1147,7 @@ def main() -> None:
 
     # pooled[(algo,exit)] = {"oos": [...], "ins": [...], "n_oos": int}
     pooled: dict[tuple[str, str], dict] = {c: {"oos": [], "ins": [], "n_oos": 0} for c in combos}
+    pooled_htf: dict[tuple[str, str], dict] = {c: {"oos": [], "ins": [], "n_oos": 0} for c in combos}
     # by_pair[(algo,exit,pair)] = list of OOS trades (only when --by-pair)
     by_pair: dict[tuple[str, str, str], list] = {}
     skipped: list[str] = []
@@ -1127,6 +1168,14 @@ def main() -> None:
         n_oos = sum(1 for c in candles if c.ts >= split_ts)
         print(f"[{pi}/{len(pairs)}] {pair}: src={ex_used} candles={len(candles)} (OOS={n_oos})", flush=True)
 
+        htf_map: dict[int, str] = {}
+        if args.htf_confirm:
+            try:
+                htf_map = _htf_trend_map(pair, args.htf_confirm, args.days, args.offset_days, fetch)
+            except Exception as exc:  # noqa: BLE001 — survey loop: degrade to no-confirmation for this pair
+                print(f"  htf-confirm fetch failed for {pair}: {type(exc).__name__} — skipped for this pair")
+            htf_ms = bt._TF_MS[args.htf_confirm]
+
         for algo, exit_name in combos:
             p = dataclasses.replace(base, **EXITS[exit_name])
             trades = run_backtest(candles, p, cfg, bot_id=f"as-{pair}-{algo}-{exit_name}", enabled_patterns=[algo])[
@@ -1140,6 +1189,13 @@ def main() -> None:
             d["n_oos"] += n_oos
             if args.by_pair:
                 by_pair[(algo, exit_name, pair)] = oos_trades
+
+            if args.htf_confirm and htf_map:
+                confirmed = [t for t in trades if _htf_trend_at(htf_map, int(t["entry_ts"]), htf_ms) == t["direction"]]
+                dh = pooled_htf[(algo, exit_name)]
+                dh["oos"].extend(t for t in confirmed if t["entry_ts"] >= split_ts)
+                dh["ins"].extend(t for t in confirmed if t["entry_ts"] < split_ts)
+                dh["n_oos"] += n_oos
 
     # Build leaderboard
     rows = []
@@ -1199,6 +1255,29 @@ def main() -> None:
         )
     if skipped:
         print(f"  NOTE: {len(skipped)} pair(s) skipped (fetch failed): {', '.join(skipped)}", flush=True)
+
+    if args.htf_confirm:
+        print(
+            f"\n=== HTF-CONFIRM ({args.htf_confirm} EMA9/21 trend agreement — unfiltered vs confirmed) ===",
+            flush=True,
+        )
+        print(
+            f"  {'algo':16s} {'exit':5s} {'n_all':>6s} {'avg_all':>9s} {'n_htf':>6s} {'avg_htf':>9s} "
+            f"{'win_htf':>8s} {'kept%':>6s}",
+            flush=True,
+        )
+        for algo, exit_name in combos:
+            mo = bg._ext_metrics(pooled[(algo, exit_name)]["oos"], pooled[(algo, exit_name)]["n_oos"])
+            dh = pooled_htf[(algo, exit_name)]
+            mh = bg._ext_metrics(dh["oos"], dh["n_oos"])
+            if mo["total_trades"] == 0:
+                continue
+            kept_pct = 100.0 * mh["total_trades"] / mo["total_trades"] if mo["total_trades"] else 0.0
+            print(
+                f"  {algo:16s} {exit_name:5s} {mo['total_trades']:6d} {mo['avg_pnl_usdt']:9.4f} "
+                f"{mh['total_trades']:6d} {mh['avg_pnl_usdt']:9.4f} {mh['win_rate'] * 100:7.1f}% {kept_pct:5.1f}%",
+                flush=True,
+            )
 
     if args.by_pair and by_pair:
         print("\n=== PER-PAIR OOS avg$/trade (breadth check — +EV pair count per algo/exit) ===", flush=True)
