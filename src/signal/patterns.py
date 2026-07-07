@@ -39,7 +39,16 @@ COUNTER_TREND_PATTERNS: frozenset[str] = frozenset({"wave_flip"})
 #     RSI/EMA trend gate (which would drop the strongest, most overbought momentum
 #     entries), so they self-direct to reproduce that validated behaviour.
 SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
-    {"mom_adx", "triple_mom", "session_seasonal", "macd_cross", "macd_rsi", "cci_mom", "sma_cross"}
+    {
+        "mom_adx",
+        "triple_mom",
+        "session_seasonal",
+        "macd_cross",
+        "macd_rsi",
+        "cci_mom",
+        "sma_cross",
+        "ensemble_3of4",
+    }
 )
 
 
@@ -956,6 +965,55 @@ def detect_sma_cross(candles: Sequence[Candle], params: Params) -> Optional[Patt
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "sma_cross", "sma_fast": round(f_now, 8), "sma_slow": round(s_now, 8)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: ensemble_3of4 (cross-signal voting confluence) — research-loop iter 52.
+# Every prior confluence filter (ADX floor, volatility floor, higher-timeframe trend)
+# gated ONE lead against a regime or a different timeframe. This gates the SAME-
+# timeframe leads against EACH OTHER: fires only when >=3 of the 4 deployed 1h leads
+# (cci_mom, macd_cross, macd_rsi, sma_cross) agree on direction at the same candle.
+# Backtest (1h maker, 7 pairs, walk-forward OOS + untouched prior-year lockbox):
+# recent expR +0.07 (barely +EV, n=218, breadth 3/7 pairs), lockbox expR +0.14 (net
+# +$2.63, R/R 1.68 — the best R/R on record, breadth 6/7 pairs). +EV in BOTH eras at
+# the pooled level, but the recent-era margin is thin and the per-pair cross-era-
+# robust core is only 2 pairs (DOGE/XRP) — thinner evidence than cci_mom/sma_cross's
+# established 5-pair cores. Live FORWARD-TEST candidate, NOT a confirmed edge (win
+# <55% both eras). K=3 is definitional (like the MACD zero line / CCI ±100), not a
+# tunable. Self-directing; still clears volume/min-conf/risk gates.
+# ---------------------------------------------------------------------------
+@register("ensemble_3of4")
+def detect_ensemble_3of4(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter only when >=3 of {cci_mom, macd_cross, macd_rsi, sma_cross} agree on direction."""
+    votes: list[Direction] = []
+    member_directions: dict[str, str] = {}
+    for name, fn in (
+        ("cci_mom", detect_cci_mom),
+        ("macd_cross", detect_macd_cross),
+        ("macd_rsi", detect_macd_rsi),
+        ("sma_cross", detect_sma_cross),
+    ):
+        r = fn(candles, params)
+        if r is not None:
+            votes.append(r.direction)
+            member_directions[name] = r.direction.value
+
+    longs = votes.count(Direction.LONG)
+    shorts = votes.count(Direction.SHORT)
+    direction: Optional[Direction] = None
+    if longs >= 3 and longs > shorts:
+        direction = Direction.LONG
+    elif shorts >= 3 and shorts > longs:
+        direction = Direction.SHORT
+    if direction is None:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.MOMENTUM_CONTINUATION,
+        direction=direction,
+        confidence=0.78,  # full-size band, matching the other momentum patterns
+        details={"variant": "ensemble_3of4", "votes_long": longs, "votes_short": shorts, **member_directions},
     )
 
 

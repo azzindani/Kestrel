@@ -1,6 +1,6 @@
 {
-  "iteration": 7,
-  "note": "ROBUST-CORE WIDE-EXIT cohort — EXPANDED (iter 45). iter 44 deployed the first cross-era-validated cohort (sma_cross/cci_mom wide-exit on the robust core ETH/DOGE/PEPE/XRP/BNB/AVAX). iter 45 then ran the per-pair --by-pair breadth check on the 24 FLEET pairs never cross-era-validated (the 34-pair fleet minus the 10-pair default), wide exit, 1h maker, recent + prior-year lockbox. New pairs +EV in BOTH eras at wide: sma_cross gains ATOM/DOT/ETC/FIL/INJ/LINK/UNI/XLM (8); cci_mom gains ATOM/DOT/ETC/FET/FIL/INJ (6). ATOM/DOT/ETC/FIL/INJ are robust for BOTH leads in BOTH eras (the strongest). LTC/NEAR/OP/SEI lack 2-yr lockbox history so cannot be cross-era-validated (excluded). This EXPANDS the wide cohort 11->25 bots (additive new bot_ids -> resets nothing; the original 11 unchanged). Owner-mandate aligned (scale UP activity) and evidence-based (same cross-era bar the original core met). Still a forward-test LEAD, NOT a confirmed edge (win <55%, 0/4 clear the formal bar) -> watch live net vs the deployed medium-exit baseline on the same cells. Wide exit = tp3.0/sl1.5/hold8.",
+  "iteration": 8,
+  "note": "iter 52: RETIRE exp_robustwide/cci_mom (wide exit) — 52 closed trades, net -$1.84, PF 0.46, crossed the iter-48 structurally-dead retirement bar (>=50 trades AND net<0 AND PF<1.0). KEEP exp_robustwide/sma_cross (wide exit) unchanged (33 trades, not yet at the n=50 bar, still accumulating) -- same label/pairs/params so its bot_ids and history are untouched. ADD new exp_ensemble arm: the first genuinely new structural signal in a while -- ensemble_3of4, a cross-signal voting confluence (fires only when >=3 of the 4 deployed 1h leads agree on direction at the same candle; never tested before, every prior confluence filter gated one lead against a regime or a different timeframe, not leads against each other). Backtest (1h maker, 7 pairs, walk-forward OOS + untouched prior-year lockbox): recent expR +0.07 (barely +EV, n=218, breadth 3/7), lockbox expR +0.14 (net +$2.63, R/R 1.68 -- best R/R on record, breadth 6/7). +EV in BOTH eras pooled, but the recent margin is thin and the per-pair cross-era-robust core is only 2 pairs (DOGE/XRP) -- thinner evidence than cci_mom/sma_cross's established 5-pair cores. NOT a confirmed edge (win <55% both eras) -- deployed as a live forward-test A/B on the 6-pair robust core (ETH/DOGE/PEPE/XRP/SOL/ADA, excluding BTC -- the universal momentum-loser), medium exit (tp2.0/sl1.0/hold6, matching the deployed leads).",
   "arms": [
     {
       "label": "exp_robustwide",
@@ -19,16 +19,16 @@
       }
     },
     {
-      "label": "exp_robustwide",
+      "label": "exp_ensemble",
       "timeframe": "1h",
-      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "AVAX/USDT", "ATOM/USDT", "DOT/USDT", "ETC/USDT", "FET/USDT", "FIL/USDT", "INJ/USDT"],
+      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "SOL/USDT", "ADA/USDT"],
       "strategies": [
-        {"name": "cci_mom", "patterns": ["cci_mom"]}
+        {"name": "ensemble_3of4", "patterns": ["ensemble_3of4"]}
       ],
       "params": {
-        "tp_atr_multiplier": 3.0,
-        "sl_atr_multiplier": 1.5,
-        "max_hold_candles": 8,
+        "tp_atr_multiplier": 2.0,
+        "sl_atr_multiplier": 1.0,
+        "max_hold_candles": 6,
         "trailing_enabled": false,
         "volume_ratio_min": 1.1,
         "max_loss_pct_per_trade": 0.01

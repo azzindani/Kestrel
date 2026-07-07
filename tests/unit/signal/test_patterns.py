@@ -8,6 +8,7 @@ from src.signal.patterns import (
     detect_anomaly_fade,
     detect_cci_mom,
     detect_compression_breakout,
+    detect_ensemble_3of4,
     detect_impulse_retracement,
     detect_macd_cross,
     detect_macd_rsi,
@@ -46,6 +47,7 @@ class TestRegistry:
             "macd_rsi",
             "cci_mom",
             "sma_cross",
+            "ensemble_3of4",
         }
         assert expected == set(registry.keys())
 
@@ -801,3 +803,45 @@ class TestSmaCross:
 
     def test_is_self_directing(self):
         assert "sma_cross" in SELF_DIRECTING_PATTERNS
+
+
+# ---------------------------------------------------------------------------
+# ensemble_3of4 (cross-signal voting confluence) — iter 52
+# ---------------------------------------------------------------------------
+
+
+class TestEnsemble3of4:
+    @staticmethod
+    def _candles(closes, rsi=None):
+        return [make_candle(close=c, ts=i * 3_600_000, rsi14=rsi) for i, c in enumerate(closes)]
+
+    def test_insufficient_candles_returns_none(self):
+        assert detect_ensemble_3of4(self._candles([100.0] * 15), make_params()) is None
+
+    def test_flat_series_no_agreement_returns_none(self):
+        assert detect_ensemble_3of4(self._candles([100.0] * 50), make_params()) is None
+
+    def test_three_of_four_agree_long_fires(self):
+        # 40 flat bars then a strong up-jump: cci_mom/macd_cross/sma_cross all fire LONG
+        # (macd_rsi doesn't vote — rsi14 unset — but 3/4 agreement is enough to fire)
+        r = detect_ensemble_3of4(self._candles([100.0] * 40 + [112.0]), make_params())
+        assert r is not None
+        assert r.direction == Direction.LONG
+        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.details["variant"] == "ensemble_3of4"
+        assert r.details["votes_long"] >= 3
+
+    def test_three_of_four_agree_short_fires(self):
+        r = detect_ensemble_3of4(self._candles([100.0] * 40 + [88.0]), make_params())
+        assert r is not None
+        assert r.direction == Direction.SHORT
+        assert r.details["votes_short"] >= 3
+
+    def test_all_four_agree_long_with_rsi_confirmed(self):
+        r = detect_ensemble_3of4(self._candles([100.0] * 40 + [112.0], rsi=65.0), make_params())
+        assert r is not None
+        assert r.direction == Direction.LONG
+        assert r.details["votes_long"] == 4
+
+    def test_is_self_directing(self):
+        assert "ensemble_3of4" in SELF_DIRECTING_PATTERNS

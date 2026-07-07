@@ -840,6 +840,40 @@ def _vwap_mom(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     return None
 
 
+# --- Ensemble / voting confluence (iter 52) — never tested: every prior filter (ADX,
+# volatility, HTF-trend) gated ONE lead against a regime or a different timeframe. This
+# gates the SAME-timeframe leads against EACH OTHER — only fire when >=K of the 4
+# deployed 1h leads agree on direction at the same candle. A structurally different
+# confluence family (cross-signal, not cross-regime/cross-TF) from everything tried so
+# far. Registered as its own algo so it flows through the identical run_backtest/risk/
+# exit pipeline as every other entry — no separate simulation logic needed.
+_ENSEMBLE_MEMBERS = ("cci_mom", "macd_cross", "macd_rsi", "sma_cross_9_21")
+
+
+def _make_ensemble(min_agree: int) -> None:
+    @_algo(f"ensemble_{min_agree}of{len(_ENSEMBLE_MEMBERS)}", PatternType.MOMENTUM_CONTINUATION)
+    def _fn(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+        votes: list[Direction] = []
+        for member in _ENSEMBLE_MEMBERS:
+            fn = registry.get(member)
+            if fn is None:
+                continue
+            r = fn(C, p)
+            if r is not None:
+                votes.append(r.direction)
+        longs = votes.count(Direction.LONG)
+        shorts = votes.count(Direction.SHORT)
+        if longs >= min_agree and longs > shorts:
+            return Direction.LONG
+        if shorts >= min_agree and shorts > longs:
+            return Direction.SHORT
+        return None
+
+
+for _k in (2, 3):
+    _make_ensemble(_k)
+
+
 # ---------------------------------------------------------------------------
 # Neutralise secondary gates so each algo is judged on its own entry edge.
 # (Module-global rebinds — detector resolves these names at call time.)

@@ -80,7 +80,8 @@ def _ema_from_closes(candles: Sequence[Candle], period: int) -> float:
 def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
     """Return True if the regime allows the given pattern (CLAUDE.md §22)."""
     # Confluence-momentum (mom_adx, triple_mom) and the cross-era indicator leads
-    # (macd_cross, macd_rsi, cci_mom, sma_cross) are permitted in every non-QUIET regime:
+    # (macd_cross, macd_rsi, cci_mom, sma_cross, ensemble_3of4) are permitted in every
+    # non-QUIET regime:
     # each carries its own restrictive entry gate (ADX>adx_strong_min; a trend-aligned MACD
     # signal-line cross; a CCI ±100 breakout; a 9/21 SMA cross), which is how they were
     # VALIDATED — the algo_search backtest neutralises the
@@ -105,6 +106,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "macd_rsi",
                 "cci_mom",
                 "sma_cross",
+                "ensemble_3of4",
             }
         ),
         Regime.VOLATILE: frozenset(
@@ -122,6 +124,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "macd_rsi",
                 "cci_mom",
                 "sma_cross",
+                "ensemble_3of4",
             }
         ),
         Regime.RANGING: frozenset(
@@ -137,6 +140,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "macd_rsi",
                 "cci_mom",
                 "sma_cross",
+                "ensemble_3of4",
             }
         ),
         Regime.QUIET: frozenset(),
