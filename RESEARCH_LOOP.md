@@ -271,12 +271,20 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **ACTIVE — `exp_robustwide` (iter 44, EXPANDED iter 45):** **25 bots** = sma_cross/wide × {ETH,DOGE,
-  PEPE,XRP,BNB,AVAX,ATOM,DOT,ETC,FIL,INJ,LINK,UNI,XLM} (14) + cci_mom/wide × {ETH,DOGE,PEPE,XRP,AVAX,ATOM,
-  DOT,ETC,FET,FIL,INJ} (11), WIDE exit (tp3.0/sl1.5/hold8). The first cohort grounded in a cross-era-
-  VALIDATED signal: a live A/B testing whether pair-concentration + a wider exit beat the deployed
-  MEDIUM-exit leads on the same robust cells (iters 42-45; every pair +EV in BOTH recent & lockbox).
-  Watch its live net vs the medium baseline. NOT a confirmed edge (win <55%).
+- **ACTIVE — `exp_ensemble` (iter 52, NEW):** **6 bots** = `ensemble_3of4` (new registered pattern: fires
+  only when >=3 of the 4 deployed 1h leads agree on direction at the same candle) × {ETH,DOGE,PEPE,XRP,
+  SOL,ADA}, MEDIUM exit (tp2.0/sl1.0/hold6). First genuinely new structural signal in a while: backtest
+  (1h maker, 7 pairs, walk-forward OOS + lockbox) recent expR +0.07 / lockbox expR +0.14 (net +$2.63, R/R
+  1.68 — best R/R on record, breadth 6/7 pairs). +EV pooled BOTH eras but recent margin thin, per-pair
+  cross-era-robust core only 2 pairs (DOGE/XRP) — thinner evidence than cci_mom/sma_cross's 5-pair cores.
+  NOT a confirmed edge (win <55% both eras). Watch live.
+- **ACTIVE — `exp_robustwide/sma_cross` (iter 44, EXPANDED iter 45):** **14 bots** = sma_cross/wide ×
+  {ETH,DOGE,PEPE,XRP,BNB,AVAX,ATOM,DOT,ETC,FIL,INJ,LINK,UNI,XLM}, WIDE exit (tp3.0/sl1.5/hold8). Still
+  accumulating (38 trades as of iter 52, net −$1.06) — below the n=50 retirement bar. NOT a confirmed edge.
+- **RETIRED `exp_robustwide/cci_mom` (iter 44→52):** the wide-exit cci_mom arm — 52 closed trades, 26.9%
+  win, net **−$1.84**, profit factor **0.46** — crossed the iter-48 structurally-dead retirement bar
+  (>=50 trades AND net<0 AND PF<1.0). Underperformed the medium-exit baseline throughout (iter 48-51).
+  Rotated out for `exp_ensemble`. (Its 52 trades kept as history.)
 - **RETIRED `exp_flowgate` (iter 5→44):** the 5m order-flow-alignment-gate arm — 30 live trades, 34.5%
   win, −$1.61 net = the gate does NOT rescue 5m (matches the iter-33/34 sub-cost microstructure finding).
   Conclusively refuted live; rotated out for `exp_robustwide`. (Its 30 trades kept as history.)
@@ -307,6 +315,15 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT BEST
 
+- **LEAD #5 (iter 52): `ensemble_3of4` (cross-signal voting confluence — >=3 of the 4 deployed 1h leads
+  must agree) @ 1h, maker.** The FIFTH cross-era +EV signal and the first genuinely new confluence
+  mechanism (leads voting against EACH OTHER, not gated by a regime/timeframe like every prior filter).
+  Best-ever R/R on record (1.68 lockbox) and best-ever lockbox breadth (6/7 pairs), but the recent-era
+  margin is thin (expR +0.07, n=218, breadth only 3/7) and the per-pair cross-era-robust core is just 2
+  pairs (DOGE/XRP) — thinner evidence than cci_mom/sma_cross's established 5-pair cores. **Status: live
+  FORWARD-TEST** — 6-bot 1h cohort (medium exit) on the robust core (ETH/DOGE/PEPE/XRP/SOL/ADA). NOT a
+  confirmed edge (win <55% both eras). The 2-vote variant (`ensemble_2of4`) failed the pooled-recent bar
+  despite decent per-pair breadth (4/7) — stays tested-but-undeployed, like vwap_revert.
 - **LEAD (iter 18): `macd_cross` (trend-aligned MACD signal cross) @ 1h, maker.** The project's
   FIRST signal +EV in BOTH the recent year AND the untouched prior-year LOCKBOX (recent expR +0.13 /
   lockbox +0.17, R/R ~1.2, 51–52% win, IS→OOS positive both; corroborated by sma_cross_9_21 +0.17/
@@ -537,6 +554,63 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 52 — 2026-07-07 (DEPLOY: ensemble_3of4 cross-signal voting confluence — the 5th cross-era +EV signal and best-ever R/R/lockbox-breadth, but thin recent margin — NOT a confirmed edge; RETIRE structurally-dead exp_robustwide/cci_mom)
+
+- **CONTEXT:** fleet 161 dev / 2 lab / 24 staging, 0 errors 24h, 0 stale heartbeats — clean since the
+  cron cadence change to daily 00:00 UTC.
+- **MEASURE (live, split_part(bot_id,'-',4)):** `macd_cross` still the standout, 71t/47.9%win/**+$1.21**.
+  `cci_mom`(medium) FLIPPED hard negative: 158t/44.9%win/**−$1.14** (was +$1.45/134t at iter 51 — a
+  −$2.59 swing over 24 new trades, the sharpest single-iteration reversal on record, itself evidence of
+  noise not a real edge). `macd_rsi` 77t/44.2%/−$0.38 (down from +$0.03). `sma_cross`(medium) 68t/38.2%/
+  −$0.67 (down slightly). **`exp_robustwide/cci_mom` (wide) crossed n=52** trades, 26.9% win, net
+  **−$1.84**, PF **0.46** — meets the iter-48 structurally-dead bar (>=50 trades AND net<0 AND PF<1.0)
+  exactly. `exp_robustwide/sma_cross` (wide) 33t, −$0.62, not yet at the bar. Whole dev fleet 489 trades,
+  41.1% win, net −$5.49 (worse than iter 51's −$0.64 — consistent with regression to the established
+  no-edge baseline once a lucky streak unwinds).
+- **DIAGNOSE:** two things converge this firing: (1) a concrete, rule-based PRUNE action is now due
+  (cci_mom/wide hit the exact retirement threshold set 4 iterations ago) — the MODE section's
+  cell-viability rule says act on this, not wait; (2) the confluence-filter search (same-TF regime gates,
+  cross-TF HTF trend) is now exhausted (iters 23, 39, 51 all refuted) — the one adjacent idea never tried
+  is gating leads against EACH OTHER (an ensemble/voting mechanism) rather than against a regime or a
+  different timeframe.
+- **HYPOTHESIZE + BUILT:** `ensemble_Kof4` in algo_search.py (`_make_ensemble`) — calls the 4 deployed
+  leads' own registered entry functions at each candle and requires >=K to agree on direction. Registered
+  as its own algo so it flows through the identical run_backtest/risk/exit pipeline (no separate
+  simulation logic).
+- **BACKTEST (1h, medium exit, maker, 7 pairs incl. robust core + SOL/ADA, walk-forward OOS + untouched
+  prior-year lockbox):**
+
+  | variant | recent avg$ (breadth) | lockbox avg$ (breadth) | R/R (lockbox) |
+  |---|---|---|---|
+  | ensemble_2of4 | −0.0006 (4/7) | +0.0085 (5/7) | 1.55 |
+  | **ensemble_3of4** | **+0.0013 (3/7)** | **+0.0105 (6/7)** | **1.68** |
+  | cci_mom (control) | +0.0029 | +0.0054 | 1.49 |
+  | sma_cross_9_21 (control) | +0.0086 | +0.0091 | 1.43 |
+
+  ensemble_3of4 is +EV pooled in BOTH eras (best lockbox avg$/trade AND best R/R on record) but the
+  recent margin is razor-thin and per-pair overlap of both-era-positive pairs is only DOGE/XRP (2).
+  ensemble_2of4 FAILS the pooled recent bar (negative) despite 4/7 pairs individually positive — the
+  drag comes from a few larger-magnitude losers (BTC, PEPE). 0/4 clear win>55% either variant.
+- **APPLY (DEPLOY + PRUNE):** registered `ensemble_3of4` in `src/signal/patterns.py` (self-directing +
+  permitted in all non-QUIET regimes, per the iter-25 lesson), added unit tests (full suite green).
+  Deployed as `exp_ensemble` (6 bots, medium exit, ETH/DOGE/PEPE/XRP/SOL/ADA). **Retired
+  `exp_robustwide/cci_mom`** (11 bots, structurally dead). Kept `exp_robustwide/sma_cross` unchanged
+  (same label/pairs/params → same bot_ids, its history keeps accumulating uninterrupted — verified 33→38
+  trades survived the rebuild). Dedup-guard: 20 NEW (14 retained sma_cross + 6 new ensemble) / 136 SEEN
+  baseline. Rebuilt the image (src/ code change), backfilled the 6 new bot_ids, verified 156 heartbeats
+  fresh / 0 errors / 0 stale post-restart, cleaned 11 orphaned cci_mom/wide heartbeats. `bot_registry.py
+  build` folded the new snapshot in.
+- **10b STAGING:** first time `promote_to_staging.py` found REAL qualifying dev cells (win>=50%, net>0,
+  n>=10) instead of falling back to the lockbox-leads seed: APTUSDT/cci_mom (n=10, 70% win, +$0.77) and
+  DOGEUSDT/cci_mom (n=10, 50% win, +$0.17). Selection changed → applied per the standing 10b policy
+  (24-bot fallback seed → 2 bots). **Caveat flagged honestly:** n=10/cell is thinner than this loop's own
+  established noise floor (n=30-50+ before a read is trustworthy) — this could easily reverse next
+  firing. Worth reconsidering promote_to_staging's minimum-n floor in a future iteration, not changed here
+  (out of scope for a routine 10b step).
+- **CHECK STOP:** **neither condition met.** ensemble_3of4 is the best-ever R/R/lockbox-breadth signal
+  but still fails win>55% and has a thin recent-era margin — a live FORWARD-TEST lead, not a confirmed
+  edge. Loop continues.
 
 ### Iteration 51 — 2026-07-06 (fresh angle: HIGHER-TIMEFRAME (4h) trend confirmation on the 4 deployed 1h leads — recent-era lift is real but inconsistent per-lead and CRATERS in the lockbox for the best cell (sma_cross); REFUTED, HOLD)
 
