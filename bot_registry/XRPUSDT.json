@@ -3249,7 +3249,7 @@
       "first_seen_subject": "research(loop) iter 18: MACD found +EV CROSS-ERA at 1h -> deploy 1h macd_cross cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 12,
+      "snapshot_count": 13,
       "example_bot_id": "dev-XRPUSDT-1h-macd_cross-01"
     },
     {
@@ -3277,7 +3277,7 @@
       "first_seen_subject": "research(loop) iter 22: deploy macd_rsi (MACD cross + RSI-50 confirm) 1h cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 11,
+      "snapshot_count": 12,
       "example_bot_id": "dev-XRPUSDT-1h-macd_rsi-01"
     },
     {
@@ -3305,7 +3305,7 @@
       "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 9,
+      "snapshot_count": 10,
       "example_bot_id": "dev-XRPUSDT-1h-cci_mom-01"
     },
     {
@@ -3333,7 +3333,7 @@
       "first_seen_subject": "research(loop) iter 32: deploy sma_cross \u2014 4th cross-era +EV 1h signal",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 8,
+      "snapshot_count": 9,
       "example_bot_id": "dev-XRPUSDT-1h-sma_cross-01"
     },
     {
@@ -3427,7 +3427,7 @@
       "first_seen_subject": "research(loop): iter 44 \u2014 deploy exp_robustwide (sma_cross/cci_mom wide-exit on robust pairs); retire refuted flowgate",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 5,
       "example_bot_id": "dev-XRPUSDT-1h-exp_robustwide_sma_cross-01"
     },
     {
@@ -3483,7 +3483,7 @@
       "first_seen_subject": "feat(ensemble): deploy ensemble_3of4 cross-signal voting confluence; retire dead exp_robustwide/cci_mom arm",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 3,
       "example_bot_id": "dev-XRPUSDT-1h-exp_ensemble_ensemble_3of4-01"
     }
   ]
