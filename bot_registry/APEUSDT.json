@@ -461,7 +461,7 @@
       "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 10,
+      "snapshot_count": 11,
       "example_bot_id": "dev-APEUSDT-1h-macd_rsi-01"
     },
     {
@@ -489,7 +489,7 @@
       "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 10,
+      "snapshot_count": 11,
       "example_bot_id": "dev-APEUSDT-1h-macd_cross-01"
     },
     {
@@ -517,7 +517,7 @@
       "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 9,
+      "snapshot_count": 10,
       "example_bot_id": "dev-APEUSDT-1h-cci_mom-01"
     },
     {
@@ -545,7 +545,7 @@
       "first_seen_subject": "research(loop) iter 32: deploy sma_cross \u2014 4th cross-era +EV 1h signal",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 8,
+      "snapshot_count": 9,
       "example_bot_id": "dev-APEUSDT-1h-sma_cross-01"
     }
   ]
