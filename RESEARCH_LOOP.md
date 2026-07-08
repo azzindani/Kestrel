@@ -271,13 +271,16 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **ACTIVE — `exp_ensemble` (iter 52, NEW):** **6 bots** = `ensemble_3of4` (new registered pattern: fires
-  only when >=3 of the 4 deployed 1h leads agree on direction at the same candle) × {ETH,DOGE,PEPE,XRP,
-  SOL,ADA}, MEDIUM exit (tp2.0/sl1.0/hold6). First genuinely new structural signal in a while: backtest
-  (1h maker, 7 pairs, walk-forward OOS + lockbox) recent expR +0.07 / lockbox expR +0.14 (net +$2.63, R/R
-  1.68 — best R/R on record, breadth 6/7 pairs). +EV pooled BOTH eras but recent margin thin, per-pair
-  cross-era-robust core only 2 pairs (DOGE/XRP) — thinner evidence than cci_mom/sma_cross's 5-pair cores.
-  NOT a confirmed edge (win <55% both eras). Watch live.
+- **ACTIVE — `exp_ensemble` (iter 52, EXPANDED iter 53):** **11 bots** = `ensemble_3of4` (new registered
+  pattern: fires only when >=3 of the 4 deployed 1h leads agree on direction at the same candle) ×
+  {ETH,DOGE,PEPE,XRP,SOL,ADA,CHZ,FET,GALA,TIA,WLD}, MEDIUM exit (tp2.0/sl1.0/hold6). First genuinely new
+  structural signal in a while: backtest (1h maker, walk-forward OOS + lockbox) recent expR +0.07 /
+  lockbox expR +0.14 (net +$2.63, R/R 1.68 — best R/R on record, breadth 6/7 pairs on the original 7-pair
+  set). +EV pooled BOTH eras but recent margin thin, per-pair cross-era-robust core only 2 pairs
+  (DOGE/XRP) — thinner evidence than cci_mom/sma_cross's 5-pair cores. **Iter 53 swept the remaining 28
+  fleet pairs**: broad expansion REFUTED at the pooled level (recent +EV 18/28 pairs but LOCKBOX
+  NEGATIVE, 8/26 pairs — data-mined), but 5 pairs are genuinely cross-era-robust (CHZ/FET/GALA/TIA/WLD) →
+  added additively. NOT a confirmed edge (win <55% both eras). Watch live.
 - **ACTIVE — `exp_robustwide/sma_cross` (iter 44, EXPANDED iter 45):** **14 bots** = sma_cross/wide ×
   {ETH,DOGE,PEPE,XRP,BNB,AVAX,ATOM,DOT,ETC,FIL,INJ,LINK,UNI,XLM}, WIDE exit (tp3.0/sl1.5/hold8). Still
   accumulating (38 trades as of iter 52, net −$1.06) — below the n=50 retirement bar. NOT a confirmed edge.
@@ -492,6 +495,13 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   (1-in-6 luck). The iter-3 "8/120 net-maker survivors" was a multiple-testing/threshold artifact.
   Not a net-of-cost edge. `session_seasonal` pattern stays registered (tested) but undeployed.
 
+- **Blanket ensemble_3of4 expansion to all 34 fleet pairs** (iter 53) — swept the 28 untested pairs
+  (1h maker medium, recent + untouched prior-year lockbox). Pooled RECENT is +EV (avg $0.0049/t, 18/28
+  pairs+) but pooled LOCKBOX is NEGATIVE (avg −$0.0061/t, only 8/26 pairs+) — the classic recent-improves/
+  lockbox-collapses data-mining signature seen throughout this ledger (ema_cross, vwap_mom, 4h MACD,
+  compress_vol_break…). A blind "deploy everywhere" expansion is REFUTED. The productive version is
+  per-pair: only CHZ/FET/GALA/TIA/WLD are +EV in BOTH eras (deployed, see CURRENT COHORT) — concentrate,
+  don't blanket-deploy. Don't re-try a full-fleet ensemble expansion without a materially new filter.
 - **Higher-timeframe (4h) EMA9/21 trend confirmation on the 1h leads** (iter 51) — `--htf-confirm` in
   algo_search.py, 1h maker medium exit, robust core (ETH/DOGE/PEPE/XRP/BTC), recent + lockbox. Filtering
   entries to agree with a genuinely SEPARATE higher-timeframe's trend (not a same-TF regime gate like ADX/
@@ -554,6 +564,47 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 53 — 2026-07-08 (EXPAND exp_ensemble 6->11 pairs — swept the 28 untested fleet pairs; blanket expansion REFUTED at pooled level, 5-pair cross-era-robust core found and deployed: CHZ/FET/GALA/TIA/WLD)
+
+- **CONTEXT:** fleet 156 dev / 2 lab / 2 staging, 0 errors 24h, 0 stale heartbeats.
+- **MEASURE (live, split_part(bot_id,'-',4)):** `macd_cross` remains the standout, now 76t/50.0%win/
+  **+$1.67** (up from +$1.21 at iter 52). `cci_mom`(medium) continued its slide from iter 52: 164t/44.5%/
+  **−$1.76** (was −$1.14/158t — a 3-iteration downtrend from +$1.45→−$1.14→−$1.76, though still just a
+  live read, not cross-validated — the same discipline that flagged sma_cross's earlier swings as noise
+  applies here). `sma_cross`(medium) 71t/36.6%/−$1.17 (down from −$0.67). `macd_rsi` 82t/43.9%/−$0.41
+  (flat). `exp_robustwide/sma_cross`(wide) 34t/−$1.19, still below the n=50 retirement bar. `exp_ensemble`
+  (new iter 52): **0 closed trades yet** — 1h cross-signals + medium exit take time, not a fault.
+  Whole dev fleet 509 trades, 41.1% win, net **−$6.31** (worse than iter 52's −$5.49 — consistent with
+  regression toward the established no-edge baseline as the earlier lucky streak unwinds).
+- **DIAGNOSE:** cci_mom(medium)'s sustained live decline is the one real thing to note (3 consecutive
+  reads all negative and worsening), but with no backtest cross-validation this stays an observation, not
+  an action — the loop's own history is full of live swings (sma_cross −1.33→−0.49→−1.17) that later
+  proved to be noise. The more actionable item: `exp_ensemble` is brand new with only 6 pairs and hasn't
+  traded yet — the natural, low-risk, evidence-based next step (mirroring iter 45's cci_mom/sma_cross wide
+  expansion) is a per-pair breadth check on the remaining 28 fleet pairs before it accumulates further.
+- **HYPOTHESIZE + BACKTEST (1h, medium exit, maker, 28 untested pairs, `--by-pair`, walk-forward OOS +
+  untouched prior-year lockbox):**
+  - RECENT: pooled avg **+$0.0049/t**, win 43.3%, n=913, expR +0.09 — **18/28 pairs +EV**.
+  - LOCKBOX: pooled avg **−$0.0061/t**, win 38.3%, n=853, expR −0.02 — only **8/26 pairs +EV** (2 pairs,
+    HYPE/SEI, lack 2-yr history — the known iter-45 data-availability gap).
+  - Pooled lockbox is NEGATIVE despite pooled recent being positive — the textbook recent-improves/
+    lockbox-collapses data-mining signature (ema_cross, vwap_mom, 4h MACD, compress_vol_break, …).
+  - **Per-pair overlap of BOTH-eras-positive pairs: CHZ (+0.0072/+0.0439), FET (+0.0189/+0.0135), GALA
+    (+0.0012/+0.0367), TIA (+0.0518/+0.0132), WLD (+0.0257/+0.0304) — 5 pairs**, a genuine cross-era-
+    robust core (matching the established ~5-pair pattern from cci_mom/sma_cross, iter 43). BTC recent
+    +0.0011/lockbox −0.0151 — consistent with its known universal-loser status (sanity check passed).
+- **DECIDE:** **blanket 28-pair expansion REFUTED** (pooled lockbox negative) — added to the refuted
+  ledger. **Concentrated 5-pair expansion DEPLOYED** (evidence-based, mirrors the iter-43/45 playbook):
+  additive, same `exp_ensemble` label/params → original 6 bot_ids untouched, 5 new added. Fleet
+  156→161. Dedup-guard: 5 NEW / 156 SEEN.
+- **APPLY:** rebuilt `bots.json` via `build_exp_cohort.py`, validated load, lint+tests green (no src/
+  change this iteration — config-only), committed+pushed, CI green, `docker compose restart kestrel`
+  (config-only, no rebuild), backfilled the 5 new bot_ids, verified 161 heartbeats fresh / 0 errors / 0
+  stale, `bot_registry.py build` folded the snapshot in.
+- **10b STAGING:** selection unchanged (still APT/DOGE cci_mom, n=10 each) — no churn, let it accumulate.
+- **CHECK STOP:** **neither condition met.** ensemble_3of4 now has 11 evidence-backed pairs; still a
+  forward-test LEAD not a confirmed edge. Loop continues.
 
 ### Iteration 52 — 2026-07-07 (DEPLOY: ensemble_3of4 cross-signal voting confluence — the 5th cross-era +EV signal and best-ever R/R/lockbox-breadth, but thin recent margin — NOT a confirmed edge; RETIRE structurally-dead exp_robustwide/cci_mom)
 
