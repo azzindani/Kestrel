@@ -47,6 +47,16 @@ Constants: `_MIN_LIQ_DISTANCE_PCT = 0.015`, `_MIN_RR = 1.2`,
 Rule 3 also short-circuits with `reason="sl_distance_zero"` if the stop distance is exactly
 zero (a degenerate signal) before computing the R/R ratio.
 
+> **Rule 3 vs the 70% win-rate target — a documented incompatibility (2026-07-09).** Win
+> rate is largely a function of exit geometry: with TP/SL ratio `g`, the no-tilt baseline
+> is ≈ `1/(1+g)` — so Rule 3's `g ≥ 1.2` floor caps the achievable win rate around
+> 45–50%, and the fleet's observed 39–48% is exactly that geometry expressing itself.
+> Reaching a 70% win rate requires `g ≈ 0.4–0.5` (small TP, wide SL), which Rule 3
+> **rejects at the door**. The [Points Framework](13-points-framework.md) §3 works this
+> out in full; backtests are unaffected (the harness bypasses risk gates), but deploying
+> a high-win geometry live requires amending Rule 3 — a frozen-file/§24 **owner decision**,
+> flagged and not made by the agent.
+
 **Rule 4 is the edge gate.** `round_trip_fee_pct()` returns **0.18%** (taker 0.04%×2 +
 slippage 0.05%×2). A trade's take-profit distance must exceed 1.5× that — so the expected
 gross gain must beat costs by a margin before any order is allowed. This single rule is *why*

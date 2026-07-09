@@ -16,8 +16,10 @@ project is where it is*. It complements two other documents at the repo root:
 | **`docs/`** (here) | The **implementation reference** — how each subsystem is built, with file:line precision. Authoritative for *how it works*. |
 
 If `docs/` and `CLAUDE.md` ever disagree, **`CLAUDE.md` wins** — it is the contract, and
-several of the files it governs are frozen (human-only). This documentation describes the
-code as of commit `f0be6b6` (2026-06-16).
+several of the files it governs are frozen (human-only). This documentation was written at
+commit `f0be6b6` (2026-06-16) and **refreshed 2026-07-09** to reflect the research loop's
+findings (iterations 1–54), the 1h indicator-lead patterns, and the adoption of the
+**[Points Framework](13-points-framework.md)** as the project's primary scoreboard.
 
 ---
 
@@ -39,6 +41,7 @@ Read top-to-bottom for a full understanding, or jump to the subsystem you care a
 | 10 | [Deployment](10-deployment.md) | Docker topology, the three-phase deploy model, `bots.json`, the operational scripts, the reset protocol. |
 | 11 | [Operations](11-operations.md) | Daemon lifecycle, watchdog, scheduler, Telegram alerts, the terminal dashboard, Grafana. |
 | 12 | [Go-Live & Definition of Done](12-go-live.md) | The go-live criteria, per-feature/strategy/deploy DoD, and what would actually change the verdict. |
+| 13 | [**Points Framework**](13-points-framework.md) | **The primary scoreboard since 2026-07-09**: points (bps) + win-rate measurement, the win-rate geometry law, the HiWin strategy program, daily & program targets, scalability model. |
 
 ---
 
@@ -49,14 +52,19 @@ Read top-to-bottom for a full understanding, or jump to the subsystem you care a
   (in `dev`) simulates the order or (in `prod`) places a real one. Every candle, signal,
   trade, and event is persisted to PostgreSQL. Multiple bots run in **one asyncio event
   loop** in one process.
-- **Where it is:** a **120-bot paper lab** (10 pairs × 3 momentum strategies × 4
-  timeframes) on a Gate.io data feed, simulation execution, real fees modelled. No real
-  capital, no live keys.
-- **The honest verdict:** *no cross-year-robust tradeable edge has been found* in any
-  hand-written OHLCV entry, at any timeframe, under taker **or** maker fees. The apparent
-  4h momentum "win" was refuted by an untouched prior-year lockbox. Kestrel today is a
-  rigorously-built research and forward-testing platform, **not** a proven money machine.
-  See [Overview §5](01-overview.md#5-honest-status--no-proven-edge) and
+- **Where it is:** a **~161-bot dev paper fleet** (34 liquid pairs × the validated 1h
+  indicator leads + experimental cohorts), plus small staging and lab tiers, on a Gate.io
+  data feed, simulation execution, real fees modelled. Maintained by an autonomous daily
+  **research loop** (`RESEARCH_LOOP.md`, 54 iterations and counting). No real capital, no
+  live keys.
+- **The honest verdict:** after 54 research iterations, **five 1h signals are +EV in both
+  a recent-year walk-forward AND an untouched prior-year lockbox** (`macd_cross`,
+  `macd_rsi`, `cci_mom`, `sma_cross`, `ensemble_3of4`) — real, but marginal: their gross
+  edge (~1–15 bps/trade) sits at or below the fee floor, and none clears the formal
+  deflated-Sharpe bar. *No confirmed net-of-fee edge exists yet.* Since 2026-07-09 the
+  project scores itself in **points + win rate** (the [Points Framework](13-points-framework.md))
+  to separate signal quality from fee economics. See
+  [Overview §5](01-overview.md#5-honest-status--no-proven-edge) and
   [Backtesting & Research](09-backtesting-research.md).
 
 ---
