@@ -191,20 +191,18 @@ class Daemon:
             {},
         )
 
-        # Close all open positions
+        # Close all open positions — reuse _close_position so the trades row
+        # actually gets its exit_ts/close_reason/pnl written (CLAUDE.md §11
+        # single-source-of-truth). The old code called execution.close_position()
+        # directly and only logged an event, leaving the DB row open forever;
+        # on restart the position vanishes from the fresh execution instance's
+        # in-memory state (SimulationExecution never persists across restarts)
+        # so nothing ever closes it — a permanent ghost that also jams the bot's
+        # bucket via count_active_positions.
         try:
             positions = await self.execution.reconcile()
             for pos in positions:
-                await self.execution.close_position(pos["pair"], "manual")
-                await db.write_event(
-                    self.cfg.bot_id,
-                    self.session_id,
-                    self.cfg.env.value,
-                    "INFO",
-                    "position",
-                    "position_closed_on_stop",
-                    {"pair": pos["pair"]},
-                )
+                await self._close_position(pos["pair"], "manual", None)
         except Exception as exc:
             await db.write_event(
                 self.cfg.bot_id,
