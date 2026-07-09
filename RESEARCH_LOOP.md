@@ -280,7 +280,9 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
   (DOGE/XRP) — thinner evidence than cci_mom/sma_cross's 5-pair cores. **Iter 53 swept the remaining 28
   fleet pairs**: broad expansion REFUTED at the pooled level (recent +EV 18/28 pairs but LOCKBOX
   NEGATIVE, 8/26 pairs — data-mined), but 5 pairs are genuinely cross-era-robust (CHZ/FET/GALA/TIA/WLD) →
-  added additively. NOT a confirmed edge (win <55% both eras). Watch live.
+  added additively. NOT a confirmed edge (win <55% both eras). **Iter 54: only 2 closed trades total
+  (100% win, +$0.36) — still far too thin to read; one of the 2 had been silently jammed as a ghost
+  position (see iter 54's Daemon.stop() fix) and is only counted now that it's been recovered.** Watch live.
 - **ACTIVE — `exp_robustwide/sma_cross` (iter 44, EXPANDED iter 45):** **14 bots** = sma_cross/wide ×
   {ETH,DOGE,PEPE,XRP,BNB,AVAX,ATOM,DOT,ETC,FIL,INJ,LINK,UNI,XLM}, WIDE exit (tp3.0/sl1.5/hold8). Still
   accumulating (38 trades as of iter 52, net −$1.06) — below the n=50 retirement bar. NOT a confirmed edge.
@@ -564,6 +566,68 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 54 — 2026-07-09 (CRITICAL DATA-INTEGRITY FIX: Daemon.stop() never persisted position closes to DB — 79/161 dev bots (49%) were permanently jammed with ghost open positions, some 278h+ old; fixed + cleaned up. No new signal search this firing.)
+
+- **CONTEXT:** fleet 161 dev / 2 lab / 2 staging, 0 errors 24h, 0 stale heartbeats.
+- **MEASURE (live, split_part(bot_id,'-',4)):** while pulling the usual per-algo split, checked open-position
+  ages for the first time in the loop's history (previously MEASURE only ever read CLOSED trades) — found
+  **79 open dev positions**, many far past their 6-8 candle intended max_hold: the oldest **278.5 hours**
+  (11.6 days) open, dozens at 230-245h, the newest only 1.5-28.5h (the just-deployed exp_ensemble bots).
+- **DIAGNOSE (root cause, §5 protocol — read source, trace the pipeline):** traced one stuck position
+  (`dev-XRPUSDT-1h-exp_ensemble_ensemble_3of4-01`, open 28.5h) — its events showed a `position_closed_on_stop`
+  entry from the iter-53 restart (00:44:08 UTC 07-08) with `trade_id=NULL`, yet the trades row still had
+  `exit_ts=NULL` right now. Read `src/engine/daemon.py` `stop()`: it called `execution.close_position(pair,
+  "manual")` directly and only wrote an EVENT — never called `db.close_trade()`. Compare to the correct
+  internal helper `_close_position()` (used for every TP/SL/timeout close, and already correctly used by
+  `force_close_all()`, the portfolio-guard path) which DOES call `db.close_trade()` — its own inline comment
+  even warns "without this the row stays exit_ts=NULL forever ... blocking future signals via bucket_limit."
+  `SimulationExecution.reconcile()` is documented as "nothing persists across restarts" (in-memory only, per
+  its own docstring) — so on EVERY restart, any position still open at that moment gets marked closed at the
+  execution layer (in-memory) and logged, but its DB row is orphaned forever; the NEXT process has no memory
+  of it either, so nothing ever revisits it. This is a direct violation of CLAUDE.md §11 (position state
+  authoritative in DB) and §16 (STOP must "write final state"). **Impact quantified:** risk Rule 1
+  (`active_positions < max_active_buckets`, default 1) means a bot with a ghost position can NEVER open
+  another trade — **79 of 161 dev bots (49%) were silently, permanently dead** for durations up to 11.6 days,
+  invisible to every prior MEASURE step (which only ever read closed-trade aggregates, never open-position
+  counts). This likely explains a chunk of the "sharp live swings" flagged as noise in iters 49-53 (e.g.
+  cci_mom's −$2.59 single-iteration reversal, iter 52) — the live sample wasn't just noisy, the effective
+  trading fleet size was silently shrinking between reads as more bots got jammed by each restart.
+- **FIX (src/engine/daemon.py):** `stop()`'s shutdown-close loop now calls `self._close_position(pos["pair"],
+  "manual", None)` — the same tested helper `force_close_all()` already used — instead of duplicating a
+  broken subset of its logic. Added `tests/unit/engine/test_daemon_stop.py` (4 tests): the close persists
+  trade_id/close_reason/pnl to DB, `_open_trade_ids` is popped, a no-open-positions stop writes nothing, and
+  a reconciled position with no matching `_open_trade_ids` entry (an already-ghosted one) doesn't raise.
+- **CLEANUP (one-time SQL recovery, `env='dev'` only, backup_db.py run first — 128 MB lean dump):** closed
+  all 79 orphaned trades using the same economics `close_position()` applies to a non-take-profit exit
+  (manual closes always market out: taker fee 0.04% + slippage 0.05%, regardless of maker_execution), marked
+  at each bot's LATEST available candle close price (the most honest available "if closed now" mark),
+  `close_reason='manual'`, `hold_candles=NULL` (genuinely unknown — not fabricated). Tagged each with a
+  `position_closed:manual_ghost_recovered` event carrying its trade_id for auditability. **Result: 79 trades
+  recovered, net −$3.16** (small — the bulk of the damage was the jammed buckets sitting idle, not directional
+  loss on the stale marks). Verified 0 dev orphans remain post-cleanup.
+- **ALSO FOUND, NOT TOUCHED (out of scope, flagged for owner):** the same latent bug affects `lab` (2 orphans)
+  and `staging` (5 orphans) — both share the identical `Daemon.stop()` code path. Left alone this firing
+  (lab is the owner's own sandbox via `lab.py`; staging is never-reset by standing policy) — worth a follow-up
+  cleanup pass, either owner-directed or a future 10b-adjacent step.
+- **SHIP:** ruff format+check clean, full test suite green (was 349 passed pre-iteration + 4 new = clean),
+  committed+pushed main `168bdbb`, **CI green**, rebuilt image (src/ code change) via
+  `docker compose up -d --build kestrel`. **No bots.json/exp_candidate.json change this iteration** (pure bug
+  fix, no cohort rotation) → `bot_registry.py build` not needed. Verified post-rebuild: 161 dev heartbeats
+  fresh, 0 stale, 0 errors, **0 open-position orphans** (the restart that shipped the fix ran on the
+  OLD/buggy container code one last time, but nothing was open in that exact window, so it created no new
+  ghosts — confirmed by re-checking `exit_ts IS NULL` count = 0 immediately after).
+- **HONEST FRAME:** this is a data-integrity/observability fix, not a new signal — it does not create edge.
+  Whole dev fleet net-of-ghosts is now **612 closed trades, 42.0% win, net −$10.59** (was −$7.42 before the
+  79 recovered ghosts were counted) — same order-of-magnitude no-edge picture as always, now measured
+  correctly instead of on an artificially-shrinking active fleet. `exp_ensemble` still has only 2 closed
+  trades total (100% win, +$0.36 — meaningless n=2) — far too thin to read; unaffected by this fix since
+  neither of its 2 open positions had been orphaned before now (one WAS a ghost, recovered in this cleanup).
+- **10b STAGING:** selection unchanged (still APT/DOGE cci_mom) — no churn.
+- **CHECK STOP:** **neither condition met.** No new signal was searched this firing — deliberate, matching
+  the loop's own precedent for dedicated infra-fix iterations (9, 10, 15, 19, 20, 21, 48): a real,
+  quantified, fleet-wide correctness bug outranks a marginal signal tweak. The fix restores the loop's own
+  measurement integrity going forward. Loop continues.
 
 ### Iteration 53 — 2026-07-08 (EXPAND exp_ensemble 6->11 pairs — swept the 28 untested fleet pairs; blanket expansion REFUTED at pooled level, 5-pair cross-era-robust core found and deployed: CHZ/FET/GALA/TIA/WLD)
 
