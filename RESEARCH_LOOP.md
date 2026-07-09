@@ -414,6 +414,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## REFUTED LEDGER (do not re-try these without a materially new variant)
 
+- **Mean-reversion-FADE family, FINAL (iter 55c — tested at its NATURAL high-win geometry, the last
+  materially-new variant it had):** rsi2_ct/raw · stoch_revert · cci_revert · bb_fade · wick_revert ·
+  spike_fade · vwap_revert · compress_fade × 4 hiwin exits × 10 pairs, 1h maker, points scoreboard,
+  recent + lockbox. 12/48 cells clear the joint GROSS bar cross-era but **ZERO clear maker-viable
+  (≥ +4 bps) in both eras**; cci_revert/compress_fade/wick_revert gross-negative BOTH eras, spike_fade
+  recent-negative, rsi2 lockbox-only. Corrected rule: fades carry a small real gross drift (+1..+3 bps)
+  that is permanently sub-fee-shelf — **signal-only, never deployable at any geometry**. This is
+  UNCONDITIONAL: no further fade re-tests; only a sub-1.3 bps venue (§4) could reopen it.
 - **Single-rule entries** — lose at every TF/asset; param sweep 0/36; algo_search 18 archetypes
   × crypto+forex × 5m/1h/4h/1d = 0 viable.
 - **mom_adx / triple_mom @ 4h** — recent-year +EV was a **data-mining / single-regime artifact**;
@@ -576,6 +584,42 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 55c — 2026-07-09 (S2 mean-rev re-audit + S4 marginal revival under the points bar: 12/48 cells clear the joint gross bar cross-era but ZERO clear maker-viable in both eras → NO deploy; the "fade always fails the lockbox" rule REFINED, four fade algos permanently refuted; Grafana points row shipped)
+
+- **SCOPE (docs/13 §5 S2 + S4, completing task #8):** 12 algos — the full mean-rev/fade family
+  (`rsi2_ct`, `rsi2_raw`, `stoch_revert`, `cci_revert`, `bb_fade`, `wick_revert`, `spike_fade`,
+  `vwap_revert`, `compress_fade`) + the marginal-revival candidates (`stoch_ct`, `compress_vol_break`,
+  `vwap_mom`) × the 4 hiwin exits × 10 pairs × 1h maker, `--points`, walk-forward OOS recent
+  + untouched prior-year lockbox. 48 combos/era. Legacy §30 verdict on the same runs: 0 survivors
+  (structurally blind to g<1.2, as expected).
+- **RESULT — the joint gross bar (pwin ≥65% AND avg_bps >0, n≥30) cross-era:** recent 16/48,
+  lockbox 24/48, **intersection 12/48** — bb_fade/{hiwin33,hiwin43,scratch}, stoch_revert/{hiwin33,
+  scratch}, vwap_mom/{hiwin33,hiwin43,scratch}, compress_vol_break/{hiwin33,hiwin43},
+  vwap_revert/hiwin33, stoch_ct/scratch. **BUT zero cells clear the maker-viable shelf (≥ +4 bps
+  gross) in BOTH eras** — best cross-era cells sit at +2..+4 recent / +1..+3 lockbox
+  (stoch_revert/scratch +4.04 recent but +1.90 lockbox; rsi2 family +4.6..+5.0 lockbox but
+  NEGATIVE/flat recent = single-era regime artifact). Gross R-expectancies hover 0.00–0.04 —
+  roughly HALF the S1 momentum survivors' magnitude.
+- **VERDICT: NO deploy candidate.** The S1 momentum leads (iter 55: 12 cells at ≥ +4 bps BOTH eras,
+  top cell +7.7/+13.6) strictly dominate everything the fade family produces; exp_hiwin stays the
+  sole live cohort of the points program, unchurned.
+- **THE REFINEMENT (honest update to the ledger's oldest rule):** "mean-reversion-fade always fails
+  the lockbox" was partly a GEOMETRY artifact — at classic R/R≥1.2 brackets the fades were
+  gross-negative; at their natural inverted geometry several are gross-POSITIVE cross-era. The
+  corrected rule: **fade signals carry a small real gross drift (+1..+3 bps) that is permanently
+  sub-fee-shelf — signal-only, never deployable**; momentum-breakout remains the only family that
+  clears the maker floor cross-era.
+- **PERMANENT REFUTATIONS (ledger):** `cci_revert`, `compress_fade`, `wick_revert` — gross-NEGATIVE
+  in both eras even at natural geometry (nothing left to rescue); `spike_fade` — recent-negative
+  (−7..−10 bps, all exits), lockbox marginal = single-era; `rsi2_*` under hiwin — lockbox-only.
+- **ALSO SHIPPED (task #8's other half):** Grafana **Points Scoreboard** section on the main board
+  (9 panels: fleet points win %, points expectancy vs the 65/70 + 0/+4 thresholds, aggregate points
+  today, exp_hiwin live-leg trade counter toward 100, rolling points win-rate vs the 70% line,
+  per-lead expectancy, per-arm exp_hiwin table; 153 → 162 panels, commit `b7f980d`).
+- Reports: `reports/algo_search_20260709-104429.md` (recent) + `-104957.md` (lockbox). No fleet
+  change → nothing reset, no rebuild. S1b (points-DSR + taker stress on the S1 survivors) stays
+  the queued next research step; the exp_hiwin ≥100-trade live leg accumulates.
 
 ### Iteration 55b — 2026-07-09 (OWNER AUTHORIZED RULE 3 + DEPLOYED exp_hiwin: "i authorize you to amend rule 3, deploy it" — the live leg of the points program begins)
 
