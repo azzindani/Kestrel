@@ -963,6 +963,113 @@ table(
 )
 
 # ════════════════════════════════════════════════════════════════════════════
+# 4b — Points Scoreboard (docs/13-points-framework.md — the primary scoreboard
+# since 2026-07-09: gross bps of entry price + win rate, fee-free by design).
+# Daily targets (§6.2): points win ≥ 65% (standard 70), expectancy > 0
+# (maker-viable ≥ +4 bps), aggregate ≥ +100 bps/day, ≥ 30 closed/day.
+# ════════════════════════════════════════════════════════════════════════════
+section("📏 Points Scoreboard (gross bps — docs/13)")
+_PTS = (
+    "CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 "
+    "ELSE (entry_price-exit_price)/entry_price*10000.0 END"
+)
+TH_PWIN = {
+    "mode": "absolute",
+    "steps": [{"color": "red", "value": None}, {"color": "orange", "value": 65}, {"color": "green", "value": 70}],
+}
+TH_PTS_EXP = {
+    "mode": "absolute",
+    "steps": [
+        {"color": "red", "value": None},
+        {"color": "orange", "value": 0},
+        {"color": "green", "value": 4},  # ≥ +4 bps gross = maker-viable shelf
+    ],
+}
+TH_PTS_DAY = {
+    "mode": "absolute",
+    "steps": [{"color": "red", "value": None}, {"color": "orange", "value": 0}, {"color": "green", "value": 100}],
+}
+stat(
+    "Points Win Rate (all closed)",
+    4,
+    5,
+    f"SELECT ROUND(100.0*AVG(({_PTS}>0)::int),1) FROM trades WHERE exit_ts IS NOT NULL",
+    unit="percent",
+    thresholds=TH_PWIN,
+)
+stat(
+    "Points Expectancy (gross bps/trade)",
+    4,
+    5,
+    f"SELECT ROUND(AVG({_PTS})::numeric,2) FROM trades WHERE exit_ts IS NOT NULL",
+    thresholds=TH_PTS_EXP,
+    decimals=2,
+)
+stat(
+    "Aggregate Points Today (UTC)",
+    4,
+    5,
+    f"SELECT COALESCE(ROUND(SUM({_PTS})::numeric,1),0) FROM trades WHERE exit_ts >= (extract(epoch from date_trunc('day', now() AT TIME ZONE 'utc'))*1000)::bigint",
+    thresholds=TH_PTS_DAY,
+    decimals=1,
+)
+stat(
+    "Closed Trades Today (UTC)",
+    4,
+    5,
+    "SELECT COUNT(*) FROM trades WHERE exit_ts >= (extract(epoch from date_trunc('day', now() AT TIME ZONE 'utc'))*1000)::bigint",
+    thresholds={
+        "mode": "absolute",
+        "steps": [{"color": "red", "value": None}, {"color": "orange", "value": 10}, {"color": "green", "value": 30}],
+    },
+)
+stat(
+    "exp_hiwin Points Win %",
+    4,
+    5,
+    f"SELECT ROUND(100.0*AVG(({_PTS}>0)::int),1) FROM trades WHERE exit_ts IS NOT NULL AND bot_id LIKE '%exp_hiwin%'",
+    unit="percent",
+    thresholds=TH_PWIN,
+)
+stat(
+    "exp_hiwin Closed Trades (→100-trade live leg)",
+    4,
+    5,
+    "SELECT COUNT(*) FROM trades WHERE exit_ts IS NOT NULL AND bot_id LIKE '%exp_hiwin%'",
+    thresholds={
+        "mode": "absolute",
+        "steps": [{"color": "red", "value": None}, {"color": "orange", "value": 30}, {"color": "green", "value": 100}],
+    },
+)
+ts(
+    "Rolling Points Win-Rate — last 20 vs cumulative (70% = §6.3 program target)",
+    24,
+    7,
+    f'SELECT q.t AS "time", q.r20 AS "rolling_20", q.cum AS "cumulative" FROM (SELECT exit_ts, to_timestamp(exit_ts/1000.0) AS t, 100.0*AVG(({_PTS}>0)::int) OVER (ORDER BY exit_ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS r20, 100.0*AVG(({_PTS}>0)::int) OVER (ORDER BY exit_ts) AS cum FROM trades WHERE exit_ts IS NOT NULL) q WHERE q.t BETWEEN $__timeFrom() AND $__timeTo() ORDER BY q.exit_ts',
+    unit="percent",
+    mx=100,
+    tline=70,
+    fill=8,
+)
+bargauge(
+    "Points Expectancy by Lead (gross bps/trade)",
+    12,
+    8,
+    f"SELECT split_part(bot_id,'-',4) AS metric, ROUND(AVG({_PTS})::numeric,2) AS value FROM trades WHERE exit_ts IS NOT NULL GROUP BY 1 ORDER BY value DESC",
+    thresholds=TH_PTS_EXP,
+)
+table(
+    "exp_hiwin Cohort — per-arm points scoreboard (live leg of §6.3)",
+    12,
+    8,
+    f"SELECT split_part(bot_id,'-',4) AS arm, COUNT(*) AS n, ROUND(100.0*AVG(({_PTS}>0)::int),1) AS pts_win, ROUND(AVG({_PTS})::numeric,2) AS avg_bps, ROUND(SUM({_PTS})::numeric,1) AS total_bps, ROUND(SUM(pnl_net_usdt),4) AS net_usd FROM trades WHERE exit_ts IS NOT NULL AND bot_id LIKE '%exp_hiwin%' GROUP BY 1 ORDER BY avg_bps DESC NULLS LAST",
+    overrides=[
+        col_override("pts_win", "percent", bg=False, th=TH_PWIN),
+        col_override("net_usd", "currencyUSD"),
+    ],
+)
+
+# ════════════════════════════════════════════════════════════════════════════
 # 5 — Risk, Streaks & Expectancy
 # ════════════════════════════════════════════════════════════════════════════
 section("⚖️ Risk, Streaks & Expectancy")
