@@ -51,9 +51,9 @@
   "tp_atr_multiplier": {
     "value": 2.4,
     "type": "float",
-    "range": [0.8, 3.0],
-    "description": "Take-profit distance expressed as ATR14 multiples from entry",
-    "impact": "higher = larger TP targets, lower win rate but higher avg win per trade"
+    "range": [0.4, 3.0],
+    "description": "Take-profit distance expressed as ATR14 multiples from entry (range floor 0.8->0.4 in CLAUDE.md v2.6, owner-authorized 2026-07-09: permits the cross-era-validated hiwin inverted-geometry brackets, docs/13-points-framework.md)",
+    "impact": "higher = larger TP targets, lower win rate but higher avg win per trade; sub-1.2x-of-SL values (hiwin) trade win rate up against per-win size"
   },
   "sl_atr_multiplier": {
     "value": 1.5,

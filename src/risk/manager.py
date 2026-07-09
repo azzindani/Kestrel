@@ -10,7 +10,7 @@ Public API (CLAUDE.md §8):
 Six hard validation rules (CLAUDE.md §24):
     1. active_positions < max_active_buckets
     2. liquidation_distance >= 1.5% from entry
-    3. TP_dist / SL_dist >= 1.2
+    3. TP_dist / SL_dist >= 0.25 (v2.6: degenerate-geometry floor, not a style gate)
     4. expected_gross_profit > round_trip_fee × 1.5
     5. session_net_pnl > -5.00 USDT (resets 00:00 UTC)
     6. last_ws_reconnect > 60s ago (or never reconnected)
@@ -33,8 +33,14 @@ _MAINTENANCE_MARGIN_RATE = 0.005
 # Daily session loss limit in USDT (CLAUDE.md §24)
 _DAILY_LOSS_LIMIT_USDT = -5.00
 
-# Minimum R/R ratio (CLAUDE.md §24)
-_MIN_RR = 1.2
+# Minimum R/R ratio (CLAUDE.md §24 — v2.6, owner-authorized 2026-07-09: floor 1.2→0.25).
+# 1.2 was a strategy-style gate that mathematically capped win rate near 45-50%
+# (win ≈ 1/(1+g)) and blocked the cross-era-validated high-win inverted-geometry
+# brackets (docs/13-points-framework.md; RESEARCH_LOOP iter 55). The floor now only
+# rejects DEGENERATE brackets (g < 0.25 = the tightest validated preset); strategy
+# quality is gated by the points joint bar (win ≥ 65% AND expectancy > 0, both eras),
+# enforced at the research/validation layer, not per-signal here.
+_MIN_RR = 0.25
 
 # Minimum liquidation distance from entry (CLAUDE.md §24)
 _MIN_LIQ_DISTANCE_PCT = 0.015  # 1.5%
