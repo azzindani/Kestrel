@@ -919,6 +919,16 @@ EXITS = {
         "trail_activation_r": 1.0,
         "trail_distance_r": 1.0,
     },
+    # HiWin inverted-geometry brackets (docs/13-points-framework.md §5 S1, 2026-07-09).
+    # DELIBERATELY g = tp/sl < 1.2: win rate ~ 1/(1+g), so these are the only
+    # geometries that can reach the owner's 70% win-rate target (g>=1.2 caps it
+    # ~45-50%). Risk Rule 3 rejects g<1.2, so these REQUIRE --points, which bypasses
+    # the R/R floor at runtime for this research process only (frozen risk file
+    # untouched — same precedent as the fee patch above). Scored on GROSS POINTS.
+    "hiwin50": {"tp_atr_multiplier": 0.6, "sl_atr_multiplier": 1.2, "max_hold_candles": 4},
+    "hiwin43": {"tp_atr_multiplier": 0.6, "sl_atr_multiplier": 1.4, "max_hold_candles": 4},
+    "hiwin33": {"tp_atr_multiplier": 0.5, "sl_atr_multiplier": 1.5, "max_hold_candles": 6},
+    "scratch": {"tp_atr_multiplier": 0.5, "sl_atr_multiplier": 2.0, "max_hold_candles": 3},
 }
 
 # Forex / metals universe for --forex mode (yfinance symbols). Majors + crosses +
@@ -1103,6 +1113,44 @@ def _htf_trend_at(trend_map: dict[int, str], entry_ts: int, htf_ms: int) -> Opti
     return None
 
 
+# --------------------------------------------------------------------------- #
+# Points scoreboard (docs/13-points-framework.md, 2026-07-09). 1 point = 1 bp of
+# entry price, direction-signed, computed from FILL prices — so under --fees
+# maker/none (zero slippage) points are pure GROSS directional capture, fee-free
+# by construction. Gross R comes from bg._enrich_trades' realized_R (signed price
+# move / planned risk distance — already fee-free). The survivor bar is the §6.1
+# joint target: points win >= 65% AND points expectancy > 0 (win rate alone is
+# purchasable via geometry and never counts as success on its own).
+# --------------------------------------------------------------------------- #
+
+_POINTS_MIN_N = 30  # same small-sample floor the $-leaderboard survivor line uses
+
+
+def _trade_points_bps(t: dict) -> float:
+    """Direction-signed price move in bps of entry (gross of fees)."""
+    entry, exit_ = float(t["entry_price"]), float(t["exit_price"])
+    sign = 1.0 if t["direction"] == "long" else -1.0
+    return sign * (exit_ - entry) / entry * 10_000.0
+
+
+def _points_metrics(trades: list[dict]) -> dict[str, float]:
+    n = len(trades)
+    if n == 0:
+        return {"n": 0, "win": 0.0, "avg_bps": 0.0, "med_bps": 0.0, "pf": 0.0, "r_exp": 0.0}
+    pts = [_trade_points_bps(t) for t in trades]
+    win_sum = sum(p for p in pts if p > 0)
+    loss_sum = sum(p for p in pts if p <= 0)
+    rs = [float(t.get("realized_R", 0.0)) for t in trades]
+    return {
+        "n": n,
+        "win": sum(1 for p in pts if p > 0) / n,
+        "avg_bps": sum(pts) / n,
+        "med_bps": sorted(pts)[n // 2],
+        "pf": (win_sum / abs(loss_sum)) if loss_sum != 0.0 else float("inf"),
+        "r_exp": sum(rs) / n,
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=45)
@@ -1142,6 +1190,13 @@ def main() -> None:
         help="only keep trades whose direction agrees with the EMA9/21 trend on this HIGHER timeframe "
         "(genuinely new confluence — never same-TF like the ADX/volatility-regime filters)",
     )
+    ap.add_argument(
+        "--points",
+        action="store_true",
+        help="score on the POINTS framework (docs/13-points-framework.md): gross bps of entry price + "
+        "points win rate; ALSO bypasses risk Rule 3's R/R>=1.2 floor at runtime so the inverted-"
+        "geometry hiwin* exit presets can trade (research-only patch; frozen risk file untouched)",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -1150,6 +1205,15 @@ def main() -> None:
     base = dataclasses.replace(base, volume_ratio_min=1.1)  # most-permissive (volume gate is bypassed anyway)
     _apply_fee_model(args.fees)
     _install_search_gates(args.regime)
+    if args.points:
+        # Rule 3 (tp/sl >= 1.2) would reject every hiwin bracket at the door. Bypass the
+        # floor in THIS research process only — the same runtime-patch precedent as
+        # _apply_fee_model (the frozen risk/manager.py is never edited). Rules 1/2/4/5/6
+        # stay live so fee-viability and liquidation realism are preserved.
+        import src.risk.manager as _risk_mgr
+
+        _risk_mgr._MIN_RR = 0.0
+        print("[points] risk Rule 3 R/R floor bypassed for this process (research-only; see docs/13 §9)")
 
     default_pairs = FOREX_PAIRS if args.forex else lab.PAIRS
     pairs = [p.strip() for p in args.pairs.split(",")] if args.pairs else default_pairs
@@ -1290,6 +1354,58 @@ def main() -> None:
     if skipped:
         print(f"  NOTE: {len(skipped)} pair(s) skipped (fetch failed): {', '.join(skipped)}", flush=True)
 
+    if args.points:
+        # POINTS scoreboard (docs/13-points-framework.md §2/§6.1) — gross bps of entry
+        # price, fee-free by construction. Survivor bar = the JOINT §6.1 target:
+        # points win >= 65% AND avg gross bps > 0 AND n >= 30. Win rate alone never counts.
+        prows = []
+        for (algo, exit_name), d in pooled.items():
+            po = _points_metrics(d["oos"])
+            pi_ = _points_metrics(d["ins"])
+            prows.append({"algo": algo, "exit": exit_name, "oos": po, "ins": pi_})
+        prows.sort(key=lambda r: (r["oos"]["n"] == 0, -r["oos"]["avg_bps"]))
+
+        print("\n=== POINTS LEADERBOARD (gross bps of entry price — OOS pooled; docs/13 §2) ===", flush=True)
+        print(
+            f"  {'algo':16s} {'exit':7s} {'n':>5s} {'pwin%':>6s} {'avg_bps':>8s} {'med_bps':>8s} "
+            f"{'ptsPF':>6s} {'grossR':>7s} {'IS→OOS':>8s}",
+            flush=True,
+        )
+        for r in prows:
+            po, pi_ = r["oos"], r["ins"]
+            if po["n"] == 0:
+                continue
+            pf_s = f"{po['pf']:6.2f}" if po["pf"] != float("inf") else "   inf"
+            print(
+                f"  {r['algo']:16s} {r['exit']:7s} {po['n']:5d} {po['win'] * 100:6.1f} "
+                f"{po['avg_bps']:+8.2f} {po['med_bps']:+8.2f} {pf_s} {po['r_exp']:+7.3f} "
+                f"{po['avg_bps'] - pi_['avg_bps']:+8.2f}",
+                flush=True,
+            )
+
+        psurv = [
+            r for r in prows if r["oos"]["win"] >= 0.65 and r["oos"]["avg_bps"] > 0.0 and r["oos"]["n"] >= _POINTS_MIN_N
+        ]
+        print("\n=== POINTS VERDICT (§6.1 joint bar: pwin>=65% AND avg_bps>0 AND n>=30) ===", flush=True)
+        print(
+            f"  combos clearing the joint bar: {len(psurv)} / {sum(1 for r in prows if r['oos']['n'] > 0)}", flush=True
+        )
+        for r in psurv:
+            po = r["oos"]
+            print(
+                f"  POINTS SURVIVOR: {r['algo']} / {r['exit']} — pwin {po['win'] * 100:.1f}% "
+                f"avg {po['avg_bps']:+.2f} bps (fee shelf: {'taker-viable' if po['avg_bps'] >= 18 else 'maker-viable' if po['avg_bps'] >= 4 else 'signal-only (<4bps)'}) "
+                f"grossR {po['r_exp']:+.3f} n={po['n']}",
+                flush=True,
+            )
+        if not psurv and prows and prows[0]["oos"]["n"] > 0:
+            b = prows[0]
+            print(
+                f"  best by avg_bps: {b['algo']}/{b['exit']} — pwin {b['oos']['win'] * 100:.1f}% "
+                f"avg {b['oos']['avg_bps']:+.2f} bps n={b['oos']['n']} — joint bar NOT met",
+                flush=True,
+            )
+
     if args.htf_confirm:
         print(
             f"\n=== HTF-CONFIRM ({args.htf_confirm} EMA9/21 trend agreement — unfiltered vs confirmed) ===",
@@ -1327,6 +1443,21 @@ def main() -> None:
                 pos += 1 if avg > 0 else 0
                 cells.append(f"{pair.split('/')[0]}:{avg:+.4f}(n{len(trades)})")
             print(f"  {algo}/{exit_name}  [+EV {pos}/{len(cells)} pairs]  " + "  ".join(cells), flush=True)
+
+        if args.points:
+            # Same breadth check on the POINTS scoreboard: per-pair avg gross bps + points win %.
+            print("\n=== PER-PAIR OOS points (avg gross bps @ points-win% — breadth on the §6.1 bar) ===", flush=True)
+            for algo, exit_name in seen_combos:
+                cells = []
+                pos = 0
+                for pair in pairs:
+                    trades = by_pair.get((algo, exit_name, pair))
+                    if not trades:
+                        continue
+                    pm = _points_metrics(trades)
+                    pos += 1 if pm["avg_bps"] > 0 else 0
+                    cells.append(f"{pair.split('/')[0]}:{pm['avg_bps']:+.1f}@{pm['win'] * 100:.0f}%(n{pm['n']})")
+                print(f"  {algo}/{exit_name}  [pts+ {pos}/{len(cells)} pairs]  " + "  ".join(cells), flush=True)
 
     if args.deflated_sharpe:
         min_n = 30

@@ -203,6 +203,16 @@ points expectancy > 0 in BOTH eras on ≥ 3 pairs.
 at every g, the tilt was an artifact of the long-bracket geometry and this framework
 kills the leads honestly — either outcome is information.
 
+> **S1 VERDICT (run 2026-07-09, same day — see `RESEARCH_LOOP.md` iter 55):** the
+> prediction held and then some. 18/25 combos clear the joint bar in the recent year,
+> 19/25 in the lockbox; **12 cells clear it in BOTH eras at maker-viable (≥ +4 bps)
+> expectancy**. Top cell `ensemble_3of4/hiwin33`: **76.2% / +7.67 bps recent ·
+> 77.8% / +13.59 bps lockbox**, 6-pair both-eras core, **net-of-maker dollars positive
+> in both eras**. The §6.3 backtest legs are met; the remaining legs are the ≥100-trade
+> live forward test (blocked on the §9 Rule-3 owner amendment), a points-DSR, and a
+> taker fill-stress. The S3 miner independently corroborated the geometry (front-loaded
+> drift, empirical g ≈ 0.4–0.7).
+
 ### S2 — Mean-reversion re-audit under high-win geometry
 
 The entire fade family (`rsi2`, `stoch_revert`, `cci_revert`, `bb_fade`,
