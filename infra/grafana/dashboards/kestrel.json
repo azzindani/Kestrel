@@ -5456,6 +5456,734 @@
       },
       "id": 75,
       "panels": [],
+      "title": "\ud83d\udccf Points Scoreboard (gross bps \u2014 docs/13)",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "green",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 162,
+        "w": 4,
+        "h": 5
+      },
+      "id": 76,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(100.0*AVG((CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END>0)::int),1) FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Points Win Rate (all closed)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 4
+              }
+            ]
+          },
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 162,
+        "w": 4,
+        "h": 5
+      },
+      "id": 77,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END)::numeric,2) FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Points Expectancy (gross bps/trade)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 100
+              }
+            ]
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 162,
+        "w": 4,
+        "h": 5
+      },
+      "id": 78,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(ROUND(SUM(CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END)::numeric,1),0) FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts >= (extract(epoch from date_trunc('day', now() AT TIME ZONE 'utc'))*1000)::bigint",
+          "refId": "A"
+        }
+      ],
+      "title": "Aggregate Points Today (UTC)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 10
+              },
+              {
+                "color": "green",
+                "value": 30
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 162,
+        "w": 4,
+        "h": 5
+      },
+      "id": 79,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts >= (extract(epoch from date_trunc('day', now() AT TIME ZONE 'utc'))*1000)::bigint",
+          "refId": "A"
+        }
+      ],
+      "title": "Closed Trades Today (UTC)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 65
+              },
+              {
+                "color": "green",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 162,
+        "w": 4,
+        "h": 5
+      },
+      "id": 80,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(100.0*AVG((CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END>0)::int),1) FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND bot_id LIKE '%exp_hiwin%'",
+          "refId": "A"
+        }
+      ],
+      "title": "exp_hiwin Points Win %",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 30
+              },
+              {
+                "color": "green",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 162,
+        "w": 4,
+        "h": 5
+      },
+      "id": 81,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND bot_id LIKE '%exp_hiwin%'",
+          "refId": "A"
+        }
+      ],
+      "title": "exp_hiwin Closed Trades (\u2192100-trade live leg)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "percent",
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 8,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "max": 100
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 167,
+        "w": 24,
+        "h": 7
+      },
+      "id": 82,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT q.t AS \"time\", q.r20 AS \"rolling_20\", q.cum AS \"cumulative\" FROM (SELECT exit_ts, to_timestamp(exit_ts/1000.0) AS t, 100.0*AVG((CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END>0)::int) OVER (ORDER BY exit_ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS r20, 100.0*AVG((CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END>0)::int) OVER (ORDER BY exit_ts) AS cum FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL) q WHERE q.t BETWEEN $__timeFrom() AND $__timeTo() ORDER BY q.exit_ts",
+          "refId": "A"
+        }
+      ],
+      "title": "Rolling Points Win-Rate \u2014 last 20 vs cumulative (70% = \u00a76.3 program target)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 4
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 174,
+        "w": 12,
+        "h": 8
+      },
+      "id": 83,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT split_part(bot_id,'-',4) AS metric, ROUND(AVG(CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END)::numeric,2) AS value FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL GROUP BY 1 ORDER BY value DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Points Expectancy by Lead (gross bps/trade)",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pts_win"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 65
+                    },
+                    {
+                      "color": "green",
+                      "value": 70
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "net_usd"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 174,
+        "w": 12,
+        "h": 8
+      },
+      "id": 84,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT split_part(bot_id,'-',4) AS arm, COUNT(*) AS n, ROUND(100.0*AVG((CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END>0)::int),1) AS pts_win, ROUND(AVG(CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END)::numeric,2) AS avg_bps, ROUND(SUM(CASE WHEN direction='long' THEN (exit_price-entry_price)/entry_price*10000.0 ELSE (entry_price-exit_price)/entry_price*10000.0 END)::numeric,1) AS total_bps, ROUND(SUM(pnl_net_usdt),4) AS net_usd FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND bot_id LIKE '%exp_hiwin%' GROUP BY 1 ORDER BY avg_bps DESC NULLS LAST",
+          "refId": "A"
+        }
+      ],
+      "title": "exp_hiwin Cohort \u2014 per-arm points scoreboard (live leg of \u00a76.3)",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 182,
+        "w": 24,
+        "h": 1
+      },
+      "id": 85,
+      "panels": [],
       "title": "\u2696\ufe0f Risk, Streaks & Expectancy",
       "type": "row"
     },
@@ -5484,11 +6212,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 162,
+        "y": 183,
         "w": 4,
         "h": 4
       },
-      "id": 76,
+      "id": 86,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5544,11 +6272,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 162,
+        "y": 183,
         "w": 4,
         "h": 4
       },
-      "id": 77,
+      "id": 87,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5613,11 +6341,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 162,
+        "y": 183,
         "w": 4,
         "h": 4
       },
-      "id": 78,
+      "id": 88,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5682,11 +6410,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 162,
+        "y": 183,
         "w": 4,
         "h": 4
       },
-      "id": 79,
+      "id": 89,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5747,11 +6475,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 162,
+        "y": 183,
         "w": 4,
         "h": 4
       },
-      "id": 80,
+      "id": 90,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5817,11 +6545,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 162,
+        "y": 183,
         "w": 4,
         "h": 4
       },
-      "id": 81,
+      "id": 91,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5877,11 +6605,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 166,
+        "y": 187,
         "w": 12,
         "h": 8
       },
-      "id": 82,
+      "id": 92,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -6084,11 +6812,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 166,
+        "y": 187,
         "w": 12,
         "h": 8
       },
-      "id": 83,
+      "id": 93,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6121,11 +6849,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 174,
+        "y": 195,
         "w": 24,
         "h": 1
       },
-      "id": 84,
+      "id": 94,
       "panels": [],
       "title": "\ud83d\udcd0 Trade Quality \u2014 R-multiple, excursion, duration",
       "type": "row"
@@ -6165,11 +6893,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 175,
+        "y": 196,
         "w": 4,
         "h": 4
       },
-      "id": 85,
+      "id": 95,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6227,11 +6955,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 175,
+        "y": 196,
         "w": 4,
         "h": 4
       },
-      "id": 86,
+      "id": 96,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6289,11 +7017,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 175,
+        "y": 196,
         "w": 4,
         "h": 4
       },
-      "id": 87,
+      "id": 97,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6355,11 +7083,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 175,
+        "y": 196,
         "w": 4,
         "h": 4
       },
-      "id": 88,
+      "id": 98,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6420,11 +7148,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 175,
+        "y": 196,
         "w": 4,
         "h": 4
       },
-      "id": 89,
+      "id": 99,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6481,11 +7209,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 175,
+        "y": 196,
         "w": 4,
         "h": 4
       },
-      "id": 90,
+      "id": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6542,11 +7270,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 179,
+        "y": 200,
         "w": 4,
         "h": 4
       },
-      "id": 91,
+      "id": 101,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6603,11 +7331,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 179,
+        "y": 200,
         "w": 4,
         "h": 4
       },
-      "id": 92,
+      "id": 102,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6663,11 +7391,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 179,
+        "y": 200,
         "w": 4,
         "h": 4
       },
-      "id": 93,
+      "id": 103,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6724,11 +7452,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 179,
+        "y": 200,
         "w": 4,
         "h": 4
       },
-      "id": 94,
+      "id": 104,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6785,11 +7513,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 179,
+        "y": 200,
         "w": 4,
         "h": 4
       },
-      "id": 95,
+      "id": 105,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6854,11 +7582,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 179,
+        "y": 200,
         "w": 4,
         "h": 4
       },
-      "id": 96,
+      "id": 106,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6929,11 +7657,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 183,
+        "y": 204,
         "w": 8,
         "h": 7
       },
-      "id": 97,
+      "id": 107,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -7005,11 +7733,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 183,
+        "y": 204,
         "w": 8,
         "h": 7
       },
-      "id": 98,
+      "id": 108,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -7081,11 +7809,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 183,
+        "y": 204,
         "w": 8,
         "h": 7
       },
-      "id": 99,
+      "id": 109,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -7287,11 +8015,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 190,
+        "y": 211,
         "w": 24,
         "h": 8
       },
-      "id": 100,
+      "id": 110,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7324,11 +8052,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 198,
+        "y": 219,
         "w": 24,
         "h": 1
       },
-      "id": 101,
+      "id": 111,
       "panels": [],
       "title": "\ud83d\udd2c Signal Funnel & Rejections",
       "type": "row"
@@ -7358,11 +8086,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 199,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 102,
+      "id": 112,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7418,11 +8146,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 199,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 103,
+      "id": 113,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7478,11 +8206,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 199,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 104,
+      "id": 114,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7538,11 +8266,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 199,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 105,
+      "id": 115,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7600,11 +8328,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 199,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 106,
+      "id": 116,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7661,11 +8389,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 199,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 107,
+      "id": 117,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7721,11 +8449,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 203,
+        "y": 224,
         "w": 12,
         "h": 8
       },
-      "id": 108,
+      "id": 118,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7780,11 +8508,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 203,
+        "y": 224,
         "w": 12,
         "h": 8
       },
-      "id": 109,
+      "id": 119,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7871,11 +8599,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 211,
+        "y": 232,
         "w": 24,
         "h": 7
       },
-      "id": 110,
+      "id": 120,
       "options": {
         "legend": {
           "calcs": [
@@ -7969,11 +8697,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 218,
+        "y": 239,
         "w": 24,
         "h": 7
       },
-      "id": 111,
+      "id": 121,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8006,11 +8734,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 225,
+        "y": 246,
         "w": 24,
         "h": 1
       },
-      "id": 112,
+      "id": 122,
       "panels": [],
       "title": "\ud83e\udde9 Pattern Analytics",
       "type": "row"
@@ -8156,11 +8884,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 226,
+        "y": 247,
         "w": 8,
         "h": 8
       },
-      "id": 113,
+      "id": 123,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8214,11 +8942,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 226,
+        "y": 247,
         "w": 8,
         "h": 8
       },
-      "id": 114,
+      "id": 124,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8288,11 +9016,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 226,
+        "y": 247,
         "w": 8,
         "h": 8
       },
-      "id": 115,
+      "id": 125,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -8428,11 +9156,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 234,
+        "y": 255,
         "w": 24,
         "h": 8
       },
-      "id": 116,
+      "id": 126,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8465,11 +9193,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 242,
+        "y": 263,
         "w": 24,
         "h": 1
       },
-      "id": 117,
+      "id": 127,
       "panels": [],
       "title": "\ud83c\udf0a Regime Analytics",
       "type": "row"
@@ -8499,11 +9227,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 243,
+        "y": 264,
         "w": 8,
         "h": 8
       },
-      "id": 118,
+      "id": 128,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -8572,11 +9300,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 243,
+        "y": 264,
         "w": 8,
         "h": 8
       },
-      "id": 119,
+      "id": 129,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8747,11 +9475,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 243,
+        "y": 264,
         "w": 8,
         "h": 8
       },
-      "id": 120,
+      "id": 130,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8784,11 +9512,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 251,
+        "y": 272,
         "w": 24,
         "h": 1
       },
-      "id": 121,
+      "id": 131,
       "panels": [],
       "title": "\ud83d\udcca Market & Indicators (live, per pair)",
       "type": "row"
@@ -8902,11 +9630,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 252,
+        "y": 273,
         "w": 24,
         "h": 9
       },
-      "id": 122,
+      "id": 132,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8994,11 +9722,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 261,
+        "y": 282,
         "w": 12,
         "h": 8
       },
-      "id": 123,
+      "id": 133,
       "options": {
         "legend": {
           "calcs": [
@@ -9086,11 +9814,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 261,
+        "y": 282,
         "w": 12,
         "h": 8
       },
-      "id": 124,
+      "id": 134,
       "options": {
         "legend": {
           "calcs": [
@@ -9182,11 +9910,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 269,
+        "y": 290,
         "w": 12,
         "h": 8
       },
-      "id": 125,
+      "id": 135,
       "options": {
         "legend": {
           "calcs": [
@@ -9278,11 +10006,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 269,
+        "y": 290,
         "w": 12,
         "h": 8
       },
-      "id": 126,
+      "id": 136,
       "options": {
         "legend": {
           "calcs": [
@@ -9338,11 +10066,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 277,
+        "y": 298,
         "w": 8,
         "h": 7
       },
-      "id": 127,
+      "id": 137,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -9407,11 +10135,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 277,
+        "y": 298,
         "w": 8,
         "h": 7
       },
-      "id": 128,
+      "id": 138,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9475,11 +10203,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 277,
+        "y": 298,
         "w": 8,
         "h": 7
       },
-      "id": 129,
+      "id": 139,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9513,11 +10241,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 284,
+        "y": 305,
         "w": 24,
         "h": 1
       },
-      "id": 130,
+      "id": 140,
       "panels": [],
       "title": "\ud83e\uddea HP-Tuning Lab (grid: TP\u00d7SL\u00d7hold)",
       "type": "row"
@@ -9663,11 +10391,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 285,
+        "y": 306,
         "w": 24,
         "h": 9
       },
-      "id": 131,
+      "id": 141,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9726,11 +10454,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 294,
+        "y": 315,
         "w": 8,
         "h": 7
       },
-      "id": 132,
+      "id": 142,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9790,11 +10518,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 294,
+        "y": 315,
         "w": 8,
         "h": 7
       },
-      "id": 133,
+      "id": 143,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9854,11 +10582,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 294,
+        "y": 315,
         "w": 8,
         "h": 7
       },
-      "id": 134,
+      "id": 144,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10061,11 +10789,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 301,
+        "y": 322,
         "w": 12,
         "h": 8
       },
-      "id": 135,
+      "id": 145,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10128,11 +10856,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 301,
+        "y": 322,
         "w": 12,
         "h": 8
       },
-      "id": 136,
+      "id": 146,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10166,11 +10894,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 309,
+        "y": 330,
         "w": 24,
         "h": 1
       },
-      "id": 137,
+      "id": 147,
       "panels": [],
       "title": "\ud83c\udfc6 Per-Bot & Per-Pair Breakdown",
       "type": "row"
@@ -10281,11 +11009,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 310,
+        "y": 331,
         "w": 12,
         "h": 8
       },
-      "id": 138,
+      "id": 148,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10455,11 +11183,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 310,
+        "y": 331,
         "w": 12,
         "h": 8
       },
-      "id": 139,
+      "id": 149,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10514,11 +11242,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 318,
+        "y": 339,
         "w": 12,
         "h": 7
       },
-      "id": 140,
+      "id": 150,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10578,11 +11306,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 318,
+        "y": 339,
         "w": 12,
         "h": 7
       },
-      "id": 141,
+      "id": 151,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10616,11 +11344,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 325,
+        "y": 346,
         "w": 24,
         "h": 1
       },
-      "id": 142,
+      "id": 152,
       "panels": [],
       "title": "\ud83d\udd51 Session & Time-of-Day (UTC)",
       "type": "row"
@@ -10766,11 +11494,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 326,
+        "y": 347,
         "w": 12,
         "h": 8
       },
-      "id": 143,
+      "id": 153,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10829,11 +11557,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 326,
+        "y": 347,
         "w": 12,
         "h": 8
       },
-      "id": 144,
+      "id": 154,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10893,11 +11621,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 334,
+        "y": 355,
         "w": 12,
         "h": 7
       },
-      "id": 145,
+      "id": 155,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10953,11 +11681,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 334,
+        "y": 355,
         "w": 12,
         "h": 7
       },
-      "id": 146,
+      "id": 156,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11017,11 +11745,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 341,
+        "y": 362,
         "w": 12,
         "h": 7
       },
-      "id": 147,
+      "id": 157,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11077,11 +11805,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 341,
+        "y": 362,
         "w": 12,
         "h": 7
       },
-      "id": 148,
+      "id": 158,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11115,11 +11843,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 348,
+        "y": 369,
         "w": 24,
         "h": 1
       },
-      "id": 149,
+      "id": 159,
       "panels": [],
       "title": "\ud83d\udcb8 Fees & Costs",
       "type": "row"
@@ -11150,11 +11878,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 349,
+        "y": 370,
         "w": 4,
         "h": 4
       },
-      "id": 150,
+      "id": 160,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11211,11 +11939,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 349,
+        "y": 370,
         "w": 4,
         "h": 4
       },
-      "id": 151,
+      "id": 161,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11276,11 +12004,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 349,
+        "y": 370,
         "w": 4,
         "h": 4
       },
-      "id": 152,
+      "id": 162,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11341,11 +12069,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 349,
+        "y": 370,
         "w": 4,
         "h": 4
       },
-      "id": 153,
+      "id": 163,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11403,11 +12131,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 349,
+        "y": 370,
         "w": 4,
         "h": 4
       },
-      "id": 154,
+      "id": 164,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11465,11 +12193,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 349,
+        "y": 370,
         "w": 4,
         "h": 4
       },
-      "id": 155,
+      "id": 165,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11558,11 +12286,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 353,
+        "y": 374,
         "w": 12,
         "h": 7
       },
-      "id": 156,
+      "id": 166,
       "options": {
         "legend": {
           "calcs": [
@@ -11650,11 +12378,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 353,
+        "y": 374,
         "w": 12,
         "h": 7
       },
-      "id": 157,
+      "id": 167,
       "options": {
         "legend": {
           "calcs": [
@@ -11689,11 +12417,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 360,
+        "y": 381,
         "w": 24,
         "h": 1
       },
-      "id": 158,
+      "id": 168,
       "panels": [],
       "title": "\ud83d\udcdc Trade History",
       "type": "row"
@@ -12039,11 +12767,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 361,
+        "y": 382,
         "w": 24,
         "h": 12
       },
-      "id": 159,
+      "id": 169,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -12076,11 +12804,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 373,
+        "y": 394,
         "w": 24,
         "h": 1
       },
-      "id": 160,
+      "id": 170,
       "panels": [],
       "title": "\ud83d\udccc Open Positions (live)",
       "type": "row"
@@ -12187,11 +12915,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 374,
+        "y": 395,
         "w": 24,
         "h": 8
       },
-      "id": 161,
+      "id": 171,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -12224,11 +12952,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 382,
+        "y": 403,
         "w": 24,
         "h": 1
       },
-      "id": 162,
+      "id": 172,
       "panels": [],
       "title": "\ud83e\ude7a Activity & Health",
       "type": "row"
@@ -12266,11 +12994,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 383,
+        "y": 404,
         "w": 6,
         "h": 4
       },
-      "id": 163,
+      "id": 173,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12335,11 +13063,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 383,
+        "y": 404,
         "w": 6,
         "h": 4
       },
-      "id": 164,
+      "id": 174,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -12403,11 +13131,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 383,
+        "y": 404,
         "w": 6,
         "h": 4
       },
-      "id": 165,
+      "id": 175,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12471,11 +13199,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 383,
+        "y": 404,
         "w": 6,
         "h": 4
       },
-      "id": 166,
+      "id": 176,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12531,11 +13259,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 387,
+        "y": 408,
         "w": 8,
         "h": 7
       },
-      "id": 167,
+      "id": 177,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -12590,11 +13318,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 387,
+        "y": 408,
         "w": 8,
         "h": 7
       },
-      "id": 168,
+      "id": 178,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -12658,11 +13386,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 387,
+        "y": 408,
         "w": 8,
         "h": 7
       },
-      "id": 169,
+      "id": 179,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -12749,11 +13477,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 394,
+        "y": 415,
         "w": 24,
         "h": 7
       },
-      "id": 170,
+      "id": 180,
       "options": {
         "legend": {
           "calcs": [
@@ -12851,11 +13579,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 401,
+        "y": 422,
         "w": 24,
         "h": 8
       },
-      "id": 171,
+      "id": 181,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -12957,11 +13685,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 409,
+        "y": 430,
         "w": 24,
         "h": 8
       },
-      "id": 172,
+      "id": 182,
       "options": {
         "cellHeight": "sm",
         "footer": {
