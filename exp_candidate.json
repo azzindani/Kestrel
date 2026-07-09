@@ -1,6 +1,6 @@
 {
-  "iteration": 9,
-  "note": "iter 53: EXPAND exp_ensemble 6->11 pairs. Swept ensemble_3of4 --by-pair across the 28 untested fleet pairs (1h maker medium, recent + untouched prior-year lockbox). Broad-expansion verdict: pooled RECENT +EV (avg $0.0049/t, 18/28 pairs +) but pooled LOCKBOX NEGATIVE (avg -$0.0061/t, only 8/26 pairs +) -- the classic recent-improves/lockbox-collapses data-mining signature, so a blanket expansion to all 28 is REFUTED. Within that sweep though, 5 pairs are genuinely +EV in BOTH eras: CHZ (+0.0072/+0.0439), FET (+0.0189/+0.0135), GALA (+0.0012/+0.0367), TIA (+0.0518/+0.0132), WLD (+0.0257/+0.0304) -- a real cross-era-robust core, mirroring the iter-43/45 playbook (find the robust subset, concentrate there, don't deploy the whole sweep). Additive expansion of the existing exp_ensemble arm (same label/params -> the original 6 bot_ids untouched, 5 NEW bot_ids added). Still NOT a confirmed edge (win <55% both eras) -- a live forward-test extension.",
+  "iteration": 10,
+  "note": "iter 55b (owner-authorized): DEPLOY exp_hiwin — the S1 points-program survivors (docs/13-points-framework.md; RESEARCH_LOOP iter 55). Rule 3 amended 1.2->0.25 (CLAUDE.md v2.6) so the validated inverted-geometry brackets can fire live. 4 arms, each on its OWN both-eras-points-positive pair core from the S1 --by-pair tables: ensemble_3of4/hiwin33 (76.2%/+7.67bps recent, 77.8%/+13.59bps lockbox), macd_rsi/hiwin50 (66.0%/+5.20, 67.8%/+9.50), macd_cross/hiwin50 (67.6%/+5.00, 69.8%/+12.89), sma_cross/hiwin50 (65.2%/+5.00, 67.3%/+7.89). Purpose = the >=100-trade LIVE leg of the docs/13 s6.3 program target (points win>=70% + expectancy>=+4bps + breadth, both eras + live). Existing exp_robustwide + exp_ensemble arms kept VERBATIM (same bot_ids, additive deploy, reset nothing). Known live-vs-backtest divergences (accepted, documented): volume_confirm 1.1 floor active live; risk Rule 4 uses the conservative taker fee bar so low-ATR candles reject fee_not_viable. NOT a confirmed edge until the live leg + points-DSR + taker stress pass.",
   "arms": [
     {
       "label": "exp_robustwide",
@@ -29,6 +29,70 @@
         "tp_atr_multiplier": 2.0,
         "sl_atr_multiplier": 1.0,
         "max_hold_candles": 6,
+        "trailing_enabled": false,
+        "volume_ratio_min": 1.1,
+        "max_loss_pct_per_trade": 0.01
+      }
+    },
+    {
+      "label": "exp_hiwin",
+      "timeframe": "1h",
+      "pairs": ["DOGE/USDT", "XRP/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT", "AVAX/USDT"],
+      "strategies": [
+        {"name": "ensemble_3of4", "patterns": ["ensemble_3of4"]}
+      ],
+      "params": {
+        "tp_atr_multiplier": 0.5,
+        "sl_atr_multiplier": 1.5,
+        "max_hold_candles": 6,
+        "trailing_enabled": false,
+        "volume_ratio_min": 1.1,
+        "max_loss_pct_per_trade": 0.01
+      }
+    },
+    {
+      "label": "exp_hiwin",
+      "timeframe": "1h",
+      "pairs": ["ETH/USDT", "DOGE/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT", "ATOM/USDT"],
+      "strategies": [
+        {"name": "macd_rsi", "patterns": ["macd_rsi"]}
+      ],
+      "params": {
+        "tp_atr_multiplier": 0.6,
+        "sl_atr_multiplier": 1.2,
+        "max_hold_candles": 4,
+        "trailing_enabled": false,
+        "volume_ratio_min": 1.1,
+        "max_loss_pct_per_trade": 0.01
+      }
+    },
+    {
+      "label": "exp_hiwin",
+      "timeframe": "1h",
+      "pairs": ["ETH/USDT", "PEPE/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT"],
+      "strategies": [
+        {"name": "macd_cross", "patterns": ["macd_cross"]}
+      ],
+      "params": {
+        "tp_atr_multiplier": 0.6,
+        "sl_atr_multiplier": 1.2,
+        "max_hold_candles": 4,
+        "trailing_enabled": false,
+        "volume_ratio_min": 1.1,
+        "max_loss_pct_per_trade": 0.01
+      }
+    },
+    {
+      "label": "exp_hiwin",
+      "timeframe": "1h",
+      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT"],
+      "strategies": [
+        {"name": "sma_cross", "patterns": ["sma_cross"]}
+      ],
+      "params": {
+        "tp_atr_multiplier": 0.6,
+        "sl_atr_multiplier": 1.2,
+        "max_hold_candles": 4,
         "trailing_enabled": false,
         "volume_ratio_min": 1.1,
         "max_loss_pct_per_trade": 0.01

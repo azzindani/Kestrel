@@ -76,15 +76,31 @@ class TestLiquidationTooClose:
 
 
 class TestRrBelowMinimum:
-    def test_validate_rr_below_1_2_returns_rejected(self):
-        # tp_dist=100, sl_dist=500 → R/R = 0.2 < 1.2
+    # CLAUDE.md v2.6 (owner-authorized 2026-07-09): Rule 3 floor 1.2 → 0.25. The floor
+    # now rejects only DEGENERATE brackets; validated high-win inverted geometry
+    # (hiwin presets, g = tp/sl in [0.25, 1.2)) must pass. docs/13-points-framework.md.
+    def test_validate_rr_below_floor_returns_rejected(self):
+        # tp_dist=100, sl_dist=500 → R/R = 0.2 < 0.25
         sig = make_signal(entry=1000.0, tp_offset=100.0, sl_offset=500.0)
         result = validate(sig, make_bucket_state(), make_app_config())
         assert result.passed is False
         assert result.reason == "rr_below_minimum"
 
-    def test_validate_rr_exactly_at_minimum_passes(self):
-        # tp_dist=120, sl_dist=100 → R/R = 1.2 (just at boundary)
+    def test_validate_rr_exactly_at_floor_passes(self):
+        # tp_dist=125, sl_dist=500 → R/R = 0.25 (just at the v2.6 boundary)
+        sig = make_signal(entry=1000.0, tp_offset=125.0, sl_offset=500.0)
+        result = validate(sig, make_bucket_state(), make_app_config())
+        assert result.passed is True
+
+    def test_validate_hiwin_geometry_passes(self):
+        # The validated hiwin33 bracket shape: tp 0.5×ATR / sl 1.5×ATR → g = 0.33.
+        # Blocked under the old 1.2 floor; must pass under v2.6.
+        sig = make_signal(entry=1000.0, tp_offset=50.0, sl_offset=150.0)
+        result = validate(sig, make_bucket_state(), make_app_config())
+        assert result.passed is True
+
+    def test_validate_classic_momentum_geometry_still_passes(self):
+        # tp_dist=120, sl_dist=100 → R/R = 1.2 (the old floor) — unaffected by v2.6
         sig = make_signal(entry=1000.0, tp_offset=120.0, sl_offset=100.0)
         result = validate(sig, make_bucket_state(), make_app_config())
         assert result.passed is True

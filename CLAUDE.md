@@ -323,7 +323,7 @@ QUIET    (ATR14<ATR50×0.5, vol<0.7): ✗ all blocked
 (self-directing patterns — mom_adx, macd_*, cci_mom, sma_cross — permitted in all non-QUIET regimes)
 ```
 
-**TP/SL (dynamic ATR · ✗ fixed):** long TP=entry+ATR×tp_mult, SL=entry−ATR×sl_mult (short mirror) · default tp=1.6, sl=1.0 · min R/R 1.2 (risk-enforced).
+**TP/SL (dynamic ATR · ✗ fixed):** long TP=entry+ATR×tp_mult, SL=entry−ATR×sl_mult (short mirror) · default tp=1.6, sl=1.0 · min R/R **0.25** (risk-enforced degenerate-geometry floor; v2.6 — strategy quality is gated by the docs/13 points joint bar, ✗ by R/R).
 **Confidence → size:** ≥0.75 full bucket ($10) · 0.55–0.74 half ($5) · <0.55 ✗ no fire.
 **Session thresholds (UTC):** Asian 00–08 vol_min×1.2, conf×1.1 · London 08–16 base · US 13–21 vol_min×0.9 · Overlap 13–16 compression_breakout only.
 
@@ -348,7 +348,7 @@ anomaly_fade:         vol>ma+2.5σ + move>ATR×2.5 in one candle → ✗ chase �
 ```
 1. active_positions < max_active_buckets        → else reject 'bucket_limit'
 2. liquidation_distance ≥ 1.5% from entry        → else reject 'liquidation_too_close'
-3. TP_dist / SL_dist ≥ 1.2                        → else reject 'rr_below_minimum'
+3. TP_dist / SL_dist ≥ 0.25                       → else reject 'rr_below_minimum'  (v2.6: floor 1.2→0.25, owner-authorized 2026-07-09 — permits validated high-win inverted geometry (docs/13-points-framework.md); the floor now rejects only degenerate brackets, ✗ a strategy-style gate)
 4. expected_gross_profit > round_trip_fee × 1.5   → else reject 'fee_not_viable'
 5. session_net_pnl > -5.00 USDT (resets 00:00 UTC)→ else block all 'daily_loss_limit'
 6. last_ws_reconnect > 60s ago                    → else block all 'stale_data'
@@ -372,7 +372,7 @@ anomaly_fade:         vol>ma+2.5σ + move>ATR×2.5 in one candle → ✗ chase �
 Defaults (all in params.json · ranges enforced by install.sh + tune.sh):
 ```
 ema_fast 9 [5,20] · ema_slow 21 [15,50] · rsi_low 45 [30,55] · rsi_high 55 [45,70]
-volume_ratio_min 1.3 [1.1,2.5] · tp_atr_multiplier 1.6 [0.8,3.0] · sl_atr_multiplier 1.0 [0.5,2.0]
+volume_ratio_min 1.3 [1.1,2.5] · tp_atr_multiplier 1.6 [0.4,3.0] · sl_atr_multiplier 1.0 [0.5,2.0]
 min_confidence 0.55 [0.4,0.8] · adx_trend_min 20 [15,30] · bb_width_threshold 0.02 [0.01,0.05]
 max_hold_candles 4 [2,8] · max_active_buckets 1 [1,5] · body_ratio_min 0.6 [0.4,0.8]
 wick_ratio_min 2.0 [1.5,4.0] · compression_factor 0.5 [0.3,0.7]
@@ -421,7 +421,8 @@ Per deployment: all §18 met · clean cold-start verified · Telegram confirmed 
 
 ---
 
-*Kestrel CLAUDE.md v2.5*
+*Kestrel CLAUDE.md v2.6*
+*v2.6 (2026-07-09, owner-authorized "i authorize you to amend rule 3, deploy it"): risk Rule 3 R/R floor 1.2→0.25 (§22/§24) — the S1 points sweep (docs/13-points-framework.md, RESEARCH_LOOP iter 55) validated inverted-geometry (g<1.2) high-win brackets cross-era (12 cells, both eras, net-of-maker-positive); R/R≥1.2 mathematically capped win rate ~45-50% and made the owner's 70% target unreachable. Rule 3 now rejects only degenerate brackets; strategy quality gates on the points joint bar (win≥65% AND expectancy>0, both eras). tp_atr_multiplier range floor 0.8→0.4 (§26) for the hiwin presets.*
 *v2.5 (2026-06-27, owner-authorized): PortfolioGuard MOVED to staging-only — disabled in dev (forward-test confound), enabled in .env.staging; clarified it watches real-time UNREALISED on open positions, ✗ cumulative realised drawdown (§17).*
 *v2.4 (2026-06-27, owner-authorized): documented the PortfolioGuard ±10% fleet-aggregate force-close in §17 (fleet-aggregate ✗ per-bucket; near-dormant — never fired; −DD = crash insurance, +TP questionable; risk-shaping ✗ edge) + close_reason enum (§19).*
 *v2.3 (2026-06-27, owner-authorized): structural trim — full SQL DDL (§19) → column summary + pointer to src/db/schema.py; cut JSON/SQL/ASCII examples (§20/21/28); compressed §12/16/23/27/30. All rules + constraints preserved; section numbers unchanged.*
