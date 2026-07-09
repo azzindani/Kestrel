@@ -320,6 +320,16 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT BEST
 
+- **POINTS-PROGRAM LEAD (iter 55, owner-directed): `ensemble_3of4` + `hiwin33` inverted-geometry exit
+  (tp 0.5×ATR / sl 1.5×ATR / hold 6) @ 1h maker — THE STRONGEST CROSS-ERA RESULT ON RECORD.** Under the
+  points scoreboard (docs/13-points-framework.md): recent **76.2% win / +7.67 bps gross** (n=302, 8/10
+  pairs+) · lockbox **77.8% / +13.59 bps** (n=338, 7/10 pairs+), 6-pair both-eras core
+  (DOGE/XRP/SOL/ADA/BNB/AVAX), and **net-of-maker DOLLARS positive in both eras** (+$0.0031/+$0.0032/t).
+  11 more cells clear the joint bar cross-era (all ensemble hiwin variants, macd_cross_ct/macd_rsi/
+  sma_cross hiwin+scratch). Meets the §6.3 backtest legs (win≥70, ≥+4bps, ≥5 pairs, both eras).
+  **BLOCKED for live by risk Rule 3 (R/R≥1.2, frozen §24 — owner decision)**; remaining evidence legs =
+  ≥100-trade live forward test + points-DSR + taker stress. NOT yet a confirmed edge — the closest
+  approach so far.
 - **LEAD #5 (iter 52): `ensemble_3of4` (cross-signal voting confluence — >=3 of the 4 deployed 1h leads
   must agree) @ 1h, maker.** The FIFTH cross-era +EV signal and the first genuinely new confluence
   mechanism (leads voting against EACH OTHER, not gated by a regime/timeframe like every prior filter).
@@ -566,6 +576,62 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 55 — 2026-07-09 (OWNER-DIRECTED: the POINTS FRAMEWORK + S1 HiWin sweep — the strongest cross-era result in project history: 12 cells clear the joint points bar in BOTH eras at maker-viable gross; ensemble_3of4/hiwin33 hits 76%/78% win + net-of-maker-$-positive both eras; LIVE DEPLOY BLOCKED on risk Rule 3 (§24 owner decision))
+
+- **TRIGGER:** owner — "change the target not based on profit but on the pips/points and the winrate,
+  with no considering of profit value; we need scalability; write everything to docs/." Then "lets try
+  your way, create to do list, then start to ship it." Framework written to **docs/13-points-framework.md**
+  (+ all stale docs refreshed to the iter-54 state, commit `ad4f7ee`). Scoreboard = gross points (bps of
+  entry price) + win rate; win rate shown to be an exit-geometry property (win ~ 1/(1+g)); §6.1 joint bar
+  = points win >= 65% AND points expectancy > 0 (win alone is purchasable and never counts).
+- **BUILT:** (1) `algo_search.py --points` — gross-points scoring (win%, avg/median bps, points PF, gross
+  R-expectancy, per-pair points breadth) + 4 inverted-geometry exit presets (hiwin50 tp0.6/sl1.2/h4,
+  hiwin43 0.6/1.4/h4, hiwin33 0.5/1.5/h6, scratch 0.5/2.0/h3) + a runtime bypass of risk Rule 3's R/R>=1.2
+  floor (research-process-only monkeypatch, frozen file untouched — same precedent as the fee patch);
+  (2) `scripts/analyze_excursions.py` — the S3 MFE/MAE miner over the live `trade_context` corpus.
+- **S3 EXCURSION FINDINGS (482 live trades, uncensored post-entry paths):** the leads' favorable drift is
+  REAL and FRONT-LOADED — macd_cross e-ratio 1.40 at k=1 / 1.55 at k=2 (median +50 bps favorable in the
+  FIRST candle vs −36 adverse); macd_rsi similar (1.13–1.26); cci_mom weak (<1 early); **sma_cross enters
+  AGAINST the initial move** (e-ratio 0.35 at k=1 — explains its persistent live-vs-backtest divergence).
+  Pooled median MFE@4 = +95 bps vs median |MAE|@4 = 91 bps. The empirical brackets it derives (g~0.4–0.7)
+  independently corroborate the hiwin presets.
+- **S1 BACKTEST (1h, maker, 5 leads × {4 hiwin + medium control} × 10 pairs, walk-forward OOS +
+  untouched prior-year lockbox, points scoreboard):**
+  - **RECENT: 18/25 combos clear the joint bar. LOCKBOX: 19/25.** Cross-era (both eras, maker-viable
+    >= +4 bps gross): **12 cells** — every ensemble_3of4 hiwin variant, macd_cross_ct/{hiwin50,scratch},
+    macd_rsi/{hiwin50,hiwin33,scratch}, sma_cross/{hiwin50,hiwin33,hiwin43}.
+  - **Top cell `ensemble_3of4/hiwin33`: recent 76.2% win / +7.67 bps gross (n=302, 8/10 pairs+) ·
+    lockbox 77.8% / +13.59 bps (n=338, 7/10 pairs+)** — 6 pairs positive in BOTH eras
+    (DOGE/XRP/SOL/ADA/BNB/AVAX; BTC negative both, the usual). Runner-up ensemble/hiwin50:
+    +9.29@69.3% / +8.92@67.8%.
+  - **NET-OF-MAKER DOLLARS are positive in BOTH eras for the ensemble hiwin cells** (recent
+    +$0.0061/t hiwin50, +$0.0031 hiwin33; lockbox +$0.0013/+$0.0032) with IS→OOS positive — i.e. this
+    is not points-only cosmetics; the geometry crosses the fee floor. The legacy §30 verdict on the SAME
+    run reads "0/25 clear" because R/R>=1.2 structurally cannot see a g<1.2 result — the points bar was
+    built precisely for this blind spot.
+  - Weakest lead under hiwin: cci_mom (only hiwin33 clears both eras, <4 bps recent) — consistent with
+    its weak S3 e-ratio. The medium control behaves exactly as always (42–46% win, the old picture).
+- **AGAINST THE §6.3 PROGRAM TARGET:** ensemble_3of4/hiwin33 meets the backtest legs — win >= 70% ✓ (76/78),
+  expectancy >= +4 bps ✓ (+7.7/+13.6), breadth >= 5 pairs ✓ (6 both-eras-positive), both eras ✓. Remaining
+  leg: the **>= 100-trade live forward test** — which is BLOCKED, because risk Rule 3 (tp/sl >= 1.2,
+  `risk/manager.py` FROZEN §24) rejects every hiwin bracket at the door (`rr_below_minimum`).
+  **Deploying the validated geometry live requires the owner to amend Rule 3** — flagged as THE decision;
+  deploying a g=1.2 approximation instead would not be the validated config (refused as dishonest).
+- **HONEST CAVEATS (kept sharp):** (1) gross points are pre-fee by design — the net-$ cross-check above is
+  what makes this more than relabeling; (2) 25 combos were tried — but entries were pre-validated leads and
+  only 5 exit geometries were swept, and the both-eras requirement is the fluke-killer; a formal points-DSR
+  is still owed (follow-up); (3) maker-fill realism at tight TPs is untested live — a taker stress test of
+  the survivor cells is queued (S1b); (4) live-vs-backtest divergence is a known failure mode (iter 49) —
+  hence the 100-trade live leg before any promotion; (5) ensemble activity is LOW (~0.9 trades/pair/week at
+  1h) — the live test needs either patience or breadth.
+- **APPLY:** cohort NOT rotated (the validated geometry cannot fire under live Rule 3 — a dark cohort
+  writing rejection rows serves nothing). Shipped: --points mode + presets + miner + docs framework +
+  this record. Next actions queued: S2 (mean-rev re-audit under hiwin geometry — its natural payoff
+  shape), S1b (taker stress), points-DSR, Grafana points row.
+- **CHECK STOP: neither condition met** (stop-#2 needs the live leg + formal DSR; stop-#1 needs live 70%
+  over 100+ trades — the backtest now shows a path but live evidence is zero). The binding item moved from
+  "no signal" to **"§24 Rule-3 owner decision + live forward test."**
 
 ### Iteration 54 — 2026-07-09 (CRITICAL DATA-INTEGRITY FIX: Daemon.stop() never persisted position closes to DB — 79/161 dev bots (49%) were permanently jammed with ghost open positions, some 278h+ old; fixed + cleaned up. No new signal search this firing.)
 
