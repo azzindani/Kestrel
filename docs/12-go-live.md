@@ -8,10 +8,14 @@ not yet exist.
 ## 1. The single blocking fact
 
 > **Kestrel must not trade real money. Not because the engineering isn't ready — because there
-> is no proven edge.** Every research path has concluded that no cost-robust, cross-year-robust
-> tradeable edge exists in the hand-written-OHLCV-entry space, at any timeframe, under taker or
-> maker fees ([Backtesting & Research](09-backtesting-research.md), `FINDINGS.md`). The §18
-> criteria below are *necessary* but the edge requirement is the one that fails today.
+> is no proven net-of-fee edge.** 54 research iterations found five real-but-marginal
+> cross-era leads whose gross capture sits at or below the fee floor; none clears the
+> formal deflated-Sharpe bar ([Backtesting & Research](09-backtesting-research.md),
+> `RESEARCH_LOOP.md`). The §18 criteria below are *necessary* but the edge requirement is
+> the one that fails today. The current path to changing that is the
+> **[Points Framework](13-points-framework.md)** program: its §6.3 program target (points
+> win ≥ 70% + expectancy ≥ +4 bps + breadth, both eras + live) is the precondition for
+> the Phase-D dollar bridge that would make this document's gates live again.
 
 Concrete standing instructions (do **not** treat these as done):
 
@@ -83,6 +87,15 @@ This is flagged, not silently worked around. **Amending the bar is a `CLAUDE.md`
 is §3 human-only** — the agent surfaced it as the user's decision and cannot make it. Until the
 bar is amended, even a genuinely +EV momentum strategy "fails" go-live on win rate alone. The
 documentation records this as an open governance item between the contract and the evidence.
+
+> **2026-07-09 update:** the [Points Framework](13-points-framework.md) finally gives the
+> win-rate criterion a coherent form — **win rate joint with points expectancy** at an
+> explicitly chosen exit geometry (win % alone is purchasable for free via geometry and
+> means nothing; the joint pair is not). It also surfaced a *second* frozen-file tension:
+> risk **Rule 3 (R/R ≥ 1.2)** mathematically caps win rate near 45–50%, so the §18 55%
+> bar and the owner's 70% target are unreachable under the current risk config — both the
+> win bar (§18/§30) and Rule 3 (§24) need owner amendment for the high-win geometry to go
+> live. See [Risk & Capital §2](06-risk-and-capital.md) and Points Framework §3/§9.
 
 ## 5. The lockbox lesson (added to the bar in practice)
 

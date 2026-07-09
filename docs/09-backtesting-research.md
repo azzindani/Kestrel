@@ -1,10 +1,15 @@
 # 09 · Backtesting & Research
 
-This is the project's empirical conscience. Kestrel's most important output to date is not a
-strategy — it is a **rigorous, repeated, honest finding that no tradeable edge exists** in the
-hypothesis space it has explored. This document explains the methodology, the harness, and the
-verdicts. It is the long-form companion to `FINDINGS.md` and to the
-[Overview status note](01-overview.md#5-honest-status--no-proven-edge).
+This is the project's empirical conscience. Kestrel's most important outputs to date are
+(a) a **rigorous, repeated, honest finding that no *net-of-fee* edge exists** in the
+hypothesis space it has explored, and (b) **five cross-era-validated 1h leads** — real but
+marginal signals that survive both a recent-year walk-forward and an untouched prior-year
+lockbox. This document explains the methodology, the harness, and the verdicts. It is the
+long-form companion to `FINDINGS.md`, to `RESEARCH_LOOP.md` (the autonomous loop's full
+iteration log — the living continuation of this document), and to the
+[Overview status note](01-overview.md#5-honest-status--no-proven-edge). Since 2026-07-09,
+new research is scored on the **[Points Framework](13-points-framework.md)** (gross points
++ win rate) rather than net dollars.
 
 ## 1. Methodology — the rules that prevent self-deception
 
@@ -32,7 +37,7 @@ These are one-off, read-only research tools — they fetch public OHLCV (no keys
 | Script | What it does |
 |---|---|
 | `backtest_real.py` | Fetch real OHLCV (okx/gate/kraken fallback), build candles through the production `CandleBuilder`, walk-forward 60/40 with costs. `fetch_ohlcv(pair, tf, days, offset_days=0)` — **`offset_days` shifts the window back to build a lockbox** (data the search never saw). |
-| `algo_search.py` | The algorithm-search harness: rank many hand-written entry archetypes across months in minutes, walk-forward, costs. Adds the **`--fees taker\|maker`** toggle and **`--offset-days`** lockbox. Includes Connors RSI-2 entries (`rsi2_ct/ct5/raw`). Monkeypatches the runner fee constants *and* `risk.manager.round_trip_fee_pct` at runtime (cannot edit the frozen risk file). |
+| `algo_search.py` | The algorithm-search harness: rank many hand-written entry archetypes across months in minutes, walk-forward, costs. Key flags grown over the research loop: **`--fees taker\|maker\|none`** (the `none` mode powers gross-edge decomposition), **`--offset-days`** (lockbox), **`--by-pair`** (per-pair breadth tables — the iter-43 playbook), **`--deflated-sharpe`** (Bailey & López de Prado PSR/DSR), **`--htf-confirm 4h\|1d`** (cross-timeframe confluence test, refuted iter 51), plus the `ensemble_Kof4` voting algos. Monkeypatches the runner fee constants *and* `risk.manager.round_trip_fee_pct` at runtime (cannot edit the frozen risk file). |
 | `backtest_grid.py` | TP×SL×hold grid sweep over months, walk-forward; emits `.md` leaderboard + `.csv` + `.json` per-trade detail (MAE/MFE/realised-R). |
 | `param_sweep.py` | Grid over `params.json` ranges (TP/SL, min-confidence, volume); does *any* in-range config clear §30? |
 | `edge_scan.py` | Predictive-power scan: information-coefficient + quintile spread per feature vs the ~0.18% cost, at 1/4/8-candle horizons. Answers "is there exploitable structure *at all*?" before strategy design. |
@@ -88,16 +93,67 @@ family*:
 7. **`ema_spread` mean-reversion: refuted.** Real but tiny (~0.04%/trade gross, below even
    maker cost), IS→OOS is noise (sign flips, t ≈ 0).
 
-**Synthesised conclusion:** the hand-written-OHLCV-entry hypothesis space is **exhausted**.
-There is no cost-robust, cross-year-robust edge in any indicator-pattern at any timeframe under
-either fee model. *Edge is timeframe + fees + sizing + structure, not more indicators.* The
-remaining real candidates are **structural** — chiefly **funding-rate harvesting** (long spot +
-short perp), which has the highest structural ceiling but needs two-leg infrastructure, a
-funding feed, and larger buckets than $10. That is scoped but not built.
+**Synthesised conclusion (as of 2026-06-16):** the hand-written-OHLCV-entry hypothesis space
+looked exhausted — no cost-robust, cross-year-robust edge at any timeframe under either fee
+model.
+
+### 4b. The research loop era (iterations 18–54, 2026-06-21 → present)
+
+The owner then authorized indicator strategies ("macd, rsi, moving average any period"),
+and the autonomous research loop (`RESEARCH_LOOP.md`) found the project's only
+**cross-era survivors** — each +EV on BOTH the recent-year walk-forward AND the untouched
+prior-year lockbox at **1h, maker**:
+
+| Lead | Iter | Recent expR | Lockbox expR | Note |
+|---|---|---|---|---|
+| `macd_cross` | 18 | +0.13 | +0.17 | trend-aligned MACD signal cross — the first survivor ever |
+| `macd_rsi` | 22 | +0.06..0.09 | +0.12 | raw cross + RSI-14 confirm; RSI rescues it |
+| `cci_mom` | 31 | +0.12 | +0.07 | CCI ±100 breakout; ~3× activity |
+| `sma_cross` | 32 | +0.14 | +0.12 | 9/21 SMA cross; most fill-robust (survives taker, iter 46) |
+| `ensemble_3of4` | 52 | +0.07 | +0.14 | ≥3-of-4 lead voting; best R/R (1.68) on record |
+
+Equally important, the loop **refuted dozens of siblings and filters** with the same
+recurring signature — strong recent year, negative lockbox (ema_cross, donch/breakout
+variants, stochastic, cci_revert, supertrend, VWAP, pairs stat-arb, lead-lag, ADX/
+volatility/session/HTF confluence gates, 15m down-shift, 4h up-shift…). The meta-lesson:
+**momentum-breakout crosses can validate cross-era; mean-reversion fades and add-on
+filters never have.** Full ledger in `RESEARCH_LOOP.md`.
+
+The formal capstones:
+
+- **Deflated Sharpe (iter 47):** even the best cell (`sma_cross`/wide) — per-trade Sharpe
+  +0.164, PSR(>0)=1.000 in-sample — **fails DSR > 0.95 at the project's true search
+  breadth** (N ≥ 60–200 trials) and fails the lockbox at every N. The strongest signal is
+  statistically indistinguishable from the best of many random tries.
+- **Live corroboration (iter 49):** live PSR on the real forward-test agrees — no lead
+  clears even the raw 0.95 bar; backtest-best and live-best *disagree* (the signature of
+  noise dominating).
+- **Gross decomposition (iter 42):** all leads are gross-positive in both eras — **the 1h
+  directional tilt is real; the wall is purely the ~4 bps fee.** This finding is what the
+  [Points Framework](13-points-framework.md) is built on.
+
+The remaining un-exhausted levers are **cost-side** (venue/fee tier, §4 owner) and
+**structural** — chiefly **funding-rate harvesting** (long spot + short perp; needs perps
+= §13/§4 owner amendment, two-leg infrastructure, a funding feed). Scoped, not built.
+
+### 4c. The points reframe (2026-07-09 →)
+
+Research is now scored in **gross points (bps of entry price) + win rate** with the fee
+hurdle tracked as an explicit ladder (>0 signal / ≥4 bps maker-viable / ≥18 bps
+taker-viable), and win rate treated as an engineerable exit-geometry property (the
+`1/(1+g)` law). The active program — HiWin re-geometry of the five leads, a
+mean-reversion re-audit under its natural high-win geometry, and MFE/MAE exit mining on
+the 208k-candle `trade_context` corpus — is specified in
+[Points Framework §5](13-points-framework.md), with targets in §6. All the
+anti-self-deception machinery above (walk-forward, lockbox, breadth, DSR, refuted ledger)
+carries over unchanged.
 
 ## 5. Why keep running the lab, then?
 
-The 120-bot lab is **not** chasing an edge — it is:
+The dev fleet (~161 bots) is **not** just chasing an edge — it is:
+
+- the **live forward-test of the five leads** — the only place their marginal backtest
+  edge can be confirmed or refuted with real (paper) fills over weeks;
 
 - a **landscape / parity lab** — confirming the simulator matches the production code paths
   across timeframes and the maker/taker model behaves as modelled;

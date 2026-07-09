@@ -93,19 +93,25 @@ Per-bot overridable fields: `bot_id`, `pair`, `timeframe_entry`, `timeframe_regi
 4th `-`-segment of `bot_id`), `patterns` (the enabled-pattern allowlist; omit = all), and
 `params` (overrides merged onto the base `params.json`).
 
-**Current lab (120 bots):** 10 pairs × 3 strategies (`mom_adx`, `triple_mom`, `trend_mom`) × 4
-timeframes (`5m`, `15m`, `1h`, `4h`). Pairs: BTC, ETH, SOL, DOGE, PEPE, HYPE, XRP, BNB, ADA,
-AVAX (all `/USDT`).
+**Current dev fleet (~161 bots, evolves with the research loop):** a 136-bot baseline
+(the four 1h indicator leads `macd_cross`/`macd_rsi`/`cci_mom`/`sma_cross` × 34 liquid
+USDT pairs) plus the rotating experimental `exp_*` cohort (currently `exp_robustwide`
+wide-exit sma_cross ×14 pairs + `exp_ensemble` ensemble_3of4 ×11 pairs). The cohort is
+defined in `exp_candidate.json` and rebuilt by `build_exp_cohort.py`; a `bot_registry/`
+dedup guard fingerprints every config ever deployed so refuted setups aren't silently
+re-run. Small `staging` (curated best performers) and `lab` (owner sandbox) tiers run
+alongside.
 
 ### Lab generators
 
 | Script | Fleet it writes |
 |---|---|
-| `build_momentum_lab.py` | the current momentum lab (3 strategies × 4 TF × 10 pairs) |
+| `build_momentum_lab.py` | the baseline fleet (the 1h indicator leads × 34 liquid pairs) |
+| `build_exp_cohort.py` | merges the `exp_candidate.json` cohort into `bots.json`, preserving the baseline verbatim |
 | `build_wave_lab.py` | 60 bots — wave family × fixed/trailing × 10 pairs |
 | `build_crypto_lab.py` | 120 bots — 3 entries × 4 exit modes × 10 symbols |
 | `build_bakeoff.py` | 48 bots — 8 strategy variants × 6 pairs |
-| `promote_to_staging.py` | reads `trades` (env=dev), ranks cells by net PnL, writes the curated `bots.staging.json` (`staging-` prefix). Falls back to validated defaults if the lab lacks data. |
+| `promote_to_staging.py` | reads `trades` (env=dev), selects cells that are BOTH win ≥ 50% AND net-positive (n ≥ 10), ranks by expectancy, writes the curated `bots.staging.json` (`staging-` prefix). Falls back to the lockbox-lead seed if no cell qualifies. |
 
 ## 4. Operational scripts (`scripts/*.sh` — FROZEN)
 

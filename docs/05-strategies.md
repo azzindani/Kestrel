@@ -7,18 +7,25 @@ patterns up by name; there is no hardcoded dispatch. A pattern only decides **en
 direction** — the *exit* behaviour (TP/SL/hold/trailing) is expressed by each bot's parameter
 profile, not in the pattern.
 
-Eleven patterns are registered. They fall into four families:
+Seventeen patterns are registered. They fall into six families:
 
 1. **The five classic patterns** (`CLAUDE.md` §23) — the original geometric setups.
 2. **The permissive baseline** (`trend_momentum`) — a simple, high-frequency activity signal.
 3. **The wave family** (`wave_ride`, `vol_burst`, `wave_flip`) — the "surf the wave / flip
    when it turns" idea.
 4. **The confluence-momentum family** (`mom_adx`, `triple_mom`) — multi-condition AND
-   entries; the family that briefly looked like an edge.
+   entries; the family that briefly looked like an edge (refuted by the lockbox).
+5. **The 1h indicator-lead family** (`macd_cross`, `macd_rsi`, `cci_mom`, `sma_cross`,
+   `ensemble_3of4`) — the research loop's **cross-era-validated leads**, the only signals
+   ever found +EV on both a recent-year walk-forward and an untouched prior-year lockbox.
+6. **The seasonal probe** (`session_seasonal`) — registered and tested, refuted, undeployed.
 
-> **Reminder (read [Overview §5](01-overview.md#5-honest-status--no-proven-edge)):** *none of
-> these has a cross-year-robust edge.* The catalogue below documents how each works and what
-> it was found to do — not a recommendation that any of them makes money.
+> **Reminder (read [Overview §5](01-overview.md#5-honest-status--no-proven-edge)):** the
+> family-5 leads are real but *marginal* — gross capture at or below the fee floor, none
+> clearing the deflated-Sharpe bar. Everything else has **no** cross-year-robust edge. The
+> catalogue documents how each works and what it was found to do — not a recommendation
+> that any of them makes money. Since 2026-07-09, signal quality is scored in **points +
+> win rate** (see [Points Framework](13-points-framework.md)).
 
 ## How a pattern's output is used
 
@@ -38,12 +45,22 @@ highest-confidence qualifying pattern per candle.
 
 ```python
 COUNTER_TREND_PATTERNS  = {"wave_flip"}                                  # trades AGAINST the EMA trend
-SELF_DIRECTING_PATTERNS = COUNTER_TREND_PATTERNS | {"mom_adx", "triple_mom"}
+SELF_DIRECTING_PATTERNS = COUNTER_TREND_PATTERNS | {
+    "mom_adx", "triple_mom", "session_seasonal",
+    "macd_cross", "macd_rsi", "cci_mom", "sma_cross", "ensemble_3of4",
+}
 ```
 
 `SELF_DIRECTING_PATTERNS` bypass the detector's trend-alignment gate and set their own
-direction — either to fade a trend (`wave_flip`) or to ride a price streak inside a strong
-trend (`mom_adx`, `triple_mom`).
+direction — either to fade a trend (`wave_flip`) or because their own entry condition
+already encodes direction (a MACD cross, a CCI breakout, an SMA cross, a streak inside a
+strong trend). Each was validated *without* the RSI/EMA gate, so live must match.
+
+> **The iter-25 registration lesson (hard-won):** a new pattern is live **only** with all
+> three of `@register("name")` + membership in `SELF_DIRECTING_PATTERNS` (if applicable) +
+> a permit in `regime.py`'s `regime_permits_pattern` for every non-QUIET regime. Missing
+> any one → the pattern silently never fires (the macd cohorts ran structurally inert for
+> 4 iterations before this was caught).
 
 ---
 
@@ -177,10 +194,71 @@ This family is the centre of the project's research story:
 3. A cross-check sealed it: `breakout_vol` is the exact mirror — positive on the prior year,
    negative on the recent year. **Neither is positive on both independent years.**
 
-**Conclusion:** the recent-year "win" was a data-mining / single-regime artifact. There is
-**no cross-year-robust edge in any hand-written entry archetype, at any timeframe, under
-taker or maker fees.** The momentum family is documented here because it is *deployed in the
-lab and registered in production*, **not** because it works.
+**Conclusion:** the recent-year "win" was a data-mining / single-regime artifact — the
+episode that established the **lockbox rule** every later candidate had to pass. The
+momentum family is documented here because it is *deployed in the lab and registered in
+production*, **not** because it works.
+
+---
+
+## Family 5 — The 1h indicator leads (the cross-era survivors)
+
+The research loop (owner-authorized to use indicators, 2026-06-21) swept dozens of
+indicator archetypes at 1h under maker fees, requiring **+EV on BOTH the recent-year
+walk-forward AND the untouched prior-year lockbox across ≥3 pairs**. Five survived —
+every sibling variant (ema_cross, donch_break, breakout_vol, stoch, cci_revert, vwap,
+supertrend, …) failed the lockbox with the same strong-recent/negative-prior data-mined
+signature. The consistent meta-finding: **momentum-BREAKOUT crosses can validate
+cross-era; mean-reversion FADES never have** (under the long-bracket geometry — being
+re-examined under the [Points Framework](13-points-framework.md)).
+
+All five are `SELF_DIRECTING_PATTERNS`, permitted in every non-QUIET regime, sized in the
+full-confidence band (0.78), and validated at **1h** — the edge is TF-specific (all died
+at 4h and 15m; 5m is below the cost floor).
+
+### `macd_cross` *(iter 18 — the first cross-era survivor)*
+Trend-aligned MACD(12,26,9) signal-line cross: MACD crosses **up** through its signal line
+while **above zero** → long (mirror short below zero). The zero-line alignment is what
+rescued it — the raw cross alone was data-mined. Recent expR +0.13 / lockbox +0.17.
+**Live: the strongest forward-test performer (+14 bps/trade gross as of 2026-07).**
+
+### `macd_rsi` *(iter 22)*
+The **raw** (non-zero-aligned) MACD signal cross, confirmed by RSI-14 on the same side of
+its 50 centerline. The RSI filter rescues the raw cross (data-mined alone); ~50% more
+trades than `macd_cross`. Recent expR +0.06..0.09 / lockbox +0.12, lockbox-positive 5/6 pairs.
+
+### `cci_mom` *(iter 31)*
+CCI(20) momentum **breakout** through its definitional ±100 level (crosses out, not a
+fade back in). ~3× the activity of the macd leads. Recent expR +0.12 / lockbox +0.07.
+Its mean-reversion sibling `cci_revert` (fading ±100) was refuted the same iteration.
+
+### `sma_cross` *(iter 32)*
+SMA(9)/SMA(21) golden/death cross — the only survivor of a 14-algo breakout sweep
+(recent +0.14 / lockbox +0.12, OOS>IS both eras). Distinct from MACD's EMA(12/26) cross;
+fires on different bars. **The most fill-robust cell on record** (survives even taker
+fees cross-era, iter 46) and the closest any signal came to the deflated-Sharpe bar
+(iter 47: PSR 1.000 in-sample, but DSR fails at the project's true search breadth).
+
+### `ensemble_3of4` *(iter 52 — voting confluence)*
+Fires only when **≥3 of the 4 leads above agree on direction at the same candle** — the
+leads gating *each other* instead of a regime or timeframe (every regime/HTF confluence
+filter had failed). Best R/R (1.68) and lockbox breadth (6/7 pairs) on record; thin
+recent margin. Deployed on the 11 pairs that validated per-pair in both eras.
+
+> **Status of all five:** live paper **forward-test leads, not confirmed edges** — win
+> <55% under the current geometry, gross capture at/below the fee floor, deflated Sharpe
+> below the bar. They are the entry set the [Points Framework](13-points-framework.md)'s
+> HiWin re-geometry program (S1) builds on.
+
+---
+
+## Family 6 — The seasonal probe
+
+### `session_seasonal` *(registered, tested, undeployed)*
+Trades a fixed UTC session window found in a seasonality scan (iter 3). Refuted in iter 4
+(effect ~0.05% gross, below maker cost; 1/6 pairs robust) and again for the current leads
+in iter 50 (recent/lockbox/live each nominate a *different* best session = noise). Kept
+registered as the tested-negative reference implementation.
 
 ---
 
@@ -191,13 +269,15 @@ The regime gates which patterns may even be considered (intersected with the bot
 
 | Regime | Permitted patterns |
 |---|---|
-| **TRENDING** | `impulse_retracement`, `momentum_continuation`, `trend_momentum`, `wave_ride`, `vol_burst`, `mom_adx`, `triple_mom` |
-| **VOLATILE** | `compression_breakout`, `anomaly_fade`, `trend_momentum`, `wave_ride`, `vol_burst`, `wave_flip`, `mom_adx`, `triple_mom` |
-| **RANGING** | `wick_rejection`, `anomaly_fade`, `trend_momentum`, `wave_flip`, `mom_adx`, `triple_mom` |
+| **TRENDING** | `impulse_retracement`, `momentum_continuation`, `trend_momentum`, `wave_ride`, `vol_burst`, `mom_adx`, `triple_mom`, `session_seasonal`, `macd_cross`, `macd_rsi`, `cci_mom`, `sma_cross`, `ensemble_3of4` |
+| **VOLATILE** | `compression_breakout`, `anomaly_fade`, `trend_momentum`, `wave_ride`, `vol_burst`, `wave_flip`, `mom_adx`, `triple_mom`, `session_seasonal`, `macd_cross`, `macd_rsi`, `cci_mom`, `sma_cross`, `ensemble_3of4` |
+| **RANGING** | `wick_rejection`, `anomaly_fade`, `trend_momentum`, `wave_flip`, `mom_adx`, `triple_mom`, `session_seasonal`, `macd_cross`, `macd_rsi`, `cci_mom`, `sma_cross`, `ensemble_3of4` |
 | **QUIET** | *(none — all signals blocked)* |
 
-`mom_adx` / `triple_mom` appear in every non-QUIET regime because they carry their own
-ADX-strength gate.
+`mom_adx` / `triple_mom` and the five indicator leads appear in every non-QUIET regime
+because each carries its own restrictive entry gate (ADX floor, a cross, a breakout) —
+exactly the configuration they were validated under (the backtest harness neutralises the
+regime permit except QUIET).
 
 ## Pattern parameters (defaults from `params.json`)
 

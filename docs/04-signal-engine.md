@@ -81,11 +81,13 @@ clear costs, the engine refuses to trade at all.
   same EMA ordering, else `Rejection(reason="no_trend_streak")`.
 
 **The self-directing bypass:** if the trend filter rejects *but* the regime's permitted
-patterns include any **`SELF_DIRECTING_PATTERN`** (`wave_flip`, `mom_adx`, `triple_mom`),
-the trend stage does not hard-reject — instead it sets `trend_direction = None` and lets the
-pattern scan proceed. Those patterns supply their own direction. This is deliberate: the
-momentum patterns were *validated without* the RSI/EMA gate (which would discard the
-strongest, most "overbought" momentum entries), so they reproduce that validated behaviour.
+patterns include any **`SELF_DIRECTING_PATTERN`** (`wave_flip`, `mom_adx`, `triple_mom`,
+`session_seasonal`, and the five 1h indicator leads `macd_cross`/`macd_rsi`/`cci_mom`/
+`sma_cross`/`ensemble_3of4` — see [Strategies](05-strategies.md)), the trend stage does
+not hard-reject — instead it sets `trend_direction = None` and lets the pattern scan
+proceed. Those patterns supply their own direction. This is deliberate: they were
+*validated without* the RSI/EMA gate (which would discard the strongest, most
+"overbought" momentum entries), so they reproduce that validated behaviour.
 
 ### Stage 3 — Pattern scan (`detector.py` + `patterns.py`)
 

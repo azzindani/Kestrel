@@ -16,8 +16,10 @@ fully reconstructable after the fact.
 
 It is built to run **many bots at once** — different pairs, timeframes, and strategies —
 inside a single process and a single asyncio event loop, all sharing one database, one
-notifier, and one supervising watchdog. This makes it a *fleet* platform: you can stand up
-120 experimental configurations side-by-side and compare them on identical infrastructure.
+notifier, and one supervising watchdog. This makes it a *fleet* platform: the current dev
+fleet runs **~161 experimental configurations side-by-side** (34 liquid pairs × the
+validated 1h leads + rotating `exp_*` cohorts) on identical infrastructure, with separate
+staging and lab tiers.
 
 ## 2. Project identity
 
@@ -76,40 +78,48 @@ feeds back into the signal layer; any "feedback" (e.g. a position outcome influe
 next signal) happens only via a fresh DB read on the next candle. This is enforced by the
 [layer model](02-architecture.md).
 
-## 5. Honest status — no proven edge
+## 5. Honest status — real leads, no confirmed net-of-fee edge
 
 **This is the most important section in the docs. Read it before treating Kestrel as
 anything other than a research platform.**
 
-Kestrel is engineered to production standards, but **it has no validated tradeable edge.**
-Exhaustive research (documented in [Backtesting & Research](09-backtesting-research.md) and
-`FINDINGS.md`) reached these conclusions:
+Kestrel is engineered to production standards. After **54 autonomous research-loop
+iterations** (documented in `RESEARCH_LOOP.md` and
+[Backtesting & Research](09-backtesting-research.md)), the picture is:
 
 1. **Single-rule OHLCV entries lose at every timeframe and asset** once realistic fees and
    slippage are charged. At 5m, the average price move is *smaller than the round-trip cost*
-   — the game is negative-sum before a strategy even starts.
-2. **The confluence-momentum family (`mom_adx`, `triple_mom`) looked like the first broad
-   positive result** — net-positive on 10/10 pairs at 4h on a recent-year walk-forward — and
-   was briefly promoted. **It was then refuted by an untouched prior-year lockbox**: on the
-   year *before* the search window it is net-negative. The "win" was a single-regime,
-   data-mined artifact, not an edge that generalises across regimes.
-3. **The maker-fee lever is real and large** (it roughly halves the bleed by cutting the
-   cost wall ~4×), but it only *amplifies* whatever edge exists — and the underlying edge is
-   ≈ a coin flip, so maker amplifies ≈ zero.
-4. **The remaining real-edge candidates are structural**, not indicator-based —
-   e.g. funding-rate harvesting — and require infrastructure Kestrel does not yet have.
+   — the game is negative-sum before a strategy even starts. The 5m search is exhausted.
+2. **Five 1h signals are +EV in BOTH a recent-year walk-forward AND an untouched
+   prior-year lockbox** — `macd_cross`, `macd_rsi`, `cci_mom`, `sma_cross`, and the
+   voting-confluence `ensemble_3of4`. These are the project's first (and only)
+   cross-era-robust results, deployed as live paper forward-tests. They are **real but
+   marginal**: gross directional capture ~1–15 bps/trade, at or below the ~4 bps maker
+   fee floor, and none clears the formal deflated-Sharpe multiple-testing bar (iter 47).
+   Dozens of other candidates looked good in the recent year and **collapsed in the
+   lockbox** — the recurring data-mining signature the methodology exists to catch.
+3. **The maker-fee lever is real and large** (it cuts the cost wall ~4×), but it only
+   *amplifies* whatever edge exists — and the measured edge is small, so the fee floor
+   remains the binding wall. The un-exhausted levers are **cost-side** (venue/fee tier,
+   §4 owner decisions) and **structural** (funding-rate harvesting — needs perps, §4).
+4. **Since 2026-07-09 the primary scoreboard is the [Points Framework](13-points-framework.md)**:
+   signal quality is measured in **points (bps of price) + win rate**, gross of fees,
+   with the dollar/fee bridge as an explicit later phase. This separates "is the signal
+   real?" (points) from "do fees eat it?" (economics) — the two questions a dollar
+   scoreboard entangles.
 
 **Therefore:**
 
 - Kestrel runs as a **paper / research / forward-testing platform** on a live data feed.
 - **No real capital. No live API keys. No production VPS.** Going live is gated by the §18
-  criteria, which are *not* met (chief among them: a validated out-of-sample edge).
-- The risk overlays added recently (trailing-close, the portfolio guard) are **variance
-  shapers, not edge creators** — they reshape the distribution of outcomes on a coin flip;
-  they do not make a losing system profitable.
+  criteria, which are *not* met (chief among them: a validated net-of-fee edge).
+- The risk overlays (trailing-close, the portfolio guard) are **variance shapers, not
+  edge creators** — they reshape the distribution of outcomes; they do not make a losing
+  system profitable.
 
-This honesty is a feature, not a bug. The cost model and walk-forward discipline are
-specifically designed to *prevent* the project from fooling itself, and they are working.
+This honesty is a feature, not a bug. The cost model, walk-forward + lockbox discipline,
+and the deflated-Sharpe bar are specifically designed to *prevent* the project from
+fooling itself, and they are working.
 
 ## 6. Where to go next
 
