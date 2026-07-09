@@ -577,6 +577,28 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 55b — 2026-07-09 (OWNER AUTHORIZED RULE 3 + DEPLOYED exp_hiwin: "i authorize you to amend rule 3, deploy it" — the live leg of the points program begins)
+
+- **RULE 3 AMENDED (CLAUDE.md v2.6 FIRST per §24, then `src/risk/manager.py`):** `_MIN_RR` 1.2 → **0.25**.
+  The floor now rejects only degenerate brackets; strategy quality gates on the docs/13 §6.1 points joint
+  bar at the research layer. §26 `tp_atr_multiplier` range floor 0.8 → 0.4 (needed by the hiwin presets).
+  Rule-3 tests rewritten (floor boundary 0.25, hiwin geometry passes, classic 1.2 geometry unaffected,
+  zero-SL still rejected) — full suite green, lint green.
+- **DEPLOYED `exp_hiwin` (23 NEW bots, dedup 23 NEW / 161 SEEN, fleet 161 → 184):** each arm on its own
+  both-eras-points-positive core from the S1 `--by-pair` tables —
+  `ensemble_3of4`/hiwin33 × {DOGE,XRP,SOL,ADA,BNB,AVAX} · `macd_rsi`/hiwin50 × {ETH,DOGE,SOL,ADA,BNB,ATOM}
+  · `macd_cross`/hiwin50 × {ETH,PEPE,SOL,ADA,BNB} · `sma_cross`/hiwin50 × {ETH,DOGE,PEPE,SOL,ADA,BNB}.
+  exp_robustwide + exp_ensemble kept VERBATIM (additive deploy → **reset nothing**, backup taken).
+  Rebuilt image (risk/manager.py is baked), verified `_MIN_RR = 0.25` live in-container, backfilled the
+  23 new bot_ids (720 × 1h each), **184/184 heartbeats fresh · 0 stale · 0 errors**. Commit `2106e00`.
+- **PURPOSE:** the ≥100-trade LIVE leg of the §6.3 program target (points win ≥ 70%, expectancy ≥ +4 bps,
+  breadth — both eras ✓ done, live ✗ starts now). Expected activity ~25-30 closed/wk across the 4 arms →
+  first readable sample in ~2 weeks, 100 trades in ~4. Known accepted divergences: live volume_confirm 1.1
+  floor; Rule 4 keeps the conservative taker fee bar (low-ATR candles reject `fee_not_viable`).
+- **WATCH RULES:** judge on TRADE COUNT not clock (≥30 to read, ≥100 to trust — standing pref #9); the
+  cohort is judged on the POINTS scoreboard (§2.3); retirement bar if it goes structurally dead per the
+  MODE rule. Queued next: points-DSR + taker stress (S1b), S2 mean-rev re-audit, Grafana points row.
+
 ### Iteration 55 — 2026-07-09 (OWNER-DIRECTED: the POINTS FRAMEWORK + S1 HiWin sweep — the strongest cross-era result in project history: 12 cells clear the joint points bar in BOTH eras at maker-viable gross; ensemble_3of4/hiwin33 hits 76%/78% win + net-of-maker-$-positive both eras; LIVE DEPLOY BLOCKED on risk Rule 3 (§24 owner decision))
 
 - **TRIGGER:** owner — "change the target not based on profit but on the pips/points and the winrate,
