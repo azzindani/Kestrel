@@ -585,6 +585,62 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 56 — 2026-07-10 (QUEUED S1b RUN: points-DSR + taker fill-stress on the S1 hiwin survivors — the best signal in project history FAILS the formal multiple-testing bar in BOTH eras, and its edge is almost entirely maker-fee-dependent; NO deploy, live leg untouched)
+
+- **MEASURE:** fleet healthy (184/184 heartbeats fresh, 0 errors, all 7 compose services up). Overall
+  dev slate 642 closed / 42.7% win / net −$9.83 / PF 0.82 (classic-exit baseline, unchanged picture).
+  Close-reason mix: timeout 44.7%, stop_loss 28.0%, manual 13.7% (redeploy-restart artifacts), take_profit
+  12.3% — still the familiar "TP too far away, times out first" shape on the OLD exit geometry, exactly
+  what the hiwin program targets. **`exp_hiwin` (14-23h old, deployed iter 55b): 0 closed trades, 0
+  signals of ANY outcome (not even rejected) across all 23 bots.** Verified this is NOT a repeat of the
+  iter-20/iter-25 dark-cohort bugs: candles fresh (latest closed 1h candle present), heartbeats
+  `running`, patterns already fire fine in sibling cohorts (baseline macd_cross/macd_rsi/sma_cross/cci_mom
+  all fired 3-15 times combined in the same 14h window) — the fires just landed on OTHER pairs (UNI, HYPE,
+  ETC, LTC, APT, FET, OP) that don't overlap exp_hiwin's specific both-eras-robust pair cores. At the
+  observed baseline firing rate, zero fires on a 5-6-pair subset over 14h is well within Poisson noise.
+  **Confirmed correctly wired, genuinely too early — do not misread as dead.**
+- **DIAGNOSE / HYPOTHESIZE:** with exp_hiwin's live leg untouchable this early (§9), this iteration's
+  research value comes from the QUEUED S1b task left open at iter 55c: the points program has never been
+  checked against (a) the formal multiple-testing correction (deflated Sharpe, built iter 47) or (b) a
+  taker-fee fill-stress (built iter 46) — both existing tools, never run on the hiwin survivors specifically.
+- **BACKTEST — three runs, `scripts/algo_search.py --points`, 1h maker/taker, 9-pair union of the 4 arms'
+  both-eras cores, walk-forward OOS + untouched lockbox:**
+  - **Points bar (both eras, maker):** recent 15/16 combos clear · lockbox **16/16** clear, ALL
+    maker-viable — lockbox top cell `ensemble_3of4/hiwin33` hits **79.4% win / +16.66 bps** (n=301),
+    the single best cross-era cell ever measured on this project. Consistent with iter 55's finding,
+    even stronger on a tighter pair set.
+  - **Deflated Sharpe (stop-#2's actual test, both eras independently):** BEST cell each era —
+    recent `ensemble_3of4/scratch` Sharpe +0.123 (PSR=0.965); lockbox `ensemble_3of4/hiwin33` Sharpe
+    +0.100 (PSR=0.946). **Both FAIL the DSR>0.95 bar at every trial-count assumption tested** —
+    recent DSR 0.762(N=16)/0.667(N=48)/0.567(N=160); lockbox DSR 0.743/0.659/0.572. Same failure
+    signature as iter 47's sma_cross/wide (the previous closest signal) — **no signal in this
+    project's history has ever cleared the formal multiple-testing bar**, including the strongest one.
+  - **Taker fill-stress (§13's "maker path REQUIRED" claim, tested directly):** replacing maker with
+    taker fees collapses the survivor set from 15/16 → **1/16** (only `ensemble_3of4/scratch` survives,
+    barely, signal-only shelf +3.38 bps) — every hiwin-exit cell goes net-negative under taker (−2 to
+    −9 bps). **The entire hiwin edge is maker-fee-dependent**, confirming §13's design constraint is
+    load-bearing, not decorative — live fill quality (real maker-fill rate, not the sim's assumption)
+    is now the single biggest swing factor for whether exp_hiwin's live leg succeeds.
+- **HONEST READ:** backtest evidence alone — even at its best, cross-era-robust, points-bar-clearing —
+  does NOT statistically distinguish this signal from a data-mined artifact at 95% confidence. This
+  doesn't refute exp_hiwin (DSR failing is the norm for real trading signals with modest per-trade
+  edges over finite samples, not proof of nothing-there), but it means the **live ≥100-trade forward
+  test is not a formality — it's the only evidence type left that isn't subject to this haircut.**
+  Watch item added: if live maker-fill rates run materially below the sim's ~90-100% assumption
+  (`project_maker_fee_meanrev_research`), the taker-stress result says the edge likely does not survive.
+- **APPLY:** no deploy. Redeploying/rotating `exp_hiwin`'s bot_ids now would restart its <1-day-old
+  live leg — directly against standing preference #9 ("never apply or remove a strategy off a short
+  read"). Nothing else cleared bar to justify a NEW cohort. **10b staging maintenance DID apply**
+  (routine, does not touch dev/exp_hiwin): re-selection added 1 bot (`staging-TRXUSDT-1h-cci_mom-01`,
+  n=10, 70% win, net +$0.77) to the existing 2-bot pool (APT/DOGE cci_mom); backfilled, staging
+  profile restarted, healthy.
+- **LINT/COMMIT/CI:** RESEARCH_LOOP.md-only change; `ruff format --check` / `ruff check` unaffected
+  (no src/tests touched). Reports archived: `reports/algo_search_20260710-{003422,003625,003853}.md`.
+- **CHECK STOP:** neither condition holds — no config has reached 70%/100 live trades (owner target),
+  and the DSR test just formally confirmed condition 2 (deflated Sharpe > 0) is NOT yet met by any
+  candidate, hiwin included. Loop continues; next queued item is simply time — let exp_hiwin's live
+  leg accumulate toward its 30-trade read / 100-trade trust bar.
+
 ### Iteration 55c — 2026-07-09 (S2 mean-rev re-audit + S4 marginal revival under the points bar: 12/48 cells clear the joint gross bar cross-era but ZERO clear maker-viable in both eras → NO deploy; the "fade always fails the lockbox" rule REFINED, four fade algos permanently refuted; Grafana points row shipped)
 
 - **SCOPE (docs/13 §5 S2 + S4, completing task #8):** 12 algos — the full mean-rev/fade family
