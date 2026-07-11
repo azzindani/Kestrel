@@ -1028,6 +1028,67 @@ def _apply_fee_model(mode: str) -> float:
         _risk.round_trip_fee_pct = lambda: 0.02 + 0.02  # 0.04% round trip for the viability gate
         bg._COST_PCT = (0.0002 + 0.0) * 2 * 100.0  # 0.04% (display only)
         return bg._COST_PCT
+    if mode == "realistic":
+        # iter-57 finding: src/execution/simulation.py (the engine that ACTUALLY runs live
+        # paper trades) only grants the maker fee + zero-slippage treatment to take_profit
+        # exits — stop_loss/timeout/liquidated/trailing_stop/manual market out and pay the
+        # taker fee + slippage EVEN IN MAKER MODE (see simulation.py close_position(), the
+        # "makes maker lift the WIN side more than the loss side" comment). The backtest's
+        # plain "maker" mode above does NOT replicate this — it flat-rates every exit at the
+        # maker fee with zero slippage, which is optimistic for any strategy whose losers
+        # exit via stop_loss/timeout (exactly hiwin's inverted geometry: wide SL, narrow TP).
+        # This mode entry-fees at maker (entry actually IS always-maker-if-enabled, matching
+        # simulation.py) but reproduces the exit asymmetry by monkeypatching runner's exit-
+        # settlement function — runner.py itself (agent-restricted, not in §25 scope) stays
+        # untouched, same precedent as the constant-patches above.
+        _runner._TAKER_FEE_PCT = 0.02 / 100.0  # entry fee: always-maker-if-enabled (unchanged)
+        _runner._SLIPPAGE_PCT = 0.0  # entry: post-only, no slippage (unchanged)
+        _risk.round_trip_fee_pct = lambda: 0.02 + 0.02  # viability gate unchanged vs "maker"
+        maker_fee, taker_fee, taker_slip = 0.02 / 100.0, 0.04 / 100.0, 0.05 / 100.0
+
+        def _realistic_simulate_close(trade: dict, candle, reason: str) -> dict:
+            direction = trade["direction"]
+            entry = trade["entry_price"]
+            notional = trade["notional_usdt"]
+            size = trade["size_usdt"]
+            if reason == "take_profit":
+                raw_exit = trade["tp_price"]
+            elif reason == "trailing_stop":
+                raw_exit = trade["trail_stop"]
+            elif reason in ("stop_loss", "liquidated"):
+                raw_exit = trade["sl_price"] if reason == "stop_loss" else trade["liquidation_price"]
+            else:
+                raw_exit = candle.close
+            maker_exit = reason == "take_profit"
+            slip = 0.0 if maker_exit else taker_slip
+            fee_rate = maker_fee if maker_exit else taker_fee
+            if direction == "long":
+                exit_price = raw_exit * (1.0 - slip)
+                pnl_gross = (exit_price - entry) / entry * notional
+            else:
+                exit_price = raw_exit * (1.0 + slip)
+                pnl_gross = (entry - exit_price) / entry * notional
+            fee_exit = notional * fee_rate
+            total_fee = trade["fee_entry_usdt"] + fee_exit
+            pnl_net = pnl_gross - total_fee
+            pnl_pct = pnl_net / size * 100.0
+            hold_candles = int(
+                (candle.ts - trade["entry_ts"]) // (300_000 if "5m" in trade.get("timeframe", "5m") else 900_000)
+            )
+            return {
+                "exit_ts": candle.ts,
+                "exit_price": round(exit_price, 8),
+                "hold_candles": max(hold_candles, 1),
+                "pnl_gross_usdt": round(pnl_gross, 6),
+                "fee_exit_usdt": round(fee_exit, 6),
+                "pnl_net_usdt": round(pnl_net, 6),
+                "pnl_pct": round(pnl_pct, 4),
+                "bucket_balance_after": round(trade.get("bucket_balance_before", 10.0) + pnl_net, 4),
+            }
+
+        _runner._simulate_close = _realistic_simulate_close
+        bg._COST_PCT = (0.0002 + 0.0) * 2 * 100.0  # display only — true cost varies by exit mix
+        return bg._COST_PCT
     return bg._COST_PCT  # taker default: 0.18% (runner/risk/bg untouched)
 
 
@@ -1171,7 +1232,12 @@ def main() -> None:
     ap.add_argument("--exits", default="tight,wide", help="comma list of exit profiles")
     ap.add_argument("--regime", default=None, help="restrict firing to one regime: ranging|trending|volatile")
     ap.add_argument(
-        "--fees", default="taker", choices=["taker", "maker", "none"], help="cost model (see _apply_fee_model)"
+        "--fees",
+        default="taker",
+        choices=["taker", "maker", "none", "realistic"],
+        help="cost model (see _apply_fee_model); realistic = maker entry + maker exit ONLY on "
+        "take_profit, taker+slippage on stop_loss/timeout/liquidated/trailing (matches "
+        "src/execution/simulation.py's actual live fill treatment; iter-57)",
     )
     ap.add_argument(
         "--offset-days",

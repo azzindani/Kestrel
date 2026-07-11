@@ -585,6 +585,70 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 57 — 2026-07-11 (BUILT the REALISTIC fee model: a real backtest-vs-live-sim gap found and closed — the flat "maker" mode in algo_search.py was optimistic vs `src/execution/simulation.py`'s actual live behaviour; re-ran the S1 hiwin survivors under it — the edge survives (unlike iter-56's pure-taker stress), `ensemble_3of4` emerges as the most fee-robust arm; NO deploy, exp_hiwin live leg (38h old, 6 trades) left untouched)
+
+- **MEASURE:** fleet healthy (7/7 services up, `kestrel` 38h uptime). Overall dev 709 closed / 42.7%
+  win / net −$10.50 (classic baseline, unchanged picture). **`exp_hiwin` now has its first live trades:**
+  6 closed (macd_cross 1, macd_rsi 3, sma_cross 2; ensemble_3of4 still 0) — 5/6 exited via `take_profit`,
+  1 via `timeout`, net +$0.26. Far below the 30-trade read bar, but directionally consistent with the
+  backtest thesis and confirms the cohort fires normally. `exp_robustwide_sma_cross` at 48 closed trades
+  (net −$2.31, PF 0.41) — approaching but not yet at the ≥50-trade structurally-dead bar; flagged for
+  next iteration, not actionable yet.
+- **DIAGNOSE (the finding that drove this iteration):** inspecting exp_hiwin's first live fee charges
+  (`fee_entry_usdt`/`fee_exit_usdt` relative to notional, not margin — a live 20x $10 bucket has $200
+  notional) showed the correct maker entry rate (0.02%) on all 6, but the ONE `timeout`-closed trade paid
+  0.04% (taker) on its exit while the 5 `take_profit`-closed trades paid 0.02% (maker) on exit. Traced
+  this to `src/execution/simulation.py::close_position()` (lines ~146-160): maker exit treatment applies
+  **ONLY to `take_profit`** — stop_loss/timeout/liquidated/trailing_stop/manual market out and pay taker
+  fee + 0.05% slippage even in maker mode ("you cannot post-only your way out of an adverse move").
+  **`scripts/algo_search.py`'s existing `--fees maker` mode does NOT replicate this** — it flat-rates
+  EVERY exit at the maker fee with zero slippage regardless of `close_reason` (confirmed in
+  `src/backtest/runner.py::_simulate_close`, which the header comment claims is "identical to the live
+  simulation engine" — that claim is false for the maker path specifically). This matters most for
+  hiwin's inverted geometry (wide SL, narrow TP): the SL-side losses are exactly the exits the flat-maker
+  backtest was undercounting, so the S1/S1b maker-mode numbers were somewhat rosier than what live will
+  actually charge.
+- **HYPOTHESIZE / BUILT:** a `--fees realistic` mode in `scripts/algo_search.py` (frozen `runner.py`
+  untouched — same runtime-monkeypatch precedent as the existing fee patches): keeps the always-maker
+  entry treatment (correct, matches live), but monkeypatches the exit-settlement function so ONLY
+  `take_profit` exits get maker fee + zero slippage; every other close reason pays taker fee (0.04%) +
+  slippage (0.05%), replicating `simulation.py` exactly. This closes a real backtest-fidelity gap, not
+  a re-test of anything in the REFUTED LEDGER.
+- **BACKTEST — S1 hiwin survivors (4 leads × 4 hiwin exits, 9-pair union, 1h, walk-forward OOS +
+  untouched lockbox) under `--fees realistic`:**
+  - **Recent: 13/16 clear the points joint bar (5 maker-viable ≥+4bps)** — top cell `ensemble_3of4/
+    hiwin33` 76.0%/+6.80bps (n=271, vs +8.42bps under flat-maker — a ~1.6bps haircut, small because
+    76% of exits genuinely ARE take_profit for this geometry). `ensemble_3of4/scratch` 73.1%/+11.12bps.
+  - **Lockbox: 16/16 clear, 14 maker-viable** — top cell `ensemble_3of4/hiwin33` 79.3%/+15.35bps (n=299,
+    vs +16.66bps flat-maker — only ~1.3bps haircut). `macd_rsi/hiwin33` 78.9%/+12.48bps.
+  - **Cross-era maker-viable intersection (both eras ≥+4bps): 5/16 — ALL FOUR `ensemble_3of4` exits
+    (scratch/hiwin50/hiwin33/hiwin43) + `macd_rsi/scratch`.** This is essentially unchanged from the
+    flat-maker cross-era set — **the realistic fee model does NOT kill the hiwin edge** (unlike iter-56's
+    pure-taker stress, which collapsed 15/16 → 1/16). The asymmetry cuts the OTHER way from what a naive
+    "maker mode was too generous" worry would predict, because hiwin's high win rate means most trades
+    really do exit at the cheap maker leg.
+  - **Refinement: `ensemble_3of4` is the most fee-robust of the 4 hiwin arms** — it holds maker-viable
+    status on ALL its exit variants in both eras under the realistic model, while `macd_cross` and
+    `sma_cross`'s hiwin variants (maker-viable under flat-maker) drop to signal-only (<4bps) in the
+    recent era specifically. `macd_rsi` sits in between (2/4 exits stay maker-viable cross-era).
+- **HONEST READ:** this is a validation of the backtest tooling, not a new edge claim — it closes a
+  fidelity gap and the answer came back reassuring rather than damning (unusual for this project's fee
+  research — see `project_maker_fee_meanrev_research`'s taker-refute of the OLD entries — but this is a
+  DIFFERENT geometry with a genuinely high win rate, so the asymmetry works in its favor here). The
+  iter-56 DSR failure is UNCHANGED by this finding (DSR tests statistical significance of the return
+  series' magnitude, and realistic fees only trim the top cell's edge by ~1.3-1.6bps — nowhere near
+  enough to flip a 0.57-0.76 DSR into the 0.95+ pass zone). The live leg remains the only evidence type
+  that isn't subject to either haircut.
+- **APPLY:** no bots.json change — `exp_hiwin`'s live leg (38h old, 6 trades, nowhere near the 30-trade
+  read bar) stays untouched per standing pref #9. This iteration's shipped artifact is the `--fees
+  realistic` capability in `scripts/algo_search.py` itself (a genuinely new, reusable research tool,
+  not a re-run) — dedup guard (`bot_registry.py check`) not applicable since no bot config changed.
+- **LINT/COMMIT/CI:** `ruff format --check` + `ruff check` on both `scripts/algo_search.py` (clean,
+  outside CI's src/tests scope) and the CI scope `src/ tests/` (unaffected, clean). Reports archived:
+  `reports/algo_search_20260711-{003338,003541}.md`.
+- **CHECK STOP:** neither condition holds. `exp_robustwide_sma_cross` is 2 trades from the structurally-
+  dead retirement bar — watch at next firing.
+
 ### Iteration 56 — 2026-07-10 (QUEUED S1b RUN: points-DSR + taker fill-stress on the S1 hiwin survivors — the best signal in project history FAILS the formal multiple-testing bar in BOTH eras, and its edge is almost entirely maker-fee-dependent; NO deploy, live leg untouched)
 
 - **MEASURE:** fleet healthy (184/184 heartbeats fresh, 0 errors, all 7 compose services up). Overall
