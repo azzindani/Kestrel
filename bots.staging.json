@@ -19,8 +19,8 @@
     }
   },
   {
-    "bot_id": "staging-TRXUSDT-1h-cci_mom-01",
-    "pair": "TRX/USDT",
+    "bot_id": "staging-BNBUSDT-1h-cci_mom-01",
+    "pair": "BNB/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
@@ -38,8 +38,8 @@
     }
   },
   {
-    "bot_id": "staging-DOGEUSDT-1h-cci_mom-01",
-    "pair": "DOGE/USDT",
+    "bot_id": "staging-TRXUSDT-1h-cci_mom-01",
+    "pair": "TRX/USDT",
     "timeframe_entry": "1h",
     "timeframe_regime": "1h",
     "max_active_buckets": 1,
