@@ -1,23 +1,7 @@
 {
-  "iteration": 10,
-  "note": "iter 55b (owner-authorized): DEPLOY exp_hiwin — the S1 points-program survivors (docs/13-points-framework.md; RESEARCH_LOOP iter 55). Rule 3 amended 1.2->0.25 (CLAUDE.md v2.6) so the validated inverted-geometry brackets can fire live. 4 arms, each on its OWN both-eras-points-positive pair core from the S1 --by-pair tables: ensemble_3of4/hiwin33 (76.2%/+7.67bps recent, 77.8%/+13.59bps lockbox), macd_rsi/hiwin50 (66.0%/+5.20, 67.8%/+9.50), macd_cross/hiwin50 (67.6%/+5.00, 69.8%/+12.89), sma_cross/hiwin50 (65.2%/+5.00, 67.3%/+7.89). Purpose = the >=100-trade LIVE leg of the docs/13 s6.3 program target (points win>=70% + expectancy>=+4bps + breadth, both eras + live). Existing exp_robustwide + exp_ensemble arms kept VERBATIM (same bot_ids, additive deploy, reset nothing). Known live-vs-backtest divergences (accepted, documented): volume_confirm 1.1 floor active live; risk Rule 4 uses the conservative taker fee bar so low-ATR candles reject fee_not_viable. NOT a confirmed edge until the live leg + points-DSR + taker stress pass.",
+  "iteration": 11,
+  "note": "iter 58: RETIRE exp_robustwide/sma_cross — crossed the structurally-dead bar (52 closed trades, net -$2.33, PF 0.44; MODE Cell-viability rule: >=50 trades AND net<0 AND PF<1.0, no plausible fix within its own wide-exit R/R2.0 framework since sma_cross already has a directly better-evidenced geometry live in exp_hiwin). Its 52 trades stay in the DB as permanent history (not deleted). Attempted an additive REPLACEMENT — ensemble_3of4/hiwin33 on the 10 pairs its retirement frees up (ETH,PEPE,ATOM,DOT,ETC,FIL,INJ,LINK,UNI,XLM) — recent-era backtest ran clean (5/10 pairs +EV: ETH,DOT,FIL,LINK,UNI all +9..+17bps @76-82% win) but the LOCKBOX fetch failed for all 10 pairs across all 3 fallback exchanges (okx RequestTimeout, kraken RequestTimeout/BadSymbol, gate 'Candlestick too long ago' on the offset-365 window) after 3 separate attempts (full 10-pair x2, narrow 5-pair x1) — an infra outage, not a data-availability refutation (iter 57's lockbox fetch on a different, already-cached pair set worked fine one day earlier). Per the loop's own walk-forward+lockbox standard, recent-only is NOT sufficient to deploy — the 5 promising pairs are logged as an OPEN LEAD for next iteration once lockbox access recovers, explicitly NOT added to the REFUTED LEDGER. exp_hiwin (23 bots), exp_ensemble, and this file's remaining arm kept VERBATIM (additive/no-op deploy — only removes exp_robustwide/sma_cross's 14 bot_ids).",
   "arms": [
-    {
-      "label": "exp_robustwide",
-      "timeframe": "1h",
-      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "BNB/USDT", "AVAX/USDT", "ATOM/USDT", "DOT/USDT", "ETC/USDT", "FIL/USDT", "INJ/USDT", "LINK/USDT", "UNI/USDT", "XLM/USDT"],
-      "strategies": [
-        {"name": "sma_cross", "patterns": ["sma_cross"]}
-      ],
-      "params": {
-        "tp_atr_multiplier": 3.0,
-        "sl_atr_multiplier": 1.5,
-        "max_hold_candles": 8,
-        "trailing_enabled": false,
-        "volume_ratio_min": 1.1,
-        "max_loss_pct_per_trade": 0.01
-      }
-    },
     {
       "label": "exp_ensemble",
       "timeframe": "1h",
