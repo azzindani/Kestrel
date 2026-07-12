@@ -585,6 +585,72 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 58 — 2026-07-12 (RETIRED `exp_robustwide/sma_cross` — crossed the structurally-dead bar; attempted an additive REPLACEMENT expansion of `ensemble_3of4/hiwin33` onto its freed pairs — recent-era backtest looked promising on 5/10 pairs, but the LOCKBOX fetch failed three times across all 3 fallback exchanges (infra outage, not a refutation); expansion DEFERRED as an open lead, not deployed, not refuted; fleet 184 → 170)
+
+- **MEASURE:** fleet healthy pre-action (7/7 services up). Overall dev 760 closed / 43.3% win /
+  net −$8.15 (classic baseline, unchanged shape). `exp_hiwin` at 6 closed trades (still too early to
+  read) grew to **13 by the time this iteration's redeploy landed** (macd_rsi 6/66.7%, sma_cross
+  4/100%, macd_cross 2/100%, ensemble_3of4 1/100%, net +$0.78 pooled) — encouraging direction, still
+  nowhere near the 30-trade read bar. **`exp_robustwide_sma_cross` crossed 50 closed trades (52 at
+  measure time, 57 by redeploy) with net −$2.33 and PF 0.44** — meets the MODE §Cell-viability
+  structurally-dead bar (≥50 trades AND net<0 AND PF<1.0) for the first time this loop has had to
+  act on it.
+- **DIAGNOSE / RETIREMENT DECISION:** per the Cell-viability rule, prefer FIXING over removing — but
+  no plausible fix exists within `exp_robustwide`'s own wide-exit frame (tp3.0/sl1.5, R/R2.0): that
+  IS the "fix" that was already tried (iter 44, widen the stop to reduce premature stop-outs), and
+  the points program (iter 55-57) has since produced direct, cross-era-validated evidence that
+  `sma_cross`'s real edge (such as it is) lives in the INVERTED hiwin geometry, not the wide one —
+  `exp_hiwin_sma_cross` is already live on the same signal with better evidence behind it. Retiring
+  the wide variant is not "cutting activity to lose less" (forbidden by MODE) — it is dropping a
+  cell that its own successor has already superseded. **Removed all 14 `exp_robustwide_sma_cross`
+  bot_ids from `bots.json` via `exp_candidate.json`; its 57 trades stay in the DB as permanent
+  history (nothing deleted).** `exp_robustwide_cci_mom` (already retired iter 52, kept as frozen
+  history) and the 4 `exp_hiwin` arms + `exp_ensemble` kept byte-identical.
+- **HYPOTHESIZE / BACKTEST — additive replacement attempt:** retiring the 14 robustwide bot_ids frees
+  10 pairs never tested under hiwin geometry (ETH, PEPE, ATOM, DOT, ETC, FIL, INJ, LINK, UNI, XLM).
+  Ran `ensemble_3of4/hiwin33` (the most fee-robust arm per iter 57) on all 10, `--points --fees
+  realistic`, walk-forward OOS + lockbox:
+  - **Recent era (succeeded cleanly):** pooled −2.35 bps, joint bar NOT met at the pooled level —
+    but **5/10 pairs individually clear +EV**: ETH +10.5 bps@81%(n31), DOT +9.6 bps@77%(n31), FIL
+    +14.9 bps@76%(n37), LINK +13.0 bps@82%(n33), UNI +16.7 bps@79%(n33). The other 5 are negative
+    (PEPE −2.6, ATOM −1.4, ETC −6.6, INJ −31.5, XLM −67.8 bps@52% — XLM catastrophically so).
+  - **Lockbox era: BLOCKED, not negative.** Three separate fetch attempts (full 10-pair ×2, narrow
+    5-pair ×1 targeting just the recent-positive set) **all failed identically** — every pair, every
+    attempt, across all 3 fallback exchanges: `okx` RequestTimeout, `kraken` RequestTimeout /
+    BadSymbol / "only 721 candles", `gate` `BadRequest: "Candlestick too long ago"` specifically on
+    the offset-365 lockbox window. **This is very likely transient, not structural** — iter 57's
+    lockbox fetch succeeded cleanly one day earlier on a different (already-cached) pair set using
+    the identical exchange fallback chain, and the SAME-DAY recent-era fetch for these exact 10 pairs
+    worked fine. Reads as an exchange-side outage or rate-limit hitting the specific 2-years-back
+    date range, not a pair-availability wall.
+- **DECISION — deferred, not refuted:** the loop's own standard requires walk-forward OOS AND an
+  untouched lockbox before a deploy; recent-only is explicitly insufficient (the project's whole
+  REFUTED LEDGER is built on catching exactly this recent-good/lockbox-bad pattern). Forcing a deploy
+  on recent-only evidence, or worse, writing this off as refuted when the lockbox was never actually
+  measured, would both be dishonest. **NO ensemble_3of4 expansion deployed this iteration.** Logged
+  as an **OPEN LEAD for the next firing**: re-run the lockbox fetch for {ETH, DOT, FIL, LINK, UNI} ×
+  `ensemble_3of4/hiwin33` once exchange access recovers; deploy additively only if the intersection
+  of recent-positive ∩ lockbox-positive is non-empty. **Explicitly NOT added to the REFUTED LEDGER** —
+  the evidence is incomplete, not negative.
+- **APPLY:** net effect this iteration is a **pure retirement** — fleet 184 → 170 bots. Dedup guard
+  (`bot_registry.py check`) — 0 NEW / 170 SEEN (expected: nothing new added, only removed).
+  `build_exp_cohort.py` iteration 10→11.
+- **LINT/COMMIT/CI:** no `src/`/`tests/` changes (config-only); `ruff format --check` + `ruff check`
+  clean regardless. Committed `exp_candidate.json` + `bots.json` (`bf086a0`), CI green.
+- **REDEPLOY / RESET:** `backup_db.py` run from host first (154 MB lean dump). Config-only change →
+  `docker compose restart kestrel` (no rebuild). Verified: heartbeats settled to exactly 170 fresh
+  rows within ~90s of restart, 0 stale `exp_robustwide_sma_cross` rows remaining, 0 errors. Per
+  §RESET POLICY this is a pure removal (not a config change to a surviving bot_id) — **no scoped
+  reset needed**, nothing to re-baseline.
+- **10b STAGING:** re-selection grew 3→4 bots (added `staging-DOGEUSDT-1h-cci_mom-01`, n=15, 53% win,
+  net +$0.52 — DOGE re-qualified after dipping below the bar at iter 57); nothing removed. Backfilled,
+  restarted, healthy.
+- **CHECK STOP:** neither condition holds. Owner's 70%-win/100-trade/15%-daily bar (condition 1) is
+  untouched by a pure retirement. Condition 2 (deflated Sharpe > 0) still fails per iter 56's
+  measurement — this iteration didn't re-run DSR (no new signal was validated to test), so that
+  verdict stands unchanged. Loop continues; next firing should retry the lockbox fetch for the open
+  lead before anything else.
+
 ### Iteration 57 — 2026-07-11 (BUILT the REALISTIC fee model: a real backtest-vs-live-sim gap found and closed — the flat "maker" mode in algo_search.py was optimistic vs `src/execution/simulation.py`'s actual live behaviour; re-ran the S1 hiwin survivors under it — the edge survives (unlike iter-56's pure-taker stress), `ensemble_3of4` emerges as the most fee-robust arm; NO deploy, exp_hiwin live leg (38h old, 6 trades) left untouched)
 
 - **MEASURE:** fleet healthy (7/7 services up, `kestrel` 38h uptime). Overall dev 709 closed / 42.7%
