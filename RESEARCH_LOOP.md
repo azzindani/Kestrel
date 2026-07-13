@@ -414,6 +414,13 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## REFUTED LEDGER (do not re-try these without a materially new variant)
 
+- **`ensemble_3of4/hiwin33` on FIL, LINK, UNI** (iter 59) — 1h, realistic fees, points scoring. All
+  three looked strong recent-era (+14.9/+13.0/+16.7 bps @ 76-82% win) but collapsed hard in the
+  lockbox (-17.4/-34.0/-28.2 bps @ 61-69% win, pooled IS→OOS -38.26) — high win rate, negative
+  expectancy, the classic data-mining signature. These were the pairs freed by retiring
+  `exp_robustwide_sma_cross` (iter 58); ETH/DOT from the same search remain unmeasured (persistent
+  exchange fetch failures) and are NOT part of this refutation — don't assume them guilty by
+  association, but also don't spend more cycles chasing their fetch.
 - **Mean-reversion-FADE family, FINAL (iter 55c — tested at its NATURAL high-win geometry, the last
   materially-new variant it had):** rsi2_ct/raw · stoch_revert · cci_revert · bb_fade · wick_revert ·
   spike_fade · vwap_revert · compress_fade × 4 hiwin exits × 10 pairs, 1h maker, points scoreboard,
@@ -584,6 +591,49 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 59 — 2026-07-13 (RESOLVED iter-58's open lead: retried the blocked lockbox fetch — FIL/LINK/UNI finally came through and are CONCLUSIVELY REFUTED (recent-era winners collapse hard in the lockbox, -17..-34bps despite 61-69% win — the classic data-mining signature); ETH/DOT still fetch-blocked, deprioritized not abandoned; NO deploy this iteration — a genuine negative result, not a failure to find one)
+
+- **MEASURE:** fleet healthy (7/7 up). Overall dev 849 closed / 43.7% win / net −$7.84 (baseline shape
+  unchanged). `exp_hiwin` now 15 closed trades (up from 13 at iter 58's close) — macd_rsi 6/66.7%,
+  sma_cross 6/83.3%, macd_cross 2/100%, ensemble_3of4 1/100%, pooled net +$0.78. Close-reason mix
+  **67% take_profit** (10/15) for exp_hiwin specifically — the design's high-win-rate thesis is
+  holding up mechanically as trades accumulate, still nowhere near the 30-trade read bar. No cohort
+  newly crosses the ≥50-trade structurally-dead bar (`exp_robustwide_sma_cross`/`cci_mom` remain
+  frozen at their retirement-time counts, confirming no leakage).
+- **DIAGNOSE / HYPOTHESIZE:** iter 58 left one open item — the `ensemble_3of4/hiwin33` expansion onto
+  5 pairs freed by retiring `exp_robustwide_sma_cross` (ETH, DOT, FIL, LINK, UNI) had a clean
+  recent-era result (all 5 individually +EV, +9..+17bps @ 76-82% win) but the lockbox fetch failed
+  3 times across all 3 fallback exchanges — logged as an infra-blocked deferral, not a refutation.
+  This iteration's job was to resolve that uncertainty before doing anything else.
+- **BACKTEST — retried the lockbox fetch (`--fees realistic`, `ensemble_3of4/hiwin33`, offset-365):**
+  **FIL, LINK, UNI succeeded this time** (served via the `okx` fallback, 9000 candles each) — **DOT
+  and ETH failed again** (`kraken` errors: RequestTimeout / "only 721 candles"). Partial resolution,
+  but a real one for 3 of the 5:
+  - **FIL: -17.4 bps @ 69% win (n=26)** — recent was +14.9bps@76%.
+  - **LINK: -34.0 bps @ 61% win (n=28)** — recent was +13.0bps@82%. Worst collapse of the three.
+  - **UNI: -28.2 bps @ 68% win (n=41)** — recent was +16.7bps@79%.
+  - Pooled: 66.3% win but **-26.97 bps avg, IS→OOS -38.26** — a strategy that wins most of its trades
+    while bleeding badly on the (fewer) losers, the textbook data-mining shape this project's whole
+    REFUTED LEDGER is built from catching. **0/3 clear the joint bar.**
+- **DECISION:** **FIL/LINK/UNI × ensemble_3of4/hiwin33 is CONCLUSIVELY REFUTED** — added to the
+  REFUTED LEDGER below. **ETH/DOT remain genuinely unmeasured** (fetch still blocked, 2 attempts each
+  across 2 iterations) — NOT added to the ledger (no evidence either way), but **deprioritized**: given
+  3 of the 5 candidates from the same search already resolved negative, this lead is no longer worth
+  dedicated retry cycles. If ETH/DOT data becomes fetchable in a routine future sweep, read it then;
+  don't chase it specifically. **NO deploy this iteration** — this is a genuine, honest negative
+  result (the search worked, the answer was no), not a failure to produce one. Per standing pref #2
+  a no-deploy iteration with real resolved research is a complete iteration (precedent: iter 56,
+  iter 58).
+- **APPLY:** no `bots.json`/`exp_candidate.json` change — nothing to deploy. Dedup guard not
+  applicable (no config change).
+- **LINT/COMMIT/CI:** RESEARCH_LOOP.md-only change; `ruff format --check` + `ruff check` on `src/
+  tests/` unaffected, clean.
+- **REDEPLOY/RESET:** none needed (no config change). `backup_db.py` still run from host per the
+  every-firing requirement.
+- **CHECK STOP:** neither condition holds. Owner's 70%/100-trade bar untouched. Condition 2 (deflated
+  Sharpe > 0) unchanged from iter 56's measurement — this iteration neither validated nor re-tested
+  any new signal against it.
 
 ### Iteration 58 — 2026-07-12 (RETIRED `exp_robustwide/sma_cross` — crossed the structurally-dead bar; attempted an additive REPLACEMENT expansion of `ensemble_3of4/hiwin33` onto its freed pairs — recent-era backtest looked promising on 5/10 pairs, but the LOCKBOX fetch failed three times across all 3 fallback exchanges (infra outage, not a refutation); expansion DEFERRED as an open lead, not deployed, not refuted; fleet 184 → 170)
 
