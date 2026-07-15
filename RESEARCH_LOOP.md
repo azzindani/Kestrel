@@ -207,8 +207,16 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
             '{"event":"research_loop_iteration","iteration":<N>,"deployed":<bool>,"reset":<bool>,...}'::jsonb);
     ```
     (via `docker compose exec -T postgres psql -U kestrel -d kestrel -c "..."`).
-10b. **PHASE-2 STAGING MAINTENANCE (owner directive 2026-06-23 — every firing).** Staging is the
-    curated **best-performers** pool: the **`staging` profile** of the one `kestrel` compose project
+10b. **PHASE-2 STAGING MAINTENANCE — ⚠ PINNED BY OWNER 2026-07-15 ("replace all with new bots and
+    reset the balance"): staging now runs the 39-bot POINTS-PROGRAM cohort (a staging- clone of every
+    dev exp_hiwin/exp_hw43/exp_hw50/exp_hwsc/exp_mrsisc bot) on a FRESH slate (staging trades/signals/
+    events/heartbeats wiped 2026-07-15, candles kept, backup taken first). While the pin holds: SKIP
+    the promote_to_staging.py re-selection below — do NOT churn staging back to the dev-leaderboard
+    selection; keep it accumulating as the points program's clean-balance forward test. When iter-60
+    dev arms change (a points arm retires/expands), mirror that change into bots.staging.json manually
+    (same additive/no-reset discipline). The pin lifts only on owner instruction or when the points
+    program itself is refuted.** (Pre-pin protocol below, kept for when the pin lifts.)
+    Staging is the curated **best-performers** pool: the **`staging` profile** of the one `kestrel` compose project
     (folded in 2026-06-28, owner — was its own `kestrel-staging` project; now the whole stack groups
     as ONE in Docker), ENV=staging, `STAGING_ENGINE=sim` until BingX VST keys exist, sharing postgres
     + Grafana, rows isolated by env='staging' + the `staging-` bot_id prefix. Its Grafana dashboard
