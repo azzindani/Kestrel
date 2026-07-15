@@ -271,6 +271,14 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
+- **ACTIVE — `exp_hiwin` (iter 55b, owner-authorized) + `exp_hw43`/`exp_hw50`/`exp_hwsc`/`exp_mrsisc`
+  (iter 60): the POINTS-PROGRAM live leg, 39 bots total.** exp_hiwin = the 4 S1-survivor arms on their
+  both-era cores (23 bots, hiwin33/hiwin50 exits). **First live read at n=38 (iter 60): ON-THESIS —
+  65.8% points win / +26.4 bps / net +$0.72, 58% TP exits.** iter 60 added the other 4 iter-57-validated
+  cells on freshly measured per-pair both-era cores (16 bots): exp_hw43 (ens/hiwin43 ×3), exp_hw50
+  (ens/hiwin50 ×3), exp_hwsc (ens/scratch ×4), exp_mrsisc (macd_rsi/scratch ×6) — also an exit-geometry
+  A/B. Judged on the POINTS scoreboard; ≥100-trade trust bar ≈ 1.5-2 weeks at the doubled accumulation
+  rate. NOT a confirmed edge (DSR still fails; §6.3 needs 70%@100).
 - **ACTIVE — `exp_ensemble` (iter 52, EXPANDED iter 53):** **11 bots** = `ensemble_3of4` (new registered
   pattern: fires only when >=3 of the 4 deployed 1h leads agree on direction at the same candle) ×
   {ETH,DOGE,PEPE,XRP,SOL,ADA,CHZ,FET,GALA,TIA,WLD}, MEDIUM exit (tp2.0/sl1.0/hold6). First genuinely new
@@ -591,6 +599,50 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 60 — 2026-07-15 (OWNER-REQUESTED RE-EVAL — THE MILESTONE: exp_hiwin's first live read at n=38 is ON-THESIS (65.8% points win / +26.4 bps / net +$0.72, clears the docs/13 joint bar at the first-read level); diagnosed the owner's "44% win, low contribution" as classic-exit composition dilution; EXPANDED the points program +16 bots on freshly per-pair-validated iter-57 cells; fleet 170 → 186)
+
+- **TRIGGER:** owner — "the win rate now at 44%, its start to rise but the contribution is very low.
+  i think its time for you to re evaluate again." (Model switched back to Fable 5 for this session.)
+- **MEASURE / THE MILESTONE:** fleet 1035 closed / 44.6% win / net −$7.78 overall. **`exp_hiwin`
+  crossed the 30-trade first-read bar: n=38, pooled 65.8% points win / +26.4 bps avg gross / median
+  +45.9 / net +$0.72 dollars**, close mix 58% take_profit / 21% timeout / 16% stop_loss. Per arm:
+  ensemble_3of4 75%@+46.9 bps (n=4) · macd_cross 87.5%@+49.0 (n=8) · macd_rsi 62.5%@+17.3 (n=16) ·
+  sma_cross 50%@+14.6 (n=10). **This CLEARS the §6.1 joint bar (pwin ≥65 AND expectancy >0, n≥30)
+  at the first-read level and is the first live cohort in project history tracking its backtest
+  instead of diverging.** Honest caveats: n=38 (±15pp CI on the win rate), the §6.3 target needs
+  ≥70% at n≥100, the iter-56 DSR failure still stands, and live fill realism is sim-modeled.
+- **BUG FOUND (session tooling, not production):** ad-hoc MEASURE SQL used `direction='LONG'` but the
+  column stores lowercase `'long'` → every long trade's points sign flipped in ad-hoc session
+  readouts (some earlier iterations' quoted per-strategy bps columns are suspect). **Grafana's
+  build_dashboard.py verified CORRECT** (uses lowercase throughout) — the Points Scoreboard the
+  owner watches was never wrong. Corrected numbers above.
+- **DIAGNOSE (the owner's 44% concern):** composition dilution, not signal failure — 81% of all
+  closed trades come from the 136-bot classic-exit baseline, which is a ~45%-win design BY GEOMETRY
+  (win ≈ 1/(1+g) at g≈1.6). The fleet-wide number cannot rise materially while the high-win cohort
+  is 3.7% of trade volume. The honest lever: more VALIDATED high-win cells, not reshuffling the old ones.
+- **BACKTEST → APPLY:** iter 57 validated 5 cells cross-era maker-viable under realistic fees but only
+  1 was deployed (ensemble/hiwin33). Re-ran per-pair both-era tables for the other 4 (--fees
+  realistic, --points, 9-pair union; **ETH/DOGE excluded everywhere — their lockbox window is still
+  unfetchable (same persistent exchange errors as iters 58-59), unmeasured not refuted**). Deployed
+  each cell on its both-era-positive core (bps recent→lockbox):
+  - **exp_hw43** = ensemble_3of4/hiwin43 × {XRP +3.0→+8.5, SOL +7.6→+12.2, ATOM +1.2→+5.6}
+  - **exp_hw50** = ensemble_3of4/hiwin50 × {XRP +7.1→+12.2, SOL +11.1→+16.6, AVAX +1.3→+12.9}
+  - **exp_hwsc** = ensemble_3of4/scratch × {XRP +13.0→+23.5, SOL +1.5→+32.1, ADA +22.1→+11.7, AVAX +11.0→+23.2}
+  - **exp_mrsisc** = macd_rsi/scratch × {PEPE +1.3→+15.7, XRP +2.5→+23.5, SOL +5.1→+21.0, ADA +18.3→+6.5, BNB +6.1→+4.1, AVAX +3.8→+4.9}
+  16 new bots (dedup: **16 NEW / 170 SEEN**), fleet **170 → 186**, additive → **reset nothing**;
+  backfilled 16×720 candles, 186/186 heartbeats fresh, exp_hiwin's 38 trades preserved through the
+  deploy. Doubles as an **exit-geometry A/B** (hiwin50/43/scratch vs live hiwin33 on the same signals)
+  and roughly doubles the live-leg accumulation rate (100-trade bar ≈ 1.5-2 weeks out).
+- **CI:** deploy commit initially FAILED CI — NOT the code: a new upstream advisory (PYSEC-2026-3447,
+  setuptools 82.0.1) tripped the pip-audit gate; fixed by flooring `setuptools>=83.0.0` in
+  requirements.txt (`5b7cc76`). Deploy commit `0675df1`.
+- **10b STAGING:** re-selection 4 → 6 bots (removed TRX; added AAVE n=10/70%, FIL, INJ — all cci_mom
+  cells that newly qualify), backfilled, restarted healthy.
+- **CHECK STOP:** neither condition holds — 65.8% pwin at n=38 is real progress but below the 70%@
+  n≥100 owner bar (condition 1 also needs ~15%/day which remains unmet), and condition 2's deflated
+  Sharpe verdict (iter 56: FAIL at 0.57-0.76 vs 0.95) is unchanged — the live leg is the evidence
+  that could eventually move it. Loop continues.
 
 ### Iteration 59 — 2026-07-13 (RESOLVED iter-58's open lead: retried the blocked lockbox fetch — FIL/LINK/UNI finally came through and are CONCLUSIVELY REFUTED (recent-era winners collapse hard in the lockbox, -17..-34bps despite 61-69% win — the classic data-mining signature); ETH/DOT still fetch-blocked, deprioritized not abandoned; NO deploy this iteration — a genuine negative result, not a failure to find one)
 
