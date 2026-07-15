@@ -611,6 +611,37 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 60c — 2026-07-15 (OWNER AUTHORIZED §13 SPOT → PERPS — CLAUDE.md v2.7; conservative perp funding model built + the staged cells RE-VALIDATED under it: 8/8 clear the joint bar in BOTH eras; staging now simulates the full perp cost stack; keys/deposit stay owner-gated on staging proof)
+
+- **AUTHORIZATION:** owner — "i authorize you to amend §13 to perps, use perps. but i will deposit
+  and setup the keys when the staged bots are running good." Resolves the prod runbook's open
+  decision #1 (everything BingX-validated — 20× isolated, 0.02% maker, VST demo — was always perps).
+- **CLAUDE.md v2.7:** §13 instrument line spot isolated margin → **perpetual futures, isolated
+  margin** (spot demoted to data-feed-only); §13 fee model + §29 sim realism now include the perp
+  FUNDING model; version footer records the quote. Keys/funding/go-live remain §18 owner-gated.
+- **BUILT — conservative funding model (always charged, never credited):** cost = notional ×
+  rate/100 × hold_hours/8. `config.funding_rate_8h_pct` (env `FUNDING_RATE_8H_PCT`, default 0) →
+  `simulation.py::_funding_cost` (timeframe-aware hold hours, folded into `fee_exit_usdt` so the DB
+  row carries it) · `backtest/runner.py::_FUNDING_8H_FRAC` (wall-clock hold) · `algo_search.py
+  --funding` (applies in ALL fee modes incl. realistic). 5 new unit tests; full suite + CI green
+  (`a33caa1`). **Staging runs it at 0.01%/8h (models prod venue); dev stays 0** — raw-strategy
+  research tier, forward-test continuity.
+- **FUNDING RE-VALIDATION (the §13-amendment due diligence — realistic fees + funding, both eras,
+  9-pair union): 8/8 cells STILL clear the joint bar in BOTH eras.** Funding costs ~1-2.5 bps.
+  Recent: ens/scratch +9.19@72.5%, ens/hiwin50 +4.74@66.4%, ens/hiwin33 +4.66@75.0% (all
+  maker-viable), macd_rsi/scratch +3.67@69.1% (a hair under the +4 shelf), macd_rsi hiwin variants
+  +1.3..+2.8. Lockbox: ALL 8 maker-viable, top ens/hiwin33 +17.41@79.8%. **The program survives
+  perps; the harshest-bar elite = the 3 ensemble cells (scratch/hiwin50/hiwin33).** The 22 staged
+  bots all remain joint-bar-valid — no churn. Known modeling deltas (docs/14): BingX perp taker is
+  0.05% vs modeled 0.04% (~1 bp extra on adverse exits only — inside validated margins).
+- **DEPLOY:** image rebuilt (simulation funding + iter-60b live maker path both baked), dev + staging
+  recreated healthy — 186/186 dev + 22/22 staging heartbeats fresh; verified in-container: staging
+  `funding_rate_8h_pct=0.01`, dev `0.0`, `LiveExecution._place_order_maker` present. Reports:
+  `algo_search_20260715-{072627,072630}.md`.
+- **REMAINING GO-LIVE SEQUENCE (unchanged, docs/14):** staging proves out (owner bar: ≥65% points
+  win + positive dollars at n≥100, now under the FULL perp cost stack) → owner sets VST demo keys
+  (§18.4 fill-realism test, abort criterion armed) → 14-day clean window (~07-27) → $50 go-live.
+
 ### Iteration 60b — 2026-07-15 (OWNER-DIRECTED PROD PREP: maker execution built into `src/execution/live.py` — the #1 go-live blocker closed under explicit owner directive ("we should have it. but i need you to prepare the codebases for prod"); prod scaffolding shipped (.env.prod.example, bots.prod.json $50 template, docs/14 runbook); compounding confirmed ALREADY built)
 
 - **AUTHORIZATION:** the prod-readiness audit (delivered this session) named taker-only `live.py` as
