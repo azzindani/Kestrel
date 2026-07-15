@@ -535,6 +535,15 @@ class AppConfig:
     # Live is NOT simulated — the venue charges funding in the account balance.
     funding_rate_8h_pct: float = 0.0
 
+    # Fleet-wide concurrent-position cap (owner directive 2026-07-15: run ALL
+    # high-win bots but "maintain how many we can allow in open position").
+    # Many signal sources share a bounded pool of open-position slots,
+    # first-come-first-served; capital = cap × bucket size (prod $50 ⇒ 5).
+    # 0 = unlimited (dev's research tier). Enforced in the daemon entry path
+    # (an I/O gate on the DB's authoritative open count, NOT a risk-manager
+    # rule — Rule 1 stays per-bot).
+    max_open_positions_fleet: int = 0
+
     # Portfolio guard ("manager bot") thresholds, as a fraction of total account
     # equity. When aggregate UNREALISED PnL across all bots crosses +portfolio_tp_pct
     # the guard force-closes every open position (lock the gain); when it crosses
@@ -607,6 +616,7 @@ class AppConfig:
             telegram_suppress_connection=(m.get("TELEGRAM_SUPPRESS_CONNECTION") or "").lower() in ("1", "true", "yes"),
             maker_execution=(m.get("MAKER_EXECUTION") or "").lower() in ("1", "true", "yes"),
             funding_rate_8h_pct=float(m.get("FUNDING_RATE_8H_PCT") or 0.0),
+            max_open_positions_fleet=int(m.get("MAX_OPEN_POSITIONS_FLEET") or 0),
             portfolio_tp_pct=float(m.get("PORTFOLIO_TP_PCT") or 0.0),
             portfolio_dd_pct=float(m.get("PORTFOLIO_DD_PCT") or 0.0),
             staging_engine=(m.get("STAGING_ENGINE") or "live").lower(),

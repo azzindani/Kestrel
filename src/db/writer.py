@@ -585,6 +585,21 @@ async def count_active_positions(bot_id: str, env: str) -> int:
         return int(row["cnt"])
 
 
+async def count_open_positions_fleet(env: str) -> int:
+    """Count open positions across the WHOLE fleet in one env (exit_ts IS NULL).
+
+    Backs the fleet-wide concurrent-position cap (owner directive 2026-07-15:
+    "we can put all high win rate bots in prod, but we maintain how many we can
+    allow in open position") — many signal sources, bounded capital use.
+    """
+    async with acquire() as conn:
+        row = await conn.fetchrow(
+            "SELECT COUNT(*) AS cnt FROM trades WHERE env = $1 AND exit_ts IS NULL",
+            env,
+        )
+        return int(row["cnt"])
+
+
 async def get_sizing_state(bot_id: str, env: str, starting_bucket: float) -> SizingState:
     """Assemble equity-scaled sizing state for a bot from its closed trades (§11).
 
