@@ -3677,7 +3677,7 @@
       "first_seen_subject": "research(loop) iter 18: MACD found +EV CROSS-ERA at 1h -> deploy 1h macd_cross cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 14,
+      "snapshot_count": 16,
       "example_bot_id": "dev-SOLUSDT-1h-macd_cross-01"
     },
     {
@@ -3705,7 +3705,7 @@
       "first_seen_subject": "research(loop) iter 22: deploy macd_rsi (MACD cross + RSI-50 confirm) 1h cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 13,
+      "snapshot_count": 15,
       "example_bot_id": "dev-SOLUSDT-1h-macd_rsi-01"
     },
     {
@@ -3733,7 +3733,7 @@
       "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 11,
+      "snapshot_count": 13,
       "example_bot_id": "dev-SOLUSDT-1h-cci_mom-01"
     },
     {
@@ -3761,7 +3761,7 @@
       "first_seen_subject": "research(loop) iter 32: deploy sma_cross \u2014 4th cross-era +EV 1h signal",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 10,
+      "snapshot_count": 12,
       "example_bot_id": "dev-SOLUSDT-1h-sma_cross-01"
     },
     {
@@ -3855,7 +3855,7 @@
       "first_seen_subject": "feat(ensemble): deploy ensemble_3of4 cross-signal voting confluence; retire dead exp_robustwide/cci_mom arm",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 6,
       "example_bot_id": "dev-SOLUSDT-1h-exp_ensemble_ensemble_3of4-01"
     },
     {
@@ -3883,7 +3883,7 @@
       "first_seen_subject": "risk(rule3): floor 1.2 -> 0.25 (CLAUDE.md v2.6, OWNER-AUTHORIZED) + deploy exp_hiwin \u2014 the S1 points-program survivors go live",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-SOLUSDT-1h-exp_hiwin_sma_cross-01"
     },
     {
@@ -3911,7 +3911,7 @@
       "first_seen_subject": "risk(rule3): floor 1.2 -> 0.25 (CLAUDE.md v2.6, OWNER-AUTHORIZED) + deploy exp_hiwin \u2014 the S1 points-program survivors go live",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-SOLUSDT-1h-exp_hiwin_macd_cross-01"
     },
     {
@@ -3939,7 +3939,7 @@
       "first_seen_subject": "risk(rule3): floor 1.2 -> 0.25 (CLAUDE.md v2.6, OWNER-AUTHORIZED) + deploy exp_hiwin \u2014 the S1 points-program survivors go live",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-SOLUSDT-1h-exp_hiwin_macd_rsi-01"
     },
     {
@@ -3967,8 +3967,120 @@
       "first_seen_subject": "risk(rule3): floor 1.2 -> 0.25 (CLAUDE.md v2.6, OWNER-AUTHORIZED) + deploy exp_hiwin \u2014 the S1 points-program survivors go live",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-SOLUSDT-1h-exp_hiwin_ensemble_3of4-01"
+    },
+    {
+      "fingerprint": "5d64af793657",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_hwsc_ensemble_3of4",
+        "patterns": [
+          "ensemble_3of4"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 2.0,
+          "tp_atr_multiplier": 0.5,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "0675df14c77060a24ace35698bd4b165c61d1290",
+      "first_seen_date": "2026-07-15T05:54:26+00:00",
+      "first_seen_subject": "research(loop): iter 60 \u2014 expand points program: 16 new bots on iter-57-validated hiwin cells (exp_hw43/exp_hw50/exp_hwsc ensemble_3of4 + exp_mrsisc macd_rsi/scratch, per-pair both-era cores); fleet 170->186. exp_hiwin first live read n=38 ON-THESIS (65.8% pwin, +26.4bps, net +$0.72)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_hwsc_ensemble_3of4-01"
+    },
+    {
+      "fingerprint": "7d9787c456e6",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_mrsisc_macd_rsi",
+        "patterns": [
+          "macd_rsi"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 3,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 2.0,
+          "tp_atr_multiplier": 0.5,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "0675df14c77060a24ace35698bd4b165c61d1290",
+      "first_seen_date": "2026-07-15T05:54:26+00:00",
+      "first_seen_subject": "research(loop): iter 60 \u2014 expand points program: 16 new bots on iter-57-validated hiwin cells (exp_hw43/exp_hw50/exp_hwsc ensemble_3of4 + exp_mrsisc macd_rsi/scratch, per-pair both-era cores); fleet 170->186. exp_hiwin first live read n=38 ON-THESIS (65.8% pwin, +26.4bps, net +$0.72)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_mrsisc_macd_rsi-01"
+    },
+    {
+      "fingerprint": "82105f6ca7db",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_hw43_ensemble_3of4",
+        "patterns": [
+          "ensemble_3of4"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.4,
+          "tp_atr_multiplier": 0.6,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "0675df14c77060a24ace35698bd4b165c61d1290",
+      "first_seen_date": "2026-07-15T05:54:26+00:00",
+      "first_seen_subject": "research(loop): iter 60 \u2014 expand points program: 16 new bots on iter-57-validated hiwin cells (exp_hw43/exp_hw50/exp_hwsc ensemble_3of4 + exp_mrsisc macd_rsi/scratch, per-pair both-era cores); fleet 170->186. exp_hiwin first live read n=38 ON-THESIS (65.8% pwin, +26.4bps, net +$0.72)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_hw43_ensemble_3of4-01"
+    },
+    {
+      "fingerprint": "8e02d289d592",
+      "config": {
+        "pair": "SOLUSDT",
+        "timeframe_entry": "1h",
+        "timeframe_regime": "1h",
+        "strategy": "exp_hw50_ensemble_3of4",
+        "patterns": [
+          "ensemble_3of4"
+        ],
+        "max_active_buckets": 1,
+        "params": {
+          "max_hold_candles": 4,
+          "max_loss_pct_per_trade": 0.01,
+          "sl_atr_multiplier": 1.2,
+          "tp_atr_multiplier": 0.6,
+          "trailing_enabled": false,
+          "volume_ratio_min": 1.1
+        }
+      },
+      "first_seen_commit": "0675df14c77060a24ace35698bd4b165c61d1290",
+      "first_seen_date": "2026-07-15T05:54:26+00:00",
+      "first_seen_subject": "research(loop): iter 60 \u2014 expand points program: 16 new bots on iter-57-validated hiwin cells (exp_hw43/exp_hw50/exp_hwsc ensemble_3of4 + exp_mrsisc macd_rsi/scratch, per-pair both-era cores); fleet 170->186. exp_hiwin first live read n=38 ON-THESIS (65.8% pwin, +26.4bps, net +$0.72)",
+      "last_seen_commit": "WORKING_TREE",
+      "last_seen_date": "",
+      "snapshot_count": 2,
+      "example_bot_id": "dev-SOLUSDT-1h-exp_hw50_ensemble_3of4-01"
     }
   ]
 }

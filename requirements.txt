@@ -1,3 +1,4 @@
+setuptools>=83.0.0  # floor for PYSEC-2026-3447 (pip-audit gate in CI)
 asyncpg>=0.29.0
 ccxt[async]>=4.2.0
 python-dotenv>=1.0.0

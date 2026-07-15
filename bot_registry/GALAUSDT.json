@@ -461,7 +461,7 @@
       "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 12,
+      "snapshot_count": 14,
       "example_bot_id": "dev-GALAUSDT-1h-macd_cross-01"
     },
     {
@@ -489,7 +489,7 @@
       "first_seen_subject": "feat(macd): broaden 1h macd cohorts 6->34 pairs to unblock stalled forward-test",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 12,
+      "snapshot_count": 14,
       "example_bot_id": "dev-GALAUSDT-1h-macd_rsi-01"
     },
     {
@@ -517,7 +517,7 @@
       "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 11,
+      "snapshot_count": 13,
       "example_bot_id": "dev-GALAUSDT-1h-cci_mom-01"
     },
     {
@@ -545,7 +545,7 @@
       "first_seen_subject": "research(loop) iter 32: deploy sma_cross \u2014 4th cross-era +EV 1h signal",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 10,
+      "snapshot_count": 12,
       "example_bot_id": "dev-GALAUSDT-1h-sma_cross-01"
     },
     {
@@ -573,7 +573,7 @@
       "first_seen_subject": "research(loop): iter 53 \u2014 expand exp_ensemble 6->11 pairs (5 new cross-era-robust: CHZ/FET/GALA/TIA/WLD); broad 28-pair sweep REFUTED at pooled level",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 3,
+      "snapshot_count": 5,
       "example_bot_id": "dev-GALAUSDT-1h-exp_ensemble_ensemble_3of4-01"
     }
   ]
