@@ -3715,7 +3715,7 @@
       "first_seen_subject": "research(loop) iter 18: MACD found +EV CROSS-ERA at 1h -> deploy 1h macd_cross cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 14,
+      "snapshot_count": 16,
       "example_bot_id": "dev-ETHUSDT-1h-macd_cross-01"
     },
     {
@@ -3743,7 +3743,7 @@
       "first_seen_subject": "research(loop) iter 22: deploy macd_rsi (MACD cross + RSI-50 confirm) 1h cohort",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 13,
+      "snapshot_count": 15,
       "example_bot_id": "dev-ETHUSDT-1h-macd_rsi-01"
     },
     {
@@ -3771,7 +3771,7 @@
       "first_seen_subject": "feat(cci): deploy cci_mom \u2014 3rd cross-era +EV 1h signal (CCI \u00b1100 breakout), high-activity",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 11,
+      "snapshot_count": 13,
       "example_bot_id": "dev-ETHUSDT-1h-cci_mom-01"
     },
     {
@@ -3799,7 +3799,7 @@
       "first_seen_subject": "research(loop) iter 32: deploy sma_cross \u2014 4th cross-era +EV 1h signal",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 10,
+      "snapshot_count": 12,
       "example_bot_id": "dev-ETHUSDT-1h-sma_cross-01"
     },
     {
@@ -3891,9 +3891,9 @@
       "first_seen_commit": "9ea9bc7ee152375c71e0c8fddf51a17259e509aa",
       "first_seen_date": "2026-06-29T00:54:54+00:00",
       "first_seen_subject": "research(loop): iter 44 \u2014 deploy exp_robustwide (sma_cross/cci_mom wide-exit on robust pairs); retire refuted flowgate",
-      "last_seen_commit": "WORKING_TREE",
-      "last_seen_date": "",
-      "snapshot_count": 6,
+      "last_seen_commit": "2106e0035972f4dce808beb3ecd0713adaff09e9",
+      "last_seen_date": "2026-07-09T10:21:08+00:00",
+      "snapshot_count": 5,
       "example_bot_id": "dev-ETHUSDT-1h-exp_robustwide_sma_cross-01"
     },
     {
@@ -3949,7 +3949,7 @@
       "first_seen_subject": "feat(ensemble): deploy ensemble_3of4 cross-signal voting confluence; retire dead exp_robustwide/cci_mom arm",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 4,
+      "snapshot_count": 6,
       "example_bot_id": "dev-ETHUSDT-1h-exp_ensemble_ensemble_3of4-01"
     },
     {
@@ -3977,7 +3977,7 @@
       "first_seen_subject": "risk(rule3): floor 1.2 -> 0.25 (CLAUDE.md v2.6, OWNER-AUTHORIZED) + deploy exp_hiwin \u2014 the S1 points-program survivors go live",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ETHUSDT-1h-exp_hiwin_macd_rsi-01"
     },
     {
@@ -4005,7 +4005,7 @@
       "first_seen_subject": "risk(rule3): floor 1.2 -> 0.25 (CLAUDE.md v2.6, OWNER-AUTHORIZED) + deploy exp_hiwin \u2014 the S1 points-program survivors go live",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ETHUSDT-1h-exp_hiwin_sma_cross-01"
     },
     {
@@ -4033,7 +4033,7 @@
       "first_seen_subject": "risk(rule3): floor 1.2 -> 0.25 (CLAUDE.md v2.6, OWNER-AUTHORIZED) + deploy exp_hiwin \u2014 the S1 points-program survivors go live",
       "last_seen_commit": "WORKING_TREE",
       "last_seen_date": "",
-      "snapshot_count": 2,
+      "snapshot_count": 4,
       "example_bot_id": "dev-ETHUSDT-1h-exp_hiwin_macd_cross-01"
     }
   ]
