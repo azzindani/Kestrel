@@ -208,14 +208,17 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
     ```
     (via `docker compose exec -T postgres psql -U kestrel -d kestrel -c "..."`).
 10b. **PHASE-2 STAGING MAINTENANCE — ⚠ PINNED BY OWNER 2026-07-15 ("replace all with new bots and
-    reset the balance"): staging now runs the 39-bot POINTS-PROGRAM cohort (a staging- clone of every
-    dev exp_hiwin/exp_hw43/exp_hw50/exp_hwsc/exp_mrsisc bot) on a FRESH slate (staging trades/signals/
-    events/heartbeats wiped 2026-07-15, candles kept, backup taken first). While the pin holds: SKIP
-    the promote_to_staging.py re-selection below — do NOT churn staging back to the dev-leaderboard
-    selection; keep it accumulating as the points program's clean-balance forward test. When iter-60
-    dev arms change (a points arm retires/expands), mirror that change into bots.staging.json manually
-    (same additive/no-reset discipline). The pin lifts only on owner instruction or when the points
-    program itself is refuted.** (Pre-pin protocol below, kept for when the pin lifts.)
+    reset the balance" + "is it the best bots? i dont want old bots eating the balance"): staging runs
+    the BEST-ONLY 22-bot points subset on a FRESH slate (trades/signals/events wiped 2026-07-15,
+    candles kept, backup first). Selection bar = the STRICTEST validated criteria (iter 57 realistic
+    fees, maker-viable ≥+4bps BOTH eras, per-pair both-era cores): exp_hiwin_ensemble_3of4/hiwin33 ×6
+    + exp_hw43 ×3 + exp_hw50 ×3 + exp_hwsc ×4 + exp_mrsisc ×6. The 17 borderline dev arms
+    (macd_rsi/macd_cross/sma_cross on hiwin50 — sub-4bps recent under realistic fees) stay DEV-ONLY.
+    While the pin holds: SKIP the promote_to_staging.py re-selection below — no churn back to the
+    dev-leaderboard selection. Mirror future points-arm changes into bots.staging.json manually (same
+    additive/no-reset discipline; an arm promotes into staging only by meeting the SAME strict bar).
+    Pin lifts only on owner instruction or if the points program is refuted.** (Pre-pin protocol
+    below, kept for when the pin lifts.)
     Staging is the curated **best-performers** pool: the **`staging` profile** of the one `kestrel` compose project
     (folded in 2026-06-28, owner — was its own `kestrel-staging` project; now the whole stack groups
     as ONE in Docker), ENV=staging, `STAGING_ENGINE=sim` until BingX VST keys exist, sharing postgres
