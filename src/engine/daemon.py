@@ -40,6 +40,15 @@ from src.risk import manager as risk
 from src.signal.detector import evaluate
 from src.viz.dashboard import Dashboard
 
+# Fleet-wide open-slot reservations, shared across every Daemon instance in this
+# process (one process runs the whole fleet per env). A bot reserves its slot
+# under the lock BEFORE placing the order and releases it once its trades row
+# exists (the DB count then carries it) or the order fails — closing the
+# same-candle race window without holding any lock across the (potentially slow,
+# maker fill-wait) order placement itself.
+_fleet_slot_lock = asyncio.Lock()
+_fleet_slot_reservations: set[str] = set()
+
 
 class Daemon:
     """Main Kestrel daemon process."""
@@ -361,10 +370,18 @@ class Daemon:
             )
             return
 
+        # Fleet-wide concurrent-position cap (owner directive 2026-07-15): ALL
+        # high-win bots watch the market, but only max_open_positions_fleet may
+        # hold positions at once — many signal sources, bounded capital (prod
+        # $50 ⇒ 5 slots × $10 buckets). First-come-first-served.
+        if not await self._acquire_fleet_slot(signal, candle.ts):
+            return
+
         # Execute
         try:
             order = await self.execution.place_order(signal)
         except ExecutionError as exc:
+            self._release_fleet_slot()
             await db.write_event(
                 self.cfg.bot_id,
                 self.session_id,
@@ -400,6 +417,8 @@ class Daemon:
             }
         )
         self._open_trade_ids[signal.pair] = (trade_id, order["ts"], sizing_state.equity_usdt)
+        # The trades row now exists — the DB count carries the slot from here.
+        self._release_fleet_slot()
 
         # Bulk-link the 48h of candles preceding this entry as 'pre' context
         # (CLAUDE.md §21). Idempotent; cheap (~576 INSERTs once per trade).
@@ -455,6 +474,46 @@ class Daemon:
                 "regime": signal.regime,
             }
         )
+
+    async def _acquire_fleet_slot(self, signal, candle_ts: int) -> bool:
+        """Fleet-wide concurrent-position gate (owner directive 2026-07-15).
+
+        Returns True when this bot may proceed to place the order — either the
+        cap is disabled (0) or a slot was reserved under the lock. Returns False
+        (after logging the rejection) when the fleet is at capacity. The
+        in-process reservation closes the race between the DB open-count and
+        this bot's trades row landing when several bots signal on the same
+        candle close; the lock is held only for the count+reserve, never across
+        the (potentially slow, maker fill-wait) order placement.
+        """
+        if self.cfg.max_open_positions_fleet <= 0:
+            return True
+        async with _fleet_slot_lock:
+            open_fleet = await db.count_open_positions_fleet(self.cfg.env.value)
+            if open_fleet + len(_fleet_slot_reservations) >= self.cfg.max_open_positions_fleet:
+                await db.write_signal(signal, SignalOutcome.REJECTED, "fleet_position_limit")
+                await db.write_event(
+                    self.cfg.bot_id,
+                    self.session_id,
+                    self.cfg.env.value,
+                    "INFO",
+                    "risk",
+                    "risk_rejected:fleet_position_limit",
+                    {
+                        "reason": "fleet_position_limit",
+                        "open_fleet": open_fleet,
+                        "reserved": len(_fleet_slot_reservations),
+                        "cap": self.cfg.max_open_positions_fleet,
+                        "candle_ts": candle_ts,
+                    },
+                )
+                return False
+            _fleet_slot_reservations.add(self.cfg.bot_id)
+            return True
+
+    def _release_fleet_slot(self) -> None:
+        """Release this bot's in-process slot reservation (no-op if none held)."""
+        _fleet_slot_reservations.discard(self.cfg.bot_id)
 
     async def _close_position(self, pair: str, reason: str, candle) -> None:
         """Close a position and update DB records."""

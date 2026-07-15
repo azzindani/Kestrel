@@ -77,10 +77,17 @@ balance automatically bets larger. `MAKER_EXECUTION=true` is MANDATORY in prod.
 
 ## 4. The $50 phase — what it is and is not
 
-- 5 bots × $10 isolated buckets (template in `bots.prod.json`). Compounding is
-  per-bucket and automatic; expect single-digit dollars per week at the
-  validated +8–15 bps/trade — **this phase validates live mechanics and real
-  fills, it is not the income phase.**
+- **ALL 22 high-win staged bots run, capped at 5 concurrent open positions**
+  (owner directive 2026-07-15: "put all high win rate bots in prod, but we
+  maintain how many we can allow in open position"). `bots.prod.json` carries
+  the full 22-cell fleet; `MAX_OPEN_POSITIONS_FLEET=5` gates entries
+  first-come-first-served against the DB's authoritative open count (race-safe
+  via an in-process reservation; rejections logged as `fleet_position_limit`).
+  Capital = cap × $10 buckets = $50; scale capital by raising the cap.
+  Staging runs the SAME cap (5) so its proof includes the cap's effect.
+  Compounding is per-bucket and automatic; expect single-digit dollars per
+  week at the validated expectancy — **this phase validates live mechanics and
+  real fills, it is not the income phase.**
 - Scale-up rule (owner's "if it always gains, will it scale?"): capacity at
   these sizes is a non-issue (a $200 maker order on 1h XRP/SOL is invisible;
   the model holds to thousands of dollars). Scale by ADDING buckets/bots as
