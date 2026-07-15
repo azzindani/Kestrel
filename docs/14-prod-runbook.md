@@ -34,12 +34,15 @@ balance automatically bets larger. `MAKER_EXECUTION=true` is MANDATORY in prod.
 
 ## 2. Open owner decisions (§4 — nobody else can make these)
 
-1. **Instrument: spot margin vs perpetuals.** CLAUDE.md §13 says spot isolated
-   margin, but the 20× leverage + 0.02% maker fee + VST demo used everywhere in
-   validation are BingX **perpetuals** facts. Either amend §13 (spot→perp;
-   funding costs then need modeling — sim currently assumes 0) or accept spot
-   margin's lower leverage and re-validate the fee model. **Everything in §3
-   waits on this.**
+1. **Instrument: ~~spot margin vs perpetuals~~ — RESOLVED 2026-07-15**, owner:
+   "i authorize you to amend §13 to perps, use perps." CLAUDE.md is v2.7
+   (perpetual futures, isolated margin, BingX). Funding costs now modeled: a
+   conservative always-charged 0.01%/8h × hold-time in staging
+   (`FUNDING_RATE_8H_PCT` in `.env.staging`) and backtest (`--funding`); the
+   staged cells were re-validated under it same day (see RESEARCH_LOOP iter
+   60c). Note: BingX perp taker is 0.05% vs the modeled 0.04% on adverse exits
+   — ~1 bp extra on stops/timeouts, inside the validated margins.
+   **Keys + deposit stay owner-gated on staging proof** (owner, same message).
 2. **Portfolio guard values for prod** (`PORTFOLIO_DD_PCT` — crash insurance at
    20×; template ships 0.10).
 3. **Promotion bar**: this runbook assumes the owner's stated gate — staging

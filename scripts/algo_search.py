@@ -1069,7 +1069,11 @@ def _apply_fee_model(mode: str) -> float:
                 exit_price = raw_exit * (1.0 + slip)
                 pnl_gross = (entry - exit_price) / entry * notional
             fee_exit = notional * fee_rate
-            total_fee = trade["fee_entry_usdt"] + fee_exit
+            # Perp funding (v2.7) — read dynamically so --funding set after
+            # _apply_fee_model still applies.
+            hold_hours = max(candle.ts - trade["entry_ts"], 0) / 3_600_000.0
+            funding = notional * _runner._FUNDING_8H_FRAC * (hold_hours / 8.0)
+            total_fee = trade["fee_entry_usdt"] + fee_exit + funding
             pnl_net = pnl_gross - total_fee
             pnl_pct = pnl_net / size * 100.0
             hold_candles = int(
@@ -1080,7 +1084,7 @@ def _apply_fee_model(mode: str) -> float:
                 "exit_price": round(exit_price, 8),
                 "hold_candles": max(hold_candles, 1),
                 "pnl_gross_usdt": round(pnl_gross, 6),
-                "fee_exit_usdt": round(fee_exit, 6),
+                "fee_exit_usdt": round(fee_exit + funding, 6),
                 "pnl_net_usdt": round(pnl_net, 6),
                 "pnl_pct": round(pnl_pct, 4),
                 "bucket_balance_after": round(trade.get("bucket_balance_before", 10.0) + pnl_net, 4),
@@ -1257,6 +1261,14 @@ def main() -> None:
         "(genuinely new confluence — never same-TF like the ADX/volatility-regime filters)",
     )
     ap.add_argument(
+        "--funding",
+        type=float,
+        default=0.0,
+        help="perp funding rate as %%/8h charged on hold time, always-charged conservative "
+        "model (CLAUDE.md §13/§29 v2.7 — instrument is perps). 0.01 = the typical baseline. "
+        "Applies in ALL fee modes incl. realistic. Default 0 = off.",
+    )
+    ap.add_argument(
         "--points",
         action="store_true",
         help="score on the POINTS framework (docs/13-points-framework.md): gross bps of entry price + "
@@ -1270,6 +1282,11 @@ def main() -> None:
     base = load_params("params.json")
     base = dataclasses.replace(base, volume_ratio_min=1.1)  # most-permissive (volume gate is bypassed anyway)
     _apply_fee_model(args.fees)
+    if args.funding > 0.0:
+        import src.backtest.runner as _r
+
+        _r._FUNDING_8H_FRAC = args.funding / 100.0
+        print(f"[funding] perp funding modeled: {args.funding}%/8h, always charged (v2.7)", flush=True)
     _install_search_gates(args.regime)
     if args.points:
         # Rule 3 (tp/sl >= 1.2) would reject every hiwin bracket at the door. Bypass the

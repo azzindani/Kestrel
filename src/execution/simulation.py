@@ -30,6 +30,18 @@ _MAKER_FEE_PCT = 0.02 / 100.0  # 0.02% per side (post-only limit fills; see cfg.
 _SLIPPAGE_PCT = 0.05 / 100.0  # 0.05% per side (market fills only — maker limit fills have none)
 _DEFAULT_MAX_HOLD_CANDLES = 4  # fallback when params not supplied (CLAUDE.md §22)
 
+_TIMEFRAME_HOURS = {"1m": 1 / 60, "3m": 0.05, "5m": 1 / 12, "15m": 0.25, "30m": 0.5, "1h": 1.0, "4h": 4.0, "1d": 24.0}
+
+
+def _funding_cost(cfg: AppConfig, notional: float, candles_held: int) -> float:
+    """Conservative perp funding (CLAUDE.md §13/§29 v2.7): always charged, never
+    credited — notional × rate/100 × hold_hours/8. 0 when the rate is unset."""
+    rate = getattr(cfg, "funding_rate_8h_pct", 0.0)
+    if rate <= 0.0 or candles_held <= 0:
+        return 0.0
+    hours = candles_held * _TIMEFRAME_HOURS.get(cfg.timeframe_entry, 1.0)
+    return notional * (rate / 100.0) * (hours / 8.0)
+
 
 class SimulationExecution(ExecutionInterface):
     """In-process paper trading engine.
@@ -164,10 +176,11 @@ class SimulationExecution(ExecutionInterface):
         else:
             pnl_gross = (entry - fill_exit) / entry * notional
 
-        total_fee = pos["fee_usdt"] + fee_exit
+        hold_candles = pos.get("candles_held", 0)
+        funding = _funding_cost(self.cfg, notional, hold_candles)
+        total_fee = pos["fee_usdt"] + fee_exit + funding
         pnl_net = pnl_gross - total_fee
         pnl_pct = pnl_net / size * 100.0
-        hold_candles = pos.get("candles_held", 0)
 
         del self._positions[pair]
 
@@ -182,7 +195,7 @@ class SimulationExecution(ExecutionInterface):
             "notional_usdt": notional,
             "points": round(points, 8),
             "pnl_gross_usdt": round(pnl_gross, 6),
-            "fee_exit_usdt": round(fee_exit, 6),
+            "fee_exit_usdt": round(fee_exit + funding, 6),  # funding folded in so the DB row carries it
             "pnl_net_usdt": round(pnl_net, 6),
             "pnl_pct": round(pnl_pct, 4),
             "ts": int(time.time() * 1000),
