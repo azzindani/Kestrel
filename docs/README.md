@@ -42,6 +42,7 @@ Read top-to-bottom for a full understanding, or jump to the subsystem you care a
 | 11 | [Operations](11-operations.md) | Daemon lifecycle, watchdog, scheduler, Telegram alerts, the terminal dashboard, Grafana. |
 | 12 | [Go-Live & Definition of Done](12-go-live.md) | The go-live criteria, per-feature/strategy/deploy DoD, and what would actually change the verdict. |
 | 13 | [**Points Framework**](13-points-framework.md) | **The primary scoreboard since 2026-07-09**: points (bps) + win-rate measurement, the win-rate geometry law, the HiWin strategy program, daily & program targets, scalability model. |
+| 14 | [**Prod Runbook**](14-prod-runbook.md) | **The BingX real-money path (owner plan 2026-07-15, $50 start)**: §18 readiness audit, open owner decisions (spot vs perp), maker execution, the ordered go-live sequence, the $50 phase rules. |
 
 ---
 

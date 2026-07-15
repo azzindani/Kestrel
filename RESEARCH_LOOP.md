@@ -611,6 +611,37 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 60b — 2026-07-15 (OWNER-DIRECTED PROD PREP: maker execution built into `src/execution/live.py` — the #1 go-live blocker closed under explicit owner directive ("we should have it. but i need you to prepare the codebases for prod"); prod scaffolding shipped (.env.prod.example, bots.prod.json $50 template, docs/14 runbook); compounding confirmed ALREADY built)
+
+- **AUTHORIZATION:** the prod-readiness audit (delivered this session) named taker-only `live.py` as
+  the #1 blocker and explicitly asked for the owner's word to modify the frozen file (Rule-3
+  precedent); the owner responded "we should have it. but i need you to prepare the codebases for
+  prod" + committed to a $50 BingX go-live gated on staging proof. Change documented in the file
+  header with the quote. **The freeze on `live.py` remains in force for all future edits.**
+- **BUILT — maker path in `LiveExecution` (mirrors `simulation.py`, the semantic reference for every
+  validated number):** post-only limit ENTRY at the signal price (maker fee, no slippage; poll to
+  90s; unfilled ⇒ cancel + `ExecutionError("entry_unfilled")` ⇒ daemon logs and SKIPS — a missed
+  entry is never chased); resting post-only reduce-only TAKE-PROFIT placed on fill (the maker win-side
+  lift); STOP/TIMEOUT/MANUAL market out at taker; TP-vs-monitor race settles from the actual TP fill;
+  entry economics tracked in-memory + rehydrated by `reconcile()` after restart; taker path
+  byte-equivalent to the old behavior and still the default (`MAKER_EXECUTION=true` required in
+  prod). 8 new unit tests (`tests/unit/execution/test_live_maker.py`, fake-ccxt) — full suite green.
+- **SCALING ANSWER (owner: "if it always gains, will it scale?"):** YES mechanically — compounding
+  was ALREADY built and live: `signal/sizing.py` scales size with bucket equity (confidence
+  fraction, drawdown de-risking, loss cool-off, min-size floor), daemon reads authoritative equity
+  from DB per trade. Capacity at these sizes is a non-issue on 1h liquid pairs into thousands of
+  dollars. Scale-up = add buckets/bots as equity grows; bucket size stays $10 (§13/§4).
+- **SHIPPED SCAFFOLDING:** `.env.prod.example` (BingX, MAKER_EXECUTION mandatory, $50-phase values) ·
+  `bots.prod.json` ($50 fleet template: 5 bots on today's best staged cells — placeholders to be
+  FROZEN from the staging leaderboard at promotion time) · `docs/14-prod-runbook.md` (§18 audit
+  table, the 2 open owner decisions — spot-vs-perp §13 amendment + guard values — the ordered
+  3-5-week go-live path incl. the VST fill-deviation test with an explicit ABORT criterion, $50
+  phase rules + kill rules) · docs/README index.
+- **STILL OWNER-GATED (unchanged):** instrument decision (spot vs perp, §4/§13 — funding modeling
+  follows it), VST demo keys (unlocks §18.4 fill-realism), real keys/funding/go-live (§18 all-green
+  only). The 14-day zero-crash window runs to ~07-27; staging (fresh 22-bot best-only slate, pinned)
+  accumulates toward the owner's own proof bar.
+
 ### Iteration 60 — 2026-07-15 (OWNER-REQUESTED RE-EVAL — THE MILESTONE: exp_hiwin's first live read at n=38 is ON-THESIS (65.8% points win / +26.4 bps / net +$0.72, clears the docs/13 joint bar at the first-read level); diagnosed the owner's "44% win, low contribution" as classic-exit composition dilution; EXPANDED the points program +16 bots on freshly per-pair-validated iter-57 cells; fleet 170 → 186)
 
 - **TRIGGER:** owner — "the win rate now at 44%, its start to rise but the contribution is very low.
