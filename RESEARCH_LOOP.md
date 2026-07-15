@@ -611,6 +611,30 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 60d — 2026-07-15 (OWNER-DIRECTED FLEET-CAP: "put all high win rate bots in prod, but we maintain how many we can allow in open position" — built MAX_OPEN_POSITIONS_FLEET; bots.prod.json = all 22 high-win cells @ cap 5 = $50; staging mirrors the cap so its proof includes it)
+
+- **DESIGN (the owner's, and it's right for $50):** many signal sources, bounded capital. ALL 22
+  high-win staged cells run in prod watching their markets; a fleet-wide cap of 5 concurrent open
+  positions gates entries first-come-first-served. Capital = cap × $10 buckets = $50; **raising the
+  cap is the capital-scaling knob** ($100 ⇒ cap 10, etc.).
+- **BUILT:** `config.max_open_positions_fleet` (env `MAX_OPEN_POSITIONS_FLEET`, default 0 =
+  unlimited) → `db.count_open_positions_fleet(env)` (authoritative open count, §11) →
+  `Daemon._acquire_fleet_slot()` in the entry path AFTER risk validate, BEFORE place_order: under a
+  module-level lock, DB-count + in-process reservation set (closes the same-candle race between the
+  count and the trade row landing; the lock is never held across the potentially-90s maker
+  fill-wait); reservation released on order failure or once the trades row exists. Rejections
+  logged to signals (`fleet_position_limit`) + events. **Risk Rule 1 untouched — stays per-bot;
+  this is a daemon I/O gate, not a risk-manager change.** 6 unit tests
+  (`tests/unit/engine/test_fleet_position_cap.py`), full suite + lint green (`c856540`).
+- **DEPLOYED:** image rebuilt; dev (cap 0 — research tier unlimited, behavior unchanged) + staging
+  (cap 5, mirrors prod so the proof the owner is waiting on INCLUDES the cap's effect) both
+  recreated healthy, 186 + 22 heartbeats fresh, caps verified in-container. `bots.prod.json`
+  regenerated = all 22 staged cells (prod- prefix) + `MAX_OPEN_POSITIONS_FLEET=5` in
+  `.env.prod.example`. Note: at current trade rates (~5-7/day, holds ≤6h) expected concurrent opens
+  are ~1-2, so the cap should rarely bind — its real job is the hard capital guarantee in prod.
+- **CHECK STOP:** unchanged — staging accumulation just started (n=0 → first read ~07-20, owner
+  gate n≥100 ~08-03..08). Loop continues.
+
 ### Iteration 60c — 2026-07-15 (OWNER AUTHORIZED §13 SPOT → PERPS — CLAUDE.md v2.7; conservative perp funding model built + the staged cells RE-VALIDATED under it: 8/8 clear the joint bar in BOTH eras; staging now simulates the full perp cost stack; keys/deposit stay owner-gated on staging proof)
 
 - **AUTHORIZATION:** owner — "i authorize you to amend §13 to perps, use perps. but i will deposit
