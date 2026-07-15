@@ -180,14 +180,14 @@ Layer rules §7 · script contracts §15 · agent-editable paths §25.
 ## 13. Hard Constraints
 
 ```
-Instrument:      spot isolated margin only · ✗ futures · ✗ options · ✗ derivatives
+Instrument:      PERPETUAL futures · isolated margin (v2.7 owner-authorized 2026-07-15 "i authorize you to amend §13 to perps, use perps" — BingX perps = the validated venue: 20× isolated · 0.02% maker · VST demo) · ✗ options · ✗ non-perp derivatives · spot = data feed only
 Leverage:        20x (owner-locked default · range 10x–50x · ✗ change without §4)
 Bucket size:     $10 USDT · independent isolated collateral · ✗ shared pool
 Timeframes:      SCALP entry 1m–5m (5m default) · 15m regime filter · ✗ hours (1h/4h) as a live cohort — minutes-candle hunting only · high-TF allowed solely as a backtest comparison number, ✗ deployed
 Fleet scale:     HUNDREDS of bots (dev/research) — N patterns × M liquid pairs × scalp-TF, one bot per (pair,tf,pattern) cell · WS feeds SHARED per (pair,tf) · default toward MORE bots / MORE activity
 Pairs:           broad across liquid USDT markets · BTCUSDT·ETHUSDT core · expand widely
 DB:              PostgreSQL · multi-bot from day one · bot_id on every record · size RAM to fleet (override.yml; ~hundreds ⇒ postgres ≥2g)
-Fee model:       taker 0.04%+0.04%+0.05% slip = ~0.18% round trip · MAKER (post-only limit) ~0.02%/side ≈ ~0.04% round trip — scalping REQUIRES the maker path to clear the fee floor (MAKER_EXECUTION=true)
+Fee model:       taker 0.04%+0.04%+0.05% slip = ~0.18% round trip · MAKER (post-only limit) ~0.02%/side ≈ ~0.04% round trip — scalping REQUIRES the maker path to clear the fee floor (MAKER_EXECUTION=true) · PERP FUNDING (v2.7): modeled conservatively at 0.01%/8h × hold-time, ALWAYS charged (never credited) — staging sim via FUNDING_RATE_8H_PCT + backtest via --funding; live = venue-charged in balance · BingX perp taker is 0.05% (1bp worse than the modeled 0.04% on adverse exits — inside validated margins, noted docs/14)
 Min edge:        avg net gain/trade > round-trip cost · enforced by risk Rule 4 + backtest · ✗ skip — beat it with maker fees + entry quality, ✗ by trading slower
 VPS (prod only): Singapore | Tokyo · 1 vCPU · 1GB RAM · 20GB SSD · Ubuntu 22.04 · $4–6/mo — caps PROD fleet; dev/research runs hundreds on the larger dev host
 ```
@@ -407,7 +407,7 @@ backup             → scripts/backup_db.py  (rotated pg_dump · lean excludes c
 host overrides     → docker-compose.override.yml (gitignored · postgres ≥2g for hundreds of bots)
 ```
 **Backtest harness (free OHLCV via ccxt · no auth):** `scripts/algo_search.py --tf --days --pairs (SLASH fmt BTC/USDT) --algos --exits --fees taker|maker --offset-days 365` (lockbox). Candidate deploys ONLY if +EV in BOTH recent year AND prior-year lockbox across ≥3 pairs.
-**Sim realism (✗ skip any):** isolated margin · liquidation formula · taker/maker fee both sides · slippage 0.05%/side · order rejection · WS reconnection · candle-close timing · funding=0 (spot).
+**Sim realism (✗ skip any):** isolated margin · liquidation formula · taker/maker fee both sides · slippage 0.05%/side · order rejection · WS reconnection · candle-close timing · perp funding (v2.7): 0.01%/8h × hold, always-charged conservative model — ON in staging (FUNDING_RATE_8H_PCT in .env.staging) + backtest (--funding) · dev stays 0 (raw-strategy research tier, forward-test continuity).
 
 ---
 
@@ -421,7 +421,8 @@ Per deployment: all §18 met · clean cold-start verified · Telegram confirmed 
 
 ---
 
-*Kestrel CLAUDE.md v2.6*
+*Kestrel CLAUDE.md v2.7*
+*v2.7 (2026-07-15, owner-authorized "i authorize you to amend §13 to perps, use perps"): instrument spot isolated margin → PERPETUAL futures isolated margin (§13) — BingX perps are the venue the whole validation stack already assumed (20× isolated, 0.02% maker, VST demo for §18.4); spot demoted to data-feed-only. Perp funding added to the cost model (§13/§29): conservative always-charged 0.01%/8h × hold-time, ON in staging + backtest --funding, dev stays 0 for forward-test continuity. Maker execution had landed in live.py the same day (owner-directed, see docs/14). Keys/deposit remain owner-gated on staging proof.*
 *v2.6 (2026-07-09, owner-authorized "i authorize you to amend rule 3, deploy it"): risk Rule 3 R/R floor 1.2→0.25 (§22/§24) — the S1 points sweep (docs/13-points-framework.md, RESEARCH_LOOP iter 55) validated inverted-geometry (g<1.2) high-win brackets cross-era (12 cells, both eras, net-of-maker-positive); R/R≥1.2 mathematically capped win rate ~45-50% and made the owner's 70% target unreachable. Rule 3 now rejects only degenerate brackets; strategy quality gates on the points joint bar (win≥65% AND expectancy>0, both eras). tp_atr_multiplier range floor 0.8→0.4 (§26) for the hiwin presets.*
 *v2.5 (2026-06-27, owner-authorized): PortfolioGuard MOVED to staging-only — disabled in dev (forward-test confound), enabled in .env.staging; clarified it watches real-time UNREALISED on open positions, ✗ cumulative realised drawdown (§17).*
 *v2.4 (2026-06-27, owner-authorized): documented the PortfolioGuard ±10% fleet-aggregate force-close in §17 (fleet-aggregate ✗ per-bucket; near-dormant — never fired; −DD = crash insurance, +TP questionable; risk-shaping ✗ edge) + close_reason enum (§19).*

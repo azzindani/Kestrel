@@ -527,6 +527,14 @@ class AppConfig:
     # by itself create edge. Set MAKER_EXECUTION=true for the paper lab. Absent ⇒ False.
     maker_execution: bool = False
 
+    # Perp funding model (CLAUDE.md §13/§29 v2.7 — instrument is perpetual futures).
+    # Conservative always-charged rate: cost = notional × rate/100 × hold_hours/8,
+    # never credited (real funding alternates sign; charging both directions is the
+    # honest worst-case for a strategy that holds ≤6h). 0.0 = off (dev's raw-strategy
+    # research tier keeps 0 for forward-test continuity; staging models prod with 0.01).
+    # Live is NOT simulated — the venue charges funding in the account balance.
+    funding_rate_8h_pct: float = 0.0
+
     # Portfolio guard ("manager bot") thresholds, as a fraction of total account
     # equity. When aggregate UNREALISED PnL across all bots crosses +portfolio_tp_pct
     # the guard force-closes every open position (lock the gain); when it crosses
@@ -598,6 +606,7 @@ class AppConfig:
             feed_mode=(m.get("FEED_MODE") or "ws").lower(),
             telegram_suppress_connection=(m.get("TELEGRAM_SUPPRESS_CONNECTION") or "").lower() in ("1", "true", "yes"),
             maker_execution=(m.get("MAKER_EXECUTION") or "").lower() in ("1", "true", "yes"),
+            funding_rate_8h_pct=float(m.get("FUNDING_RATE_8H_PCT") or 0.0),
             portfolio_tp_pct=float(m.get("PORTFOLIO_TP_PCT") or 0.0),
             portfolio_dd_pct=float(m.get("PORTFOLIO_DD_PCT") or 0.0),
             staging_engine=(m.get("STAGING_ENGINE") or "live").lower(),

@@ -31,6 +31,10 @@ from src.signal.detector import evaluate
 
 _TAKER_FEE_PCT = 0.04 / 100.0
 _SLIPPAGE_PCT = 0.05 / 100.0
+# Perp funding (CLAUDE.md §13/§29 v2.7): conservative always-charged rate per 8h of
+# hold time, as a FRACTION (0.0001 = 0.01%/8h). 0.0 = off; research harnesses set it
+# (scripts/algo_search.py --funding) — mirrors simulation.py's _funding_cost model.
+_FUNDING_8H_FRAC = 0.0
 _MAINTENANCE_MARGIN_RATE = 0.005
 
 
@@ -362,7 +366,10 @@ def _simulate_close(trade: dict, candle: Candle, reason: str) -> dict:
         pnl_gross = (entry - exit_price) / entry * notional
 
     fee_exit = notional * _TAKER_FEE_PCT
-    total_fee = trade["fee_entry_usdt"] + fee_exit
+    # Perp funding: charged on actual wall-clock hold time (entry→exit ts).
+    hold_hours = max(candle.ts - trade["entry_ts"], 0) / 3_600_000.0
+    funding = notional * _FUNDING_8H_FRAC * (hold_hours / 8.0)
+    total_fee = trade["fee_entry_usdt"] + fee_exit + funding
     pnl_net = pnl_gross - total_fee
     pnl_pct = pnl_net / size * 100.0
 
@@ -375,7 +382,7 @@ def _simulate_close(trade: dict, candle: Candle, reason: str) -> dict:
         "exit_price": round(exit_price, 8),
         "hold_candles": max(hold_candles, 1),
         "pnl_gross_usdt": round(pnl_gross, 6),
-        "fee_exit_usdt": round(fee_exit, 6),
+        "fee_exit_usdt": round(fee_exit + funding, 6),
         "pnl_net_usdt": round(pnl_net, 6),
         "pnl_pct": round(pnl_pct, 4),
         "bucket_balance_after": round(trade.get("bucket_balance_before", 10.0) + pnl_net, 4),
