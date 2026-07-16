@@ -46,6 +46,22 @@ class PatternType(str, Enum):
     MOMENTUM_CONTINUATION = "momentum_continuation"
     ANOMALY_FADE = "anomaly_fade"
     SESSION_SEASONAL = "session_seasonal"
+    # Every registry entry needs its OWN member: patterns that borrow a
+    # neighbour's label make signals/trades rows indistinguishable per-pattern
+    # and pool unrelated patterns under one pattern_memory key (the
+    # 2026-06-27..07-15 mislabel, where all self-directing patterns logged as
+    # momentum_continuation).
+    TREND_MOMENTUM = "trend_momentum"
+    WAVE_RIDE = "wave_ride"
+    VOL_BURST = "vol_burst"
+    WAVE_FLIP = "wave_flip"
+    MOM_ADX = "mom_adx"
+    TRIPLE_MOM = "triple_mom"
+    MACD_CROSS = "macd_cross"
+    MACD_RSI = "macd_rsi"
+    CCI_MOM = "cci_mom"
+    SMA_CROSS = "sma_cross"
+    ENSEMBLE_3OF4 = "ensemble_3of4"
 
 
 class SignalOutcome(str, Enum):

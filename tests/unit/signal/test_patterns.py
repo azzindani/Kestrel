@@ -473,7 +473,7 @@ class TestTrendMomentum:
         result = detect_trend_momentum(candles, params)
         assert result is not None
         assert result.direction is Direction.LONG
-        assert result.pattern is PatternType.MOMENTUM_CONTINUATION
+        assert result.pattern is PatternType.TREND_MOMENTUM
 
     def test_trend_momentum_short_fires(self):
         candles, params = self._trend_setup(Direction.SHORT)
@@ -575,7 +575,7 @@ class TestConfluenceMomentum:
         result = detect_mom_adx(self._streak(Direction.LONG, adx=30.0), params)
         assert result is not None
         assert result.direction is Direction.LONG
-        assert result.pattern is PatternType.MOMENTUM_CONTINUATION
+        assert result.pattern is PatternType.MOM_ADX
         assert result.details["variant"] == "mom_adx"
         assert 0.75 <= result.confidence <= 0.92  # full-size band, as validated
 
@@ -682,7 +682,7 @@ class TestMacdCross:
         r = detect_macd_cross(self._candles(closes), make_params())
         assert r is not None
         assert r.direction == Direction.LONG
-        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.pattern == PatternType.MACD_CROSS
         assert r.details["variant"] == "macd_cross"
 
     def test_bearish_cross_below_zero_fires_short(self):
@@ -717,7 +717,7 @@ class TestMacdRsi:
         r = detect_macd_rsi(self._candles([100.0] * 40 + [112.0], rsi=62.0), make_params())
         assert r is not None
         assert r.direction == Direction.LONG
-        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.pattern == PatternType.MACD_RSI
         assert r.details["variant"] == "macd_rsi"
 
     def test_bearish_cross_with_rsi_below_50_fires_short(self):
@@ -758,7 +758,7 @@ class TestCciMom:
         r = detect_cci_mom(self._candles([100.0] * 20 + [110.0]), make_params())
         assert r is not None
         assert r.direction == Direction.LONG
-        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.pattern == PatternType.CCI_MOM
         assert r.details["variant"] == "cci_mom"
 
     def test_downside_breakout_fires_short(self):
@@ -793,7 +793,7 @@ class TestSmaCross:
         r = detect_sma_cross(self._candles([100.0] * 21 + [101.0]), make_params())
         assert r is not None
         assert r.direction == Direction.LONG
-        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.pattern == PatternType.SMA_CROSS
         assert r.details["variant"] == "sma_cross"
 
     def test_death_cross_fires_short(self):
@@ -827,7 +827,7 @@ class TestEnsemble3of4:
         r = detect_ensemble_3of4(self._candles([100.0] * 40 + [112.0]), make_params())
         assert r is not None
         assert r.direction == Direction.LONG
-        assert r.pattern == PatternType.MOMENTUM_CONTINUATION
+        assert r.pattern == PatternType.ENSEMBLE_3OF4
         assert r.details["variant"] == "ensemble_3of4"
         assert r.details["votes_long"] >= 3
 

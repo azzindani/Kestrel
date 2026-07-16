@@ -579,7 +579,7 @@ def detect_trend_momentum(candles: Sequence[Candle], params: Params) -> Optional
     confidence = min(0.55 + body_ratio * 0.20, 0.72)
 
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.TREND_MOMENTUM,
         direction=direction,
         confidence=round(confidence, 3),
         details={"variant": "trend_momentum", "body_ratio": round(body_ratio, 3)},
@@ -639,7 +639,7 @@ def detect_wave_ride(candles: Sequence[Candle], params: Params) -> Optional[Patt
 
     confidence = min(0.58 + br * 0.20, 0.80)
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.WAVE_RIDE,
         direction=direction,
         confidence=round(confidence, 3),
         details={"variant": "wave_ride", "body_ratio": round(br, 3)},
@@ -688,7 +688,7 @@ def detect_vol_burst(candles: Sequence[Candle], params: Params) -> Optional[Patt
 
     confidence = min(0.55 + (expansion - params.atr_volatile_multiplier) * 0.10 + br * 0.10, 0.85)
     return PatternResult(
-        pattern=PatternType.COMPRESSION_BREAKOUT,
+        pattern=PatternType.VOL_BURST,
         direction=direction,
         confidence=round(confidence, 3),
         details={"variant": "vol_burst", "atr_expansion": round(expansion, 3), "body_ratio": round(br, 3)},
@@ -728,7 +728,7 @@ def detect_wave_flip(candles: Sequence[Candle], params: Params) -> Optional[Patt
     fade_dir = rev_dir  # opposite of run_dir by construction
     confidence = min(0.55 + n * 0.04 + rev_br * 0.10, 0.80)
     return PatternResult(
-        pattern=PatternType.ANOMALY_FADE,
+        pattern=PatternType.WAVE_FLIP,
         direction=fade_dir,
         confidence=round(confidence, 3),
         details={"variant": "wave_flip", "run_len": n, "rev_body_ratio": round(rev_br, 3)},
@@ -772,7 +772,7 @@ def detect_mom_adx(candles: Sequence[Candle], params: Params) -> Optional[Patter
     confidence = min(0.78 + (c.adx - params.adx_strong_min) * 0.004, 0.92)
 
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.MOM_ADX,
         direction=direction,
         confidence=round(confidence, 3),
         details={"variant": "mom_adx", "adx": round(c.adx, 2)},
@@ -804,7 +804,7 @@ def detect_triple_mom(candles: Sequence[Candle], params: Params) -> Optional[Pat
     confidence = min(0.80 + (c.adx - params.adx_strong_min) * 0.004, 0.93)
 
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.TRIPLE_MOM,
         direction=direction,
         confidence=round(confidence, 3),
         details={"variant": "triple_mom", "adx": round(c.adx, 2)},
@@ -840,7 +840,7 @@ def detect_macd_cross(candles: Sequence[Candle], params: Params) -> Optional[Pat
         return None
 
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.MACD_CROSS,
         direction=direction,
         confidence=0.78,  # full-size band, matching how the momentum patterns are sized
         details={"variant": "macd_cross", "macd": round(macd_last, 8), "signal": round(sig_last, 8)},
@@ -881,7 +881,7 @@ def detect_macd_rsi(candles: Sequence[Candle], params: Params) -> Optional[Patte
         return None
 
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.MACD_RSI,
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "macd_rsi", "macd": round(macd_last, 8), "rsi": round(rsi, 2)},
@@ -918,7 +918,7 @@ def detect_cci_mom(candles: Sequence[Candle], params: Params) -> Optional[Patter
         return None
 
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.CCI_MOM,
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "cci_mom", "cci": round(cci_now, 2)},
@@ -961,7 +961,7 @@ def detect_sma_cross(candles: Sequence[Candle], params: Params) -> Optional[Patt
         return None
 
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.SMA_CROSS,
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "sma_cross", "sma_fast": round(f_now, 8), "sma_slow": round(s_now, 8)},
@@ -1010,7 +1010,7 @@ def detect_ensemble_3of4(candles: Sequence[Candle], params: Params) -> Optional[
         return None
 
     return PatternResult(
-        pattern=PatternType.MOMENTUM_CONTINUATION,
+        pattern=PatternType.ENSEMBLE_3OF4,
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "ensemble_3of4", "votes_long": longs, "votes_short": shorts, **member_directions},
