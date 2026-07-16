@@ -1097,6 +1097,250 @@
               }
             ]
           },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM (SELECT * FROM heartbeats WHERE bot_id LIKE '${env}-%') heartbeats",
+          "refId": "A"
+        }
+      ],
+      "title": "Bots Registered",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 3,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM (SELECT * FROM heartbeats WHERE bot_id LIKE '${env}-%') heartbeats WHERE ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 90000",
+          "refId": "A"
+        }
+      ],
+      "title": "Bots Alive (90s)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(DISTINCT bot_id) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades",
+          "refId": "A"
+        }
+      ],
+      "title": "Bots That Traded",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 9,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(DISTINCT bot_id) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NULL",
+          "refId": "A"
+        }
+      ],
+      "title": "Bots In Position",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
           "custom": {
             "align": "auto",
             "cellOptions": {
@@ -1182,12 +1426,12 @@
         ]
       },
       "gridPos": {
-        "x": 0,
+        "x": 12,
         "y": 14,
         "w": 12,
         "h": 8
       },
-      "id": 19,
+      "id": 23,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -1209,11 +1453,11 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT bot_id, COUNT(*) FILTER (WHERE exit_ts IS NOT NULL) AS closed, COUNT(*) FILTER (WHERE exit_ts IS NULL) AS open, ROUND(100.0*SUM((pnl_net_usdt>0)::int) FILTER (WHERE exit_ts IS NOT NULL)/NULLIF(COUNT(*) FILTER (WHERE exit_ts IS NOT NULL),0),1) AS win_rate, ROUND(SUM(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS net_pnl FROM (SELECT * FROM trades WHERE env = '${env}') trades GROUP BY bot_id ORDER BY net_pnl DESC NULLS LAST LIMIT 40",
+          "rawSql": "SELECT h.bot_id, COUNT(t.id) FILTER (WHERE t.exit_ts IS NOT NULL) AS closed, COUNT(t.id) FILTER (WHERE t.exit_ts IS NULL) AS open, ROUND(100.0*SUM((t.pnl_net_usdt>0)::int) FILTER (WHERE t.exit_ts IS NOT NULL)/NULLIF(COUNT(t.id) FILTER (WHERE t.exit_ts IS NOT NULL),0),1) AS win_rate, ROUND(SUM(t.pnl_net_usdt) FILTER (WHERE t.exit_ts IS NOT NULL),4) AS net_pnl FROM (SELECT * FROM heartbeats WHERE bot_id LIKE '${env}-%') h LEFT JOIN (SELECT * FROM trades WHERE env = '${env}') t ON t.bot_id = h.bot_id GROUP BY h.bot_id ORDER BY net_pnl DESC NULLS LAST, h.bot_id LIMIT 250",
           "refId": "A"
         }
       ],
-      "title": "Per-Bot Performance",
+      "title": "Per-Bot Performance (all registered bots)",
       "type": "table"
     },
     {
@@ -1356,12 +1600,12 @@
         ]
       },
       "gridPos": {
-        "x": 12,
-        "y": 14,
+        "x": 0,
+        "y": 22,
         "w": 12,
         "h": 8
       },
-      "id": 20,
+      "id": 24,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -1415,12 +1659,12 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 0,
+        "x": 12,
         "y": 22,
         "w": 12,
         "h": 7
       },
-      "id": 21,
+      "id": 25,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -1479,12 +1723,12 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 12,
-        "y": 22,
+        "x": 0,
+        "y": 30,
         "w": 12,
         "h": 7
       },
-      "id": 22,
+      "id": 26,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -1518,11 +1762,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 29,
+        "y": 37,
         "w": 24,
         "h": 1
       },
-      "id": 23,
+      "id": 27,
       "panels": [],
       "title": "\ud83c\udfaf Win-Rate Analytics",
       "type": "row"
@@ -1589,11 +1833,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 30,
+        "y": 38,
         "w": 24,
         "h": 7
       },
-      "id": 24,
+      "id": 28,
       "options": {
         "legend": {
           "calcs": [
@@ -1658,11 +1902,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 37,
+        "y": 45,
         "w": 8,
         "h": 7
       },
-      "id": 25,
+      "id": 29,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -1726,11 +1970,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 37,
+        "y": 45,
         "w": 8,
         "h": 7
       },
-      "id": 26,
+      "id": 30,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -1794,11 +2038,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 37,
+        "y": 45,
         "w": 8,
         "h": 7
       },
-      "id": 27,
+      "id": 31,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -1934,11 +2178,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 44,
+        "y": 52,
         "w": 12,
         "h": 8
       },
-      "id": 28,
+      "id": 32,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2073,11 +2317,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 44,
+        "y": 52,
         "w": 12,
         "h": 8
       },
-      "id": 29,
+      "id": 33,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2110,11 +2354,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 52,
+        "y": 60,
         "w": 24,
         "h": 1
       },
-      "id": 30,
+      "id": 34,
       "panels": [],
       "title": "\ud83e\ude99 Position Sizing & Compounding (equity-scaled)",
       "type": "row"
@@ -2146,11 +2390,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 53,
+        "y": 61,
         "w": 4,
         "h": 4
       },
-      "id": 31,
+      "id": 35,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2208,11 +2452,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 53,
+        "y": 61,
         "w": 4,
         "h": 4
       },
-      "id": 32,
+      "id": 36,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -2270,11 +2514,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 53,
+        "y": 61,
         "w": 4,
         "h": 4
       },
-      "id": 33,
+      "id": 37,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2332,11 +2576,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 53,
+        "y": 61,
         "w": 4,
         "h": 4
       },
-      "id": 34,
+      "id": 38,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2394,11 +2638,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 53,
+        "y": 61,
         "w": 4,
         "h": 4
       },
-      "id": 35,
+      "id": 39,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2460,11 +2704,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 53,
+        "y": 61,
         "w": 4,
         "h": 4
       },
-      "id": 36,
+      "id": 40,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2552,11 +2796,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 57,
+        "y": 65,
         "w": 12,
         "h": 8
       },
-      "id": 37,
+      "id": 41,
       "options": {
         "legend": {
           "calcs": [
@@ -2644,11 +2888,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 57,
+        "y": 65,
         "w": 12,
         "h": 8
       },
-      "id": 38,
+      "id": 42,
       "options": {
         "legend": {
           "calcs": [
@@ -2720,11 +2964,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 65,
+        "y": 73,
         "w": 8,
         "h": 7
       },
-      "id": 39,
+      "id": 43,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -2812,11 +3056,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 65,
+        "y": 73,
         "w": 8,
         "h": 7
       },
-      "id": 40,
+      "id": 44,
       "options": {
         "legend": {
           "calcs": [
@@ -2982,11 +3226,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 65,
+        "y": 73,
         "w": 8,
         "h": 7
       },
-      "id": 41,
+      "id": 45,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3040,11 +3284,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 72,
+        "y": 80,
         "w": 8,
         "h": 4
       },
-      "id": 42,
+      "id": 46,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3079,11 +3323,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 76,
+        "y": 84,
         "w": 24,
         "h": 1
       },
-      "id": 43,
+      "id": 47,
       "panels": [],
       "title": "\ud83e\udea4 Trailing-Close (ratchet exit) \u2014 live A/B vs fixed TP",
       "type": "row"
@@ -3123,11 +3367,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 77,
+        "y": 85,
         "w": 4,
         "h": 4
       },
-      "id": 44,
+      "id": 48,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3183,11 +3427,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 77,
+        "y": 85,
         "w": 4,
         "h": 4
       },
-      "id": 45,
+      "id": 49,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3249,11 +3493,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 77,
+        "y": 85,
         "w": 4,
         "h": 4
       },
-      "id": 46,
+      "id": 50,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3315,11 +3559,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 77,
+        "y": 85,
         "w": 4,
         "h": 4
       },
-      "id": 47,
+      "id": 51,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3376,11 +3620,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 77,
+        "y": 85,
         "w": 4,
         "h": 4
       },
-      "id": 48,
+      "id": 52,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3437,11 +3681,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 77,
+        "y": 85,
         "w": 4,
         "h": 4
       },
-      "id": 49,
+      "id": 53,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3503,11 +3747,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 81,
+        "y": 89,
         "w": 4,
         "h": 4
       },
-      "id": 50,
+      "id": 54,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3569,11 +3813,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 81,
+        "y": 89,
         "w": 4,
         "h": 4
       },
-      "id": 51,
+      "id": 55,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3775,11 +4019,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 81,
+        "y": 89,
         "w": 12,
         "h": 8
       },
-      "id": 52,
+      "id": 56,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3833,11 +4077,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 89,
+        "y": 97,
         "w": 12,
         "h": 8
       },
-      "id": 53,
+      "id": 57,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -3924,11 +4168,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 89,
+        "y": 97,
         "w": 12,
         "h": 7
       },
-      "id": 54,
+      "id": 58,
       "options": {
         "legend": {
           "calcs": [
@@ -4017,11 +4261,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 97,
+        "y": 105,
         "w": 12,
         "h": 7
       },
-      "id": 55,
+      "id": 59,
       "options": {
         "legend": {
           "calcs": [
@@ -4056,11 +4300,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 104,
+        "y": 112,
         "w": 24,
         "h": 1
       },
-      "id": 56,
+      "id": 60,
       "panels": [],
       "title": "\ud83d\udcc8 Equity, Drawdown & Returns",
       "type": "row"
@@ -4122,11 +4366,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 105,
+        "y": 113,
         "w": 12,
         "h": 8
       },
-      "id": 57,
+      "id": 61,
       "options": {
         "legend": {
           "calcs": [
@@ -4214,11 +4458,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 105,
+        "y": 113,
         "w": 12,
         "h": 8
       },
-      "id": 58,
+      "id": 62,
       "options": {
         "legend": {
           "calcs": [
@@ -4307,11 +4551,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 113,
+        "y": 121,
         "w": 12,
         "h": 7
       },
-      "id": 59,
+      "id": 63,
       "options": {
         "legend": {
           "calcs": [
@@ -4400,11 +4644,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 113,
+        "y": 121,
         "w": 12,
         "h": 7
       },
-      "id": 60,
+      "id": 64,
       "options": {
         "legend": {
           "calcs": [
@@ -4469,11 +4713,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 120,
+        "y": 128,
         "w": 6,
         "h": 4
       },
-      "id": 61,
+      "id": 65,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4538,11 +4782,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 120,
+        "y": 128,
         "w": 6,
         "h": 4
       },
-      "id": 62,
+      "id": 66,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4599,11 +4843,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 120,
+        "y": 128,
         "w": 6,
         "h": 4
       },
-      "id": 63,
+      "id": 67,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4661,11 +4905,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 120,
+        "y": 128,
         "w": 3,
         "h": 4
       },
-      "id": 64,
+      "id": 68,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4723,11 +4967,11 @@
       },
       "gridPos": {
         "x": 21,
-        "y": 120,
+        "y": 128,
         "w": 3,
         "h": 4
       },
-      "id": 65,
+      "id": 69,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4815,11 +5059,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 124,
+        "y": 132,
         "w": 24,
         "h": 6
       },
-      "id": 66,
+      "id": 70,
       "options": {
         "legend": {
           "calcs": [
@@ -4907,11 +5151,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 130,
+        "y": 138,
         "w": 12,
         "h": 7
       },
-      "id": 67,
+      "id": 71,
       "options": {
         "legend": {
           "calcs": [
@@ -5003,11 +5247,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 130,
+        "y": 138,
         "w": 12,
         "h": 7
       },
-      "id": 68,
+      "id": 72,
       "options": {
         "legend": {
           "calcs": [
@@ -5095,11 +5339,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 137,
+        "y": 145,
         "w": 24,
         "h": 7
       },
-      "id": 69,
+      "id": 73,
       "options": {
         "legend": {
           "calcs": [
@@ -5134,11 +5378,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 144,
+        "y": 152,
         "w": 24,
         "h": 1
       },
-      "id": 70,
+      "id": 74,
       "panels": [],
       "title": "\ud83d\udcb5 PnL Distribution & Outcomes",
       "type": "row"
@@ -5184,11 +5428,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 145,
+        "y": 153,
         "w": 8,
         "h": 8
       },
-      "id": 71,
+      "id": 75,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5260,11 +5504,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 145,
+        "y": 153,
         "w": 8,
         "h": 8
       },
-      "id": 72,
+      "id": 76,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5335,11 +5579,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 145,
+        "y": 153,
         "w": 8,
         "h": 8
       },
-      "id": 73,
+      "id": 77,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5395,11 +5639,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 153,
+        "y": 161,
         "w": 6,
         "h": 8
       },
-      "id": 74,
+      "id": 78,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -5463,11 +5707,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 153,
+        "y": 161,
         "w": 6,
         "h": 8
       },
-      "id": 75,
+      "id": 79,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -5529,11 +5773,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 153,
+        "y": 161,
         "w": 12,
         "h": 8
       },
-      "id": 76,
+      "id": 80,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -5592,11 +5836,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 161,
+        "y": 169,
         "w": 12,
         "h": 8
       },
-      "id": 77,
+      "id": 81,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -5728,11 +5972,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 161,
+        "y": 169,
         "w": 12,
         "h": 8
       },
-      "id": 78,
+      "id": 82,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -5863,11 +6107,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 169,
+        "y": 177,
         "w": 12,
         "h": 8
       },
-      "id": 79,
+      "id": 83,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -5900,11 +6144,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 177,
+        "y": 185,
         "w": 24,
         "h": 1
       },
-      "id": 80,
+      "id": 84,
       "panels": [],
       "title": "\ud83d\udccf Points Scoreboard (gross bps \u2014 docs/13)",
       "type": "row"
@@ -5943,11 +6187,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 178,
+        "y": 186,
         "w": 4,
         "h": 5
       },
-      "id": 81,
+      "id": 85,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6012,11 +6256,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 178,
+        "y": 186,
         "w": 4,
         "h": 5
       },
-      "id": 82,
+      "id": 86,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6081,11 +6325,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 178,
+        "y": 186,
         "w": 4,
         "h": 5
       },
-      "id": 83,
+      "id": 87,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6149,11 +6393,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 178,
+        "y": 186,
         "w": 4,
         "h": 5
       },
-      "id": 84,
+      "id": 88,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6218,11 +6462,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 178,
+        "y": 186,
         "w": 4,
         "h": 5
       },
-      "id": 85,
+      "id": 89,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6286,11 +6530,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 178,
+        "y": 186,
         "w": 4,
         "h": 5
       },
-      "id": 86,
+      "id": 90,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6383,11 +6627,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 183,
+        "y": 191,
         "w": 24,
         "h": 7
       },
-      "id": 87,
+      "id": 91,
       "options": {
         "legend": {
           "calcs": [
@@ -6451,11 +6695,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 190,
+        "y": 198,
         "w": 12,
         "h": 8
       },
-      "id": 88,
+      "id": 92,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -6591,11 +6835,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 190,
+        "y": 198,
         "w": 12,
         "h": 8
       },
-      "id": 89,
+      "id": 93,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6628,11 +6872,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 198,
+        "y": 206,
         "w": 24,
         "h": 1
       },
-      "id": 90,
+      "id": 94,
       "panels": [],
       "title": "\u2696\ufe0f Risk, Streaks & Expectancy",
       "type": "row"
@@ -6662,11 +6906,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 199,
+        "y": 207,
         "w": 4,
         "h": 4
       },
-      "id": 91,
+      "id": 95,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6722,11 +6966,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 199,
+        "y": 207,
         "w": 4,
         "h": 4
       },
-      "id": 92,
+      "id": 96,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6791,11 +7035,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 199,
+        "y": 207,
         "w": 4,
         "h": 4
       },
-      "id": 93,
+      "id": 97,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6860,11 +7104,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 199,
+        "y": 207,
         "w": 4,
         "h": 4
       },
-      "id": 94,
+      "id": 98,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6925,11 +7169,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 199,
+        "y": 207,
         "w": 4,
         "h": 4
       },
-      "id": 95,
+      "id": 99,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6995,11 +7239,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 199,
+        "y": 207,
         "w": 4,
         "h": 4
       },
-      "id": 96,
+      "id": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7055,11 +7299,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 203,
+        "y": 211,
         "w": 12,
         "h": 8
       },
-      "id": 97,
+      "id": 101,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7262,11 +7506,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 203,
+        "y": 211,
         "w": 12,
         "h": 8
       },
-      "id": 98,
+      "id": 102,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7299,11 +7543,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 211,
+        "y": 219,
         "w": 24,
         "h": 1
       },
-      "id": 99,
+      "id": 103,
       "panels": [],
       "title": "\ud83d\udcd0 Trade Quality \u2014 R-multiple, excursion, duration",
       "type": "row"
@@ -7343,11 +7587,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 212,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 100,
+      "id": 104,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7405,11 +7649,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 212,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 101,
+      "id": 105,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7467,11 +7711,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 212,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 102,
+      "id": 106,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7533,11 +7777,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 212,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 103,
+      "id": 107,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7598,11 +7842,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 212,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 104,
+      "id": 108,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7659,11 +7903,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 212,
+        "y": 220,
         "w": 4,
         "h": 4
       },
-      "id": 105,
+      "id": 109,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7720,11 +7964,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 216,
+        "y": 224,
         "w": 4,
         "h": 4
       },
-      "id": 106,
+      "id": 110,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7781,11 +8025,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 216,
+        "y": 224,
         "w": 4,
         "h": 4
       },
-      "id": 107,
+      "id": 111,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7841,11 +8085,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 216,
+        "y": 224,
         "w": 4,
         "h": 4
       },
-      "id": 108,
+      "id": 112,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7902,11 +8146,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 216,
+        "y": 224,
         "w": 4,
         "h": 4
       },
-      "id": 109,
+      "id": 113,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7963,11 +8207,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 216,
+        "y": 224,
         "w": 4,
         "h": 4
       },
-      "id": 110,
+      "id": 114,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8032,11 +8276,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 216,
+        "y": 224,
         "w": 4,
         "h": 4
       },
-      "id": 111,
+      "id": 115,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8107,11 +8351,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 220,
+        "y": 228,
         "w": 8,
         "h": 7
       },
-      "id": 112,
+      "id": 116,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -8183,11 +8427,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 220,
+        "y": 228,
         "w": 8,
         "h": 7
       },
-      "id": 113,
+      "id": 117,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -8259,11 +8503,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 220,
+        "y": 228,
         "w": 8,
         "h": 7
       },
-      "id": 114,
+      "id": 118,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -8465,11 +8709,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 227,
+        "y": 235,
         "w": 24,
         "h": 8
       },
-      "id": 115,
+      "id": 119,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8502,11 +8746,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 235,
+        "y": 243,
         "w": 24,
         "h": 1
       },
-      "id": 116,
+      "id": 120,
       "panels": [],
       "title": "\ud83d\udd2c Signal Funnel & Rejections",
       "type": "row"
@@ -8536,11 +8780,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 236,
+        "y": 244,
         "w": 4,
         "h": 4
       },
-      "id": 117,
+      "id": 121,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8596,11 +8840,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 236,
+        "y": 244,
         "w": 4,
         "h": 4
       },
-      "id": 118,
+      "id": 122,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8656,11 +8900,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 236,
+        "y": 244,
         "w": 4,
         "h": 4
       },
-      "id": 119,
+      "id": 123,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8716,11 +8960,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 236,
+        "y": 244,
         "w": 4,
         "h": 4
       },
-      "id": 120,
+      "id": 124,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8778,11 +9022,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 236,
+        "y": 244,
         "w": 4,
         "h": 4
       },
-      "id": 121,
+      "id": 125,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8839,11 +9083,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 236,
+        "y": 244,
         "w": 4,
         "h": 4
       },
-      "id": 122,
+      "id": 126,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8899,11 +9143,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 240,
+        "y": 248,
         "w": 12,
         "h": 8
       },
-      "id": 123,
+      "id": 127,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -8958,11 +9202,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 240,
+        "y": 248,
         "w": 12,
         "h": 8
       },
-      "id": 124,
+      "id": 128,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9049,11 +9293,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 248,
+        "y": 256,
         "w": 24,
         "h": 7
       },
-      "id": 125,
+      "id": 129,
       "options": {
         "legend": {
           "calcs": [
@@ -9147,11 +9391,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 255,
+        "y": 263,
         "w": 24,
         "h": 7
       },
-      "id": 126,
+      "id": 130,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9184,11 +9428,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 262,
+        "y": 270,
         "w": 24,
         "h": 1
       },
-      "id": 127,
+      "id": 131,
       "panels": [],
       "title": "\ud83e\udde9 Pattern Analytics",
       "type": "row"
@@ -9334,11 +9578,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 263,
+        "y": 271,
         "w": 8,
         "h": 8
       },
-      "id": 128,
+      "id": 132,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9392,11 +9636,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 263,
+        "y": 271,
         "w": 8,
         "h": 8
       },
-      "id": 129,
+      "id": 133,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9466,11 +9710,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 263,
+        "y": 271,
         "w": 8,
         "h": 8
       },
-      "id": 130,
+      "id": 134,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -9606,11 +9850,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 271,
+        "y": 279,
         "w": 24,
         "h": 8
       },
-      "id": 131,
+      "id": 135,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9643,11 +9887,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 279,
+        "y": 287,
         "w": 24,
         "h": 1
       },
-      "id": 132,
+      "id": 136,
       "panels": [],
       "title": "\ud83c\udf0a Regime Analytics",
       "type": "row"
@@ -9677,11 +9921,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 280,
+        "y": 288,
         "w": 8,
         "h": 8
       },
-      "id": 133,
+      "id": 137,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -9750,11 +9994,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 280,
+        "y": 288,
         "w": 8,
         "h": 8
       },
-      "id": 134,
+      "id": 138,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9925,11 +10169,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 280,
+        "y": 288,
         "w": 8,
         "h": 8
       },
-      "id": 135,
+      "id": 139,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9962,11 +10206,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 288,
+        "y": 296,
         "w": 24,
         "h": 1
       },
-      "id": 136,
+      "id": 140,
       "panels": [],
       "title": "\ud83d\udcca Market & Indicators (live, per pair)",
       "type": "row"
@@ -10080,11 +10324,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 289,
+        "y": 297,
         "w": 24,
         "h": 9
       },
-      "id": 137,
+      "id": 141,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10172,11 +10416,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 298,
+        "y": 306,
         "w": 12,
         "h": 8
       },
-      "id": 138,
+      "id": 142,
       "options": {
         "legend": {
           "calcs": [
@@ -10264,11 +10508,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 298,
+        "y": 306,
         "w": 12,
         "h": 8
       },
-      "id": 139,
+      "id": 143,
       "options": {
         "legend": {
           "calcs": [
@@ -10360,11 +10604,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 306,
+        "y": 314,
         "w": 12,
         "h": 8
       },
-      "id": 140,
+      "id": 144,
       "options": {
         "legend": {
           "calcs": [
@@ -10456,11 +10700,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 306,
+        "y": 314,
         "w": 12,
         "h": 8
       },
-      "id": 141,
+      "id": 145,
       "options": {
         "legend": {
           "calcs": [
@@ -10516,11 +10760,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 314,
+        "y": 322,
         "w": 8,
         "h": 7
       },
-      "id": 142,
+      "id": 146,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -10585,11 +10829,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 314,
+        "y": 322,
         "w": 8,
         "h": 7
       },
-      "id": 143,
+      "id": 147,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10653,11 +10897,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 314,
+        "y": 322,
         "w": 8,
         "h": 7
       },
-      "id": 144,
+      "id": 148,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10691,11 +10935,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 321,
+        "y": 329,
         "w": 24,
         "h": 1
       },
-      "id": 145,
+      "id": 149,
       "panels": [],
       "title": "\ud83e\uddea HP-Tuning Lab (grid: TP\u00d7SL\u00d7hold)",
       "type": "row"
@@ -10841,11 +11085,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 322,
+        "y": 330,
         "w": 24,
         "h": 9
       },
-      "id": 146,
+      "id": 150,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10904,11 +11148,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 331,
+        "y": 339,
         "w": 8,
         "h": 7
       },
-      "id": 147,
+      "id": 151,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10968,11 +11212,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 331,
+        "y": 339,
         "w": 8,
         "h": 7
       },
-      "id": 148,
+      "id": 152,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11032,11 +11276,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 331,
+        "y": 339,
         "w": 8,
         "h": 7
       },
-      "id": 149,
+      "id": 153,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11239,11 +11483,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 338,
+        "y": 346,
         "w": 12,
         "h": 8
       },
-      "id": 150,
+      "id": 154,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11306,11 +11550,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 338,
+        "y": 346,
         "w": 12,
         "h": 8
       },
-      "id": 151,
+      "id": 155,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11344,11 +11588,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 346,
+        "y": 354,
         "w": 24,
         "h": 1
       },
-      "id": 152,
+      "id": 156,
       "panels": [],
       "title": "\ud83d\udd51 Session & Time-of-Day (UTC)",
       "type": "row"
@@ -11494,11 +11738,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 347,
+        "y": 355,
         "w": 12,
         "h": 8
       },
-      "id": 153,
+      "id": 157,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11557,11 +11801,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 347,
+        "y": 355,
         "w": 12,
         "h": 8
       },
-      "id": 154,
+      "id": 158,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11621,11 +11865,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 355,
+        "y": 363,
         "w": 12,
         "h": 7
       },
-      "id": 155,
+      "id": 159,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11681,11 +11925,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 355,
+        "y": 363,
         "w": 12,
         "h": 7
       },
-      "id": 156,
+      "id": 160,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11745,11 +11989,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 362,
+        "y": 370,
         "w": 12,
         "h": 7
       },
-      "id": 157,
+      "id": 161,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11805,11 +12049,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 362,
+        "y": 370,
         "w": 12,
         "h": 7
       },
-      "id": 158,
+      "id": 162,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11843,11 +12087,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 369,
+        "y": 377,
         "w": 24,
         "h": 1
       },
-      "id": 159,
+      "id": 163,
       "panels": [],
       "title": "\ud83d\udcb8 Fees & Costs",
       "type": "row"
@@ -11878,11 +12122,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 370,
+        "y": 378,
         "w": 4,
         "h": 4
       },
-      "id": 160,
+      "id": 164,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -11939,11 +12183,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 370,
+        "y": 378,
         "w": 4,
         "h": 4
       },
-      "id": 161,
+      "id": 165,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12004,11 +12248,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 370,
+        "y": 378,
         "w": 4,
         "h": 4
       },
-      "id": 162,
+      "id": 166,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12069,11 +12313,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 370,
+        "y": 378,
         "w": 4,
         "h": 4
       },
-      "id": 163,
+      "id": 167,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12131,11 +12375,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 370,
+        "y": 378,
         "w": 4,
         "h": 4
       },
-      "id": 164,
+      "id": 168,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12193,11 +12437,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 370,
+        "y": 378,
         "w": 4,
         "h": 4
       },
-      "id": 165,
+      "id": 169,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12286,11 +12530,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 374,
+        "y": 382,
         "w": 12,
         "h": 7
       },
-      "id": 166,
+      "id": 170,
       "options": {
         "legend": {
           "calcs": [
@@ -12378,11 +12622,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 374,
+        "y": 382,
         "w": 12,
         "h": 7
       },
-      "id": 167,
+      "id": 171,
       "options": {
         "legend": {
           "calcs": [
@@ -12417,11 +12661,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 381,
+        "y": 389,
         "w": 24,
         "h": 1
       },
-      "id": 168,
+      "id": 172,
       "panels": [],
       "title": "\ud83d\udcdc Trade History",
       "type": "row"
@@ -12767,11 +13011,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 382,
+        "y": 390,
         "w": 24,
         "h": 12
       },
-      "id": 169,
+      "id": 173,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -12804,11 +13048,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 394,
+        "y": 402,
         "w": 24,
         "h": 1
       },
-      "id": 170,
+      "id": 174,
       "panels": [],
       "title": "\ud83d\udccc Open Positions (live)",
       "type": "row"
@@ -12915,11 +13159,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 395,
+        "y": 403,
         "w": 24,
         "h": 8
       },
-      "id": 171,
+      "id": 175,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -12952,11 +13196,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 403,
+        "y": 411,
         "w": 24,
         "h": 1
       },
-      "id": 172,
+      "id": 176,
       "panels": [],
       "title": "\ud83e\ude7a Activity & Health",
       "type": "row"
@@ -12994,11 +13238,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 404,
+        "y": 412,
         "w": 6,
         "h": 4
       },
-      "id": 173,
+      "id": 177,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -13063,11 +13307,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 404,
+        "y": 412,
         "w": 6,
         "h": 4
       },
-      "id": 174,
+      "id": 178,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -13131,11 +13375,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 404,
+        "y": 412,
         "w": 6,
         "h": 4
       },
-      "id": 175,
+      "id": 179,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -13199,11 +13443,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 404,
+        "y": 412,
         "w": 6,
         "h": 4
       },
-      "id": 176,
+      "id": 180,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -13259,11 +13503,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 408,
+        "y": 416,
         "w": 8,
         "h": 7
       },
-      "id": 177,
+      "id": 181,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -13318,11 +13562,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 408,
+        "y": 416,
         "w": 8,
         "h": 7
       },
-      "id": 178,
+      "id": 182,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -13386,11 +13630,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 408,
+        "y": 416,
         "w": 8,
         "h": 7
       },
-      "id": 179,
+      "id": 183,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -13477,11 +13721,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 415,
+        "y": 423,
         "w": 24,
         "h": 7
       },
-      "id": 180,
+      "id": 184,
       "options": {
         "legend": {
           "calcs": [
@@ -13579,11 +13823,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 422,
+        "y": 430,
         "w": 24,
         "h": 8
       },
-      "id": 181,
+      "id": 185,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -13685,11 +13929,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 430,
+        "y": 438,
         "w": 24,
         "h": 8
       },
-      "id": 182,
+      "id": 186,
       "options": {
         "cellHeight": "sm",
         "footer": {
