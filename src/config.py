@@ -706,8 +706,16 @@ def compute_liquidation_price(
     return entry * (1.0 + 1.0 / leverage - maintenance_margin_rate)
 
 
-def round_trip_fee_pct() -> float:
-    """Total round-trip cost: taker 0.04% × 2 + slippage 0.05% × 2."""
+def round_trip_fee_pct(maker: bool = False) -> float:
+    """Round-trip cost for the fee-viability gate (risk Rule 4, §24 v2.8).
+
+    maker=True  → post-only limit entry + post-only TP exit: 0.02% × 2, no
+                  slippage (the path Rule 4 gates — adverse exits are priced in
+                  sim/backtest, not here).
+    maker=False → taker 0.04% × 2 + slippage 0.05% × 2 = 0.18%.
+    """
+    if maker:
+        return 0.02 + 0.02  # = 0.04 %
     return 0.04 + 0.04 + 0.05 + 0.05  # = 0.18 %
 
 

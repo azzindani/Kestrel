@@ -86,9 +86,11 @@ def validate(signal: Signal, state: BucketState, cfg: AppConfig) -> ValidationRe
     if rr < _MIN_RR:
         return ValidationResult(passed=False, reason="rr_below_minimum")
 
-    # --- Rule 4: fee viability ---
+    # --- Rule 4: fee viability (v2.8, owner-authorized 2026-07-16: execution-
+    # mode-aware — maker mode gates against the post-only entry+TP round trip
+    # ~0.04%, taker mode against ~0.18%; see round_trip_fee_pct) ---
     tp_pct = tp_dist / signal.entry_price * 100.0
-    fee_pct = round_trip_fee_pct()
+    fee_pct = round_trip_fee_pct(cfg.maker_execution)
     if tp_pct <= fee_pct * _FEE_VIABILITY_MULTIPLIER:
         return ValidationResult(passed=False, reason="fee_not_viable")
 

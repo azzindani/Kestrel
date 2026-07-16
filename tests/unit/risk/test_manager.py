@@ -155,6 +155,22 @@ class TestFeeNotViable:
         result = validate(sig, make_bucket_state(), make_app_config())
         assert result.passed is True
 
+    def test_maker_mode_gates_against_post_only_round_trip(self):
+        # v2.8 (owner-authorized 2026-07-16): MAKER_EXECUTION=true → the gate is
+        # 0.04% × 1.5 = 0.06%. tp_pct = 100/83000 ≈ 0.12% passes maker, fails taker.
+        sig = make_signal(entry=83000.0, tp_offset=100.0, sl_offset=210.0)
+        taker = validate(sig, make_bucket_state(), make_app_config(maker_execution=False))
+        maker = validate(sig, make_bucket_state(), make_app_config(maker_execution=True))
+        assert taker.passed is False and taker.reason == "fee_not_viable"
+        assert maker.passed is True
+
+    def test_maker_mode_still_rejects_sub_fee_tp(self):
+        # tp_pct = 1/10000 = 0.01% < 0.06% → rejected even in maker mode.
+        sig = make_signal(entry=10000.0, tp_offset=1.0, sl_offset=0.5)
+        result = validate(sig, make_bucket_state(), make_app_config(maker_execution=True))
+        assert result.passed is False
+        assert result.reason == "fee_not_viable"
+
 
 # ---------------------------------------------------------------------------
 # Rule 5: daily_loss_limit
