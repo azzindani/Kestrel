@@ -1019,13 +1019,13 @@ def _apply_fee_model(mode: str) -> float:
         # negative even at zero cost, there is no directional edge and no venue can help.
         _runner._TAKER_FEE_PCT = 0.0
         _runner._SLIPPAGE_PCT = 0.0
-        _risk.round_trip_fee_pct = lambda: 0.0  # viability gate passes any positive expected gross
+        _risk.round_trip_fee_pct = lambda maker=False: 0.0  # viability gate passes any positive expected gross
         bg._COST_PCT = 0.0
         return bg._COST_PCT
     if mode == "maker":
         _runner._TAKER_FEE_PCT = 0.02 / 100.0  # BingX perp maker, per side
         _runner._SLIPPAGE_PCT = 0.0  # post-only limit fills at the set price (no slippage)
-        _risk.round_trip_fee_pct = lambda: 0.02 + 0.02  # 0.04% round trip for the viability gate
+        _risk.round_trip_fee_pct = lambda maker=False: 0.02 + 0.02  # 0.04% round trip for the viability gate
         bg._COST_PCT = (0.0002 + 0.0) * 2 * 100.0  # 0.04% (display only)
         return bg._COST_PCT
     if mode == "realistic":
@@ -1043,7 +1043,7 @@ def _apply_fee_model(mode: str) -> float:
         # untouched, same precedent as the constant-patches above.
         _runner._TAKER_FEE_PCT = 0.02 / 100.0  # entry fee: always-maker-if-enabled (unchanged)
         _runner._SLIPPAGE_PCT = 0.0  # entry: post-only, no slippage (unchanged)
-        _risk.round_trip_fee_pct = lambda: 0.02 + 0.02  # viability gate unchanged vs "maker"
+        _risk.round_trip_fee_pct = lambda maker=False: 0.02 + 0.02  # viability gate unchanged vs "maker"
         maker_fee, taker_fee, taker_slip = 0.02 / 100.0, 0.04 / 100.0, 0.05 / 100.0
 
         def _realistic_simulate_close(trade: dict, candle, reason: str) -> dict:

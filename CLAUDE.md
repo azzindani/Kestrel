@@ -349,7 +349,7 @@ anomaly_fade:         vol>ma+2.5σ + move>ATR×2.5 in one candle → ✗ chase �
 1. active_positions < max_active_buckets        → else reject 'bucket_limit'
 2. liquidation_distance ≥ 1.5% from entry        → else reject 'liquidation_too_close'
 3. TP_dist / SL_dist ≥ 0.25                       → else reject 'rr_below_minimum'  (v2.6: floor 1.2→0.25, owner-authorized 2026-07-09 — permits validated high-win inverted geometry (docs/13-points-framework.md); the floor now rejects only degenerate brackets, ✗ a strategy-style gate)
-4. expected_gross_profit > round_trip_fee × 1.5   → else reject 'fee_not_viable'
+4. expected_gross_profit > round_trip_fee × 1.5   → else reject 'fee_not_viable'  (v2.8: fee is EXECUTION-MODE-AWARE, owner-authorized 2026-07-16 — MAKER_EXECUTION=true ⇒ ~0.04% (post-only entry+TP, no slip); false ⇒ taker ~0.18%. Was hardcoded taker, over-rejecting ~11% of validated maker-mode entries)
 5. session_net_pnl > -5.00 USDT (resets 00:00 UTC)→ else block all 'daily_loss_limit'
 6. last_ws_reconnect > 60s ago                    → else block all 'stale_data'
 ```
@@ -421,7 +421,8 @@ Per deployment: all §18 met · clean cold-start verified · Telegram confirmed 
 
 ---
 
-*Kestrel CLAUDE.md v2.7*
+*Kestrel CLAUDE.md v2.8*
+*v2.8 (2026-07-16, owner-authorized "i authorize you to amend rule 4, make it maker aware"): risk Rule 4's round-trip fee is now execution-mode-aware (§24) — `round_trip_fee_pct(maker)` returns ~0.04% (post-only entry + post-only TP, no slippage) when MAKER_EXECUTION=true, taker ~0.18% otherwise. The hardcoded taker constant was over-rejecting ~11% of validated maker-mode entries ('fee_not_viable' on tight high-win brackets at low-ATR hours) while the entire validation stack (backtests --fees realistic, sim, live.py maker path) already priced maker. Adverse exits (stop/timeout: taker+slip) remain modeled in sim/backtest; Rule 4 gates the TP path, whose cost under maker is 0.04%.*
 *v2.7 (2026-07-15, owner-authorized "i authorize you to amend §13 to perps, use perps"): instrument spot isolated margin → PERPETUAL futures isolated margin (§13) — BingX perps are the venue the whole validation stack already assumed (20× isolated, 0.02% maker, VST demo for §18.4); spot demoted to data-feed-only. Perp funding added to the cost model (§13/§29): conservative always-charged 0.01%/8h × hold-time, ON in staging + backtest --funding, dev stays 0 for forward-test continuity. Maker execution had landed in live.py the same day (owner-directed, see docs/14). Keys/deposit remain owner-gated on staging proof.*
 *v2.6 (2026-07-09, owner-authorized "i authorize you to amend rule 3, deploy it"): risk Rule 3 R/R floor 1.2→0.25 (§22/§24) — the S1 points sweep (docs/13-points-framework.md, RESEARCH_LOOP iter 55) validated inverted-geometry (g<1.2) high-win brackets cross-era (12 cells, both eras, net-of-maker-positive); R/R≥1.2 mathematically capped win rate ~45-50% and made the owner's 70% target unreachable. Rule 3 now rejects only degenerate brackets; strategy quality gates on the points joint bar (win≥65% AND expectancy>0, both eras). tp_atr_multiplier range floor 0.8→0.4 (§26) for the hiwin presets.*
 *v2.5 (2026-06-27, owner-authorized): PortfolioGuard MOVED to staging-only — disabled in dev (forward-test confound), enabled in .env.staging; clarified it watches real-time UNREALISED on open positions, ✗ cumulative realised drawdown (§17).*

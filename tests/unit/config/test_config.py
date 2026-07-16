@@ -139,6 +139,14 @@ class TestRoundTripFeePct:
     def test_round_trip_fee_pct_is_always_constant(self):
         assert round_trip_fee_pct() == round_trip_fee_pct()
 
+    def test_taker_explicit_matches_default(self):
+        assert round_trip_fee_pct(maker=False) == pytest.approx(0.18)
+
+    def test_maker_mode_is_post_only_round_trip(self):
+        # v2.8 (owner-authorized 2026-07-16): maker execution gates Rule 4 against
+        # the post-only entry + post-only TP round trip — 0.02% × 2, no slippage.
+        assert round_trip_fee_pct(maker=True) == pytest.approx(0.04)
+
 
 # ---------------------------------------------------------------------------
 # get_trading_session
