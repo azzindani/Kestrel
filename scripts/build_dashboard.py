@@ -540,6 +540,98 @@ stat(
 )
 
 # ════════════════════════════════════════════════════════════════════════════
+# 12 — Per-Bot / Pair Breakdown
+# ════════════════════════════════════════════════════════════════════════════
+section("🏆 Per-Bot & Per-Pair Breakdown")
+table(
+    "Per-Bot Performance",
+    12,
+    8,
+    "SELECT bot_id, COUNT(*) FILTER (WHERE exit_ts IS NOT NULL) AS closed, COUNT(*) FILTER (WHERE exit_ts IS NULL) AS open, ROUND(100.0*SUM((pnl_net_usdt>0)::int) FILTER (WHERE exit_ts IS NOT NULL)/NULLIF(COUNT(*) FILTER (WHERE exit_ts IS NOT NULL),0),1) AS win_rate, ROUND(SUM(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS net_pnl FROM trades GROUP BY bot_id ORDER BY net_pnl DESC NULLS LAST LIMIT 40",
+    overrides=[col_override("net_pnl", "currencyUSD"), col_override("win_rate", "percent", bg=False, th=TH_WIN)],
+)
+table(
+    "PnL by Pair",
+    12,
+    8,
+    "SELECT pair, COUNT(*) FILTER (WHERE exit_ts IS NOT NULL) AS closed, ROUND(100.0*SUM((pnl_net_usdt>0)::int) FILTER (WHERE exit_ts IS NOT NULL)/NULLIF(COUNT(*) FILTER (WHERE exit_ts IS NOT NULL),0),1) AS win_rate, ROUND(AVG(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS avg_pnl, ROUND(SUM(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS net_pnl FROM trades GROUP BY pair ORDER BY net_pnl NULLS LAST",
+    overrides=[
+        col_override("net_pnl", "currencyUSD"),
+        col_override("avg_pnl", "currencyUSD"),
+        col_override("win_rate", "percent", bg=False, th=TH_WIN),
+    ],
+)
+bargauge(
+    "Trades per Bot (activity)",
+    12,
+    7,
+    "SELECT bot_id AS metric, COUNT(*) AS value FROM trades GROUP BY bot_id ORDER BY value DESC LIMIT 25",
+    "short",
+    TH_BLUE,
+)
+bargauge(
+    "Net PnL by Pair",
+    12,
+    7,
+    "SELECT pair AS metric, ROUND(SUM(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS value FROM trades GROUP BY pair ORDER BY value",
+    "currencyUSD",
+    TH_PNL,
+)
+
+# ════════════════════════════════════════════════════════════════════════════
+# 4 — Win-Rate Analytics
+# ════════════════════════════════════════════════════════════════════════════
+section("🎯 Win-Rate Analytics")
+ts(
+    "Rolling Win-Rate — last 20 vs cumulative (55% = go-live target)",
+    24,
+    7,
+    'SELECT q.t AS "time", q.r20 AS "rolling_20", q.cum AS "cumulative" FROM (SELECT exit_ts, to_timestamp(exit_ts/1000.0) AS t, 100.0*AVG((pnl_net_usdt>0)::int) OVER (ORDER BY exit_ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS r20, 100.0*AVG((pnl_net_usdt>0)::int) OVER (ORDER BY exit_ts) AS cum FROM trades WHERE exit_ts IS NOT NULL) q WHERE q.t BETWEEN $__timeFrom() AND $__timeTo() ORDER BY q.exit_ts',
+    unit="percent",
+    mx=100,
+    tline=55,
+    fill=8,
+)
+bargauge(
+    "Win Rate by Direction",
+    8,
+    7,
+    "SELECT direction AS metric, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS value FROM trades WHERE exit_ts IS NOT NULL GROUP BY direction ORDER BY value DESC",
+    "percent",
+    TH_WIN,
+)
+bargauge(
+    "Win Rate by Pair",
+    8,
+    7,
+    "SELECT pair AS metric, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS value FROM trades WHERE exit_ts IS NOT NULL GROUP BY pair ORDER BY value DESC",
+    "percent",
+    TH_WIN,
+)
+bargauge(
+    "Win Rate by Hour-of-Day (UTC)",
+    8,
+    7,
+    f"SELECT lpad(({_HOUR})::text,2,'0')||':00' AS metric, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS value FROM trades WHERE exit_ts IS NOT NULL GROUP BY {_HOUR} ORDER BY {_HOUR}",
+    "percent",
+    TH_WIN,
+)
+table(
+    "Win Rate by Confidence Band (signal→trade)",
+    12,
+    8,
+    "SELECT band, COUNT(*) AS trades, ROUND(100.0*AVG(w),1) AS win_rate, ROUND(SUM(p),4) AS net_pnl FROM (SELECT CASE WHEN s.confidence>=0.75 THEN '≥0.75 (full bucket)' WHEN s.confidence>=0.55 THEN '0.55–0.74 (half)' ELSE '<0.55' END AS band, (t.pnl_net_usdt>0)::int AS w, t.pnl_net_usdt AS p FROM signals s JOIN trades t ON s.trade_id=t.id WHERE t.exit_ts IS NOT NULL) x GROUP BY band ORDER BY band DESC",
+    overrides=[col_override("net_pnl", "currencyUSD"), col_override("win_rate", "percent", bg=False, th=TH_WIN)],
+)
+table(
+    "Win Rate by Regime (signal→trade)",
+    12,
+    8,
+    "SELECT s.regime, COUNT(t.id) AS trades, ROUND(100.0*AVG((t.pnl_net_usdt>0)::int),1) AS win_rate, ROUND(SUM(t.pnl_net_usdt),4) AS net_pnl FROM signals s JOIN trades t ON s.trade_id=t.id WHERE t.exit_ts IS NOT NULL GROUP BY s.regime ORDER BY net_pnl NULLS LAST",
+    overrides=[col_override("net_pnl", "currencyUSD"), col_override("win_rate", "percent", bg=False, th=TH_WIN)],
+)
+
+# ════════════════════════════════════════════════════════════════════════════
 # 1b — Position Sizing & Compounding (equity-scaled sizing, signal/sizing.py)
 # ════════════════════════════════════════════════════════════════════════════
 section("🪙 Position Sizing & Compounding (equity-scaled)")
@@ -907,59 +999,6 @@ table(
     8,
     "SELECT to_timestamp(exit_ts/1000.0) AS exit_time, pair, direction AS dir, ROUND(pnl_net_usdt,4) AS net_pnl, ROUND(pnl_pct,2) AS pnl_pct, close_reason, hold_candles AS hold, pattern FROM trades WHERE exit_ts IS NOT NULL ORDER BY pnl_net_usdt ASC LIMIT 10",
     overrides=[col_override("net_pnl", "currencyUSD"), col_override("pnl_pct", "percent", bg=False)],
-)
-
-# ════════════════════════════════════════════════════════════════════════════
-# 4 — Win-Rate Analytics
-# ════════════════════════════════════════════════════════════════════════════
-section("🎯 Win-Rate Analytics")
-ts(
-    "Rolling Win-Rate — last 20 vs cumulative (55% = go-live target)",
-    24,
-    7,
-    'SELECT q.t AS "time", q.r20 AS "rolling_20", q.cum AS "cumulative" FROM (SELECT exit_ts, to_timestamp(exit_ts/1000.0) AS t, 100.0*AVG((pnl_net_usdt>0)::int) OVER (ORDER BY exit_ts ROWS BETWEEN 19 PRECEDING AND CURRENT ROW) AS r20, 100.0*AVG((pnl_net_usdt>0)::int) OVER (ORDER BY exit_ts) AS cum FROM trades WHERE exit_ts IS NOT NULL) q WHERE q.t BETWEEN $__timeFrom() AND $__timeTo() ORDER BY q.exit_ts',
-    unit="percent",
-    mx=100,
-    tline=55,
-    fill=8,
-)
-bargauge(
-    "Win Rate by Direction",
-    8,
-    7,
-    "SELECT direction AS metric, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS value FROM trades WHERE exit_ts IS NOT NULL GROUP BY direction ORDER BY value DESC",
-    "percent",
-    TH_WIN,
-)
-bargauge(
-    "Win Rate by Pair",
-    8,
-    7,
-    "SELECT pair AS metric, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS value FROM trades WHERE exit_ts IS NOT NULL GROUP BY pair ORDER BY value DESC",
-    "percent",
-    TH_WIN,
-)
-bargauge(
-    "Win Rate by Hour-of-Day (UTC)",
-    8,
-    7,
-    f"SELECT lpad(({_HOUR})::text,2,'0')||':00' AS metric, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS value FROM trades WHERE exit_ts IS NOT NULL GROUP BY {_HOUR} ORDER BY {_HOUR}",
-    "percent",
-    TH_WIN,
-)
-table(
-    "Win Rate by Confidence Band (signal→trade)",
-    12,
-    8,
-    "SELECT band, COUNT(*) AS trades, ROUND(100.0*AVG(w),1) AS win_rate, ROUND(SUM(p),4) AS net_pnl FROM (SELECT CASE WHEN s.confidence>=0.75 THEN '≥0.75 (full bucket)' WHEN s.confidence>=0.55 THEN '0.55–0.74 (half)' ELSE '<0.55' END AS band, (t.pnl_net_usdt>0)::int AS w, t.pnl_net_usdt AS p FROM signals s JOIN trades t ON s.trade_id=t.id WHERE t.exit_ts IS NOT NULL) x GROUP BY band ORDER BY band DESC",
-    overrides=[col_override("net_pnl", "currencyUSD"), col_override("win_rate", "percent", bg=False, th=TH_WIN)],
-)
-table(
-    "Win Rate by Regime (signal→trade)",
-    12,
-    8,
-    "SELECT s.regime, COUNT(t.id) AS trades, ROUND(100.0*AVG((t.pnl_net_usdt>0)::int),1) AS win_rate, ROUND(SUM(t.pnl_net_usdt),4) AS net_pnl FROM signals s JOIN trades t ON s.trade_id=t.id WHERE t.exit_ts IS NOT NULL GROUP BY s.regime ORDER BY net_pnl NULLS LAST",
-    overrides=[col_override("net_pnl", "currencyUSD"), col_override("win_rate", "percent", bg=False, th=TH_WIN)],
 )
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -1579,45 +1618,6 @@ bargauge(
         "mode": "absolute",
         "steps": [{"color": "red", "value": None}, {"color": "orange", "value": 10}, {"color": "green", "value": 30}],
     },
-)
-
-# ════════════════════════════════════════════════════════════════════════════
-# 12 — Per-Bot / Pair Breakdown
-# ════════════════════════════════════════════════════════════════════════════
-section("🏆 Per-Bot & Per-Pair Breakdown")
-table(
-    "Per-Bot Performance",
-    12,
-    8,
-    "SELECT bot_id, COUNT(*) FILTER (WHERE exit_ts IS NOT NULL) AS closed, COUNT(*) FILTER (WHERE exit_ts IS NULL) AS open, ROUND(100.0*SUM((pnl_net_usdt>0)::int) FILTER (WHERE exit_ts IS NOT NULL)/NULLIF(COUNT(*) FILTER (WHERE exit_ts IS NOT NULL),0),1) AS win_rate, ROUND(SUM(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS net_pnl FROM trades GROUP BY bot_id ORDER BY net_pnl DESC NULLS LAST LIMIT 40",
-    overrides=[col_override("net_pnl", "currencyUSD"), col_override("win_rate", "percent", bg=False, th=TH_WIN)],
-)
-table(
-    "PnL by Pair",
-    12,
-    8,
-    "SELECT pair, COUNT(*) FILTER (WHERE exit_ts IS NOT NULL) AS closed, ROUND(100.0*SUM((pnl_net_usdt>0)::int) FILTER (WHERE exit_ts IS NOT NULL)/NULLIF(COUNT(*) FILTER (WHERE exit_ts IS NOT NULL),0),1) AS win_rate, ROUND(AVG(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS avg_pnl, ROUND(SUM(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS net_pnl FROM trades GROUP BY pair ORDER BY net_pnl NULLS LAST",
-    overrides=[
-        col_override("net_pnl", "currencyUSD"),
-        col_override("avg_pnl", "currencyUSD"),
-        col_override("win_rate", "percent", bg=False, th=TH_WIN),
-    ],
-)
-bargauge(
-    "Trades per Bot (activity)",
-    12,
-    7,
-    "SELECT bot_id AS metric, COUNT(*) AS value FROM trades GROUP BY bot_id ORDER BY value DESC LIMIT 25",
-    "short",
-    TH_BLUE,
-)
-bargauge(
-    "Net PnL by Pair",
-    12,
-    7,
-    "SELECT pair AS metric, ROUND(SUM(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS value FROM trades GROUP BY pair ORDER BY value",
-    "currencyUSD",
-    TH_PNL,
 )
 
 # ════════════════════════════════════════════════════════════════════════════
