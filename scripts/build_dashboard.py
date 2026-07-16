@@ -543,11 +543,48 @@ stat(
 # 12 — Per-Bot / Pair Breakdown
 # ════════════════════════════════════════════════════════════════════════════
 section("🏆 Per-Bot & Per-Pair Breakdown")
+# Bot counts first (owner 2026-07-16 "where is the bot numbers?"): fleet size must
+# be visible even when bots haven't traded yet (a fresh cohort has 0 trades rows,
+# so a trades-only table renders empty — count from heartbeats instead).
+stat(
+    "Bots Registered",
+    3,
+    4,
+    "SELECT COUNT(*) AS v FROM heartbeats",
+    "short",
+    TH_BLUE,
+)
+stat(
+    "Bots Alive (90s)",
+    3,
+    4,
+    f"SELECT COUNT(*) AS v FROM heartbeats WHERE ts >= {_NOW_MS} - 90000",
+    "short",
+    TH_GREEN,
+)
+stat(
+    "Bots That Traded",
+    3,
+    4,
+    "SELECT COUNT(DISTINCT bot_id) AS v FROM trades",
+    "short",
+    TH_BLUE,
+)
+stat(
+    "Bots In Position",
+    3,
+    4,
+    "SELECT COUNT(DISTINCT bot_id) AS v FROM trades WHERE exit_ts IS NULL",
+    "short",
+    TH_BLUE,
+)
+# Every registered bot appears (LEFT JOIN from heartbeats) — bots with no trades
+# yet show closed=0 / win_rate NULL instead of vanishing from the table.
 table(
-    "Per-Bot Performance",
+    "Per-Bot Performance (all registered bots)",
     12,
     8,
-    "SELECT bot_id, COUNT(*) FILTER (WHERE exit_ts IS NOT NULL) AS closed, COUNT(*) FILTER (WHERE exit_ts IS NULL) AS open, ROUND(100.0*SUM((pnl_net_usdt>0)::int) FILTER (WHERE exit_ts IS NOT NULL)/NULLIF(COUNT(*) FILTER (WHERE exit_ts IS NOT NULL),0),1) AS win_rate, ROUND(SUM(pnl_net_usdt) FILTER (WHERE exit_ts IS NOT NULL),4) AS net_pnl FROM trades GROUP BY bot_id ORDER BY net_pnl DESC NULLS LAST LIMIT 40",
+    "SELECT h.bot_id, COUNT(t.id) FILTER (WHERE t.exit_ts IS NOT NULL) AS closed, COUNT(t.id) FILTER (WHERE t.exit_ts IS NULL) AS open, ROUND(100.0*SUM((t.pnl_net_usdt>0)::int) FILTER (WHERE t.exit_ts IS NOT NULL)/NULLIF(COUNT(t.id) FILTER (WHERE t.exit_ts IS NOT NULL),0),1) AS win_rate, ROUND(SUM(t.pnl_net_usdt) FILTER (WHERE t.exit_ts IS NOT NULL),4) AS net_pnl FROM heartbeats h LEFT JOIN trades t ON t.bot_id = h.bot_id GROUP BY h.bot_id ORDER BY net_pnl DESC NULLS LAST, h.bot_id LIMIT 250",
     overrides=[col_override("net_pnl", "currencyUSD"), col_override("win_rate", "percent", bg=False, th=TH_WIN)],
 )
 table(
