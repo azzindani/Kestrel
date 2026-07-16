@@ -611,6 +611,24 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 62b — 2026-07-16 (OWNER-AUTHORIZED Rule 4 maker-aware — CLAUDE.md v2.8 — + Grafana per-bot/win-rate sections moved to the top, dev + staging boards)
+
+- **RULE 4 (owner: "i authorize you to amend rule 4, make it maker aware"):** CLAUDE.md v2.8
+  amended FIRST per §24 protocol, then `round_trip_fee_pct(maker: bool = False)` (config.py) —
+  maker ⇒ 0.02×2 = **0.04%** (post-only entry + post-only TP, no slip; the path Rule 4 gates),
+  else taker 0.18% unchanged — and `risk/manager.py` Rule 4 now passes `cfg.maker_execution`
+  (the file's 3rd owner-authorized edit; freeze continues). Expected effect: recovers the ~11%
+  of validated-arm entries previously rejected `fee_not_viable` at low-ATR hours (measured 6/56
+  dev, 3/3 staging — staging's only 3 signals ever were all Rule-4 kills). algo_search's 3
+  monkeypatch lambdas updated for the new signature; +4 tests (580 green). Commit `5e56557`,
+  CI green; image rebuilt, dev(186)+staging(60) restarted healthy.
+- **GRAFANA (owner: bots to the top under account/capital, then win rates, both tiers):**
+  build_dashboard.py section order rearranged — 💰 Account & Capital → **🏆 Per-Bot & Per-Pair
+  Breakdown** (per-bot table incl. each bot's win_rate) → **🎯 Win-Rate Analytics** → rest
+  unchanged. Staging board is the env-locked clone (build_staging_dashboard.py re-run), so both
+  tiers match: 162 panels / 20 sections each. Grafana restarted to reprovision. Commit
+  `e3f76be`, CI green.
+
 ### Iteration 62 — 2026-07-16 (OWNER-DIRECTED SCALE-UP phase 1 + the REAL staging root cause: `.env.staging` had TESTNET=true → the poll feed ran on gate's SANDBOX (~100× thinner volume, offset prices) → perma-QUIET; fixed + staging widened 22 → 60 validated cells)
 
 - **OWNER DIRECTIVE:** "1 pair can have multiple strategies… we need more than 22 [staged]… I want
