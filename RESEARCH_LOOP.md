@@ -207,18 +207,18 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
             '{"event":"research_loop_iteration","iteration":<N>,"deployed":<bool>,"reset":<bool>,...}'::jsonb);
     ```
     (via `docker compose exec -T postgres psql -U kestrel -d kestrel -c "..."`).
-10b. **PHASE-2 STAGING MAINTENANCE — ⚠ PINNED BY OWNER 2026-07-15 ("replace all with new bots and
-    reset the balance" + "is it the best bots? i dont want old bots eating the balance"): staging runs
-    the BEST-ONLY 22-bot points subset on a FRESH slate (trades/signals/events wiped 2026-07-15,
-    candles kept, backup first). Selection bar = the STRICTEST validated criteria (iter 57 realistic
-    fees, maker-viable ≥+4bps BOTH eras, per-pair both-era cores): exp_hiwin_ensemble_3of4/hiwin33 ×6
-    + exp_hw43 ×3 + exp_hw50 ×3 + exp_hwsc ×4 + exp_mrsisc ×6. The 17 borderline dev arms
-    (macd_rsi/macd_cross/sma_cross on hiwin50 — sub-4bps recent under realistic fees) stay DEV-ONLY.
-    While the pin holds: SKIP the promote_to_staging.py re-selection below — no churn back to the
-    dev-leaderboard selection. Mirror future points-arm changes into bots.staging.json manually (same
-    additive/no-reset discipline; an arm promotes into staging only by meeting the SAME strict bar).
-    Pin lifts only on owner instruction or if the points program is refuted.** (Pre-pin protocol
-    below, kept for when the pin lifts.)
+10b. **PHASE-2 STAGING MAINTENANCE — ⚠ PINNED BY OWNER, REVISED 2026-07-16 (iter 62 "ok lets try
+    this"): staging = ALL currently-active cross-era-VALIDATED cells, 60 bots** — the 22 strict
+    points cells (exp_hiwin_ensemble ×6, hw43 ×3, hw50 ×3, hwsc ×4, mrsisc ×6) + exp_hiwin's other
+    3 arms on their both-era cores (17) + exp_ensemble medium on its 7 robust pairs + the iter-43
+    robust-core medium cells (sma_cross ×5, cci_mom ×5, macd_rsi ×3, macd_cross ×1). Admission bar
+    for any FUTURE addition: cross-era-positive backtest evidence (points joint bar OR expectancy
+    +EV both eras on that pair) — staging stays the evidence-based proof tier while the owner
+    scales breadth (~150 target as new cells validate). While the pin holds: SKIP the
+    promote_to_staging.py re-selection below; mirror validated-arm changes into bots.staging.json
+    manually (additive/no-reset discipline). Prod (bots.prod.json) still freezes from the strict
+    high-win leaders at promotion time, per docs/14. Pin lifts only on owner instruction or if the
+    points program is refuted.** (Pre-pin protocol below, kept for when the pin lifts.)
     Staging is the curated **best-performers** pool: the **`staging` profile** of the one `kestrel` compose project
     (folded in 2026-06-28, owner — was its own `kestrel-staging` project; now the whole stack groups
     as ONE in Docker), ENV=staging, `STAGING_ENGINE=sim` until BingX VST keys exist, sharing postgres
@@ -610,6 +610,43 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 62 — 2026-07-16 (OWNER-DIRECTED SCALE-UP phase 1 + the REAL staging root cause: `.env.staging` had TESTNET=true → the poll feed ran on gate's SANDBOX (~100× thinner volume, offset prices) → perma-QUIET; fixed + staging widened 22 → 60 validated cells)
+
+- **OWNER DIRECTIVE:** "1 pair can have multiple strategies… we need more than 22 [staged]… I want
+  ~150 bots across instruments… scale dev toward 1K — is the hardware possible? lets try this."
+  Agreed direction (it IS the §6 fleet design); plan = widen staging to ALL validated cells now,
+  expand dev in waves toward ~1K, keep staging admission evidence-based so it remains prod proof.
+- **ROOT CAUSE (supersedes iter 61's [A]):** the "backfill volume-scale mismatch" diagnosis was
+  incomplete. `.env.staging` carried `TESTNET=true` (VST-demo scaffolding) and `PollingFeed` calls
+  `set_sandbox_mode(True)` → staging polled gate's SANDBOX: live candles ~5-8k quote volume vs the
+  real ~1M (dev, same pair/hour, same poll code: avg ratio 0.89 vs staging 0.34), prices slightly
+  offset. It never self-heals — the MA converges to sandbox dynamics → QUIET most hours. Also
+  explains the 3 fee_not_viable rejections landing on thin-ATR sandbox hours. **Fix:**
+  TESTNET=false while STAGING_ENGINE=sim (public real OHLCV, no auth needed); TESTNET=true returns
+  only WITH the BingX VST keys + STAGING_ENGINE=live. Sandbox-era staging candles wiped (57,942
+  rows) and re-backfilled clean (60 bots × 720 real 1h candles = 43,200).
+- **DB PERF FIX FOUND DURING THE WIPE:** `trade_context` (332k rows) had NO index leading on
+  `candle_id` (PK is (trade_id,candle_id)) → every candle DELETE seq-scanned it per row for the FK
+  check; the wipe crawled 8+ min before being cancelled. Added `idx_context_candle` (candle_id) —
+  the rerun deleted 57,942 rows in seconds. Also fixes cleanup.sh's nightly candle-retention pass.
+  (DB-level index only; src/db/schema.py untouched.)
+- **STAGING WIDENED 22 → 60 (every currently-active cross-era-validated cell, cloned from dev):**
+  kept the 22; added 38 = exp_hiwin's other 3 arms on their both-era cores (17: macd_cross 5,
+  macd_rsi 6, sma_cross 6) + `exp_ensemble` medium on its 7 robust pairs (DOGE/XRP/CHZ/FET/GALA/
+  TIA/WLD) + the iter-43 robust-core medium cells: sma_cross ×{ETH,DOGE,PEPE,XRP,BNB}, cci_mom ×
+  {ETH,DOGE,PEPE,XRP,AVAX}, macd_rsi ×{SOL,DOGE,ADA}, macd_cross ×{DOGE}. exp_robustwide/wide
+  correctly EXCLUDED (retired iter 58, not active-validated). 60/60 heartbeats after recreate;
+  MAX_OPEN_POSITIONS_FLEET=5 unchanged (the owner's risk knob: many signal sources, bounded
+  concurrent exposure ⇒ expected throughput ~30 trade-slots/day at ~4h holds — n≥100 in ~1 week).
+- **PATH TO ~150 STAGED / ~1K DEV (next phases):** (1) fresh both-era points sweeps of the
+  validated exit geometries across the full pair list → admit what passes; (2) dev expansion in
+  waves toward ~1K cells (hardware audited: 4 cores/15GB, daemons ~1.6MB/bot, postgres the hot
+  spot → raise kestrel 2g→3g + postgres 2g→3g in override.yml; **host disk 91% full is the real
+  constraint — owner should free space**); (3) PENDING OWNER (§4/frozen): Rule 4 still prices
+  round-trip at hardcoded TAKER 0.18% (`round_trip_fee_pct()`) — under maker execution it
+  over-rejects ~11% of validated-arm entries; making it maker-aware needs explicit owner
+  authorization + CLAUDE.md amendment.
 
 ### Iteration 61 — 2026-07-16 (owner-triggered "daily summary very bad + staged bots didn't trade" — TWO root causes found: [A] staging blocked ~20h by a backfill/live VOLUME-SCALE mismatch, self-heals; [B] pattern LABEL bug — every dev trade since 2026-06-27 logged as momentum_continuation; FIXED)
 
