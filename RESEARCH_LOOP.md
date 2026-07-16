@@ -611,6 +611,43 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 61 — 2026-07-16 (owner-triggered "daily summary very bad + staged bots didn't trade" — TWO root causes found: [A] staging blocked ~20h by a backfill/live VOLUME-SCALE mismatch, self-heals; [B] pattern LABEL bug — every dev trade since 2026-06-27 logged as momentum_continuation; FIXED)
+
+**[A] Staging zero-trades root cause (benign, self-healing):** staged bots' histories were
+backfilled via REST (`backfill_history.py --source gate`) whose 1h volume is ~50–100× the volume
+the live WS candle builder accumulates for the same hour (different units/coverage; both "gate").
+volume_ma20 over a window mixing backfill+live candles is therefore inflated ~25×, so every live
+candle read volume_ratio ≈ 0.03 → QUIET regime → all patterns blocked (272/289 evals quiet vs
+dev's 56% on the same pairs/hours — dev is all-live, internally consistent). Self-heals once 20
+live candles fill the MA window: ratios were already recovering (0.004 → 0.035 by 23:00), fully
+live-scale by ~03:00 UTC 07-16. **Standing artifact (affects EVERY new-bot deploy):** freshly
+backfilled cohorts are volume-blind (quiet-blocked + volume_confirm distorted) for their first
+~20 entry-TF candles. Every past "new cohort takes a day to start trading" observation was this.
+Proper fix (future loop task): rescale backfilled volume to live-builder scale, or exclude
+cross-scale windows from vol MA. NOT built tonight — staging heals itself in ~3h.
+
+**[B] Pattern label bug (fixed, commit 5da5811):** ALL self-directing patterns returned a
+borrowed PatternType member (`trend_momentum`/`wave_ride`→MOMENTUM_CONTINUATION,
+`vol_burst`→COMPRESSION_BREAKOUT, `wave_flip`→ANOMALY_FADE, `mom_adx`/`triple_mom`/`macd_cross`/
+`macd_rsi`/`cci_mom`/`sma_cross`/`ensemble_3of4`→MOMENTUM_CONTINUATION) — the enum was never
+extended when the registry grew. Result: every one of the 1,130+ dev trades since the 06-27 reset
+carried pattern='momentum_continuation'. **Behavior was NEVER wrong** — per-bot
+`enabled_patterns` narrowing (bots.json → config → detector `permitted &= enabled`) means each
+bot only ever scanned its designated pattern; all bot_id/arm-level reads (incl. the exp_hiwin
+on-thesis n=38) remain valid. Damage was: (1) per-PATTERN DB reads useless, (2) pattern_memory
+pooled ALL patterns under one key (cross-contaminated confidence adjustment — now starts fresh
+per true pattern), (3) Grafana per-pattern panels meaningless. Fix: PatternType extended with 11
+members, each PatternResult stamped with its own; 7 stale test assertions updated; 575 tests
+green; DB backfill-corrected 1,311 trades + 1,680 signals via bot_id→pattern suffix map (only
+`exp_flowgate_momentum_continuation` legitimately keeps the old label). Image rebuilt, dev(186)+
+staging(22) restarted, all heartbeats green, CI green.
+
+**The "very bad" daily number decomposed (per corrected labels):** −$6.56 / 16.9% win / 89 trades
+on 07-15 = a whipsaw day concentrated in the wide-exit RESEARCH baselines (cci_mom −$2.26,
+macd_rsi −$1.59, macd_cross −$0.98, sma_cross −$0.68 = 75 trades, −$5.51 — heavy stop-outs).
+The staged-arm equivalents did 11 trades, −$0.74 (bad small-sample day, cumulative read still
+positive). One bad baseline day ≠ thesis damage; the points-program cells gate on their own stats.
+
 ### Iteration 60d — 2026-07-15 (OWNER-DIRECTED FLEET-CAP: "put all high win rate bots in prod, but we maintain how many we can allow in open position" — built MAX_OPEN_POSITIONS_FLEET; bots.prod.json = all 22 high-win cells @ cap 5 = $50; staging mirrors the cap so its proof includes it)
 
 - **DESIGN (the owner's, and it's right for $50):** many signal sources, bounded capital. ALL 22
