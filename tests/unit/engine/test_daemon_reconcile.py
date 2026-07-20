@@ -186,3 +186,70 @@ class TestReconcileOrphanRecovery:
 
         _, close = _fake_db["close_trade"][0]
         assert close["fee_exit_usdt"] == 0.0
+
+    async def test_one_bad_orphan_does_not_block_the_others(self, _fake_db, monkeypatch):
+        # Regression for the 2026-07-20 incident: an uncaught exception while
+        # settling ONE orphan propagated out of _reconcile() and crashed the
+        # entire fleet process (all bots share one asyncio.gather). A bad row
+        # must be isolated — logged, not fatal — so the other orphans (and the
+        # rest of the fleet) still recover.
+        _fake_db["open_trades"] = [
+            {
+                "id": 1,
+                "pair": "BTC/USDT",
+                "entry_ts": 1,
+                "entry_price": 100.0,
+                "notional_usdt": 10.0,
+                "bucket_balance_before": 10.0,
+            },
+            {
+                "id": 2,
+                "pair": "ETH/USDT",
+                "entry_ts": 2,
+                "entry_price": 200.0,
+                "notional_usdt": 10.0,
+                "bucket_balance_before": 10.0,
+            },
+        ]
+        calls = {"n": 0}
+
+        async def _flaky_close_trade(trade_id, close):
+            calls["n"] += 1
+            if trade_id == 1:
+                raise TypeError("simulated Decimal*float crash")
+            _fake_db["close_trade"].append((trade_id, close))
+
+        monkeypatch.setattr("src.engine.daemon.db.close_trade", _flaky_close_trade)
+        daemon = _make_daemon(_FakeExecution([]))
+
+        await daemon._reconcile()  # must not raise
+
+        assert calls["n"] == 2
+        assert len(_fake_db["close_trade"]) == 1
+        assert _fake_db["close_trade"][0][0] == 2
+        errors = [
+            (a, k) for a, k in _fake_db["write_event"] if len(a) >= 6 and a[5] == "orphaned_position_recovery_failed"
+        ]
+        assert len(errors) == 1
+
+    async def test_decimal_notional_from_real_db_driver(self, _fake_db):
+        # asyncpg returns NUMERIC columns as decimal.Decimal, not float — the
+        # exact type mismatch that caused the incident's TypeError. Exercise
+        # the real (non-test-stub) shape to guard the fix.
+        from decimal import Decimal
+
+        _fake_db["open_trades"] = [
+            {
+                "id": 7,
+                "pair": "SOL/USDT",
+                "entry_ts": 1,
+                "entry_price": Decimal("100.5"),
+                "notional_usdt": Decimal("50.25"),
+                "bucket_balance_before": Decimal("10.0"),
+            }
+        ]
+        daemon = _make_daemon(_FakeExecution([]))
+
+        await daemon._reconcile()  # must not raise TypeError
+
+        assert len(_fake_db["close_trade"]) == 1
