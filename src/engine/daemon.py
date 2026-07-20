@@ -647,38 +647,62 @@ class Daemon:
         db_open = await db.get_open_trades(self.cfg.bot_id, self.cfg.env.value)
         orphans = [t for t in db_open if t["pair"] not in live_pairs]
         now_ms = int(time.time() * 1000)
+        recovered = 0
         for t in orphans:
-            notional = t["notional_usdt"] or 0.0
-            fee_exit = notional * (round_trip_fee_pct(self.cfg.maker_execution) / 100.0) / 2.0
-            bucket_before = (
-                t["bucket_balance_before"] if t["bucket_balance_before"] is not None else self.cfg.bucket_size_usdt
-            )
-            await db.close_trade(
-                t["id"],
-                {
-                    "exit_ts": now_ms,
-                    "exit_price": t["entry_price"],
-                    "hold_candles": 0,
-                    "close_reason": "orphaned_crash_recovery",
-                    "pnl_gross_usdt": 0.0,
-                    "fee_exit_usdt": round(fee_exit, 6),
-                    "pnl_net_usdt": round(-fee_exit, 6),
-                    "pnl_pct": 0.0,
-                    "bucket_balance_after": round(bucket_before - fee_exit, 6),
-                },
-            )
-            await db.write_event(
-                self.cfg.bot_id,
-                self.session_id,
-                self.cfg.env.value,
-                "CRITICAL",
-                "position",
-                "orphaned_position_recovered",
-                {"trade_id": t["id"], "pair": t["pair"], "entry_ts": t["entry_ts"]},
-            )
-        if orphans:
+            # Startup data-hygiene, not a trading decision — one malformed row
+            # must never crash the whole fleet process (all bots share one
+            # asyncio.gather; an uncaught exception here previously took down
+            # all 186+ dev bots for a single bad orphan, see the 2026-07-20
+            # incident). Per-row isolation: log and move on, don't propagate.
+            try:
+                # float(): defense in depth against NUMERIC-as-Decimal columns —
+                # get_open_trades already casts, but this arithmetic must not
+                # depend on the caller having done so (this exact Decimal*float
+                # mismatch is what crashed the whole fleet on 2026-07-20).
+                notional = float(t["notional_usdt"]) if t["notional_usdt"] is not None else 0.0
+                fee_exit = notional * (round_trip_fee_pct(self.cfg.maker_execution) / 100.0) / 2.0
+                bucket_before = (
+                    float(t["bucket_balance_before"])
+                    if t["bucket_balance_before"] is not None
+                    else self.cfg.bucket_size_usdt
+                )
+                await db.close_trade(
+                    t["id"],
+                    {
+                        "exit_ts": now_ms,
+                        "exit_price": t["entry_price"],
+                        "hold_candles": 0,
+                        "close_reason": "orphaned_crash_recovery",
+                        "pnl_gross_usdt": 0.0,
+                        "fee_exit_usdt": round(fee_exit, 6),
+                        "pnl_net_usdt": round(-fee_exit, 6),
+                        "pnl_pct": 0.0,
+                        "bucket_balance_after": round(bucket_before - fee_exit, 6),
+                    },
+                )
+                await db.write_event(
+                    self.cfg.bot_id,
+                    self.session_id,
+                    self.cfg.env.value,
+                    "CRITICAL",
+                    "position",
+                    "orphaned_position_recovered",
+                    {"trade_id": t["id"], "pair": t["pair"], "entry_ts": t["entry_ts"]},
+                )
+                recovered += 1
+            except Exception as exc:  # noqa: BLE001 — isolate one bad row, don't crash the fleet
+                await db.write_event(
+                    self.cfg.bot_id,
+                    self.session_id,
+                    self.cfg.env.value,
+                    "ERROR",
+                    "position",
+                    "orphaned_position_recovery_failed",
+                    {"trade_id": t.get("id"), "pair": t.get("pair"), "error": str(exc)},
+                )
+        if recovered:
             await self.notifier.system_error(
-                f"recovered {len(orphans)} orphaned position(s) after ungraceful restart "
+                f"recovered {recovered} orphaned position(s) after ungraceful restart "
                 "(settled flat, excluded from stats)",
                 self.cfg.bot_id,
                 now_ms,
@@ -693,7 +717,8 @@ class Daemon:
             {
                 "open_count": len(positions),
                 "positions": [p["pair"] for p in positions],
-                "orphans_recovered": len(orphans),
+                "orphans_found": len(orphans),
+                "orphans_recovered": recovered,
             },
         )
 

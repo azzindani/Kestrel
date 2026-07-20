@@ -603,7 +603,21 @@ async def get_open_trades(bot_id: str, env: str) -> list[dict[str, Any]]:
             bot_id,
             env,
         )
-        return [dict(r) for r in rows]
+        # NUMERIC columns come back as Decimal — cast now so callers can do
+        # plain float arithmetic without re-deriving this per call site.
+        return [
+            {
+                "id": r["id"],
+                "pair": r["pair"],
+                "entry_ts": r["entry_ts"],
+                "entry_price": float(r["entry_price"]),
+                "notional_usdt": float(r["notional_usdt"]) if r["notional_usdt"] is not None else None,
+                "bucket_balance_before": (
+                    float(r["bucket_balance_before"]) if r["bucket_balance_before"] is not None else None
+                ),
+            }
+            for r in rows
+        ]
 
 
 async def count_open_positions_fleet(env: str) -> int:
