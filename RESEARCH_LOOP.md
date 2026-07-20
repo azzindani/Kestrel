@@ -611,6 +611,55 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 63 — 2026-07-20 (INCIDENT: host disk filled to 100% at ~2026-07-17 13:48 UTC — another project on this shared VPS rebuilding multi-GB images repeatedly — killed the kestrel/staging/lab containers outright (docker could not even remount their filesystems); fleet SILENT for ~2.5 days until owner asked "why are trades stopping"; found + fixed TWO real bugs surfaced by the recovery, not market-related)
+
+- **TRIGGER:** owner — "i need you to check why the trades are stopping. is it market
+  close or some failure condition." (crypto has no market close; correctly suspected failure.)
+- **DIAGNOSE:** `docker ps` showed all 3 kestrel containers "Up 3 days (unhealthy)" — MISLEADING
+  cached state. `docker inspect` revealed `Running=false Status=exited Error="failed to mount:
+  ... no space left on device"` — the host disk hit 100% on 2026-07-17 ~13:48 UTC. `docker system
+  df` identified the cause: NOT Kestrel (its own image is 815MB) — a separate project on this
+  shared host (`kea-svc-*`/`kea-app`) had rebuilt ~10 images at ~4.8GB each within the prior 35h
+  with zero cleanup, plus 25.88GB of shared docker build cache (17.49GB reclaimable). This is the
+  exact risk flagged at iter 62 ("host disk 91% full is the real constraint") — it crossed 100%.
+  Postgres survived (already-mounted, stayed healthy) — no DB corruption.
+- **BUG #1 FOUND (pre-existing, latent since project start):** `SimulationExecution.reconcile()`
+  holds positions in memory only ("nothing persists across restarts" — see its own docstring).
+  The GRACEFUL stop path (`stop()`) was already fixed for this (research-loop iter 54 ghost-
+  position bug, `tests/unit/engine/test_daemon_stop.py`) — but an UNGRACEFUL crash (this incident:
+  no SIGTERM, disk-full kill) skips `stop()` entirely, so `_reconcile()` on restart never
+  compared DB-open trades against the (always-empty) in-memory set. Result: 30 trades rows stayed
+  `exit_ts=NULL` forever, permanently jamming each affected bot's bucket via
+  `count_active_positions` (Rule 1 `bucket_limit` would reject that bot's every future signal —
+  those bots would never trade again). **Fix:** `db.get_open_trades()` (new) + `Daemon._reconcile()`
+  now diffs DB-open trades against live positions and settles any orphan flat (no fabricated PnL —
+  no candle data exists for the outage window either) minus one exit fee, tagged
+  `close_reason='orphaned_crash_recovery'`, excluded from Grafana performance panels via `_CLOSED`.
+  30 orphans recovered on restart (28 dev + 1 staging + the pre-existing 07-03 lab position).
+- **BUG #2 FOUND (introduced by bug #1's own fix, caught before any real damage):** first
+  redeploy attempt crash-looped ALL THREE containers immediately — `asyncpg` returns NUMERIC
+  columns as `Decimal`, and the new fee arithmetic did `Decimal * float` → uncaught `TypeError`.
+  Because the whole fleet's bots share ONE `asyncio.gather` per container, a single bad row's
+  exception killed the entire process (186 dev bots down for one arithmetic bug). **Fix:** cast at
+  both layers (`get_open_trades` casts NUMERIC→float; `_reconcile()`'s own arithmetic casts
+  defensively too — belt and suspenders) AND wrapped each orphan's settlement in its own
+  try/except so a future bad row logs `orphaned_position_recovery_failed` and continues instead
+  of taking the fleet down again (CLAUDE.md §10 "partial failure: accumulate all errors, ✗ stop
+  on first" — the startup reconcile path hadn't honored this before). +8 tests total across both
+  fixes (592 green). Commits `79a55da` (bug #1) + `51a9866` (bug #2), CI green both.
+- **RECOVERY:** reclaimed ~8GB via `docker builder prune --filter until=24h` (only stale shared
+  build cache, no running container/image touched) — disk 91%→80%, 40GB free. Rebuilt image,
+  redeployed kestrel(186)+staging(60)+lab(2) — all heartbeats confirmed alive, 9 legitimate fresh
+  positions opened within minutes of restart (not more orphans — verified by entry_ts).
+- **HONEST FRAMING:** this was NOT a market condition, NOT a Kestrel logic bug in the trading
+  path itself — it was host infrastructure (disk contention from a co-tenant project) exposing a
+  real latent gap in Kestrel's OWN crash-recovery path that had never been exercised before (every
+  prior restart in project history was either graceful or the affected bots had no open position
+  at crash time). Both the exposed gap and the fix-introduced regression are now covered by tests.
+  **OPEN RISK (host-level, outside Kestrel's scope):** the disk can refill from the same source;
+  no monitoring/alerting exists for host disk usage. Worth a lightweight watch (e.g. a heartbeat-
+  adjacent disk-usage check + Telegram WARN) — not built tonight, flagged for a future iteration.
+
 ### Iteration 62b — 2026-07-16 (OWNER-AUTHORIZED Rule 4 maker-aware — CLAUDE.md v2.8 — + Grafana per-bot/win-rate sections moved to the top, dev + staging boards)
 
 - **RULE 4 (owner: "i authorize you to amend rule 4, make it maker aware"):** CLAUDE.md v2.8
