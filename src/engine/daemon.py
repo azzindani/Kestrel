@@ -25,7 +25,7 @@ from typing import Optional
 
 from dotenv import load_dotenv
 
-from src.config import AppConfig, BucketState, Env, Params, SignalOutcome, load_params
+from src.config import AppConfig, BucketState, Env, Params, SignalOutcome, load_params, round_trip_fee_pct
 from src.data.candle_builder import CandleBuilder
 from src.data.providers import get_data_feed
 from src.db import connection as db_conn
@@ -627,8 +627,62 @@ class Daemon:
     # -----------------------------------------------------------------------
 
     async def _reconcile(self) -> None:
-        """Reconcile exchange positions vs DB on startup."""
+        """Reconcile exchange positions vs DB on startup.
+
+        SimulationExecution keeps positions in memory only, so after any
+        UNGRACEFUL stop (crash, OOM, host disk-full — anything that skips
+        stop.sh's own close-out) its reconcile() always comes back empty.
+        Any trades row still exit_ts=NULL for this bot with no matching
+        in-memory position is therefore an ORPHAN: nothing will ever close it,
+        permanently jamming the bucket via count_active_positions (CLAUDE.md
+        §11 — DB is the single source of truth, so the row must be settled,
+        not left silently inconsistent). Settled flat (no fabricated PnL — the
+        market moved during the outage with nobody watching) minus one exit
+        fee, tagged so it is excluded from strategy performance reads.
+        LiveExecution.reconcile() genuinely rehydrates from the real exchange
+        and is unaffected by this path.
+        """
         positions = await self.execution.reconcile()
+        live_pairs = {p["pair"] for p in positions}
+        db_open = await db.get_open_trades(self.cfg.bot_id, self.cfg.env.value)
+        orphans = [t for t in db_open if t["pair"] not in live_pairs]
+        now_ms = int(time.time() * 1000)
+        for t in orphans:
+            notional = t["notional_usdt"] or 0.0
+            fee_exit = notional * (round_trip_fee_pct(self.cfg.maker_execution) / 100.0) / 2.0
+            bucket_before = (
+                t["bucket_balance_before"] if t["bucket_balance_before"] is not None else self.cfg.bucket_size_usdt
+            )
+            await db.close_trade(
+                t["id"],
+                {
+                    "exit_ts": now_ms,
+                    "exit_price": t["entry_price"],
+                    "hold_candles": 0,
+                    "close_reason": "orphaned_crash_recovery",
+                    "pnl_gross_usdt": 0.0,
+                    "fee_exit_usdt": round(fee_exit, 6),
+                    "pnl_net_usdt": round(-fee_exit, 6),
+                    "pnl_pct": 0.0,
+                    "bucket_balance_after": round(bucket_before - fee_exit, 6),
+                },
+            )
+            await db.write_event(
+                self.cfg.bot_id,
+                self.session_id,
+                self.cfg.env.value,
+                "CRITICAL",
+                "position",
+                "orphaned_position_recovered",
+                {"trade_id": t["id"], "pair": t["pair"], "entry_ts": t["entry_ts"]},
+            )
+        if orphans:
+            await self.notifier.system_error(
+                f"recovered {len(orphans)} orphaned position(s) after ungraceful restart "
+                "(settled flat, excluded from stats)",
+                self.cfg.bot_id,
+                now_ms,
+            )
         await db.write_event(
             self.cfg.bot_id,
             self.session_id,
@@ -636,7 +690,11 @@ class Daemon:
             "INFO",
             "system",
             "position_reconcile",
-            {"open_count": len(positions), "positions": [p["pair"] for p in positions]},
+            {
+                "open_count": len(positions),
+                "positions": [p["pair"] for p in positions],
+                "orphans_recovered": len(orphans),
+            },
         )
 
     def _on_ws_reconnect(self, ts_ms: int) -> None:

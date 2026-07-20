@@ -585,6 +585,27 @@ async def count_active_positions(bot_id: str, env: str) -> int:
         return int(row["cnt"])
 
 
+async def get_open_trades(bot_id: str, env: str) -> list[dict[str, Any]]:
+    """Return this bot's currently-open (exit_ts IS NULL) trades.
+
+    Used by Daemon._reconcile() to detect DB-open positions the execution
+    engine has no in-memory record of — SimulationExecution holds no state
+    across a restart, so after any ungraceful stop its own reconcile() always
+    comes back empty; these rows would otherwise jam the bucket forever.
+    """
+    async with acquire() as conn:
+        rows = await conn.fetch(
+            """
+            SELECT id, pair, entry_ts, entry_price, notional_usdt, bucket_balance_before
+            FROM trades
+            WHERE bot_id = $1 AND env = $2 AND exit_ts IS NULL
+            """,
+            bot_id,
+            env,
+        )
+        return [dict(r) for r in rows]
+
+
 async def count_open_positions_fleet(env: str) -> int:
     """Count open positions across the WHOLE fleet in one env (exit_ts IS NULL).
 
