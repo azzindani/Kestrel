@@ -128,7 +128,11 @@ _REALIZED_R = (
     "ELSE t.entry_price-t.exit_price END)/" + _RISK + ",2)"
 )
 _PLANNED_RR = "ROUND(ABS(t.tp_price-t.entry_price)/" + _RISK + ",2)"
-_CLOSED = "FROM trades WHERE exit_ts IS NOT NULL"
+# orphaned_crash_recovery = a synthetic flat settlement Daemon._reconcile() writes
+# for positions a crash (no graceful stop.sh) left stranded in the DB with no
+# in-memory record to close them — not a strategy outcome, excluded from
+# performance reads (2026-07-20 incident: host disk-full killed 3 containers).
+_CLOSED = "FROM trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'"
 # Lab grid token (split_part(bot_id,'-',4) = e.g. t16s10h8) + its filter
 _TOK = "split_part(bot_id,'-',4)"
 _LAB = f"exit_ts IS NOT NULL AND {_TOK} ~ '^t[0-9]+s[0-9]+h[0-9]+$'"
