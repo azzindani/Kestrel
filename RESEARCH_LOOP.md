@@ -436,6 +436,18 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## REFUTED LEDGER (do not re-try these without a materially new variant)
 
+- **STATE-based entries / always-in SAR (iter 66b):** macd_state/sma_state/cci_state/
+  ensemble_state × {sigexit, sigexit_rsi, sigexit_tp, hiwin33}, 1h realistic fees + funding,
+  both eras, 10-pair core. Recent era NEGATIVE on BOTH scoreboards for all 16 combos (state
+  entries trade ~10× the cross versions with no timing edge; pooled gross bps negative even at
+  66-71% pwin). Lockbox-only positives = era-inconsistent = data-mined. The validated form
+  remains SELECTIVE cross entries + indicator exits (iter 65). Don't re-try continuous/state
+  entries without a materially new selectivity mechanism (e.g. the RSI-overextension cap, once
+  validated, might change this calculus — that would be the "materially new variant").
+- **BTC cross-asset SMA-state gate (iter 66b, `--btc-gate`):** improves avg $/trade marginally
+  on most combos (keeps 44-84% of trades) but flips nothing negative→positive in either era —
+  the 5th consecutive confluence-filter refutation (ADX, vol-floor, session, HTF, now
+  cross-asset). Kept as a harness flag for quality-shaping studies only.
 - **`ensemble_3of4/hiwin33` on FIL, LINK, UNI** (iter 59) — 1h, realistic fees, points scoring. All
   three looked strong recent-era (+14.9/+13.0/+16.7 bps @ 76-82% win) but collapsed hard in the
   lockbox (-17.4/-34.0/-28.2 bps @ 61-69% win, pooled IS→OOS -38.26) — high win rate, negative
@@ -613,6 +625,43 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 66b — 2026-07-24 (OWNER "lets do it all" — idea batch executed: [1+2] state-entry/SAR family BUILT then cleanly REFUTED (over-trading grinds even gross points negative); [4a] BTC cross-asset gate BUILT, marginal, refuted as a rescue; [5] archive mining DONE → real lead: the RSI-overextension entry gate; [3] funding tilt queued)
+
+- **[1+2] STATE-ENTRY / STOP-AND-REVERSE — built, swept, REFUTED (deploy nothing):** 4 new
+  registered patterns (macd_state/sma_state/cci_state/ensemble_state — fire while the state
+  HOLDS; with indicator_exit_mode they form SAR: the reversal exit's opposite state is the next
+  entry). Full arming checklist + exit-family mappings + 25 tests, commit `20ba5f9`. Both-era
+  sweep (× sigexit/sigexit_rsi/sigexit_tp/hiwin33, realistic+funding): **recent era negative on
+  BOTH scoreboards for every combo** — state entries trade ~10× the cross versions (9,600+/yr
+  pooled vs sma_cross's 259) with no timing edge; even at 66-71% pwin the pooled gross bps is
+  NEGATIVE (−0.5..−1.9). Lockbox-only positives (cci_state/sigexit +$8.9k etc.) are the
+  era-inconsistent data-mined signature → REFUTED LEDGER. **The iter-65 form stands: SELECTIVE
+  cross entries + indicator exits. Timing the entry is where the edge lives; the exit idea does
+  not survive being stretched into always-in positioning.** (Patterns stay registered for future
+  param-varied trials; no bots configured on them.)
+- **[4a] BTC-GATE (cross-asset, `--btc-gate`) — built, marginal, NOT an edge:** filtering any
+  combo to trades agreeing with BTC's SMA9/21 state at entry improves avg $/trade slightly in
+  most rows (e.g. −0.0021→−0.0016) keeping 44-84% of trades, but flips NOTHING negative→positive
+  in either era. Same verdict as every confluence filter (ADX iter-23, vol-floor iter-39,
+  session iter-50, HTF iter-51): mild quality shaping, no rescue. Kept as a harness flag.
+- **[5] ARCHIVE MINING (first use of our own labeled trade data) — REAL LEAD:** restored the
+  pre-reset backup into kestrel_archive (1,311 closed dev/staging trades) and joined to the kept
+  live candles at the decision candle. **Direction-aligned entry RSI is near-monotone against
+  outcome: 50-60 → 45.7% pwin/+3.3 bps; 60-70 → 41.1%/−18.1; ≥70 → 27.0%/−46.4 (n=89).**
+  Winners entered ~2-5 RSI points LESS extended than losers in both families. Mechanism: our
+  momentum entries that fire LATE into a move are the bleed. **NEXT TASK (queued): an
+  `entry_rsi_cap` gate (block entries with aligned RSI ≥ ~65-70) — implement in detector +
+  harness, validate cross-era before deploying.** Caveat: in-sample on our own single-window
+  history; the cross-era sweep decides.
+- **HARNESS FIX (latent):** `_install_search_gates` overrode SELF_DIRECTING_PATTERNS with
+  harness algos only, so live-registry algos (sma_cross, ensemble_3of4, the new state patterns)
+  ran TREND-GATED in sweeps but self-directed live. Now unioned with the live set — sweep gating
+  matches production. (Affects comparability with older sweeps marginally; direction of bias was
+  conservative.)
+- **[3] FUNDING TILT — still queued** (needs a funding-rate history fetcher + gate; next
+  iterations). Ideas ledger after tonight: funding tilt + RSI-cap gate = the two live leads;
+  rotation (top-N cross-sectional momentum) behind them.
 
 ### Iteration 66 — 2026-07-24 (OWNER TIER-RULE CORRECTION + FULL BALANCE RESET: "dev is for unlimited test. staged is for high winning rate bots. also reset both balance" — staging trimmed 102 → 72 high-win-only; dev + staging trade slates wiped clean)
 
