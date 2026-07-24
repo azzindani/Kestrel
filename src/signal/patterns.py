@@ -973,6 +973,32 @@ def detect_sma_cross(candles: Sequence[Candle], params: Params) -> Optional[Patt
 
 
 # ---------------------------------------------------------------------------
+# Pattern: sma_cross_gated (trend-gated sma_cross twin) — research-loop iter 67.
+# Identical cross detection to sma_cross, but registered WITHOUT self-direction:
+# the detector's EMA9/21 trend filter must agree with the cross direction or the
+# entry is dropped (detector skips non-self-directing patterns whose direction
+# disagrees with the trend). Why it exists: the iter-65 sigexit validation ran
+# on a harness that (by accident, fixed iter-66b) trend-gated live patterns —
+# and that gated form is what validated cross-era (gated sigexit recent +$1.60 /
+# lockbox +$6.42; ungated is recent-NEGATIVE = era-inconsistent). This twin makes
+# the gate deliberate so the forward test A/Bs gated vs ungated sma_cross arms.
+# DSR still FAILS both eras (0.29/0.83 < 0.95) — forward-test lead, NOT an edge.
+# ---------------------------------------------------------------------------
+@register("sma_cross_gated")
+def detect_sma_cross_gated(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """sma_cross entries that must also agree with the EMA9/21 trend (not self-directing)."""
+    base = detect_sma_cross(candles, params)
+    if base is None:
+        return None
+    return PatternResult(
+        pattern=PatternType.SMA_CROSS_GATED,
+        direction=base.direction,
+        confidence=base.confidence,
+        details={**base.details, "variant": "sma_cross_gated"},
+    )
+
+
+# ---------------------------------------------------------------------------
 # Pattern: ensemble_3of4 (cross-signal voting confluence) — research-loop iter 52.
 # Every prior confluence filter (ADX floor, volatility floor, higher-timeframe trend)
 # gated ONE lead against a regime or a different timeframe. This gates the SAME-

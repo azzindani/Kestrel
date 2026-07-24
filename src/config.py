@@ -70,6 +70,11 @@ class PatternType(str, Enum):
     SMA_STATE = "sma_state"
     CCI_STATE = "cci_state"
     ENSEMBLE_STATE = "ensemble_state"
+    # Trend-gated twin (iter 67): sma_cross entries WITHOUT self-direction, so the
+    # detector's EMA9/21 trend filter must agree. The iter-65 sigexit validation
+    # unknowingly ran under this gating (pre-iter-66b harness) and it was the
+    # cross-era winner; the ungated form is era-inconsistent.
+    SMA_CROSS_GATED = "sma_cross_gated"
 
 
 class SignalOutcome(str, Enum):
