@@ -929,7 +929,128 @@ EXITS = {
     "hiwin43": {"tp_atr_multiplier": 0.6, "sl_atr_multiplier": 1.4, "max_hold_candles": 4},
     "hiwin33": {"tp_atr_multiplier": 0.5, "sl_atr_multiplier": 1.5, "max_hold_candles": 6},
     "scratch": {"tp_atr_multiplier": 0.5, "sl_atr_multiplier": 2.0, "max_hold_candles": 3},
+    # INDICATOR-BASED exits (owner idea 2026-07-24, iter 65): close on the SIGNAL's
+    # own state, not a price bracket. The entry's indicator reversing (MACD crossing
+    # back / SMA death-cross / CCI losing its sign / ensemble majority decaying) is
+    # the exit trigger — the untested complement to every bracket exit swept so far.
+    # Implemented via a _check_exit wrapper (see _sigexit_* below); the price levels
+    # remaining in these presets are DISASTER stops only (tp 50×ATR = no price TP).
+    # signal_exit/indicator_tp settle at candle close, taker+slip under realistic
+    # fees (market-out on reversal — conservative). Requires --points (g<1.2 mostly).
+    "sigexit": {"tp_atr_multiplier": 50.0, "sl_atr_multiplier": 1.5, "max_hold_candles": 24},
+    "sigexit_rsi": {"tp_atr_multiplier": 50.0, "sl_atr_multiplier": 1.5, "max_hold_candles": 24},
+    "sigexit_tp": {"tp_atr_multiplier": 0.6, "sl_atr_multiplier": 1.4, "max_hold_candles": 12},
 }
+
+
+# ---------------------------------------------------------------------------
+# Indicator-based exits ("sigexit*" presets) — runner._check_exit wrapper.
+#
+# The runner's price checks (SL / liquidation / the disaster-far TP) run FIRST via
+# the original _check_exit; only if none fired do we consult the indicator rule
+# for the algo under test. Per-pair indicator series are precomputed once from
+# the same candle list the backtest consumes (no look-ahead: the exit at candle i
+# uses values through candle i, the same bar the runner settles on at close).
+# ---------------------------------------------------------------------------
+
+_SIGEXIT: dict = {"mode": None, "algo": None, "ind": {}, "order": []}
+
+
+def _ema_series(vals: list[float], period: int) -> list[float]:
+    k = 2.0 / (period + 1.0)
+    out, e = [], None
+    for v in vals:
+        e = v if e is None else v * k + e * (1.0 - k)
+        out.append(e)
+    return out
+
+
+def _sma_series(vals: list[float], period: int) -> list[float]:
+    out, s = [], 0.0
+    for i, v in enumerate(vals):
+        s += v
+        if i >= period:
+            s -= vals[i - period]
+        out.append(s / min(i + 1, period))
+    return out
+
+
+def _cci_series(candles, period: int = 20) -> list[float]:
+    tps = [(c.high + c.low + c.close) / 3.0 for c in candles]
+    out = []
+    for i in range(len(tps)):
+        win = tps[max(0, i - period + 1) : i + 1]
+        ma = sum(win) / len(win)
+        md = sum(abs(x - ma) for x in win) / len(win)
+        out.append(0.0 if md == 0 else (tps[i] - ma) / (0.015 * md))
+    return out
+
+
+def _sigexit_prepare(candles) -> None:
+    """Precompute per-ts indicator state for the sigexit rules (one pair)."""
+    closes = [c.close for c in candles]
+    macd = [a - b for a, b in zip(_ema_series(closes, 12), _ema_series(closes, 26))]
+    macd_sig = _ema_series(macd, 9)
+    sma9, sma21 = _sma_series(closes, 9), _sma_series(closes, 21)
+    cci = _cci_series(candles)
+    ind = {}
+    for i, c in enumerate(candles):
+        ind[int(c.ts)] = {
+            "i": i,
+            "macd_up": macd[i] > macd_sig[i],
+            "sma_up": sma9[i] > sma21[i],
+            "cci": cci[i],
+            "rsi": c.rsi14,
+        }
+    _SIGEXIT["ind"] = ind
+    _SIGEXIT["order"] = [int(c.ts) for c in candles]
+
+
+def _sigexit_reason(trade: dict, candle) -> "str | None":
+    """Indicator-exit decision for the currently-open trade at this candle."""
+    ind = _SIGEXIT["ind"].get(int(candle.ts))
+    if ind is None:
+        return None
+    long = trade["direction"] == "long"
+    algo, mode = _SIGEXIT["algo"], _SIGEXIT["mode"]
+
+    # RSI extreme profit-take (sigexit_rsi only): exit INTO strength.
+    if mode == "sigexit_rsi" and ind["rsi"] is not None:
+        if (long and ind["rsi"] >= 70.0) or (not long and ind["rsi"] <= 30.0):
+            return "indicator_tp"
+
+    if algo in ("macd_cross", "macd_rsi"):
+        reversed_ = (not ind["macd_up"]) if long else ind["macd_up"]
+        return "signal_exit" if reversed_ else None
+    if algo == "sma_cross":
+        reversed_ = (not ind["sma_up"]) if long else ind["sma_up"]
+        return "signal_exit" if reversed_ else None
+    if algo == "cci_mom":
+        reversed_ = (ind["cci"] < 0.0) if long else (ind["cci"] > 0.0)
+        return "signal_exit" if reversed_ else None
+    if algo == "ensemble_3of4":
+        # Member direction states; exit when agreement decays to <= 1 of 4.
+        rsi_up = ind["rsi"] is not None and ind["rsi"] > 50.0
+        states = [ind["macd_up"], ind["sma_up"], ind["cci"] > 0.0, rsi_up]
+        aligned = sum(1 for s in states if s == long)
+        return "signal_exit" if aligned <= 1 else None
+    return None
+
+
+def _install_sigexit_check() -> None:
+    """Wrap runner._check_exit: price disaster-stops first, then the indicator rule."""
+    import src.backtest.runner as _r
+
+    orig = _r._check_exit
+
+    def _wrapped(trade: dict, candle):
+        base = orig(trade, candle)
+        if base is not None or _SIGEXIT["mode"] is None:
+            return base
+        return _sigexit_reason(trade, candle)
+
+    _r._check_exit = _wrapped
+
 
 # Forex / metals universe for --forex mode (yfinance symbols). Majors + crosses +
 # gold/oil — the instruments BingX's TradFi side covers but ccxt doesn't expose, so
@@ -1312,6 +1433,9 @@ def main() -> None:
     exits = [e.strip() for e in args.exits.split(",") if e.strip() in EXITS]
     tag = time.strftime("%Y%m%d-%H%M%S", time.gmtime())
     combos = [(a, e) for a in algos for e in exits]
+    if any(e.startswith("sigexit") for e in exits):
+        _install_sigexit_check()
+        print("[sigexit] indicator-based exits armed (signal_exit / indicator_tp reasons)", flush=True)
 
     print(
         f"=== Kestrel ALGORITHM SEARCH ({args.tf}, {args.days}d, {cfg.leverage}x, "
@@ -1344,6 +1468,8 @@ def main() -> None:
             skipped.append(pair)
             continue
         candles = bg.build_candles_for(pair, args.tf, cfg, base, raw)
+        if any(e.startswith("sigexit") for _, e in combos):
+            _sigexit_prepare(candles)
         ts_index = {int(c.ts): i for i, c in enumerate(candles)}
         split_ts = candles[int(len(candles) * 0.60)].ts
         n_oos = sum(1 for c in candles if c.ts >= split_ts)
@@ -1359,6 +1485,8 @@ def main() -> None:
 
         for algo, exit_name in combos:
             p = dataclasses.replace(base, **EXITS[exit_name])
+            _SIGEXIT["mode"] = exit_name if exit_name.startswith("sigexit") else None
+            _SIGEXIT["algo"] = algo
             trades = run_backtest(candles, p, cfg, bot_id=f"as-{pair}-{algo}-{exit_name}", enabled_patterns=[algo])[
                 "trades"
             ]
