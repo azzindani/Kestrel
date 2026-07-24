@@ -38,7 +38,10 @@ from src.signal.patterns import _cci_pair, _macd_lines, _sma
 REASON_SIGNAL_EXIT = "signal_exit"
 REASON_INDICATOR_TP = "indicator_tp"
 
-_MACD_FAMILY = ("macd_cross", "macd_rsi")
+_MACD_FAMILY = ("macd_cross", "macd_rsi", "macd_state")
+_SMA_FAMILY = ("sma_cross", "sma_state")
+_CCI_FAMILY = ("cci_mom", "cci_state")
+_ENSEMBLE_FAMILY = ("ensemble_3of4", "ensemble_state")
 
 
 def indicator_exit_reason(
@@ -63,7 +66,7 @@ def indicator_exit_reason(
         if (long and latest.rsi14 >= 70.0) or (not long and latest.rsi14 <= 30.0):
             return REASON_INDICATOR_TP
 
-    if pattern in _MACD_FAMILY or pattern == "ensemble_3of4":
+    if pattern in _MACD_FAMILY or pattern in _ENSEMBLE_FAMILY:
         macd_state = _macd_up(candles, params)
     else:
         macd_state = None
@@ -73,20 +76,20 @@ def indicator_exit_reason(
             return None
         return REASON_SIGNAL_EXIT if macd_state is not long else None
 
-    if pattern == "sma_cross":
+    if pattern in _SMA_FAMILY:
         sma_state = _sma_up(candles, params)
         if sma_state is None:
             return None
         return REASON_SIGNAL_EXIT if sma_state is not long else None
 
-    if pattern == "cci_mom":
+    if pattern in _CCI_FAMILY:
         cci = _cci_now(candles, params)
         if cci is None:
             return None
         reversed_ = cci < 0.0 if long else cci > 0.0
         return REASON_SIGNAL_EXIT if reversed_ else None
 
-    if pattern == "ensemble_3of4":
+    if pattern in _ENSEMBLE_FAMILY:
         sma_state = _sma_up(candles, params)
         cci = _cci_now(candles, params)
         rsi = latest.rsi14

@@ -62,6 +62,14 @@ class PatternType(str, Enum):
     CCI_MOM = "cci_mom"
     SMA_CROSS = "sma_cross"
     ENSEMBLE_3OF4 = "ensemble_3of4"
+    # State-based entries (iter 66, owner "lets do it all"): fire while the
+    # indicator STATE holds, not only on the crossing candle — paired with
+    # indicator_exit_mode=sigexit they form a stop-and-reverse system (the
+    # reversal exit's opposite state is the next candle's entry).
+    MACD_STATE = "macd_state"
+    SMA_STATE = "sma_state"
+    CCI_STATE = "cci_state"
+    ENSEMBLE_STATE = "ensemble_state"
 
 
 class SignalOutcome(str, Enum):

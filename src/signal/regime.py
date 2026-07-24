@@ -107,6 +107,10 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "cci_mom",
                 "sma_cross",
                 "ensemble_3of4",
+                "macd_state",
+                "sma_state",
+                "cci_state",
+                "ensemble_state",
             }
         ),
         Regime.VOLATILE: frozenset(
@@ -125,6 +129,10 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "cci_mom",
                 "sma_cross",
                 "ensemble_3of4",
+                "macd_state",
+                "sma_state",
+                "cci_state",
+                "ensemble_state",
             }
         ),
         Regime.RANGING: frozenset(
@@ -141,6 +149,10 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "cci_mom",
                 "sma_cross",
                 "ensemble_3of4",
+                "macd_state",
+                "sma_state",
+                "cci_state",
+                "ensemble_state",
             }
         ),
         Regime.QUIET: frozenset(),

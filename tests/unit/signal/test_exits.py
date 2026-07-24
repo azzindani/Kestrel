@@ -112,3 +112,23 @@ class TestRsiProfitTake:
 class TestUnknownPattern:
     def test_unknown_pattern_never_exits(self):
         assert indicator_exit_reason(_window(_DOWN), Direction.LONG, "wick_rejection", _params("sigexit")) is None
+
+
+class TestStatePatternExitMapping:
+    """State patterns (iter 66) must map to the same family exit rules."""
+
+    def test_macd_state_maps_to_macd_rule(self):
+        r = indicator_exit_reason(_window(_DOWN), Direction.LONG, "macd_state", _params("sigexit"))
+        assert r == REASON_SIGNAL_EXIT
+
+    def test_sma_state_maps_to_sma_rule(self):
+        r = indicator_exit_reason(_window(_DOWN), Direction.LONG, "sma_state", _params("sigexit"))
+        assert r == REASON_SIGNAL_EXIT
+
+    def test_cci_state_maps_to_cci_rule(self):
+        r = indicator_exit_reason(_window(_UP), Direction.SHORT, "cci_state", _params("sigexit"))
+        assert r == REASON_SIGNAL_EXIT
+
+    def test_ensemble_state_maps_to_ensemble_rule(self):
+        r = indicator_exit_reason(_window(_DOWN), Direction.LONG, "ensemble_state", _params("sigexit"))
+        assert r == REASON_SIGNAL_EXIT
