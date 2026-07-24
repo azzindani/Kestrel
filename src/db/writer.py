@@ -91,7 +91,10 @@ async def write_candle(candle: Candle) -> int:
             candle.upper_wick,
             candle.lower_wick,
             candle.direction,
-            "dev" if candle.bot_id.startswith("dev") else "prod",
+            # env = bot_id prefix ({env}-{pair}-{tf}-{instance}, CLAUDE.md §6). The old
+            # dev-else-prod fallback predated the staging/lab envs and stamped their
+            # live-built candles env='prod' (found iter 67; rows backfilled same day).
+            candle.bot_id.split("-", 1)[0],
         )
         return row["id"]
 

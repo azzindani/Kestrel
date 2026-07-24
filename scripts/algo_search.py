@@ -1027,7 +1027,7 @@ def _sigexit_reason(trade: dict, candle) -> "str | None":
     if algo in ("macd_cross", "macd_rsi", "macd_state"):
         reversed_ = (not ind["macd_up"]) if long else ind["macd_up"]
         return "signal_exit" if reversed_ else None
-    if algo in ("sma_cross", "sma_state"):
+    if algo in ("sma_cross", "sma_state", "sma_cross_gated"):
         reversed_ = (not ind["sma_up"]) if long else ind["sma_up"]
         return "signal_exit" if reversed_ else None
     if algo in ("cci_mom", "cci_state"):
@@ -1055,6 +1055,75 @@ def _install_sigexit_check() -> None:
         return _sigexit_reason(trade, candle)
 
     _r._check_exit = _wrapped
+
+
+def _install_rsi_cap(cap: float) -> None:
+    """Iter 67 entry gate: block entries whose direction-ALIGNED RSI14 at the signal
+    candle is already >= cap. Data-derived from archive mining of 1,311 of our OWN
+    live trades (iter 66b): aligned entry RSI >=70 ran -46.4bps @ 27% win, and the
+    buckets are near-monotone — losers disproportionately chase already-extended
+    moves. Wraps EVERY registry entry (harness algos AND live patterns) so the gate
+    applies uniformly regardless of how the entry was registered.
+    """
+
+    def _gate(fn: EntryFn) -> EntryFn:
+        def gated(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+            res = fn(candles, params)
+            if res is None:
+                return None
+            r = candles[-1].rsi14
+            if r is None:
+                return res
+            aligned = r if res.direction is Direction.LONG else 100.0 - r
+            if aligned >= cap:
+                return None
+            return res
+
+        return gated
+
+    for name in list(registry):
+        registry[name] = _gate(registry[name])
+
+
+# Per-pair funding-event maps for --funding-tilt, filled in main() once the pair
+# list is known: {pair: [(ts_ms, rate_frac) ascending]}. Pairs absent here are
+# ungated (no funding data — e.g. venue never listed the perp).
+_FUNDING_MAPS: dict[str, list[tuple[int, float]]] = {}
+
+
+def _install_funding_tilt(thresh_pct: float) -> None:
+    """Iter 67 entry gate (owner idea #3, funding tilt): never ENTER on the side that
+    is PAYING elevated funding — crowded-side avoidance. Long blocked when the
+    prevailing rate >= +thresh %/8h, short blocked when rate <= -thresh %/8h. The
+    surveyed distribution (probe 2026-07-24): majors pin at the +0.01%/8h default cap,
+    so the informative tail is NEGATIVE funding (crowded shorts paying) — with
+    thresh > 0.01 this is mostly a "don't join crowded shorts" gate. Rates from
+    Binance history (fetch_funding.py; data source only, not a trading venue).
+    """
+    from fetch_funding import rate_at
+
+    def _gate(fn: EntryFn) -> EntryFn:
+        def gated(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+            res = fn(candles, params)
+            if res is None:
+                return None
+            events = _FUNDING_MAPS.get(candles[-1].pair)
+            if not events:
+                return res
+            rate = rate_at(events, int(candles[-1].ts))
+            if rate is None:
+                return res
+            rate_pct = rate * 100.0
+            if res.direction is Direction.LONG and rate_pct >= thresh_pct:
+                return None
+            if res.direction is Direction.SHORT and rate_pct <= -thresh_pct:
+                return None
+            return res
+
+        return gated
+
+    for name in list(registry):
+        registry[name] = _gate(registry[name])
 
 
 # Forex / metals universe for --forex mode (yfinance symbols). Majors + crosses +
@@ -1408,6 +1477,35 @@ def main() -> None:
         "direction agrees with BTC/USDT's SMA9/21 state at entry (BTC leads alts — different "
         "from the refuted same-pair HTF confirm, which was cross-TIMEFRAME on the same asset)",
     )
+    ap.add_argument(
+        "--trend-gate",
+        action="store_true",
+        dest="trend_gate",
+        help="drop ALL self-direction: every entry must agree with the detector's EMA9/21 "
+        "trend filter (iter 67 — makes the pre-iter-66b harness accident deliberate: the "
+        "iter-65 sigexit sweeps unknowingly ran live patterns trend-gated, and that gated "
+        "form was the cross-era winner; the ungated live-accurate form collapses)",
+    )
+    ap.add_argument(
+        "--funding-tilt",
+        type=float,
+        default=0.0,
+        dest="funding_tilt",
+        help="entry gate (iter 67, owner idea #3): block entries on the side PAYING elevated "
+        "funding — long blocked when the prevailing rate >= +X %%/8h, short blocked when "
+        "rate <= -X %%/8h. Historical rates via scripts/fetch_funding.py (Binance public, "
+        "data-only); pairs without funding data stay ungated. 0 = off.",
+    )
+    ap.add_argument(
+        "--rsi-cap",
+        type=float,
+        default=0.0,
+        dest="rsi_cap",
+        help="entry gate (iter 67, archive-mined from our own trades): block entries whose "
+        "direction-ALIGNED RSI14 (rsi if long, 100-rsi if short) at the signal candle is "
+        ">= this value. 0 = off. Mined lead: aligned RSI>=70 ran -46.4bps @ 27%% win over "
+        "1,311 live trades.",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -1421,6 +1519,12 @@ def main() -> None:
         _r._FUNDING_8H_FRAC = args.funding / 100.0
         print(f"[funding] perp funding modeled: {args.funding}%/8h, always charged (v2.7)", flush=True)
     _install_search_gates(args.regime)
+    if args.trend_gate:
+        detector.SELF_DIRECTING_PATTERNS = frozenset()
+        print("[trend-gate] self-direction dropped: every entry must agree with the EMA9/21 trend", flush=True)
+    if args.rsi_cap > 0.0:
+        _install_rsi_cap(args.rsi_cap)
+        print(f"[rsi-cap] entry gate armed: aligned RSI >= {args.rsi_cap:g} blocks entry", flush=True)
     if args.points:
         # Rule 3 (tp/sl >= 1.2) would reject every hiwin bracket at the door. Bypass the
         # floor in THIS research process only — the same runtime-patch precedent as
@@ -1435,6 +1539,24 @@ def main() -> None:
     pairs = [p.strip() for p in args.pairs.split(",")] if args.pairs else default_pairs
     if args.forex and args.offset_days:
         raise SystemExit("--offset-days (lockbox) is crypto-only; not supported with --forex")
+    if args.funding_tilt > 0.0:
+        if args.forex:
+            raise SystemExit("--funding-tilt is perp-crypto-only; not supported with --forex")
+        from fetch_funding import load_funding_map
+
+        for pair in pairs:
+            # +10d slack so warmup candles preceding the window still resolve a rate
+            events = load_funding_map(pair, args.days + 10, args.offset_days)
+            if events:
+                _FUNDING_MAPS[pair] = events
+            else:
+                print(f"[funding-tilt] {pair}: no funding history — pair stays ungated", flush=True)
+        _install_funding_tilt(args.funding_tilt)
+        print(
+            f"[funding-tilt] entry gate armed: |rate| >= {args.funding_tilt:g}%/8h blocks the paying side "
+            f"({len(_FUNDING_MAPS)}/{len(pairs)} pairs mapped)",
+            flush=True,
+        )
 
     def fetch(pair: str, tf: str, days: int) -> tuple:
         if args.forex:

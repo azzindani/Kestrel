@@ -52,6 +52,7 @@ class TestRegistry:
             "sma_state",
             "cci_state",
             "ensemble_state",
+            "sma_cross_gated",
         }
         assert expected == set(registry.keys())
 

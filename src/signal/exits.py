@@ -39,7 +39,7 @@ REASON_SIGNAL_EXIT = "signal_exit"
 REASON_INDICATOR_TP = "indicator_tp"
 
 _MACD_FAMILY = ("macd_cross", "macd_rsi", "macd_state")
-_SMA_FAMILY = ("sma_cross", "sma_state")
+_SMA_FAMILY = ("sma_cross", "sma_state", "sma_cross_gated")
 _CCI_FAMILY = ("cci_mom", "cci_state")
 _ENSEMBLE_FAMILY = ("ensemble_3of4", "ensemble_state")
 
