@@ -207,18 +207,21 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
             '{"event":"research_loop_iteration","iteration":<N>,"deployed":<bool>,"reset":<bool>,...}'::jsonb);
     ```
     (via `docker compose exec -T postgres psql -U kestrel -d kestrel -c "..."`).
-10b. **PHASE-2 STAGING MAINTENANCE — ⚠ PINNED BY OWNER, REVISED 2026-07-16 (iter 62 "ok lets try
-    this"): staging = ALL currently-active cross-era-VALIDATED cells, 60 bots** — the 22 strict
-    points cells (exp_hiwin_ensemble ×6, hw43 ×3, hw50 ×3, hwsc ×4, mrsisc ×6) + exp_hiwin's other
-    3 arms on their both-era cores (17) + exp_ensemble medium on its 7 robust pairs + the iter-43
-    robust-core medium cells (sma_cross ×5, cci_mom ×5, macd_rsi ×3, macd_cross ×1). Admission bar
-    for any FUTURE addition: cross-era-positive backtest evidence (points joint bar OR expectancy
-    +EV both eras on that pair) — staging stays the evidence-based proof tier while the owner
-    scales breadth (~150 target as new cells validate). While the pin holds: SKIP the
-    promote_to_staging.py re-selection below; mirror validated-arm changes into bots.staging.json
-    manually (additive/no-reset discipline). Prod (bots.prod.json) still freezes from the strict
-    high-win leaders at promotion time, per docs/14. Pin lifts only on owner instruction or if the
-    points program is refuted.** (Pre-pin protocol below, kept for when the pin lifts.)
+10b. **PHASE-2 STAGING MAINTENANCE — ⚠ PINNED BY OWNER, REVISED 2026-07-24 (iter 66, owner:
+    "staged bots and dev bots are different usage, dev is for unlimited test. staged is for high
+    winning rate bots"): STAGING = HIGH-WIN ARMS ONLY.** Admission needs BOTH (a) cross-era
+    backtest evidence AND (b) a high-win DESIGN profile (validated points win ≥65% — the
+    hiwin/scratch bracket geometries and the sigexit_tp hybrid qualify; medium/wide expectancy
+    arms and pure sigexit/sigexit_rsi ~33-45%-win profiles do NOT, regardless of how good their
+    dollar expectancy is — they live in DEV, the unlimited-test tier). Current staging = 72:
+    exp_hiwin_* / exp_hw43_* / exp_hw50_* / exp_hwsc_* / exp_mrsisc_* / exp_sigxtp_*. The
+    iter-62 "all validated cells" widening violated this separation and was reverted at iter 66
+    (30 expectancy-profile bots dropped from staging; they remain in dev). While the pin holds:
+    SKIP the promote_to_staging.py re-selection below; mirror qualifying-arm changes into
+    bots.staging.json manually (additive discipline; owner-directed balance resets excepted).
+    Prod (bots.prod.json) still freezes from the strict high-win leaders at promotion time, per
+    docs/14. Pin lifts only on owner instruction or if the points program is refuted.**
+    (Pre-pin protocol below, kept for when the pin lifts.)
     Staging is the curated **best-performers** pool: the **`staging` profile** of the one `kestrel` compose project
     (folded in 2026-06-28, owner — was its own `kestrel-staging` project; now the whole stack groups
     as ONE in Docker), ENV=staging, `STAGING_ENGINE=sim` until BingX VST keys exist, sharing postgres
@@ -610,6 +613,29 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 66 — 2026-07-24 (OWNER TIER-RULE CORRECTION + FULL BALANCE RESET: "dev is for unlimited test. staged is for high winning rate bots. also reset both balance" — staging trimmed 102 → 72 high-win-only; dev + staging trade slates wiped clean)
+
+- **THE RULE (owner, now codified in 10b):** DEV = unlimited testing (any profile, any
+  experiment); STAGING = high-win-design arms ONLY (validated points win ≥65%). My iter-62
+  widening ("all validated cells") and iter-65's pure-sigexit staging deploys violated this —
+  expectancy-profile arms (~33-45% win, dollar-positive via big winners) do not belong in the
+  high-win proof tier no matter how good their dollars are.
+- **TRIM:** dropped 30 expectancy-profile bots from staging (medium-exit cci_mom/sma_cross/
+  macd_rsi/macd_cross, exp_ensemble medium, exp_sigx_*, exp_sigxr_*) — all remain in dev.
+  Staging keeps 72: exp_hiwin_* (24) + exp_hw43/50/hwsc/mrsisc (30) + exp_sigxtp_* (10) + the
+  iter-64 additions in those families — every arm a ≥65%-win design with cross-era evidence.
+- **BALANCE RESET (owner-directed, both tiers):** fresh pre-reset backup
+  (kestrel-lean-20260724T135755Z.dump), then wiped dev+staging trades (1,515) / signals (1,869)
+  / events (142,434) / trade_context (155,985) in FK order. KEPT: candles, microstructure,
+  pattern_memory, lab env untouched. Every bucket restarts at $10; the points/dollar scoreboards
+  start clean for all three programs (high-win staging 72, dev expectancy arms, dev sigexit
+  arms). Both daemons restarted; 228 dev + 72 staging heartbeats verified; dropped staging
+  bot_ids' heartbeat rows cleaned.
+- **CLOCK IMPLICATIONS (honest):** the iter-64 "n≥100 in 1-2 weeks" pooled verdict RESTARTS from
+  n=0 on the fresh slate (the pre-reset history remains in the backup + this journal: pooled
+  n=83 ~50.6%/+7.4bps at reset time). With 72 high-win bots accumulating (~3× the original 22)
+  the first n≥30 read should land in ~2-4 days and n≥100 in ~1.5-2 weeks.
 
 ### Iteration 65 — 2026-07-24 (OWNER IDEA VALIDATED — indicator-based exits: "use indicator based profit taking or cut loss" → BUILT (backtest + live), SWEPT both eras, and it's THE BEST DOLLAR RESULT ON RECORD net of realistic fees + funding; 19 cross-era-+EV cells deployed → dev 228, staging 102)
 
