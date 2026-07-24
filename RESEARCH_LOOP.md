@@ -285,6 +285,17 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
+- **ACTIVE — `exp_sigxg`/`exp_wideg` (iter 67): the trend-GATED sma_cross A/B, 20 bots.**
+  `sma_cross_gated` (sma_cross entries deliberately NOT self-directing → detector's EMA9/21
+  trend filter must agree) × {sigexit, wide} × the 10 sweep pairs. This is the iter-65
+  "accidental gating" made deliberate: gated sigexit validated cross-era (+$0.0062 R/+$0.0274 L)
+  where the ungated form is era-inconsistent. A/B partner = the ungated exp_sigx_ arms. DSR
+  fails both eras (0.29/0.83) — forward-test lead, NOT an edge; dev-only (expectancy profile).
+- **ACTIVE — `exp_sigx`/`exp_sigxr`/`exp_sigxtp` (iter 65, support REVISED iter 67):** the 19
+  ungated indicator-exit cells. Iter 67 found their iter-65 validation ran on an accidentally
+  trend-gated harness; live-accurate backtests are era-inconsistent (recent-negative). Kept
+  running as the honest A/B control vs exp_sigxg_ — churn candidates at next review if the live
+  legs agree with the corrected harness.
 - **ACTIVE — `exp_hiwin` (iter 55b, owner-authorized) + `exp_hw43`/`exp_hw50`/`exp_hwsc`/`exp_mrsisc`
   (iter 60): the POINTS-PROGRAM live leg, 39 bots total.** exp_hiwin = the 4 S1-survivor arms on their
   both-era cores (23 bots, hiwin33/hiwin50 exits). **First live read at n=38 (iter 60): ON-THESIS —
@@ -436,6 +447,18 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## REFUTED LEDGER (do not re-try these without a materially new variant)
 
+- **RSI-overextension entry cap (iter 67, `--rsi-cap`):** blocking entries with direction-aligned
+  RSI14 ≥ 65/70 at the signal candle. Cap 70 = null (removes 3-8% of entries, noise deltas);
+  cap 65 = the data-mining signature (recent era improves broadly, lockbox worsens on ~every
+  cell, 0/20 both-era improvements). The −46bps@RSI≥70 archive lead was real but SELF-MINED
+  from recent-era-only trades — any gate mined from our own live history must clear the lockbox
+  before deploy, and this one didn't. Also removes the "materially new selectivity mechanism"
+  hope the state-entry ledger entry pointed at.
+- **Funding-rate ENTRY tilt (iter 67, `--funding-tilt`):** blocking the side paying ≥0.02 or
+  ≥0.05 %/8h at entry. Null at both thresholds (≤1% of trades touched, deltas ≤±0.0007$):
+  majors pin at the +0.01 default cap so 1h entries never coincide with funding extremes.
+  Materially different (untried) variants: signed funding ACCOUNTING, and funding-HARVEST
+  entries that enter TO RECEIVE an extreme rate (structural, own validation design needed).
 - **STATE-based entries / always-in SAR (iter 66b):** macd_state/sma_state/cci_state/
   ensemble_state × {sigexit, sigexit_rsi, sigexit_tp, hiwin33}, 1h realistic fees + funding,
   both eras, 10-pair core. Recent era NEGATIVE on BOTH scoreboards for all 16 combos (state
@@ -625,6 +648,70 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 67 — 2026-07-24 (OWNER "do it all" — queued builds executed: rsi-cap REFUTED cross-era (the lockbox catches self-mined recency), funding-tilt NULL, owed sigexit DSR delivered (FAIL both eras) — and the iter-65 HARNESS-GATING DISCOVERY: the "best result on record" was measured trend-GATED by accident; gated form re-validated deliberately → `sma_cross_gated` deployed, dev 228 → 248)
+
+- **HARNESS-GATING DISCOVERY (the session's most important finding):** the iter-65 sigexit sweeps
+  (13:29 UTC) ran ~50 min BEFORE the iter-66b harness fix (14:18) that made live-registry patterns
+  self-direct in sweeps. So the "+$1.51/+$6.42 best on record" was measured with the detector's
+  EMA9/21 TREND FILTER silently applied to entries (n=259/yr) — gating production does NOT apply
+  to the deployed self-directing arms (live-accurate n=872/yr). Re-run under the corrected
+  live-accurate harness, the UNGATED sigexit family is ERA-INCONSISTENT (lockbox strongly + —
+  macd_rsi/sigexit +0.0172, sma_cross/sigexit +0.0098 — but recent-year NEGATIVE: sma_cross
+  −0.0051, macd_rsi −0.0067) → the 19 deployed ungated sigexit cells' backtest support is
+  WEAKER than iter 65 claimed; their live legs are now the honest adjudicator. Re-run with the
+  gate DELIBERATE (`--trend-gate`, new flag: SELF_DIRECTING = ∅ so every entry needs EMA9/21
+  agreement): **gated sma_cross reproduces iter-65 exactly and is cross-era positive on all 4
+  exits** — sigexit +0.0062 R / +0.0274 L (expR +0.13/+0.34, R/R 2.0-2.7), wide +0.0037/+0.0104;
+  gated macd/cci stay era-inconsistent (recent-negative). The gate is sma_cross-specific, not
+  family-wide.
+- **DEPLOY (additive, dev-only per tier rule — ~35% win = expectancy profile, staging-ineligible):**
+  `sma_cross_gated` — a registered twin of sma_cross deliberately NOT in SELF_DIRECTING_PATTERNS,
+  so the production detector trend-gates it (the checklist's 4th item now has a 5th variant: gated
+  patterns must ALSO be in exits.py's family tuple — done). × {sigexit, wide} × the 10 sweep pairs
+  = 20 new bots (exp_sigxg_/exp_wideg_), volume_ratio_min=1.1 (floor) to minimize the one
+  remaining harness↔live mismatch (harness volume gate is passthrough; live's is real). Fleet
+  228 → 248. Backfilled 720×1h candles/bot inside the new image, 248/248 heartbeating, CI green
+  (534b177). A/B vs the ungated exp_sigx_ arms is now LIVE in the forward test.
+- **RSI-CAP (idea #5's lead) — REFUTED cross-era:** `--rsi-cap` built as a registry-level gate
+  (blocks entries with direction-aligned RSI14 ≥ cap at the signal candle). Cap 70: removes only
+  3-8% of entries on the 1h leads, all deltas noise (±0.001), nothing rescued. Cap 65: improves
+  the RECENT era broadly (+0.002..+0.012) but WORSENS the lockbox on almost every cell —
+  **0/20 cells improve both eras**. Diagnosis: the archive-mined −46bps@RSI≥70 pattern came from
+  our OWN live trades, which are ALL recent-era — mining them found a recent-era regularity, and
+  the lockbox (which no self-mined dataset can contain) correctly rejects it. Textbook
+  multiple-testing defense; ledgered.
+- **FUNDING-TILT (idea #3) — built, NULL effect:** `scripts/fetch_funding.py` (Binance public
+  funding history — the ONLY surveyed venue with the 2-year depth the lockbox needs: gate caps
+  at 180d, okx ~3mo, bingx ~2mo; 1000PEPE fallback for sub-cent perps; cached under
+  reports/funding/) + `--funding-tilt X` (block the side PAYING ≥X%/8h at entry). At 0.02 it
+  drops ~1% of trades, at 0.05 ~0.2% — every delta ≤±0.0007 = dust. Root cause is in the rate
+  distribution itself: majors pin at the +0.01%/8h default cap ~70-85% of the time, so 1h cross
+  entries essentially never coincide with extreme funding. The ENTRY-GATE form is dead; the
+  still-untried forms are direction-correct funding ACCOUNTING and funding-HARVEST entries
+  (enter to RECEIVE the extreme rate) — the latter is the old §4-flagged structural idea.
+- **DEFLATED SHARPE (owed since iter 65) — FAIL everywhere:** live-accurate ungated family:
+  DSR 0.365 recent (best ensemble_3of4/sigexit_tp, PSR 0.776) / 0.658 lockbox (best
+  macd_rsi/sigexit, PSR 0.995). Deliberately-gated family: 0.292 recent / **0.834 lockbox**
+  (best sma_cross/sigexit, PSR 0.982) — the closest a lockbox DSR has come to the 0.95 bar but
+  still FAIL at every trial count. Status of the entire sigexit program stays: cross-era
+  forward-test lead, NOT a confirmed edge. §6 STATUS unchanged.
+- **OPS (same session):** (a) `write_candle` env bug found+fixed — a two-env-era fallback
+  (`"dev" if ... else "prod"`) stamped ALL staging/lab live-built candles env='prod'; 94,960 rows
+  backfilled in place (staging 84,960 / lab 10,066 incl. the malformed `labalpha-` bot_id), fix
+  baked into the rebuilt image, staging recreated onto it (env fix + iter-66b state patterns now
+  live in both tiers' images). (b) Disk watchdog (built iter 66) fired CRIT 96.5% at 15:01 —
+  freed 16.3GB via docker build-cache prune → 87%; the co-tenant growth pattern that caused the
+  2.5-day outage is still active, surface to owner. (c) Fleet-health false alarms resolved:
+  candle rows are stamped with OPEN time (a 15:00 close writes ts=14:00) and pattern-scan misses
+  write NO signal row — both now noted so future loop iterations don't re-chase them; 248 dev +
+  72 staging evaluating normally, zero ERROR/CRITICAL.
+- **NEXT:** (a) watch the gated-vs-ungated sma_cross A/B (exp_sigxg_/exp_wideg_ vs exp_sigx_) —
+  if the live legs agree with the harness, the ungated sigexit arms are churn candidates at the
+  next review; (b) staging high-win n≥100 program continues untouched; (c) funding-HARVEST
+  entries remain the one untried funding angle (needs its own validation design).
+- **CHECK STOP:** not met (no combo clears win≥70% at n≥100; DSR fails everywhere → no
+  validated edge; §6 STATUS unchanged).
 
 ### Iteration 66b — 2026-07-24 (OWNER "lets do it all" — idea batch executed: [1+2] state-entry/SAR family BUILT then cleanly REFUTED (over-trading grinds even gross points negative); [4a] BTC cross-asset gate BUILT, marginal, refuted as a rescue; [5] archive mining DONE → real lead: the RSI-overextension entry gate; [3] funding tilt queued)
 
