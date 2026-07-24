@@ -251,6 +251,15 @@ class Params:
     flow_gate_enabled: bool = False
     flow_gate_min_imbalance: float = 0.0
 
+    # --- indicator-based exits (signal/exits.py; owner-directed 2026-07-24) ---
+    # "" = off (price brackets only). "sigexit" closes when the ENTRY pattern's own
+    # indicator state reverses (MACD below signal / SMA death-state / CCI sign loss /
+    # ensemble agreement decay); "sigexit_rsi" adds an RSI-70/30 profit-take;
+    # "sigexit_tp" keeps a price TP and uses the reversal only as a cut-loss.
+    # Validated cross-era in the iter-65 sweep (dollar-+EV both eras, realistic fees
+    # + funding); price disaster-stops (SL/liquidation) always checked FIRST.
+    indicator_exit_mode: str = ""
+
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Params":
         """Construct Params from the params.json value-dict (extracts 'value' keys).

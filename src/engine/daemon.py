@@ -25,7 +25,7 @@ from typing import Optional
 
 from dotenv import load_dotenv
 
-from src.config import AppConfig, BucketState, Env, Params, SignalOutcome, load_params, round_trip_fee_pct
+from src.config import AppConfig, BucketState, Direction, Env, Params, SignalOutcome, load_params, round_trip_fee_pct
 from src.data.candle_builder import CandleBuilder
 from src.data.providers import get_data_feed
 from src.db import connection as db_conn
@@ -38,6 +38,7 @@ from src.execution.simulation import SimulationExecution
 from src.notify.telegram import TelegramNotifier
 from src.risk import manager as risk
 from src.signal.detector import evaluate
+from src.signal.exits import indicator_exit_reason
 from src.viz.dashboard import Dashboard
 
 # Fleet-wide open-slot reservations, shared across every Daemon instance in this
@@ -293,6 +294,20 @@ class Daemon:
             if exit_reason:
                 await self._close_position(candle.pair, exit_reason, candle)
                 return
+
+        # Indicator-based exit (signal/exits.py; owner-directed iter 65): only
+        # after the price checks above found nothing — SL/liquidation/TP always
+        # win over the indicator rule (mirrors the validated backtest ordering).
+        if open_trade is not None and self.params.indicator_exit_mode and self.cfg.enabled_patterns:
+            position = await self.execution.get_position(candle.pair)
+            if position is not None:
+                history = await db.load_recent_candles(self.cfg.bot_id, candle.pair, candle.timeframe, limit=120)
+                window = [_row_to_candle(r) for r in history]
+                direction = Direction.LONG if position["direction"] == "long" else Direction.SHORT
+                reason = indicator_exit_reason(window, direction, self.cfg.enabled_patterns[0], self.params)
+                if reason:
+                    await self._close_position(candle.pair, reason, candle)
+                    return
 
         # Check open positions for timeout on live
         positions = await self.execution.reconcile()
