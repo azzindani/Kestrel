@@ -611,6 +611,42 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 64 — 2026-07-24 (OWNER-REQUESTED WEEKLY RE-EVAL — honest program status: the points live leg has REGRESSED (n=83 pooled ~50.6% pwin / +7.4bps vs 65.8%/+26.4 at n=38; the post-iter-60 45 trades ran ~37% pwin ≈ −3.8σ vs thesis — real cooling, not noise, and NOT a restart artifact: restart-day trades were +37.8bps@60%); refreshed BOTH-ERA sweep still validates the family (45 cells clear the joint bar) → expanded dev 186→209, staging 60→83; disk watchdog BUILT; disk re-pruned 92%→84%)
+
+- **MEASURE (the honest bit first):** high-win program pooled n=83: ~50.6% points win / +7.4 bps
+  — BELOW the §6.1 joint bar it cleared at n=38. Decomposition: iter-60's first read (65.8%@n38)
+  + 45 subsequent trades at ~37% pwin/−26bps. Checked and CLEARED the restart-artifact theory
+  (Jul-20 restart-day trades were the GOOD ones). Regime mix stable (~45-50% quiet daily — not
+  the cause). Verdict: live regression is real but n is small; the §6.3 bar (70%@n≥100) decides —
+  at the current pace pooled n≥100 lands in ~1-2 weeks. NOT refuted, NOT confirmed; watch, don't
+  churn. Meanwhile: staging tracks its dev twins trade-for-trade (pipeline healthy), Rule-4
+  maker-aware works (0 fee_not_viable in 8d vs ~11% before), fleet cap fired 12× (working).
+  Dev baseline bleed continues (−$7.82/wk, 35.1% win — classic-geometry comparison tier, by
+  design). All six ≥50-trade dev arms are net<0/PF<1 — kept deliberately (activity backbone +
+  ensemble signal sources + owner's breadth mandate; the validated subsets live in staging).
+- **BACKTEST (refreshed window — does the backtest agree with the live cooling?):** re-ran the
+  full points sweep (5 algos × 4 hiwin exits × 10-pair core, --fees realistic --funding 0.01,
+  recent AND lockbox). Pooled recent-era numbers came DOWN vs the July-9 sweep (top cell +5.0bps
+  pooled vs +17-26 then) — the newest data weakened in-sample too, consistent with live. BUT the
+  per-pair joint bar still passes broadly: **45 cells clear pwin≥65 AND bps>0 in BOTH eras at
+  n≥25** (leaders: sma_cross/hiwin33 PEPE +10.1/+63.0, ensemble/hiwin43 ADA +8.2/+35.4,
+  ensemble/hiwin50 DOGE +25.6/+12.2; BTC negative-lockbox everywhere as always; HYPE strong
+  recent-only = unmeasurable in lockbox, excluded). 22 of the 45 were ALREADY deployed (the sweep
+  independently re-validates the current fleet); **23 are new cells → deployed additively to BOTH
+  tiers** (14 new arm names — every pattern/exit already registered; config-only deploy).
+  Fleet: dev 186→209, staging 60→83 (both verified heartbeating post-restart, new bot_ids
+  backfilled, nothing reset).
+- **OPS:** disk had refilled 92% (same co-tenant; prune-24h freed only 0.6GB — cache was fresh);
+  full `docker builder prune` freed 18.6GB → 84%. **Built the iter-63 follow-up: host-disk
+  watchdog** (`scripts/monitor_host.py` + `monitor-host` aux service in override.yml — host /
+  mounted ro, statvfs 5-min loop, WARN ≥88%/CRITICAL ≥94% → events+Telegram, 6h re-alert,
+  all-clear on recovery; alert-only by design, no docker socket). Verified running; silent at
+  84% as designed. 8 tests. Commit `24a7d34`.
+- **CHECK STOP:** neither condition holds. Honest posture: the program's live evidence WEAKENED
+  this week while its backtest breadth held — the next ~17 pooled trades close the §6.3 question.
+  If pooled pwin is still <60% at n≥100, the high-win thesis fails its own bar and the loop
+  should say so plainly.
+
 ### Iteration 63 — 2026-07-20 (INCIDENT: host disk filled to 100% at ~2026-07-17 13:48 UTC — another project on this shared VPS rebuilding multi-GB images repeatedly — killed the kestrel/staging/lab containers outright (docker could not even remount their filesystems); fleet SILENT for ~2.5 days until owner asked "why are trades stopping"; found + fixed TWO real bugs surfaced by the recovery, not market-related)
 
 - **TRIGGER:** owner — "i need you to check why the trades are stopping. is it market
