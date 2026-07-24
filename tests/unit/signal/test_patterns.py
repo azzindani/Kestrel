@@ -48,6 +48,10 @@ class TestRegistry:
             "cci_mom",
             "sma_cross",
             "ensemble_3of4",
+            "macd_state",
+            "sma_state",
+            "cci_state",
+            "ensemble_state",
         }
         assert expected == set(registry.keys())
 

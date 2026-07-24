@@ -48,6 +48,10 @@ SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
         "cci_mom",
         "sma_cross",
         "ensemble_3of4",
+        "macd_state",
+        "sma_state",
+        "cci_state",
+        "ensemble_state",
     }
 )
 
@@ -1014,6 +1018,110 @@ def detect_ensemble_3of4(candles: Sequence[Candle], params: Params) -> Optional[
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "ensemble_3of4", "votes_long": longs, "votes_short": shorts, **member_directions},
+    )
+
+
+# ---------------------------------------------------------------------------
+# State-based entry family (iter 66, owner-directed "lets do it all").
+#
+# CROSS patterns fire only on the crossing candle — a bot that is busy (or newly
+# deployed) misses the whole trend that follows. STATE patterns fire whenever the
+# aligned state HOLDS, so a flat bot can enter mid-trend, and — paired with
+# Params.indicator_exit_mode (signal/exits.py, the cross-era-validated iter-65
+# family) — the pair forms a STOP-AND-REVERSE system: the reversal exit closes
+# the position into the opposite state, which is exactly the state this entry
+# fires on at the next close. All four are self-directing (the state IS the
+# direction) and still pass every downstream gate (volume confirm, min
+# confidence, all six risk rules).
+# ---------------------------------------------------------------------------
+
+
+@register("macd_state")
+def detect_macd_state(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter in the direction of the current MACD-vs-signal-line STATE."""
+    if len(candles) < params.macd_slow + params.macd_signal + 1:
+        return None
+    m = _macd_lines([c.close for c in candles], params.macd_fast, params.macd_slow, params.macd_signal)
+    if m is None:
+        return None
+    macd_last, _, sig_last, _ = m
+    if macd_last == sig_last:
+        return None
+    direction = Direction.LONG if macd_last > sig_last else Direction.SHORT
+    return PatternResult(
+        pattern=PatternType.MACD_STATE,
+        direction=direction,
+        confidence=0.78,
+        details={"variant": "macd_state", "macd": round(macd_last, 8), "signal": round(sig_last, 8)},
+    )
+
+
+@register("sma_state")
+def detect_sma_state(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter in the direction of the current fast-vs-slow SMA STATE."""
+    closes = [c.close for c in candles]
+    fast = _sma(closes, params.sma_cross_fast)
+    slow = _sma(closes, params.sma_cross_slow)
+    if fast is None or slow is None or len(closes) < params.sma_cross_slow or fast == slow:
+        return None
+    direction = Direction.LONG if fast > slow else Direction.SHORT
+    return PatternResult(
+        pattern=PatternType.SMA_STATE,
+        direction=direction,
+        confidence=0.78,
+        details={"variant": "sma_state", "sma_fast": round(fast, 8), "sma_slow": round(slow, 8)},
+    )
+
+
+@register("cci_state")
+def detect_cci_state(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter while CCI HOLDS beyond its ±band (state, not breakout-candle-only)."""
+    if len(candles) < params.cci_period + 1:
+        return None
+    pair = _cci_pair(candles, params.cci_period)
+    if pair is None:
+        return None
+    cci_now, _ = pair
+    # ±100 is definitional for the CCI family (same constant as cci_mom's breakout).
+    if cci_now > 100.0:
+        direction = Direction.LONG
+    elif cci_now < -100.0:
+        direction = Direction.SHORT
+    else:
+        return None
+    return PatternResult(
+        pattern=PatternType.CCI_STATE,
+        direction=direction,
+        confidence=0.78,
+        details={"variant": "cci_state", "cci": round(cci_now, 2)},
+    )
+
+
+@register("ensemble_state")
+def detect_ensemble_state(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter while >=3 of the 4 member STATES agree (macd, sma, cci sign, rsi side)."""
+    if len(candles) < max(params.macd_slow + params.macd_signal + 1, params.sma_cross_slow, params.cci_period + 1):
+        return None
+    m = _macd_lines([c.close for c in candles], params.macd_fast, params.macd_slow, params.macd_signal)
+    closes = [c.close for c in candles]
+    fast, slow = _sma(closes, params.sma_cross_fast), _sma(closes, params.sma_cross_slow)
+    cci = _cci_pair(candles, params.cci_period)
+    rsi = candles[-1].rsi14
+    if m is None or fast is None or slow is None or cci is None or rsi is None:
+        return None
+    states = [m[0] > m[2], fast > slow, cci[0] > 0.0, rsi > 50.0]
+    ups = sum(states)
+    if ups >= 3:
+        direction = Direction.LONG
+    elif ups <= 1:
+        direction = Direction.SHORT
+    else:
+        return None
+    return PatternResult(
+        pattern=PatternType.ENSEMBLE_STATE,
+        direction=direction,
+        confidence=0.78,
+        details={"variant": "ensemble_state", "states_up": ups},
     )
 
 

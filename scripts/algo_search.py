@@ -884,7 +884,12 @@ def _install_search_gates(regime_filter: Optional[str] = None) -> None:
         detector.regime_permits_pattern = lambda regime, p: regime.name.lower() == want  # one regime only
     else:
         detector.regime_permits_pattern = lambda regime, p: True  # permit-all
-    detector.SELF_DIRECTING_PATTERNS = frozenset(_ALGOS)  # every algo self-directs
+    # Harness algos self-direct AND live-registry algos keep their production
+    # self-direction (previously the override dropped it — live-registry algos
+    # ran trend-gated in sweeps but self-directed live; iter-66 fix).
+    from src.signal.patterns import SELF_DIRECTING_PATTERNS as _LIVE_SD
+
+    detector.SELF_DIRECTING_PATTERNS = frozenset(_ALGOS) | _LIVE_SD
 
     def _pass_volume(candle: Candle, params: Params, mult: float) -> VolumeResult:
         return VolumeResult(
@@ -1019,16 +1024,16 @@ def _sigexit_reason(trade: dict, candle) -> "str | None":
         if (long and ind["rsi"] >= 70.0) or (not long and ind["rsi"] <= 30.0):
             return "indicator_tp"
 
-    if algo in ("macd_cross", "macd_rsi"):
+    if algo in ("macd_cross", "macd_rsi", "macd_state"):
         reversed_ = (not ind["macd_up"]) if long else ind["macd_up"]
         return "signal_exit" if reversed_ else None
-    if algo == "sma_cross":
+    if algo in ("sma_cross", "sma_state"):
         reversed_ = (not ind["sma_up"]) if long else ind["sma_up"]
         return "signal_exit" if reversed_ else None
-    if algo == "cci_mom":
+    if algo in ("cci_mom", "cci_state"):
         reversed_ = (ind["cci"] < 0.0) if long else (ind["cci"] > 0.0)
         return "signal_exit" if reversed_ else None
-    if algo == "ensemble_3of4":
+    if algo in ("ensemble_3of4", "ensemble_state"):
         # Member direction states; exit when agreement decays to <= 1 of 4.
         rsi_up = ind["rsi"] is not None and ind["rsi"] > 50.0
         states = [ind["macd_up"], ind["sma_up"], ind["cci"] > 0.0, rsi_up]
@@ -1396,6 +1401,13 @@ def main() -> None:
         "points win rate; ALSO bypasses risk Rule 3's R/R>=1.2 floor at runtime so the inverted-"
         "geometry hiwin* exit presets can trade (research-only patch; frozen risk file untouched)",
     )
+    ap.add_argument(
+        "--btc-gate",
+        action="store_true",
+        help="cross-ASSET gate (iter 66): also report every combo filtered to trades whose "
+        "direction agrees with BTC/USDT's SMA9/21 state at entry (BTC leads alts — different "
+        "from the refuted same-pair HTF confirm, which was cross-TIMEFRAME on the same asset)",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -1453,9 +1465,28 @@ def main() -> None:
     # pooled[(algo,exit)] = {"oos": [...], "ins": [...], "n_oos": int}
     pooled: dict[tuple[str, str], dict] = {c: {"oos": [], "ins": [], "n_oos": 0} for c in combos}
     pooled_htf: dict[tuple[str, str], dict] = {c: {"oos": [], "ins": [], "n_oos": 0} for c in combos}
+    pooled_btc: dict[tuple[str, str], dict] = {c: {"oos": [], "ins": [], "n_oos": 0} for c in combos}
     # by_pair[(algo,exit,pair)] = list of OOS trades (only when --by-pair)
     by_pair: dict[tuple[str, str, str], list] = {}
     skipped: list[str] = []
+
+    # BTC-state map for --btc-gate: ts -> True (SMA9>21 up-state on BTC/USDT).
+    btc_state: dict[int, bool] = {}
+    if args.btc_gate:
+        try:
+            _, btc_raw = fetch("BTC/USDT", args.tf, args.days)
+            btc_closes = [float(r[4]) for r in btc_raw]
+            btc_ts = [int(r[0]) for r in btc_raw]
+            for i in range(len(btc_closes)):
+                win = btc_closes[max(0, i - 20) : i + 1]
+                if len(win) >= 21:
+                    f = sum(win[-9:]) / 9.0
+                    s_ = sum(win[-21:]) / 21.0
+                    if f != s_:
+                        btc_state[btc_ts[i]] = f > s_
+            print(f"[btc-gate] BTC state map: {len(btc_state)} candles", flush=True)
+        except Exception as exc:  # noqa: BLE001 — gate degrades to off, main sweep unaffected
+            print(f"[btc-gate] BTC fetch failed ({type(exc).__name__}) — gate disabled", flush=True)
 
     for pi, pair in enumerate(pairs, 1):
         try:
@@ -1505,6 +1536,19 @@ def main() -> None:
                 dh["oos"].extend(t for t in confirmed if t["entry_ts"] >= split_ts)
                 dh["ins"].extend(t for t in confirmed if t["entry_ts"] < split_ts)
                 dh["n_oos"] += n_oos
+
+            if btc_state:
+                # Keep trades whose direction agrees with BTC's SMA state at entry.
+                agreed = [
+                    t
+                    for t in trades
+                    if btc_state.get(int(t["entry_ts"])) is not None
+                    and btc_state[int(t["entry_ts"])] == (t["direction"] == "long")
+                ]
+                db_ = pooled_btc[(algo, exit_name)]
+                db_["oos"].extend(t for t in agreed if t["entry_ts"] >= split_ts)
+                db_["ins"].extend(t for t in agreed if t["entry_ts"] < split_ts)
+                db_["n_oos"] += n_oos
 
     # Build leaderboard
     rows = []
@@ -1637,6 +1681,31 @@ def main() -> None:
             print(
                 f"  {algo:16s} {exit_name:5s} {mo['total_trades']:6d} {mo['avg_pnl_usdt']:9.4f} "
                 f"{mh['total_trades']:6d} {mh['avg_pnl_usdt']:9.4f} {mh['win_rate'] * 100:7.1f}% {kept_pct:5.1f}%",
+                flush=True,
+            )
+
+    if btc_state:
+        print(
+            "\n=== BTC-GATE (trades agreeing with BTC SMA9/21 state at entry — unfiltered vs gated) ===",
+            flush=True,
+        )
+        print(
+            f"  {'algo':16s} {'exit':11s} {'n_all':>6s} {'avg_all':>9s} {'n_btc':>6s} {'avg_btc':>9s} "
+            f"{'bps_btc':>8s} {'pwin_btc':>8s} {'kept%':>6s}",
+            flush=True,
+        )
+        for algo, exit_name in combos:
+            mo = bg._ext_metrics(pooled[(algo, exit_name)]["oos"], pooled[(algo, exit_name)]["n_oos"])
+            dbt = pooled_btc[(algo, exit_name)]
+            mb = bg._ext_metrics(dbt["oos"], dbt["n_oos"])
+            pb = _points_metrics(dbt["oos"])
+            if mo["total_trades"] == 0:
+                continue
+            kept_pct = 100.0 * mb["total_trades"] / mo["total_trades"] if mo["total_trades"] else 0.0
+            print(
+                f"  {algo:16s} {exit_name:11s} {mo['total_trades']:6d} {mo['avg_pnl_usdt']:9.4f} "
+                f"{mb['total_trades']:6d} {mb['avg_pnl_usdt']:9.4f} {pb['avg_bps']:+8.2f} "
+                f"{pb['win'] * 100:7.1f}% {kept_pct:5.1f}%",
                 flush=True,
             )
 
