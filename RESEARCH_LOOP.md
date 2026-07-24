@@ -611,6 +611,48 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 65 — 2026-07-24 (OWNER IDEA VALIDATED — indicator-based exits: "use indicator based profit taking or cut loss" → BUILT (backtest + live), SWEPT both eras, and it's THE BEST DOLLAR RESULT ON RECORD net of realistic fees + funding; 19 cross-era-+EV cells deployed → dev 228, staging 102)
+
+- **THE IDEA (owner):** exit on the SIGNAL's own state, not a price bracket — close when the
+  entry indicator reverses (cut-loss) or reaches an extreme (profit-take). Genuinely untested
+  here: every prior exit was a price bracket (ATR TP/SL, timeout, trailing).
+- **BUILT (backtest):** `sigexit` presets in algo_search.py via a `_check_exit` wrapper (frozen
+  runner untouched, monkeypatch precedent): price disaster-stops first, then the rule —
+  macd-below-signal / SMA death-state / CCI sign loss / ensemble agreement decay (state-based,
+  not cross-based); `sigexit_rsi` adds RSI-70/30 profit-taking; `sigexit_tp` hybrids a hiwin
+  bracket with the reversal cut. signal_exit/indicator_tp settle at close, taker under realistic
+  fees. Commit `05a7448`.
+- **SWEPT (5 algos × 3 modes × 10-pair core, --fees realistic --funding 0.01, recent + lockbox):**
+  - **Dollar scoreboard (net of ALL costs): sma_cross/sigexit recent +$1.51 (expR +0.13, R/R
+    2.00) / lockbox +$6.42 (expR +0.34, R/R 2.72)** — and in the lockbox year ALL FOUR leads are
+    strongly positive on pure signal-exits (macd_rsi +$14.99, cci_mom +$8.65, macd_cross +$7.01).
+    IS→OOS IMPROVES in both eras. Nothing in this project's history comes close.
+  - **19 cells dollar-+EV in BOTH eras**; combos with ≥3-pair cross-era breadth (the §29 deploy
+    bar): sma_cross/sigexit ×4 (ETH/DOGE/**BTC**/AVAX — BTC positive for the FIRST time in any
+    sweep), ensemble_3of4/sigexit_tp ×3 (ADA/AVAX/DOGE), macd_rsi/sigexit_tp ×3 (ADA/SOL/BNB).
+  - The hybrid `sigexit_tp` also BEATS the plain hiwin brackets on the points scoreboard
+    (ensemble: 75.2%@+8.0bps recent / 73.0%@+11.3 lockbox) — the reversal cut-loss helps the
+    high-win profile too.
+  - Two personalities, honestly framed: pure `sigexit` = ~32-36% win / big winners (expectancy
+    program — fails the pwin≥65 points bar BY DESIGN); `sigexit_tp` = 70-75% win (points
+    program). Deployed cells cover both.
+- **BUILT (live):** `src/signal/exits.py` (pure L1, reuses the SAME `_macd_lines/_sma/_cci_pair`
+  helpers as the entry patterns so exit tracks entry definitionally) +
+  `Params.indicator_exit_mode` (bots.json per-bot override; no range contract change — per-bot
+  overrides aren't range-validated, same as the hiwin presets) + daemon hook AFTER the price
+  checks (SL/liquidation always win — mirrors the backtest ordering exactly). New close_reasons
+  `signal_exit`/`indicator_tp` (TEXT column, no migration; same precedent as
+  orphaned_crash_recovery). 17 new tests (~610 green). Commit `2896cfd`.
+- **DEPLOYED (additive, nothing reset):** 19 cells × both tiers as exp_sigx_/exp_sigxr_/
+  exp_sigxtp_ arms — dev 209→228, staging 83→102 (heartbeats verified, 38 new bot_ids
+  backfilled; first backfill attempt ran in the OLD containers and rejected the new params key —
+  re-ran post-recreate). CI green.
+- **HONEST CAVEATS (stated once):** 15 combos were searched this iteration (multiple-testing risk
+  — no DSR run yet; queue it on the recent era before any promotion talk); the sigexit dollar
+  numbers assume taker market-outs on every reversal exit (conservative) but also assume the
+  disaster-SL fill; and this remains PAPER validation — the live legs start accumulating now.
+  The points program's own n≥100 verdict (iter 64) is unchanged and still lands in ~1-2 weeks.
+
 ### Iteration 64 — 2026-07-24 (OWNER-REQUESTED WEEKLY RE-EVAL — honest program status: the points live leg has REGRESSED (n=83 pooled ~50.6% pwin / +7.4bps vs 65.8%/+26.4 at n=38; the post-iter-60 45 trades ran ~37% pwin ≈ −3.8σ vs thesis — real cooling, not noise, and NOT a restart artifact: restart-day trades were +37.8bps@60%); refreshed BOTH-ERA sweep still validates the family (45 cells clear the joint bar) → expanded dev 186→209, staging 60→83; disk watchdog BUILT; disk re-pruned 92%→84%)
 
 - **MEASURE (the honest bit first):** high-win program pooled n=83: ~50.6% points win / +7.4 bps
