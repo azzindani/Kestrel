@@ -35,28 +35,28 @@ class TestCutoffMs:
 
 class TestLoadRules:
     def test_defaults_match_section_19_policy(self):
-        rules = {r.table: r.days for r in load_rules({})}
+        rules = {r.label: r.days for r in load_rules({})}
         assert rules["candles"] == 90
         assert rules["signals"] == 60
         assert rules["events"] == 30
 
     def test_microstructure_default_is_generous(self):
         # Irreplaceable research data — no historical L2 feed exists to re-fetch it.
-        rules = {r.table: r.days for r in load_rules({})}
+        rules = {r.label: r.days for r in load_rules({})}
         assert rules["microstructure"] >= 365
 
     def test_env_widens_retention(self):
         # Widening capacity must be a config change, not a code change.
-        rules = {r.table: r.days for r in load_rules({"CANDLES_RETENTION_DAYS": "365"})}
+        rules = {r.label: r.days for r in load_rules({"CANDLES_RETENTION_DAYS": "365"})}
         assert rules["candles"] == 365
 
     def test_zero_disables_that_table(self):
-        rules = {r.table: r.days for r in load_rules({"MICROSTRUCTURE_RETENTION_DAYS": "0"})}
+        rules = {r.label: r.days for r in load_rules({"MICROSTRUCTURE_RETENTION_DAYS": "0"})}
         assert rules["microstructure"] == 0
 
     def test_candles_rule_guards_trade_context_links(self):
         # §19: a candle referenced by trade_context is training data, kept forever.
-        candles = next(r for r in load_rules({}) if r.table == "candles")
+        candles = next(r for r in load_rules({}) if r.label == "candles")
         assert candles.guard_sql is not None
         assert "trade_context" in candles.guard_sql
         assert "NOT EXISTS" in candles.guard_sql
@@ -85,3 +85,59 @@ class TestSecondsUntilHour:
     def test_always_positive_across_the_day(self):
         for seconds_today in range(0, 86400, 907):
             assert 0 < seconds_until_hour(float(seconds_today), 3) <= 86400.0
+
+
+class TestFastTimeframeRetention:
+    """Fast-TF candles carry their own short window — the lever that lets `dev`
+    keep expanding (owner 2026-08-24) without breaking the 10GB budget.
+
+    Candles are stored PER bot_id, so N bots on one pair+timeframe store N copies.
+    A 5m bot writes ~351 KB/day; held for the 90-day §19 window a 204-bot cohort
+    would be ~6.4 GB on its own. Nothing reads that depth: bots warm up on ~120
+    candles and algo_search fetches OHLCV from ccxt, not from this table.
+    """
+
+    def test_fast_window_is_much_shorter_than_slow(self):
+        rules = {r.label: r.days for r in load_rules({})}
+        assert rules["candles_fast"] < rules["candles"]
+
+    def test_default_fast_window(self):
+        rules = {r.label: r.days for r in load_rules({})}
+        assert rules["candles_fast"] == 21
+
+    def test_slow_window_still_section_19(self):
+        # 1h bootstrap needs 720 candles ~= 30 days; the 90-day policy is untouched.
+        rules = {r.label: r.days for r in load_rules({})}
+        assert rules["candles"] == 90
+
+    def test_both_rules_target_the_candles_table(self):
+        candle_rules = [r for r in load_rules({}) if r.table == "candles"]
+        assert len(candle_rules) == 2
+
+    def test_windows_partition_the_table(self):
+        # Every candle must fall under exactly one rule: IN (...) and NOT IN (...)
+        # over the same list, so no row is swept twice and none is orphaned.
+        fast = next(r for r in load_rules({}) if r.label == "candles_fast")
+        slow = next(r for r in load_rules({}) if r.label == "candles")
+        assert "timeframe IN (" in fast.filter_sql
+        assert "timeframe NOT IN (" in slow.filter_sql
+        tfs = fast.filter_sql.split("IN (")[1].rstrip(")")
+        assert slow.filter_sql.split("NOT IN (")[1].rstrip(")") == tfs
+
+    def test_fast_rule_still_protects_linked_candles(self):
+        # The trade_context guard must apply to BOTH windows, not just the slow one.
+        fast = next(r for r in load_rules({}) if r.label == "candles_fast")
+        assert fast.guard_sql is not None and "trade_context" in fast.guard_sql
+
+    def test_fast_list_is_configurable(self):
+        fast = next(r for r in load_rules({"FAST_TF_LIST": "1m,5m"}) if r.label == "candles_fast")
+        assert "'1m'" in fast.filter_sql and "'5m'" in fast.filter_sql
+        assert "'15m'" not in fast.filter_sql
+
+    def test_fast_window_is_configurable(self):
+        rules = {r.label: r.days for r in load_rules({"CANDLES_FAST_RETENTION_DAYS": "45"})}
+        assert rules["candles_fast"] == 45
+
+    def test_zero_disables_fast_sweep(self):
+        rules = {r.label: r.days for r in load_rules({"CANDLES_FAST_RETENTION_DAYS": "0"})}
+        assert rules["candles_fast"] == 0

@@ -70,6 +70,12 @@ class PatternType(str, Enum):
     SMA_STATE = "sma_state"
     CCI_STATE = "cci_state"
     ENSEMBLE_STATE = "ensemble_state"
+    # Bollinger-band break (2026-08-24). Registered off the 5m hiwin sweep, where it
+    # was the HIGHEST-WIN entry of 24 cells (71.8% @ hiwin33, n=2544) and the best
+    # dollar result among them — the owner's "high win rate" tier needs a live
+    # pattern that actually produces one. State-based like the *_STATE family: it
+    # fires while price sits outside the band, not only on the breaking candle.
+    BB_BREAK = "bb_break"
     # Trend-gated twin (iter 67): sma_cross entries WITHOUT self-direction, so the
     # detector's EMA9/21 trend filter must agree. The iter-65 sigexit validation
     # unknowingly ran under this gating (pre-iter-66b harness) and it was the

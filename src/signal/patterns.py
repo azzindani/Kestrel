@@ -52,6 +52,7 @@ SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
         "sma_state",
         "cci_state",
         "ensemble_state",
+        "bb_break",
     }
 )
 
@@ -1185,4 +1186,60 @@ def detect_session_seasonal(candles: Sequence[Candle], params: Params) -> Option
         direction=Direction.LONG,
         confidence=0.65,  # half-conviction band — marginal, maker-only signal
         details={"utc_hour": hour, "window_start": start, "window_hours": window},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: bb_break (close outside the Bollinger band) — 2026-08-24, owner tier
+# directive "implement high winrate to 'stage' and 'lab' ... the winrate is still
+# very bad".
+#
+# Selected off a 480-backtest 5m sweep (scripts/algo_search.py, maker fees + perp
+# funding, 10 pairs, both bracket families). Under the hiwin33 inverted bracket it
+# was the HIGHEST-WIN cell of 24 — 71.8% win at n=2544 — and simultaneously the
+# best dollar result of that family, holding 62-72% win across every hiwin
+# geometry. Six independent algorithms clustered at 68-72% there, so the win rate
+# is a property of the GEOMETRY, not of this entry; bb_break is simply the best
+# expression of it and the only one that was not already registered.
+#
+# HONEST STATUS (§6): still net-NEGATIVE (-$0.0052/trade). At R/R 0.21 a 71.8%
+# win rate is ~11 points short of the ~82.6% break-even that geometry demands, and
+# it was +EV on 0/10 pairs by dollars. This is deployed as the high-win FORWARD
+# TEST the owner's lab/staging tiers are defined around -- it delivers the win
+# rate, NOT an edge, and nothing here is prod-eligible.
+#
+# State-based (fires while price sits outside the band, not only on the breaking
+# candle), matching the validated algo_search form exactly -- an edge-triggered
+# variant would be a different, unvalidated signal. Self-directing: the band side
+# sets the direction, so it bypasses the trend gate but still clears volume,
+# min-confidence and every risk rule.
+# ---------------------------------------------------------------------------
+@register("bb_break")
+def detect_bb_break(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter in the break direction while price closes outside the Bollinger band."""
+    if not candles:
+        return None
+    c = candles[-1]
+    # Explicit absence: indicators are None until the BB window has warmed up.
+    if c.bb_upper is None or c.bb_lower is None:
+        return None
+
+    direction: Optional[Direction] = None
+    if c.close > c.bb_upper:
+        direction = Direction.LONG
+    elif c.close < c.bb_lower:
+        direction = Direction.SHORT
+    if direction is None:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.BB_BREAK,
+        direction=direction,
+        confidence=0.78,  # full-size band, matching the other momentum patterns
+        details={
+            "variant": "bb_break",
+            "close": c.close,
+            "bb_upper": c.bb_upper,
+            "bb_lower": c.bb_lower,
+        },
     )
