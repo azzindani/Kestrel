@@ -39,7 +39,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
-from typing import Any
+from typing import Any, Optional
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -51,6 +51,19 @@ _HIWIN33: dict[str, Any] = {
     "tp_atr_multiplier": 0.5,
     "sl_atr_multiplier": 1.5,
     "max_hold_candles": 6,
+    "trailing_enabled": False,
+    "volume_ratio_min": 1.1,
+    "max_loss_pct_per_trade": 0.01,
+}
+
+# The conventional bracket (R/R 1.4). Used by the vwma_cross preset: that entry's
+# measured edge lives HERE, not under the inverted geometry — the same signal ran
+# -0.00 bps recent / -2.29 bps lockbox on hiwin33 versus +0.86 / +0.90 on tight.
+# Pairing an entry with the wrong bracket throws the signal away.
+_TIGHT: dict[str, Any] = {
+    "tp_atr_multiplier": 1.4,
+    "sl_atr_multiplier": 1.0,
+    "max_hold_candles": 4,
     "trailing_enabled": False,
     "volume_ratio_min": 1.1,
     "max_loss_pct_per_trade": 0.01,
@@ -78,14 +91,23 @@ _TF = "5m"
 _LABEL_PREFIX = "hw33"
 
 
-def make_bot(env: str, pair: str, arm: str) -> dict[str, Any]:
-    """Pure: one bot config for (env, pair, arm) on the 5m hiwin33 geometry.
+def make_bot(
+    env: str,
+    pair: str,
+    arm: str,
+    prefix: str = _LABEL_PREFIX,
+    bracket: Optional[dict[str, Any]] = None,
+) -> dict[str, Any]:
+    """Pure: one bot config for (env, pair, arm) on a 5m bracket.
+
+    `prefix` is the strategy-label prefix (empty string = the bare arm name, the
+    baseline-cohort convention); `bracket` defaults to hiwin33.
 
     bot_id is `{env}-{PAIR}-{tf}-{strategy}-01`; the dashboards key their
     per-strategy panels on split_part(bot_id,'-',4), so the strategy label must
     contain no dashes.
     """
-    strategy = f"{_LABEL_PREFIX}_{arm}"
+    strategy = f"{prefix}_{arm}" if prefix else arm
     symbol = pair.replace("/", "")
     return {
         "bot_id": f"{env}-{symbol}-{_TF}-{strategy}-01",
@@ -95,13 +117,19 @@ def make_bot(env: str, pair: str, arm: str) -> dict[str, Any]:
         "max_active_buckets": 1,
         "strategy": strategy,
         "patterns": [arm],
-        "params": dict(_HIWIN33),
+        "params": dict(bracket if bracket is not None else _HIWIN33),
     }
 
 
-def build_tier(env: str, pairs: list[str], arms: list[str]) -> list[dict[str, Any]]:
+def build_tier(
+    env: str,
+    pairs: list[str],
+    arms: list[str],
+    prefix: str = _LABEL_PREFIX,
+    bracket: Optional[dict[str, Any]] = None,
+) -> list[dict[str, Any]]:
     """Pure: the full arm x pair grid for one tier."""
-    return [make_bot(env, pair, arm) for arm in arms for pair in pairs]
+    return [make_bot(env, pair, arm, prefix, bracket) for arm in arms for pair in pairs]
 
 
 def merge_additive(existing: list[dict[str, Any]], new: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
@@ -134,14 +162,22 @@ def _save(path: str, bots: list[dict[str, Any]], original: Any) -> None:
         fh.write("\n")
 
 
-def apply_tier(path: str, env: str, pairs: list[str], arms: list[str], dry_run: bool) -> tuple[int, int]:
+def apply_tier(
+    path: str,
+    env: str,
+    pairs: list[str],
+    arms: list[str],
+    dry_run: bool,
+    prefix: str = _LABEL_PREFIX,
+    bracket: Optional[dict[str, Any]] = None,
+) -> tuple[int, int]:
     """I/O shell: merge one tier's grid into its bots file. Returns (added, total)."""
     original: Any = []
     if os.path.exists(path):
         with open(path) as fh:
             original = json.load(fh)
     existing = _load(path)
-    merged, added = merge_additive(existing, build_tier(env, pairs, arms))
+    merged, added = merge_additive(existing, build_tier(env, pairs, arms, prefix, bracket))
     if not dry_run:
         _save(path, merged, original)
     return added, len(merged)
@@ -155,6 +191,14 @@ def main() -> None:
         default="all",
         help="'all' for the full pair universe already in bots.json, or a comma list",
     )
+    ap.add_argument(
+        "--preset",
+        default="hiwin33",
+        choices=["hiwin33", "vwma_cross"],
+        help="hiwin33: the 6-arm high-win grid across dev/lab/staging (default). "
+        "vwma_cross: the volume-weighted entry on the TIGHT bracket, DEV ONLY — its "
+        "43-46%% win rate bars it from lab/staging under the owner's high-win tier rule.",
+    )
     args = ap.parse_args()
 
     dev_path = os.path.join(_ROOT, "bots.json")
@@ -163,24 +207,38 @@ def main() -> None:
     else:
         dev_pairs = [p.strip() for p in args.dev_pairs.split(",") if p.strip()]
 
-    plan = [
-        # dev: the full grid — the always-expanding data-collection tier.
-        (dev_path, "dev", dev_pairs, _ARMS),
-        # lab: the sorted tier — every high-win arm, but only the liquid pairs.
-        (os.path.join(_ROOT, "bots.lab.json"), "lab", _CORE_PAIRS, _ARMS),
-        # staging: pre-prod candidates — the top three arms by measured win rate.
-        (os.path.join(_ROOT, "bots.staging.json"), "staging", _CORE_PAIRS[:8], _ARMS[:3]),
-    ]
+    if args.preset == "vwma_cross":
+        # DEV ONLY, deliberately. vwma_cross wins 43-46% of its trades, so the
+        # owner's tier rule (staging/lab = high-win DESIGN only) excludes it from
+        # both curated tiers however stable its gross signal is. It also takes the
+        # TIGHT bracket, not hiwin33 — see _TIGHT.
+        plan = [(dev_path, "dev", dev_pairs, ["vwma_cross"], "", _TIGHT)]
+    else:
+        plan = [
+            # dev: the full grid — the always-expanding data-collection tier.
+            (dev_path, "dev", dev_pairs, _ARMS, _LABEL_PREFIX, _HIWIN33),
+            # lab: the sorted tier — every high-win arm, but only the liquid pairs.
+            (os.path.join(_ROOT, "bots.lab.json"), "lab", _CORE_PAIRS, _ARMS, _LABEL_PREFIX, _HIWIN33),
+            # staging: pre-prod candidates — the top three arms by measured win rate.
+            (
+                os.path.join(_ROOT, "bots.staging.json"),
+                "staging",
+                _CORE_PAIRS[:8],
+                _ARMS[:3],
+                _LABEL_PREFIX,
+                _HIWIN33,
+            ),
+        ]
 
     report: dict[str, dict[str, int]] = {}
-    for path, env, pairs, arms in plan:
-        added, total = apply_tier(path, env, pairs, arms, args.dry_run)
+    for path, env, pairs, arms, prefix, bracket in plan:
+        added, total = apply_tier(path, env, pairs, arms, args.dry_run, prefix, bracket)
         report[env] = {"added": added, "tier_total": total, "pairs": len(pairs), "arms": len(arms)}
 
     # This is a build tool, not a daemon: its result goes to stdout for the operator
     # (the §3 no-print rule governs the trading daemon's logging path, which is the
     # events table). Kept to a single machine-readable line.
-    print(json.dumps({"dry_run": args.dry_run, "tiers": report}, indent=2))
+    print(json.dumps({"preset": args.preset, "dry_run": args.dry_run, "tiers": report}, indent=2))
 
 
 if __name__ == "__main__":

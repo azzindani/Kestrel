@@ -53,6 +53,7 @@ SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
         "cci_state",
         "ensemble_state",
         "bb_break",
+        "vwma_cross",
     }
 )
 
@@ -162,6 +163,22 @@ def _sma(values: Sequence[float], n: int) -> Optional[float]:
     if len(values) < n:
         return None
     return sum(values[-n:]) / n
+
+
+def _vwma(candles: Sequence[Candle], n: int) -> Optional[float]:
+    """Volume-weighted moving average over the last ``n`` candles, or None.
+
+    sum(close*volume)/sum(volume) — the average price weighted by where the volume
+    actually traded. Candles don't store it, so it is computed inline by the same
+    method as scripts/algo_search.py so the live pattern matches the backtested one.
+    """
+    if len(candles) < n:
+        return None
+    window = candles[-n:]
+    volume = sum(float(c.volume) for c in window)
+    if volume <= 0.0:
+        return None  # explicit absence: a zero-volume window has no VWMA
+    return sum(float(c.close) * float(c.volume) for c in window) / volume
 
 
 def _cci_pair(candles: Sequence[Candle], period: int) -> Optional[tuple[float, float]]:
@@ -1242,4 +1259,69 @@ def detect_bb_break(candles: Sequence[Candle], params: Params) -> Optional[Patte
             "bb_upper": c.bb_upper,
             "bb_lower": c.bb_lower,
         },
+    )
+
+
+# ---------------------------------------------------------------------------
+# Pattern: vwma_cross (close crosses the volume-weighted moving average).
+# Owner-directed dev forward test, 2026-08-24.
+#
+# The first registry entry whose SIGNAL uses volume rather than price alone —
+# every other entry is price-only, with volume appearing solely as the detector's
+# volume_ratio gate. Selected off a cross-era 5m sweep (scripts/algo_search.py,
+# maker fees + perp funding, 10 pairs, both bracket families) where it produced
+# the strongest GROSS entry on record and, unusually, an almost identical one in
+# both eras:
+#
+#     recent year : +0.86 bps  (n=2,618)
+#     prior-year lockbox: +0.90 bps  (n=2,479)
+#
+# Cross-era stability at that sample size is rare here — most candidates look good
+# in the recent year and collapse in the untouched lockbox. That makes this a real
+# directional signal rather than noise.
+#
+# HONEST STATUS (§6): it still LOSES. ~0.9 bps of gross signal against a ~4 bps
+# maker round-trip is roughly 4x short, and dollars were +EV on 0/10 pairs recent
+# and 1/9 lockbox. Nothing here clears §30 or the points bar. It is deployed to DEV
+# ONLY as a forward test of a stable signal; its win rate (43-46%) also bars it from
+# staging under the owner's high-win tier rule.
+#
+# BRACKET MATTERS: the signal lives under the TIGHT bracket (tp 1.4 / sl 1.0 /
+# hold 4). Under the inverted hiwin33 geometry the same entry ran -0.00 bps recent
+# and -2.29 bps lockbox — do not pair this entry with the hiwin brackets.
+#
+# Edge-triggered (fires on the crossing candle only), matching the validated
+# algo_search form. Self-directing: the cross side sets the direction, so it
+# bypasses the trend gate but still clears volume, min-confidence and every risk
+# rule.
+# ---------------------------------------------------------------------------
+_VWMA_PERIOD = 20
+
+
+@register("vwma_cross")
+def detect_vwma_cross(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter when close crosses the VWMA — a move the traded volume backs."""
+    if len(candles) < _VWMA_PERIOD + 1:
+        return None
+    now = _vwma(candles, _VWMA_PERIOD)
+    prev = _vwma(candles[:-1], _VWMA_PERIOD)
+    if now is None or prev is None:
+        return None
+
+    close_now = float(candles[-1].close)
+    close_prev = float(candles[-2].close)
+
+    direction: Optional[Direction] = None
+    if close_prev <= prev and close_now > now:
+        direction = Direction.LONG  # price crosses up through the volume-weighted average
+    elif close_prev >= prev and close_now < now:
+        direction = Direction.SHORT
+    if direction is None:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.VWMA_CROSS,
+        direction=direction,
+        confidence=0.78,  # full-size band, matching the other momentum patterns
+        details={"variant": "vwma_cross", "vwma": round(now, 8), "close": close_now},
     )

@@ -62,6 +62,13 @@ class PatternType(str, Enum):
     CCI_MOM = "cci_mom"
     SMA_CROSS = "sma_cross"
     ENSEMBLE_3OF4 = "ensemble_3of4"
+    # Volume-weighted price cross (2026-08-24). The first entry in the registry
+    # whose signal uses VOLUME rather than price alone. Registered off a cross-era
+    # sweep where it was the strongest GROSS entry on record and near-identical
+    # across two independent years (+0.86 bps recent / +0.90 bps prior-year
+    # lockbox, n~2,500 each) — still ~4x short of the maker fee floor, so this is
+    # a dev forward test of a stable signal, not an edge.
+    VWMA_CROSS = "vwma_cross"
     # State-based entries (iter 66, owner "lets do it all"): fire while the
     # indicator STATE holds, not only on the crossing candle — paired with
     # indicator_exit_mode=sigexit they form a stop-and-reverse system (the
