@@ -6,7 +6,7 @@ import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from src.signal.memory import adjust_confidence, should_suppress, updated_memory
+from src.signal.memory import adjust_confidence, memory_is_active, should_suppress, updated_memory
 
 # ---------------------------------------------------------------------------
 # adjust_confidence
@@ -181,3 +181,40 @@ class TestUpdatedMemory:
             )
         if m is not None:
             assert 0.0 <= m["win_rate"] <= 1.0
+
+
+class TestMemoryTierGate:
+    """Pattern memory INFLUENCES decisions only in the curated tiers.
+
+    pattern_memory is keyed (pattern, direction, session, regime) with no env
+    column (§19), so its statistics are unavoidably global — every tier reads the
+    same rows. Scoping the ACTION is therefore the only lever, and dev must be
+    excluded for two independent reasons: it would confound the forward test the
+    way PortfolioGuard did before v2.5, and should_suppress() fires below a 35%
+    win rate while dev's baseline cohorts run 23.7-34.6%, so enabling it there
+    would silently mute much of the fleet against the §6 activity mandate.
+    """
+
+    def test_dev_is_excluded(self):
+        assert not memory_is_active("dev")
+
+    def test_staging_is_active(self):
+        assert memory_is_active("staging")
+
+    def test_lab_is_active(self):
+        assert memory_is_active("lab")
+
+    def test_prod_is_excluded_until_explicitly_enabled(self):
+        # prod is empty and unbuilt; it must not inherit the behaviour by accident.
+        assert not memory_is_active("prod")
+
+    def test_unknown_env_is_inert(self):
+        assert not memory_is_active("")
+        assert not memory_is_active("something-else")
+
+    def test_inactive_tier_routes_through_the_no_memory_path(self):
+        # The gate works by passing None, which every function already handles.
+        strong = {"sample_count": 500, "win_rate": 0.05}
+        assert should_suppress("p", "long", "london", "TRENDING", strong) is True
+        assert should_suppress("p", "long", "london", "TRENDING", None) is False
+        assert adjust_confidence(0.78, None) == 0.78
