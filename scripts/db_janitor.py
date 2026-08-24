@@ -166,6 +166,7 @@ async def run_sweep(cfg: AppConfig, notifier: TelegramNotifier) -> None:
     rules = load_rules(dict(os.environ))
     now_ms = int(time.time() * 1000)
     results: dict[str, dict[str, int]] = {}
+    vacuum_errors: dict[str, str] = {}
 
     async with db_conn.acquire() as conn:
         before = await table_sizes(conn)
@@ -176,7 +177,18 @@ async def run_sweep(cfg: AppConfig, notifier: TelegramNotifier) -> None:
             if results[rule.table]["deleted"] > 0:
                 # VACUUM cannot run inside a transaction block; the pool hands out
                 # plain autocommit connections, so this is safe here.
-                await conn.execute(f"VACUUM ANALYZE {rule.table}")
+                #
+                # Isolated per table because a VACUUM failure must never discard the
+                # sweep: the DELETEs are already committed by this point, so letting
+                # the exception escape would lose the whole report and leave the run
+                # looking like it never happened. Seen for real on the first sweep —
+                # VACUUM died on a 64MB /dev/shm (since raised to 512m in the compose
+                # override) *after* every row had been deleted successfully.
+                # Reclaiming the dead space is autovacuum's job if this fails.
+                try:
+                    await conn.execute(f"VACUUM ANALYZE {rule.table}")
+                except Exception as exc:  # noqa: BLE001 — report it, never abort the sweep
+                    vacuum_errors[rule.table] = type(exc).__name__
 
         after = await table_sizes(conn)
 
@@ -187,7 +199,7 @@ async def run_sweep(cfg: AppConfig, notifier: TelegramNotifier) -> None:
         _BOT_ID,
         _SESSION,
         cfg.env.value,
-        "INFO",
+        "WARN" if vacuum_errors else "INFO",
         "system",
         "db_retention_sweep",
         {
@@ -195,6 +207,7 @@ async def run_sweep(cfg: AppConfig, notifier: TelegramNotifier) -> None:
             "retention_days": {r.table: r.days for r in rules},
             "bytes_freed": freed,
             "total_deleted": total_deleted,
+            "vacuum_errors": vacuum_errors,
         },
     )
     if total_deleted > 0:
