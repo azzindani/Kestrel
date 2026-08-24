@@ -1085,6 +1085,75 @@ def _install_rsi_cap(cap: float) -> None:
         registry[name] = _gate(registry[name])
 
 
+# Opposition bench for --adversarial-gate. These MUST be STATE-based signals —
+# ones that hold a direction on every candle — not edge-triggered crosses.
+#
+# Measured on BTC/USDT 5m (2,760 candles, 2026-08-24): the edge-triggered family
+# fires on only 6-11% of candles (macd_cross 7.6%, sma_cross_9_21 6.0%, cci_mom
+# 9.0%, rsi_cross_50 10.7%). A bench built from those is SILENT ~85% of the time,
+# so there is no counter-case to weigh and the gate is inert — the first version of
+# this panel used exactly those and vetoed 1 trade out of 2,557. The state family
+# always has an opinion (macd_state 100%, sma_state 100%, cci_state 40.4%), which
+# is what "is the bear case live right now?" actually requires.
+#
+# ensemble_state is deliberately EXCLUDED: it is a composite of these same three,
+# so including it would count the same evidence twice.
+_ADVERSARY_PANEL: tuple[str, ...] = (
+    "macd_state",
+    "sma_state",
+    "cci_state",
+)
+
+
+def _install_adversarial_gate(min_opponents: int) -> None:
+    """Entry gate: veto a signal when >= min_opponents INDEPENDENT signals point the
+    other way on the same candle.
+
+    Idea adapted from TauricResearch/TradingAgents (Apache-2.0), whose researcher
+    team argues an explicit bull case AND bear case before the trader commits. The
+    transferable part is not their LLM debate — which cannot run per-candle at 5m on
+    latency or cost — but the DECISION RULE underneath it: require the counter-case
+    to be weak, rather than requiring agreement to be strong.
+
+    That is a genuinely different filter from our ensemble_3of4, which counts
+    agreement. Agreement-counting keeps a trade when 3 signals fire long and 1 fires
+    short; this rejects it, because a live opposing case exists. It is strictly a
+    veto layer — it never creates an entry, only removes one — so it can only reduce
+    trade count, and it earns its place only if it removes losers faster than winners.
+
+    Every registry entry is wrapped so the gate applies uniformly however the entry
+    was registered (same approach as _install_rsi_cap). The panel functions are
+    SNAPSHOTTED before wrapping: reading them out of the live registry afterwards
+    would make each gated call re-enter the gate through its own opponents.
+    """
+    # Snapshot BEFORE wrapping — see docstring.
+    bench = {name: registry[name] for name in _ADVERSARY_PANEL if name in registry}
+
+    def _gate(own_name: str, fn: EntryFn) -> EntryFn:
+        def gated(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+            res = fn(candles, params)
+            if res is None:
+                return None
+            opposed = 0
+            for opp_name, opp_fn in bench.items():
+                if opp_name == own_name:
+                    continue  # a signal cannot argue against itself
+                try:
+                    other = opp_fn(candles, params)
+                except Exception:  # noqa: BLE001 — a broken opponent must not kill the sweep
+                    continue
+                if other is not None and other.direction is not res.direction:
+                    opposed += 1
+                    if opposed >= min_opponents:
+                        return None
+            return res
+
+        return gated
+
+    for name in list(registry):
+        registry[name] = _gate(name, registry[name])
+
+
 # Per-pair funding-event maps for --funding-tilt, filled in main() once the pair
 # list is known: {pair: [(ts_ms, rate_frac) ascending]}. Pairs absent here are
 # ungated (no funding data — e.g. venue never listed the perp).
@@ -1506,6 +1575,18 @@ def main() -> None:
         ">= this value. 0 = off. Mined lead: aligned RSI>=70 ran -46.4bps @ 27%% win over "
         "1,311 live trades.",
     )
+    ap.add_argument(
+        "--adversarial-gate",
+        type=int,
+        default=0,
+        dest="adversarial_gate",
+        help="entry gate (2026-08-24, adapted from TauricResearch/TradingAgents' bull-vs-bear "
+        "debate): veto an entry when >= N independent signals of DIFFERENT families "
+        "(macd_state, sma_state, cci_state -- STATE signals that hold a direction every candle) point the opposite "
+        "way on the same candle. 0 = off; 1 = strictest (any live counter-case vetoes). "
+        "Distinct from ensemble_3of4, which counts AGREEMENT rather than requiring the "
+        "counter-case to be weak. Veto-only: it can never create a trade.",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -1525,6 +1606,13 @@ def main() -> None:
     if args.rsi_cap > 0.0:
         _install_rsi_cap(args.rsi_cap)
         print(f"[rsi-cap] entry gate armed: aligned RSI >= {args.rsi_cap:g} blocks entry", flush=True)
+    if args.adversarial_gate > 0:
+        _install_adversarial_gate(args.adversarial_gate)
+        print(
+            f"[adversarial-gate] armed: entry vetoed when >= {args.adversarial_gate} of "
+            f"{len(_ADVERSARY_PANEL)} independent signals oppose it",
+            flush=True,
+        )
     if args.points:
         # Rule 3 (tp/sl >= 1.2) would reject every hiwin bracket at the door. Bypass the
         # floor in THIS research process only — the same runtime-patch precedent as
