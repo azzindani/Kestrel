@@ -113,6 +113,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "ensemble_state",
                 "sma_cross_gated",
                 "bb_break",
+                "vwma_cross",
             }
         ),
         Regime.VOLATILE: frozenset(
@@ -137,6 +138,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "ensemble_state",
                 "sma_cross_gated",
                 "bb_break",
+                "vwma_cross",
             }
         ),
         Regime.RANGING: frozenset(
@@ -159,6 +161,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "ensemble_state",
                 "sma_cross_gated",
                 "bb_break",
+                "vwma_cross",
             }
         ),
         Regime.QUIET: frozenset(),

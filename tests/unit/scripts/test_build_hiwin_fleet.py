@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "sc
 from build_hiwin_fleet import (  # noqa: E402
     _ARMS,
     _HIWIN33,
+    _TIGHT,
     build_tier,
     make_bot,
     merge_additive,
@@ -126,3 +127,38 @@ class TestMergeAdditive:
         existing = build_tier("dev", ["BTC/USDT"], ["mom_adx"])
         merged, _ = merge_additive(existing, build_tier("dev", ["ETH/USDT"], ["bb_break"]))
         assert all(b in merged for b in existing)
+
+
+class TestVwmaCrossPreset:
+    """vwma_cross rides the TIGHT bracket, not the inverted one.
+
+    The measured edge is bracket-specific: +0.86/+0.90 bps across two eras on
+    tight, versus -0.00/-2.29 on hiwin33. Pairing the entry with the wrong
+    geometry discards the signal entirely, so this is worth pinning.
+    """
+
+    def test_bare_label_when_prefix_empty(self):
+        # Baseline-cohort convention: strategy label is the arm name itself.
+        bot = make_bot("dev", "BTC/USDT", "vwma_cross", "", _TIGHT)
+        assert bot["strategy"] == "vwma_cross"
+        assert bot["bot_id"] == "dev-BTCUSDT-5m-vwma_cross-01"
+        assert bot["bot_id"].split("-")[3] == "vwma_cross"
+
+    def test_uses_tight_bracket(self):
+        bot = make_bot("dev", "BTC/USDT", "vwma_cross", "", _TIGHT)
+        assert bot["params"]["tp_atr_multiplier"] == 1.4
+        assert bot["params"]["sl_atr_multiplier"] == 1.0
+
+    def test_tight_is_not_inverted(self):
+        # The distinguishing property versus the hiwin family.
+        assert _TIGHT["tp_atr_multiplier"] > _TIGHT["sl_atr_multiplier"]
+
+    def test_tight_clears_risk_rule_3(self):
+        assert _TIGHT["tp_atr_multiplier"] / _TIGHT["sl_atr_multiplier"] >= 0.25
+
+    def test_default_prefix_still_hiwin(self):
+        # The default path must be unchanged by the parameterisation.
+        assert make_bot("dev", "BTC/USDT", "bb_break")["strategy"] == "hw33_bb_break"
+
+    def test_default_bracket_still_hiwin33(self):
+        assert make_bot("dev", "BTC/USDT", "bb_break")["params"] == dict(_HIWIN33)
