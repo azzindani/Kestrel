@@ -659,6 +659,116 @@ def _rsi_cross_50(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     return None
 
 
+# --- volume-weighted family (2026-08-24) --------------------------------------
+# Every entry in the registry up to here is PRICE-only; volume enters solely as
+# the detector's volume_ratio gate. VWMA and MFI are the two standard indicators
+# that fold volume into the signal itself, so they are new INFORMATION rather than
+# another rearrangement of the same series — which is why they are worth a sweep
+# after the adversarial-gate idea (a pure recombination) came back refuted.
+# Both are implemented from their textbook definitions against the stored OHLCV.
+_VWMA_PERIOD = 20
+_MFI_PERIOD = 14
+
+
+def _vwma(C: Sequence[Candle], n: int) -> Optional[float]:
+    """Volume-weighted moving average: sum(close*vol)/sum(vol) over the last n."""
+    if len(C) < n:
+        return None
+    win = C[-n:]
+    vol = sum(float(c.volume) for c in win)
+    if vol <= 0.0:
+        return None  # explicit absence: a zero-volume window has no VWMA
+    return sum(float(c.close) * float(c.volume) for c in win) / vol
+
+
+def _mfi(C: Sequence[Candle], n: int) -> Optional[float]:
+    """Money Flow Index over the last n periods (0-100).
+
+    Typical price (H+L+C)/3 times volume is the raw money flow; flows on up-ticks
+    of typical price are positive, on down-ticks negative. MFI is the positive
+    share of total flow — an RSI computed on money flow instead of price.
+    """
+    if len(C) < n + 1:
+        return None
+    tp = [(float(c.high) + float(c.low) + float(c.close)) / 3.0 for c in C[-(n + 1) :]]
+    vols = [float(c.volume) for c in C[-(n + 1) :]]
+    pos = neg = 0.0
+    for i in range(1, len(tp)):
+        flow = tp[i] * vols[i]
+        if tp[i] > tp[i - 1]:
+            pos += flow
+        elif tp[i] < tp[i - 1]:
+            neg += flow
+    total = pos + neg
+    if total <= 0.0:
+        return None  # flat typical price across the window — no reading
+    return 100.0 * pos / total
+
+
+@_algo("vwma_cross", PatternType.MOMENTUM_CONTINUATION)
+def _vwma_cross(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    """Edge: close crosses the volume-weighted average — a move the volume backs."""
+    prev, now = _vwma(C[:-1], _VWMA_PERIOD), _vwma(C, _VWMA_PERIOD)
+    if prev is None or now is None or len(C) < 2:
+        return None
+    c_prev, c_now = float(C[-2].close), float(C[-1].close)
+    if c_prev <= prev and c_now > now:
+        return Direction.LONG
+    if c_prev >= prev and c_now < now:
+        return Direction.SHORT
+    return None
+
+
+@_algo("vwma_state", PatternType.MOMENTUM_CONTINUATION)
+def _vwma_state(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    """State: hold the side price sits on relative to the VWMA.
+
+    State form included because the hiwin bracket's best performer to date
+    (bb_break) is state-based — the geometry needs frequent entries to work.
+    """
+    v = _vwma(C, _VWMA_PERIOD)
+    if v is None:
+        return None
+    c = float(C[-1].close)
+    if c > v:
+        return Direction.LONG
+    if c < v:
+        return Direction.SHORT
+    return None
+
+
+@_algo("mfi_mom", PatternType.MOMENTUM_CONTINUATION)
+def _mfi_mom(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    """Momentum BREAKOUT through the 80/20 money-flow bands, in the break direction.
+
+    Deliberately the breakout reading, not the overbought/oversold FADE: every
+    mean-reversion-fade signal this project has swept (rsi2, stoch, cci_revert,
+    bb_fade, wick) has failed the prior-year lockbox, while breakout forms
+    (macd_cross, cci_mom) have been the ones that survived it.
+    """
+    prev, now = _mfi(C[:-1], _MFI_PERIOD), _mfi(C, _MFI_PERIOD)
+    if prev is None or now is None:
+        return None
+    if prev <= 80.0 < now:
+        return Direction.LONG
+    if prev >= 20.0 > now:
+        return Direction.SHORT
+    return None
+
+
+@_algo("mfi_state", PatternType.MOMENTUM_CONTINUATION)
+def _mfi_state(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    """State: money flow above/below the 50 midline."""
+    m = _mfi(C, _MFI_PERIOD)
+    if m is None:
+        return None
+    if m > 50.0:
+        return Direction.LONG
+    if m < 50.0:
+        return Direction.SHORT
+    return None
+
+
 # --- volatility compression (the one signal with a live pulse: bb_width) ------
 def _compressed(C: Sequence[Candle]) -> bool:
     """bb_width in the bottom of its recent range (cheap squeeze proxy)."""
