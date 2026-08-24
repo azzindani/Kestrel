@@ -25,7 +25,17 @@ from typing import Optional
 
 from dotenv import load_dotenv
 
-from src.config import AppConfig, BucketState, Direction, Env, Params, SignalOutcome, load_params, round_trip_fee_pct
+from src.config import (
+    AppConfig,
+    BucketState,
+    Direction,
+    Env,
+    Params,
+    SignalOutcome,
+    get_trading_session,
+    load_params,
+    round_trip_fee_pct,
+)
 from src.data.candle_builder import CandleBuilder
 from src.data.providers import get_data_feed
 from src.db import connection as db_conn
@@ -39,6 +49,7 @@ from src.notify.telegram import TelegramNotifier
 from src.risk import manager as risk
 from src.signal.detector import evaluate
 from src.signal.exits import indicator_exit_reason
+from src.signal.memory import memory_is_active
 from src.viz.dashboard import Dashboard
 
 # Fleet-wide open-slot reservations, shared across every Daemon instance in this
@@ -346,12 +357,14 @@ class Daemon:
         if self.params.flow_gate_enabled:
             order_flow = await db.get_latest_order_flow(candle.pair, 120_000, int(time.time() * 1000))
 
+        pattern_memories = await self._load_pattern_memories(candle_window)
         signal, rejection = evaluate(
             candle_window,
             self.params,
             self.cfg.bot_id,
             self.session_id,
             self.cfg.env.value,
+            pattern_memories=pattern_memories,
             enabled_patterns=self.cfg.enabled_patterns,
             sizing_state=sizing_state,
             leverage=self.cfg.leverage,
@@ -529,6 +542,39 @@ class Daemon:
     def _release_fleet_slot(self) -> None:
         """Release this bot's in-process slot reservation (no-op if none held)."""
         _fleet_slot_reservations.discard(self.cfg.bot_id)
+
+    async def _load_pattern_memories(self, candle_window) -> Optional[dict[str, dict | None]]:
+        """Load this bot's pattern-memory rows for the current session/regime.
+
+        Completes the §11 loop ("pattern memory read at eval"). Both halves of that
+        loop had been disconnected: nothing wrote the table, and nothing loaded it
+        either — `evaluate` always received the default None, so should_suppress and
+        adjust_confidence were no-ops for the project's whole life. The write half is
+        now scripts/rebuild_pattern_memory.py; this is the read half.
+
+        Returns None (rather than an empty dict) outside the acting tiers so no query
+        is issued at all: dev is ~75% of the fleet and must measure the RAW strategy,
+        so skipping it is both the correct behaviour and the cheap one. See
+        MEMORY_ACTIVE_ENVS.
+
+        The key is derived exactly as _pattern_scan derives it — get_trading_session
+        for the session and `regime or "UNKNOWN"` — because a key built any other way
+        would look up rows that can never match, which is precisely how this loop came
+        to be inert in the first place. No in-process caching (§11): read at eval.
+        """
+        if not memory_is_active(self.cfg.env.value) or not candle_window:
+            return None
+        latest = candle_window[-1]
+        session = get_trading_session(latest.ts).value
+        regime = latest.regime or "UNKNOWN"
+        memories: dict[str, dict | None] = {}
+        for name in self.cfg.enabled_patterns or []:
+            for direction in (Direction.LONG.value, Direction.SHORT.value):
+                try:
+                    memories[f"{name}:{direction}"] = await db.load_pattern_memory(name, direction, session, regime)
+                except Exception:  # noqa: BLE001 — memory is an optimisation, never a trade blocker
+                    memories[f"{name}:{direction}"] = None
+        return memories
 
     async def _close_position(self, pair: str, reason: str, candle) -> None:
         """Close a position and update DB records."""

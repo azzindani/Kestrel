@@ -13,6 +13,32 @@ from __future__ import annotations
 
 from typing import Optional
 
+# Tiers where pattern memory is allowed to INFLUENCE decisions (2026-08-24).
+#
+# The pattern_memory table is keyed (pattern, direction, session, regime) with NO
+# env column (§19), so its statistics are necessarily global — every tier reads the
+# same rows. What is scoped is the ACTION, not the data.
+#
+# dev is excluded deliberately, for the same reason PortfolioGuard was moved out of
+# it in v2.5: an overlay that suppresses or reweights entries before their natural
+# outcome contaminates the per-pattern edge stats dev exists to measure. It is also
+# an activity risk — should_suppress() fires below a 35% win rate and the dev
+# baseline cohorts run 23.7-34.6%, so switching it on there would silently mute much
+# of the fleet, against the §6 mandate not to wind activity down.
+#
+# This matches the owner's tier model (2026-08-24): dev is the data-collection tier
+# that FEEDS the statistics, lab and staging are the curated tiers that ACT on them.
+MEMORY_ACTIVE_ENVS: frozenset[str] = frozenset({"staging", "lab"})
+
+
+def memory_is_active(env: str) -> bool:
+    """Pure: whether pattern memory may influence decisions in this environment.
+
+    When False the caller passes None instead of the loaded row, which routes
+    through the already-tested "no memory" path in every function below.
+    """
+    return env in MEMORY_ACTIVE_ENVS
+
 
 def adjust_confidence(
     raw_confidence: float,

@@ -167,7 +167,7 @@ def test_pattern_scan_allows_counter_trend_direction():
     params = make_params()
     c = _uptrend_base(6)
     c[-1] = _bearish(c[-1].close, c[-1].ts, drop=1.0, regime="RANGING")
-    res = _pattern_scan(c, params, frozenset({"wave_flip"}), Direction.LONG, {}, TradingSession.LONDON, 1.0)
+    res = _pattern_scan(c, params, frozenset({"wave_flip"}), Direction.LONG, {}, TradingSession.LONDON, 1.0, "dev")
     assert not isinstance(res, Rejection)
     pattern_result, _conf = res
     assert pattern_result.direction is Direction.SHORT
@@ -179,7 +179,7 @@ def test_pattern_scan_rejects_trend_pattern_on_direction_mismatch():
     c = _uptrend_base(24)
     c[-2] = _bearish(c[-2].close, c[-2].ts, drop=0.4)
     c[-1] = _bullish_strong(c[-2].close, c[-1].ts, rise=1.0)
-    res = _pattern_scan(c, params, frozenset({"wave_ride"}), Direction.SHORT, {}, TradingSession.LONDON, 1.0)
+    res = _pattern_scan(c, params, frozenset({"wave_ride"}), Direction.SHORT, {}, TradingSession.LONDON, 1.0, "dev")
     assert isinstance(res, Rejection)
 
 
@@ -189,7 +189,7 @@ def test_pattern_scan_skips_trend_pattern_when_trend_is_none():
     params = make_params()
     c = _uptrend_base(6)
     c[-1] = _bearish(c[-1].close, c[-1].ts, drop=1.0, regime="RANGING")
-    trend_pattern = _pattern_scan(c, params, frozenset({"wave_ride"}), None, {}, TradingSession.LONDON, 1.0)
+    trend_pattern = _pattern_scan(c, params, frozenset({"wave_ride"}), None, {}, TradingSession.LONDON, 1.0, "dev")
     assert isinstance(trend_pattern, Rejection)
-    counter = _pattern_scan(c, params, frozenset({"wave_flip"}), None, {}, TradingSession.LONDON, 1.0)
+    counter = _pattern_scan(c, params, frozenset({"wave_flip"}), None, {}, TradingSession.LONDON, 1.0, "dev")
     assert not isinstance(counter, Rejection)

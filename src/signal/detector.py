@@ -37,7 +37,7 @@ from src.config import (
     session_volume_multiplier,
 )
 from src.signal.indicators import compute_ema, compute_rsi
-from src.signal.memory import adjust_confidence, should_suppress
+from src.signal.memory import adjust_confidence, memory_is_active, should_suppress
 from src.signal.patterns import SELF_DIRECTING_PATTERNS, registry
 from src.signal.regime import classify_regime, regime_permits_pattern
 from src.signal.sizing import cap_size_for_risk, compute_position_size
@@ -174,6 +174,7 @@ def _pattern_scan(
     pattern_memories: dict[str, dict | None],
     session: TradingSession,
     session_conf_multiplier: float,
+    env: str,
 ) -> tuple[PatternResult, float] | Rejection:
     """
     Run all permitted patterns through the registry. Return (PatternResult, confidence)
@@ -197,7 +198,11 @@ def _pattern_scan(
         # Memory is keyed by the actual trade direction — for counter-trend
         # patterns that is the pattern's own (faded) direction, not the EMA trend.
         trade_dir = result.direction.value
-        mem = pattern_memories.get(f"{name}:{trade_dir}")
+        # Tier gate: memory INFLUENCES decisions only in the curated tiers. dev
+        # feeds the statistics but must measure the raw strategy (see
+        # MEMORY_ACTIVE_ENVS). Passing None routes through the well-tested
+        # "no memory" path in should_suppress / adjust_confidence.
+        mem = pattern_memories.get(f"{name}:{trade_dir}") if memory_is_active(env) else None
         session_str = session.value
         regime_str = candles[-1].regime or "UNKNOWN"
 
@@ -311,6 +316,7 @@ def evaluate(
         pattern_memories or {},
         session,
         session_conf_mult,
+        env,
     )
     if isinstance(scan_result, Rejection):
         return None, scan_result
