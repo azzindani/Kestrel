@@ -1167,6 +1167,53 @@ def _install_sigexit_check() -> None:
     _r._check_exit = _wrapped
 
 
+def _install_stretch_cap(cap_bps: float) -> None:
+    """Entry gate (2026-08-24): block entries whose direction-ALIGNED EMA stretch at
+    the signal candle is already >= cap_bps.
+
+    Stretch = (ema9 - ema21) / close * 10,000, signed to the trade's direction, so a
+    long into a strongly-up-sloping trend and a short into a strongly-down-sloping
+    one are the same "the move is already extended" condition. Pooled raw they
+    cancel; aligned they add.
+
+    Data-derived from scripts/mine_entry_conditions.py over our own closed trades.
+    Within a SINGLE strategy (cci_mom, n=402, constant bracket, so no arm-mix
+    artifact) the aligned-stretch buckets ran:
+
+        <= 5.89 bps   +1.76 bps @ 50.5% win
+        5.89-19.1     -16.47
+        19.1-42.8      -3.78
+        > 42.8 bps    -38.65 bps @ 33.0% win
+
+    This is a DIFFERENT feature from the already-refuted --rsi-cap (iter 67): that
+    gate keyed on oscillator overextension, this one on trend stretch. They agreed
+    in the mining, which is why the idea is worth one more test in a form that has
+    not been tried.
+
+    Wraps every registry entry so the gate applies uniformly however the entry was
+    registered (same approach as _install_rsi_cap).
+    """
+
+    def _gate(fn: EntryFn) -> EntryFn:
+        def gated(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+            res = fn(candles, params)
+            if res is None:
+                return None
+            c = candles[-1]
+            if c.ema9 is None or c.ema21 is None or not c.close:
+                return res  # explicit absence: ungated rather than silently dropped
+            spread = (float(c.ema9) - float(c.ema21)) / float(c.close) * 10_000.0
+            aligned = spread if res.direction is Direction.LONG else -spread
+            if aligned >= cap_bps:
+                return None
+            return res
+
+        return gated
+
+    for name in list(registry):
+        registry[name] = _gate(registry[name])
+
+
 def _install_rsi_cap(cap: float) -> None:
     """Iter 67 entry gate: block entries whose direction-ALIGNED RSI14 at the signal
     candle is already >= cap. Data-derived from archive mining of 1,311 of our OWN
@@ -1686,6 +1733,17 @@ def main() -> None:
         "1,311 live trades.",
     )
     ap.add_argument(
+        "--stretch-cap",
+        type=float,
+        default=0.0,
+        dest="stretch_cap",
+        help="entry gate (2026-08-24, mined from our own closed trades): block entries whose "
+        "direction-ALIGNED EMA stretch ((ema9-ema21)/close in bps, signed to the trade) is "
+        ">= this value. 0 = off. Within cci_mom (n=402, constant bracket) aligned stretch "
+        ">42.8 bps ran -38.65 bps @ 33%% win vs +1.76 bps @ 50.5%% below 5.89 bps. Distinct "
+        "from the refuted --rsi-cap: trend stretch, not oscillator overextension.",
+    )
+    ap.add_argument(
         "--adversarial-gate",
         type=int,
         default=0,
@@ -1716,6 +1774,12 @@ def main() -> None:
     if args.rsi_cap > 0.0:
         _install_rsi_cap(args.rsi_cap)
         print(f"[rsi-cap] entry gate armed: aligned RSI >= {args.rsi_cap:g} blocks entry", flush=True)
+    if args.stretch_cap > 0.0:
+        _install_stretch_cap(args.stretch_cap)
+        print(
+            f"[stretch-cap] entry gate armed: aligned EMA stretch >= {args.stretch_cap:g} bps blocks entry",
+            flush=True,
+        )
     if args.adversarial_gate > 0:
         _install_adversarial_gate(args.adversarial_gate)
         print(
