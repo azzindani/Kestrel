@@ -16,6 +16,7 @@ Run (one-off container, repo mounted, no DB needed):
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 import time
@@ -29,11 +30,40 @@ from src.backtest.runner import walk_forward
 from src.config import AppConfig, load_params
 from src.data.candle_builder import CandleBuilder
 
-# okx first: proven to paginate full history from this host. gate rejects long
-# lookbacks; kraken hard-caps at ~720 candles so it can't serve a long span.
-FETCH_ORDER = ("okx", "gate", "kraken")
+# okx first: proven to paginate full history from this host (the ONLY source that
+# serves a year-old 5m lockbox). bingx second (2026-09-01): fast, but caps the
+# query range at 105 days so it only serves recent windows. gate rejects long
+# lookbacks (10k-candle cap); kraken hard-caps at ~720 candles.
+# okx rate-bans this host when several research containers page it at once —
+# run sweeps sequentially.
+FETCH_ORDER = ("okx", "bingx", "gate", "kraken")
 _TF_MS = {"5m": 300_000, "15m": 900_000, "1h": 3_600_000, "4h": 14_400_000, "1d": 86_400_000}
 _RETRIES = 3
+# On-disk OHLCV cache (2026-09-01): one JSON per (pair, tf, days, offset, UTC day).
+# Same-day re-runs of a sweep reuse the fetch instead of re-paging a flaky source.
+_CACHE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "reports", "ohlcv_cache")
+
+
+def _cache_path(pair: str, timeframe: str, days: int, offset_days: int) -> str:
+    day = time.strftime("%Y%m%d", time.gmtime())
+    safe = pair.replace("/", "_")
+    return os.path.join(_CACHE_DIR, f"{safe}_{timeframe}_{days}d_off{offset_days}_{day}.json")
+
+
+def _cache_read(path: str) -> tuple[str, list[list]] | None:
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as fh:
+        blob = json.load(fh)
+    return str(blob["exchange"]), list(blob["rows"])
+
+
+def _cache_write(path: str, exchange: str, rows: list[list]) -> None:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump({"exchange": exchange, "rows": rows}, fh)
+    os.replace(tmp, path)
 
 
 def _fetch_one(name: str, pair: str, timeframe: str, start: int, now_ms: int, tf_ms: int) -> list[list]:
@@ -76,12 +106,18 @@ def fetch_ohlcv(pair: str, timeframe: str, days: int, offset_days: int = 0) -> t
     start = end - span_ms
     min_required = int((span_ms / tf_ms) * 0.6)  # tolerate gaps/holidays, reject tiny windows
 
+    cache_file = _cache_path(pair, timeframe, days, offset_days)
+    cached = _cache_read(cache_file)
+    if cached is not None and len(cached[1]) >= min_required:
+        return cached[0] + "(cache)", cached[1]
+
     last_err: Exception | None = None
     for name in FETCH_ORDER:
         for attempt in range(1, _RETRIES + 1):
             try:
                 ordered = _fetch_one(name, pair, timeframe, start, end, tf_ms)
                 if len(ordered) >= min_required:
+                    _cache_write(cache_file, name, ordered)
                     return name, ordered
                 last_err = RuntimeError(
                     f"{name}: only {len(ordered)} candles (< {min_required} required for {days}d) — capped source"

@@ -1167,6 +1167,88 @@ def _install_sigexit_check() -> None:
     _r._check_exit = _wrapped
 
 
+def _install_intrabar(mode: str) -> None:
+    """Replace the runner's intrabar exit resolution (2026-09-01).
+
+    The runner's default checks take-profit on the candle's favourable extreme
+    BEFORE the stop on its adverse extreme, so any candle that spans both levels
+    is booked as a win. With a 15 bps TP on 5m candles that spans most candles,
+    which is how the hiwin33 sweep reported 68-72% win while the sim fleet
+    running the same configs booked 53-55%: execution/simulation.py checks the
+    candle CLOSE only and fills at the close.
+
+        sl_first  stop on the adverse extreme first, then TP (worst case)
+        close     close-price exits filled at the close (simulation.py parity)
+
+    Wraps _check_exit and, for 'close', _simulate_close (after _apply_fee_model
+    has installed its own settlement, so the fee model is preserved and only the
+    fill level changes). runner.py itself stays untouched (not in §25 scope).
+    """
+    import src.backtest.runner as _r
+
+    orig_check = _r._check_exit
+    orig_close = _r._simulate_close
+
+    def _sl_first(trade: dict, candle) -> Optional[str]:
+        if not trade.get("trailing_enabled", False):
+            if trade["direction"] == "long":
+                if candle.low <= trade["liquidation_price"]:
+                    return "liquidated"
+                if candle.low <= trade["sl_price"]:
+                    return "stop_loss"
+            else:
+                if candle.high >= trade["liquidation_price"]:
+                    return "liquidated"
+                if candle.high >= trade["sl_price"]:
+                    return "stop_loss"
+        return orig_check(trade, candle)
+
+    def _close_only(trade: dict, candle) -> Optional[str]:
+        price = candle.close
+        trailing = trade.get("trailing_enabled", False)
+        if trade["direction"] == "long":
+            if trailing:
+                ts = trade.get("trail_stop")
+                if ts is not None and price <= ts:
+                    return "trailing_stop"
+            elif price >= trade["tp_price"]:
+                return "take_profit"
+            if price <= trade["sl_price"]:
+                return "stop_loss"
+            if price <= trade["liquidation_price"]:
+                return "liquidated"
+        else:
+            if trailing:
+                ts = trade.get("trail_stop")
+                if ts is not None and price >= ts:
+                    return "trailing_stop"
+            elif price <= trade["tp_price"]:
+                return "take_profit"
+            if price >= trade["sl_price"]:
+                return "stop_loss"
+            if price >= trade["liquidation_price"]:
+                return "liquidated"
+        if trailing:
+            _r._advance_trail_bt(trade, price, price)
+        return None
+
+    def _close_fill(trade: dict, candle, reason: str) -> dict:
+        if reason in ("take_profit", "stop_loss", "liquidated", "trailing_stop"):
+            at_close = dict(trade)
+            at_close["tp_price"] = candle.close
+            at_close["sl_price"] = candle.close
+            at_close["liquidation_price"] = candle.close
+            at_close["trail_stop"] = candle.close
+            return orig_close(at_close, candle, reason)
+        return orig_close(trade, candle, reason)
+
+    if mode == "sl_first":
+        _r._check_exit = _sl_first
+    elif mode == "close":
+        _r._check_exit = _close_only
+        _r._simulate_close = _close_fill
+
+
 def _install_stretch_cap(cap_bps: float) -> None:
     """Entry gate (2026-08-24): block entries whose direction-ALIGNED EMA stretch at
     the signal candle is already >= cap_bps.
@@ -1205,6 +1287,45 @@ def _install_stretch_cap(cap_bps: float) -> None:
             spread = (float(c.ema9) - float(c.ema21)) / float(c.close) * 10_000.0
             aligned = spread if res.direction is Direction.LONG else -spread
             if aligned >= cap_bps:
+                return None
+            return res
+
+        return gated
+
+    for name in list(registry):
+        registry[name] = _gate(registry[name])
+
+
+def _install_atr_floor(floor_bps: float) -> None:
+    """Entry gate (2026-09-01): block entries whose ATR14 at the signal candle is
+    below floor_bps of price.
+
+    Data-derived from the live hw33 fleet (10,291 closed 5m trades, six entries,
+    one constant bracket). Gross $/trade by ATR bucket was monotone:
+
+        10-20 bps   -0.0163   (n=3059, 42% of the fleet's loss)
+        20-30       -0.0070
+        30-40       -0.0067
+        40-50       -0.0051
+        50-60       -0.0062
+        >= 60       +0.0005   (n=402, gross break-even)
+
+    Mechanism, not mining: the bracket is ATR-scaled, so at ATR 15 bps a 0.5-ATR
+    take-profit is 7 bps against a 4 bps maker round trip plus taker slippage on
+    every stop. The gate is a cost-floor condition. It is self-mined from recent-era
+    live trades, so it MUST clear the lockbox before any deploy (ledger rule).
+    Wraps every registry entry (same shape as _install_stretch_cap).
+    """
+
+    def _gate(fn: EntryFn) -> EntryFn:
+        def gated(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+            res = fn(candles, params)
+            if res is None:
+                return None
+            c = candles[-1]
+            if c.atr14 is None or not c.close:
+                return res  # explicit absence: ungated rather than silently dropped
+            if float(c.atr14) / float(c.close) * 10_000.0 < floor_bps:
                 return None
             return res
 
@@ -1755,6 +1876,29 @@ def main() -> None:
         "Distinct from ensemble_3of4, which counts AGREEMENT rather than requiring the "
         "counter-case to be weak. Veto-only: it can never create a trade.",
     )
+    ap.add_argument(
+        "--atr-floor-bps",
+        type=float,
+        default=0.0,
+        dest="atr_floor_bps",
+        help="entry gate (2026-09-01, from the live hw33 fleet): block entries whose ATR14 at the "
+        "signal candle is < this many bps of price. The ATR-scaled bracket makes low-ATR "
+        "entries sub-cost (TP 7 bps vs 4 bps fees at ATR 15); the 10-20 bps bucket carried 42%% "
+        "of the fleet's loss and >=60 bps was gross break-even. 0 = off. Self-mined: must "
+        "clear the lockbox before deploy.",
+    )
+    ap.add_argument(
+        "--intrabar",
+        choices=["tp_first", "sl_first", "close"],
+        default="tp_first",
+        help="how a candle that reaches BOTH bracket levels is resolved (2026-09-01, found by "
+        "comparing 11.8k dev trades to the backtests that deployed them). tp_first = runner "
+        "default: TP on the favourable extreme is checked before SL (optimistic). sl_first = "
+        "SL on the adverse extreme first (worst case). close = SIM PARITY: exits only when the "
+        "candle CLOSE is through a level and fill AT the close, exactly what "
+        "execution/simulation.py does — the live fleet's 54%% vs the harness's 70%% on the "
+        "hiwin33 bracket is entirely this switch.",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -1780,6 +1924,9 @@ def main() -> None:
             f"[stretch-cap] entry gate armed: aligned EMA stretch >= {args.stretch_cap:g} bps blocks entry",
             flush=True,
         )
+    if args.atr_floor_bps > 0.0:
+        _install_atr_floor(args.atr_floor_bps)
+        print(f"[atr-floor] entry gate armed: ATR14 < {args.atr_floor_bps:g} bps of price blocks entry", flush=True)
     if args.adversarial_gate > 0:
         _install_adversarial_gate(args.adversarial_gate)
         print(
@@ -1829,6 +1976,10 @@ def main() -> None:
     exits = [e.strip() for e in args.exits.split(",") if e.strip() in EXITS]
     tag = time.strftime("%Y%m%d-%H%M%S", time.gmtime())
     combos = [(a, e) for a in algos for e in exits]
+    if args.intrabar != "tp_first":
+        # Installed BEFORE the sigexit wrapper so indicator exits layer on top of it.
+        _install_intrabar(args.intrabar)
+        print(f"[intrabar] exit resolution = {args.intrabar} (tp_first = runner default)", flush=True)
     if any(e.startswith("sigexit") for e in exits):
         _install_sigexit_check()
         print("[sigexit] indicator-based exits armed (signal_exit / indicator_tp reasons)", flush=True)
