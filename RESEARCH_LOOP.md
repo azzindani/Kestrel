@@ -285,7 +285,11 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
-- **ACTIVE — `exp_sigxg`/`exp_wideg` (iter 67): the trend-GATED sma_cross A/B, 20 bots.**
+- **RETIRED 2026-09-01 (iter 68, owner "reduce negative bots"):** `vwma_cross` ×34 (PF 0.46),
+  `exp_sigxg`/`exp_wideg` sma_cross_gated ×20 (12 trades, 16.7%), every `ensemble_3of4` arm ×37
+  across exp_ensemble/exp_hiwin/exp_hw43/exp_hw50/exp_hwsc/exp_sigx/exp_sigxr/exp_sigxtp (PF 0.33).
+  dev 486 → 395, staging 96 → 72. Trades kept as history; no reset. Ledger: `retired_strategies.json`.
+- ~~**ACTIVE — `exp_sigxg`/`exp_wideg` (iter 67): the trend-GATED sma_cross A/B, 20 bots.**~~ (retired iter 68)
   `sma_cross_gated` (sma_cross entries deliberately NOT self-directing → detector's EMA9/21
   trend filter must agree) × {sigexit, wide} × the 10 sweep pairs. This is the iter-65
   "accidental gating" made deliberate: gated sigexit validated cross-era (+$0.0062 R/+$0.0274 L)
@@ -446,6 +450,32 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 ---
 
 ## REFUTED LEDGER (do not re-try these without a materially new variant)
+
+> Machine-readable twin: `retired_strategies.json` — `scripts/retired_ledger.py check` refuses any
+> bots file that redeploys a retired (pattern, timeframe, bracket) cell. Append there too.
+
+- **hiwin33 "70% win" = a FILL-MODEL ARTIFACT (2026-09-01, `--intrabar`):** the runner resolves a
+  candle that spans BOTH bracket levels as a take-profit (TP checked on the favourable extreme before
+  SL on the adverse one). With a 15 bps TP on 5m candles that is most candles, which is how the
+  hiwin33 sweep booked 68-72% while the live hw33 fleet (10,291 trades, six entries, one bracket)
+  booked 53-55% / PF 0.55-0.64 / −$260. The sim checks the CLOSE only and fills at the close, so
+  realized TP ≈ 2× the bracket (32 vs 15 bps) and realized SL ≈ 1.4× (60 vs 45 bps): realized R/R
+  0.57, break-even win ~64%, actual 54%. `--intrabar close` reproduces live (bb_break 50.5%, R/R 0.58).
+  Under EVERY fill model the bracket is −EV (tp_first −$0.012/trade, sl_first −$0.013, close −$0.014).
+  RULE: any bracket whose TP is under ~1 candle range validates with `--intrabar close` AND `sl_first`;
+  a win rate that exists only under tp_first belongs to the harness, not the entry.
+- **`vwma_cross` 5m (2026-08-24 → 09-01, 34 bots, n=2068):** 34.3% win, PF 0.46, −$82 net / −$41
+  gross — the worst cohort in the fleet by every measure; the five worst bots fleet-wide were all
+  vwma_cross. The tight-bracket harness lead (+0.86/+0.90 bps) did not survive the forward test.
+- **`ensemble_3of4` 1h under SIX brackets (2026-08-24 → 09-01, 37 bots, n=35):** 34% win, PF 0.33.
+  Cannot reach n=50 at this firing rate; agreement across MACD/SMA/CCI/mom removes activity, adds no
+  edge. Retired from dev and staging.
+- **`sma_cross_gated` 1h sigexit/wide (iter 67 A/B, 20 bots, n=12):** 16.7% win, near-inert. The
+  trend gate does not rescue sma_cross; A/B closed.
+- **Indicator-conditioned gates on the 5m bracket family (2026-09-01):** live win rate is flat 49-58%
+  across every bucket of ADX / RSI / volume_ratio / bb_width at entry — none separates winners from
+  losers. Only ATR-in-bps of price is monotone (a cost-floor mechanism, `--atr-floor-bps`, cross-era
+  test logged in iter 68). Do not spend another iteration on oscillator / trend-strength gates here.
 
 - **RSI-overextension entry cap (iter 67, `--rsi-cap`):** blocking entries with direction-aligned
   RSI14 ≥ 65/70 at the signal candle. Cap 70 = null (removes 3-8% of entries, noise deltas);

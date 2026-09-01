@@ -131,6 +131,14 @@ this geometry with real tilt, is simultaneously the first economically viable
 configuration the project would ever have.** That equivalence is why this reframe is
 worth the effort and not a vanity-metric exercise.
 
+> **Fill-model caveat (2026-09-01, forward-test result).** The `1/(1+g)` law holds only
+> when both bracket levels fill at their level. The harness's default resolution books a
+> candle that spans both levels as a win; the sim (and a stop that gaps) does not. The
+> live hw33 fleet ran the hiwin33 bracket for 10,291 trades and booked **54%**, not 70%,
+> with realized R/R 0.57 against the 0.33 bracket. Every hiwin/scratch cell must now be
+> validated with `algo_search.py --intrabar close` (sim parity) and `--intrabar sl_first`
+> (worst case); see [Research §4d](09-backtesting-research.md#4d-the-fill-model-verdict-2026-09-01).
+
 ---
 
 ## 4. The empirical baseline — what our own data says in points (2026-07-09)

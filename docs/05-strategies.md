@@ -249,6 +249,12 @@ recent margin. Deployed on the 11 pairs that validated per-pair in both eras.
 > <55% under the current geometry, gross capture at/below the fee floor, deflated Sharpe
 > below the bar. They are the entry set the [Points Framework](13-points-framework.md)'s
 > HiWin re-geometry program (S1) builds on.
+>
+> **Retired 2026-09-01** (`retired_strategies.json`): `ensemble_3of4` on 1h under all six
+> brackets (37 bots, 35 trades, PF 0.33); `vwma_cross` on 5m (34 bots, 2,068 trades, 34%
+> win, PF 0.46 — the worst cohort ever fielded); `sma_cross_gated` on 1h (20 bots, 12
+> trades, 17% win). The hw33 hiwin33 fleet itself booked 54% win, not the sweep's 70% —
+> a fill-model artifact, see [Research §4d](09-backtesting-research.md).
 
 ---
 

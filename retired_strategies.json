@@ -1,0 +1,67 @@
+{
+  "_doc": "Permanent ledger of strategy cells retired from the fleet after a live forward test, and of harness findings that refute a whole design. A cell is (pattern, timeframe, bracket). scripts/retired_ledger.py check refuses any bots file that redeploys a retired cell unchanged. Append; never delete. Prose history: RESEARCH_LOOP.md REFUTED LEDGER.",
+  "retired": [
+    {
+      "label": "vwma_cross",
+      "pattern": "vwma_cross",
+      "timeframe": "5m",
+      "bracket": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 1.0, "max_hold_candles": 6},
+      "envs": ["dev"],
+      "bots": 34,
+      "window": "2026-08-24..2026-09-01",
+      "trades": 2068,
+      "win_pct": 34.3,
+      "profit_factor": 0.46,
+      "net_usdt": -82.05,
+      "gross_usdt": -41.04,
+      "retired_on": "2026-09-01",
+      "reason": "Worst cohort in the fleet by every measure: PF 0.46 vs the 0.55-0.67 pack, 34% win, gross-negative before fees, the five worst bots fleet-wide were all vwma_cross. The harness lead (+0.86/+0.90 bps on the tight bracket) did not survive forward test. Volume-weighted MA cross = REFUTED on 5m."
+    },
+    {
+      "label": "exp_sigxg_sma_cross + exp_wideg_sma_cross",
+      "pattern": "sma_cross_gated",
+      "timeframe": "1h",
+      "bracket": {"note": "sigexit (tp 50/sl 1.5/hold 24) and wide (tp 3.0/sl 1.5/hold 8)"},
+      "envs": ["dev"],
+      "bots": 20,
+      "window": "2026-08-24..2026-09-01",
+      "trades": 12,
+      "win_pct": 16.7,
+      "profit_factor": 0.19,
+      "net_usdt": -0.68,
+      "gross_usdt": -0.63,
+      "retired_on": "2026-09-01",
+      "reason": "Trend-gated SMA cross is near-inert on 1h (12 trades from 20 bots in 8 days) and lost 10 of 12. Also outside the minutes-only mandate (CLAUDE.md s13). Gating sma_cross by the EMA trend does not rescue it; the iter-67 A/B is closed."
+    },
+    {
+      "label": "exp_ensemble / exp_hiwin / exp_hw43 / exp_hw50 / exp_hwsc / exp_sigx / exp_sigxr / exp_sigxtp (ensemble arms)",
+      "pattern": "ensemble_3of4",
+      "timeframe": "1h",
+      "bracket": {"note": "all six brackets tried: medium, hiwin33, hiwin43, hiwin50, scratch, sigexit*"},
+      "envs": ["dev", "staging"],
+      "bots": 37,
+      "window": "2026-08-24..2026-09-01",
+      "trades": 35,
+      "win_pct": 34.3,
+      "profit_factor": 0.33,
+      "net_usdt": -1.81,
+      "gross_usdt": -1.61,
+      "retired_on": "2026-09-01",
+      "reason": "3-of-4 agreement ensemble on 1h: 37 bots produced 35 trades in 8 days across SIX exit geometries and lost under every one (PF 0.33). Signal agreement across MACD/SMA/CCI/mom does not create edge; it only removes activity. Retired below the n=50 bar because it cannot reach n=50 at this firing rate and it is a 1h cohort outside s13."
+    }
+  ],
+  "refuted_designs": [
+    {
+      "design": "hiwin33 inverted bracket (tp 0.5 / sl 1.5 ATR) as a 70%-win-rate strategy",
+      "date": "2026-09-01",
+      "evidence": "hw33 fleet: 10,291 closed 5m trades across bb_break/cci_mom/mom_adx/sma_cross/macd_rsi/macd_cross = 53-55% win, PF 0.55-0.64, net -$260. The 68-72% win rate that justified the tier came from the backtest runner resolving a candle that spans both bracket levels as a take-profit (TP checked on the favourable extreme before SL on the adverse one). The sim checks the CLOSE only and fills at the close, so realized TP is ~2x the bracket (32 vs 15 bps) and realized SL ~1.4x (60 vs 45 bps): realized R/R 0.57, break-even win ~64%, actual 54%. algo_search --intrabar close reproduces the live numbers (bb_break 50.5%, R/R 0.58). Under EVERY fill model the bracket is -EV: tp_first -$0.012/trade, sl_first -$0.013, close -$0.014.",
+      "rule": "Any bracket whose TP is under ~1 typical candle range must be validated with --intrabar close (sim parity) AND --intrabar sl_first (worst case). A win rate that only exists under tp_first is a fill artifact, not a property of the entry."
+    },
+    {
+      "design": "indicator-conditioned entry filters on the hw33 fleet (ADX, RSI, volume_ratio, bb_width buckets)",
+      "date": "2026-09-01",
+      "evidence": "Live win rate is flat 49-58% across every bucket of every stored indicator; none separates winners from losers. Only ATR-in-bps of price is monotone (cost-floor mechanism) and it is under cross-era test as --atr-floor-bps.",
+      "rule": "Do not spend another iteration on oscillator/trend-strength gates for the 5m bracket family."
+    }
+  ]
+}

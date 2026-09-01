@@ -37,7 +37,8 @@ These are one-off, read-only research tools — they fetch public OHLCV (no keys
 | Script | What it does |
 |---|---|
 | `backtest_real.py` | Fetch real OHLCV (okx/gate/kraken fallback), build candles through the production `CandleBuilder`, walk-forward 60/40 with costs. `fetch_ohlcv(pair, tf, days, offset_days=0)` — **`offset_days` shifts the window back to build a lockbox** (data the search never saw). |
-| `algo_search.py` | The algorithm-search harness: rank many hand-written entry archetypes across months in minutes, walk-forward, costs. Key flags grown over the research loop: **`--fees taker\|maker\|none`** (the `none` mode powers gross-edge decomposition), **`--offset-days`** (lockbox), **`--by-pair`** (per-pair breadth tables — the iter-43 playbook), **`--deflated-sharpe`** (Bailey & López de Prado PSR/DSR), **`--htf-confirm 4h\|1d`** (cross-timeframe confluence test, refuted iter 51), plus the `ensemble_Kof4` voting algos. Monkeypatches the runner fee constants *and* `risk.manager.round_trip_fee_pct` at runtime (cannot edit the frozen risk file). |
+| `algo_search.py` | The algorithm-search harness: rank many hand-written entry archetypes across months in minutes, walk-forward, costs. Key flags grown over the research loop: **`--fees taker\|maker\|none`** (the `none` mode powers gross-edge decomposition), **`--offset-days`** (lockbox), **`--by-pair`** (per-pair breadth tables — the iter-43 playbook), **`--deflated-sharpe`** (Bailey & López de Prado PSR/DSR), **`--htf-confirm 4h\|1d`** (cross-timeframe confluence test, refuted iter 51), plus the `ensemble_Kof4` voting algos. **`--intrabar tp_first\|sl_first\|close`** (2026-09-01) — how a candle spanning both bracket levels is resolved: `close` = sim parity (exits on the close only, filled at the close), `sl_first` = worst case; the runner default `tp_first` is optimistic and is what made the hiwin33 bracket read 70% while the live fleet booked 54%. **`--atr-floor-bps`** — cost-floor entry gate (block entries with ATR14 < N bps of price). Monkeypatches the runner fee constants *and* `risk.manager.round_trip_fee_pct` at runtime (cannot edit the frozen risk file). |
+| `retired_ledger.py` | `list` / `check [bots file]` against `retired_strategies.json`, the permanent ledger of forward-test-retired (pattern, timeframe, bracket) cells. `check` exits 1 if a bots file redeploys one. Run alongside `bot_registry.py check`. |
 | `backtest_grid.py` | TP×SL×hold grid sweep over months, walk-forward; emits `.md` leaderboard + `.csv` + `.json` per-trade detail (MAE/MFE/realised-R). |
 | `param_sweep.py` | Grid over `params.json` ranges (TP/SL, min-confidence, volume); does *any* in-range config clear §30? |
 | `edge_scan.py` | Predictive-power scan: information-coefficient + quintile spread per feature vs the ~0.18% cost, at 1/4/8-candle horizons. Answers "is there exploitable structure *at all*?" before strategy design. |
@@ -147,6 +148,25 @@ the 208k-candle `trade_context` corpus — is specified in
 [Points Framework §5](13-points-framework.md), with targets in §6. All the
 anti-self-deception machinery above (walk-forward, lockbox, breadth, DSR, refuted ledger)
 carries over unchanged.
+
+### 4d. The fill-model verdict (2026-09-01)
+
+The first full forward test of the points program (hw33: six entries × 34 pairs × the
+hiwin33 bracket, 10,291 closed 5m trades in 8 days) came back at **53-55% win, PF
+0.55-0.64**, not the 68-72% the sweep had promised. The gap is not the entries: the
+backtest runner resolves any candle that touches *both* bracket levels as a take-profit
+(TP is checked on the candle's favourable extreme before the stop on its adverse
+extreme), and with a 15 bps TP on 5m candles that is most candles. The sim only sees the
+close, so it books fewer wins, fills them 2× past the bracket, and fills stops 1.4× past
+theirs (realized R/R 0.57 vs bracket 0.33). `algo_search.py --intrabar close` reproduces
+the live numbers to within a few points. Under every fill model the bracket is −EV.
+
+Two rules came out of it, both now in the refuted ledger: a bracket narrower than a
+typical candle range is validated only under `--intrabar close` **and** `sl_first`; and
+a win rate that appears only under the optimistic default belongs to the harness, not the
+signal. The same pass found that no stored indicator (ADX, RSI, volume ratio, BB width)
+separates live winners from losers at all, and that the only monotone live feature is ATR
+as a share of price, which is a cost-floor mechanism rather than a signal.
 
 ## 5. Why keep running the lab, then?
 

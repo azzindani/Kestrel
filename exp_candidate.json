@@ -1,61 +1,25 @@
 {
   "iteration": 12,
-  "note": "iter 60 (owner-requested re-eval): EXPAND the points program — deploy the iter-57-validated-but-undeployed hiwin cells on freshly measured per-pair both-era cores (--fees realistic, --points, recent + lockbox 2026-07-15; ETH/DOGE lockbox unfetchable so excluded from every core — unmeasured, not refuted). New arms: exp_hw43 = ensemble_3of4/hiwin43 x {XRP,SOL,ATOM}; exp_hw50 = ensemble_3of4/hiwin50 x {XRP,SOL,AVAX}; exp_hwsc = ensemble_3of4/scratch x {XRP,SOL,ADA,AVAX}; exp_mrsisc = macd_rsi/scratch x {PEPE,XRP,SOL,ADA,BNB,AVAX}. Rationale: exp_hiwin's first live read (n=38) is ON-THESIS (65.8% points win, +26.4bps, net +$0.72) — these 16 additional validated cells accelerate the >=100-trade live leg and raise the fleet's win-rate contribution with evidence-backed bots only (the owner's 44% fleet number is 81% classic-exit baseline dilution). Also an exit-geometry A/B on the same signals (hiwin50/43/scratch vs the live hiwin33). All existing arms kept VERBATIM (additive deploy, reset nothing). Prior iter-58 note (exp_robustwide/sma_cross retirement) recorded in RESEARCH_LOOP.md.",
+  "note": "2026-09-01 retirement: all ensemble_3of4 arms removed (35 trades / 37 bots / PF 0.33 across six brackets, see retired_strategies.json). iter 60 (owner-requested re-eval): EXPAND the points program \u2014 deploy the iter-57-validated-but-undeployed hiwin cells on freshly measured per-pair both-era cores (--fees realistic, --points, recent + lockbox 2026-07-15; ETH/DOGE lockbox unfetchable so excluded from every core \u2014 unmeasured, not refuted). New arms: exp_hw43 = ensemble_3of4/hiwin43 x {XRP,SOL,ATOM}; exp_hw50 = ensemble_3of4/hiwin50 x {XRP,SOL,AVAX}; exp_hwsc = ensemble_3of4/scratch x {XRP,SOL,ADA,AVAX}; exp_mrsisc = macd_rsi/scratch x {PEPE,XRP,SOL,ADA,BNB,AVAX}. Rationale: exp_hiwin's first live read (n=38) is ON-THESIS (65.8% points win, +26.4bps, net +$0.72) \u2014 these 16 additional validated cells accelerate the >=100-trade live leg and raise the fleet's win-rate contribution with evidence-backed bots only (the owner's 44% fleet number is 81% classic-exit baseline dilution). Also an exit-geometry A/B on the same signals (hiwin50/43/scratch vs the live hiwin33). All existing arms kept VERBATIM (additive deploy, reset nothing). Prior iter-58 note (exp_robustwide/sma_cross retirement) recorded in RESEARCH_LOOP.md.",
   "arms": [
-    {
-      "label": "exp_hw43",
-      "timeframe": "1h",
-      "pairs": ["XRP/USDT", "SOL/USDT", "ATOM/USDT"],
-      "strategies": [
-        {"name": "ensemble_3of4", "patterns": ["ensemble_3of4"]}
-      ],
-      "params": {
-        "tp_atr_multiplier": 0.6,
-        "sl_atr_multiplier": 1.4,
-        "max_hold_candles": 4,
-        "trailing_enabled": false,
-        "volume_ratio_min": 1.1,
-        "max_loss_pct_per_trade": 0.01
-      }
-    },
-    {
-      "label": "exp_hw50",
-      "timeframe": "1h",
-      "pairs": ["XRP/USDT", "SOL/USDT", "AVAX/USDT"],
-      "strategies": [
-        {"name": "ensemble_3of4", "patterns": ["ensemble_3of4"]}
-      ],
-      "params": {
-        "tp_atr_multiplier": 0.6,
-        "sl_atr_multiplier": 1.2,
-        "max_hold_candles": 4,
-        "trailing_enabled": false,
-        "volume_ratio_min": 1.1,
-        "max_loss_pct_per_trade": 0.01
-      }
-    },
-    {
-      "label": "exp_hwsc",
-      "timeframe": "1h",
-      "pairs": ["XRP/USDT", "SOL/USDT", "ADA/USDT", "AVAX/USDT"],
-      "strategies": [
-        {"name": "ensemble_3of4", "patterns": ["ensemble_3of4"]}
-      ],
-      "params": {
-        "tp_atr_multiplier": 0.5,
-        "sl_atr_multiplier": 2.0,
-        "max_hold_candles": 3,
-        "trailing_enabled": false,
-        "volume_ratio_min": 1.1,
-        "max_loss_pct_per_trade": 0.01
-      }
-    },
     {
       "label": "exp_mrsisc",
       "timeframe": "1h",
-      "pairs": ["PEPE/USDT", "XRP/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT", "AVAX/USDT"],
+      "pairs": [
+        "PEPE/USDT",
+        "XRP/USDT",
+        "SOL/USDT",
+        "ADA/USDT",
+        "BNB/USDT",
+        "AVAX/USDT"
+      ],
       "strategies": [
-        {"name": "macd_rsi", "patterns": ["macd_rsi"]}
+        {
+          "name": "macd_rsi",
+          "patterns": [
+            "macd_rsi"
+          ]
+        }
       ],
       "params": {
         "tp_atr_multiplier": 0.5,
@@ -67,43 +31,23 @@
       }
     },
     {
-      "label": "exp_ensemble",
-      "timeframe": "1h",
-      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "XRP/USDT", "SOL/USDT", "ADA/USDT", "CHZ/USDT", "FET/USDT", "GALA/USDT", "TIA/USDT", "WLD/USDT"],
-      "strategies": [
-        {"name": "ensemble_3of4", "patterns": ["ensemble_3of4"]}
-      ],
-      "params": {
-        "tp_atr_multiplier": 2.0,
-        "sl_atr_multiplier": 1.0,
-        "max_hold_candles": 6,
-        "trailing_enabled": false,
-        "volume_ratio_min": 1.1,
-        "max_loss_pct_per_trade": 0.01
-      }
-    },
-    {
       "label": "exp_hiwin",
       "timeframe": "1h",
-      "pairs": ["DOGE/USDT", "XRP/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT", "AVAX/USDT"],
-      "strategies": [
-        {"name": "ensemble_3of4", "patterns": ["ensemble_3of4"]}
+      "pairs": [
+        "ETH/USDT",
+        "DOGE/USDT",
+        "SOL/USDT",
+        "ADA/USDT",
+        "BNB/USDT",
+        "ATOM/USDT"
       ],
-      "params": {
-        "tp_atr_multiplier": 0.5,
-        "sl_atr_multiplier": 1.5,
-        "max_hold_candles": 6,
-        "trailing_enabled": false,
-        "volume_ratio_min": 1.1,
-        "max_loss_pct_per_trade": 0.01
-      }
-    },
-    {
-      "label": "exp_hiwin",
-      "timeframe": "1h",
-      "pairs": ["ETH/USDT", "DOGE/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT", "ATOM/USDT"],
       "strategies": [
-        {"name": "macd_rsi", "patterns": ["macd_rsi"]}
+        {
+          "name": "macd_rsi",
+          "patterns": [
+            "macd_rsi"
+          ]
+        }
       ],
       "params": {
         "tp_atr_multiplier": 0.6,
@@ -117,9 +61,20 @@
     {
       "label": "exp_hiwin",
       "timeframe": "1h",
-      "pairs": ["ETH/USDT", "PEPE/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT"],
+      "pairs": [
+        "ETH/USDT",
+        "PEPE/USDT",
+        "SOL/USDT",
+        "ADA/USDT",
+        "BNB/USDT"
+      ],
       "strategies": [
-        {"name": "macd_cross", "patterns": ["macd_cross"]}
+        {
+          "name": "macd_cross",
+          "patterns": [
+            "macd_cross"
+          ]
+        }
       ],
       "params": {
         "tp_atr_multiplier": 0.6,
@@ -133,9 +88,21 @@
     {
       "label": "exp_hiwin",
       "timeframe": "1h",
-      "pairs": ["ETH/USDT", "DOGE/USDT", "PEPE/USDT", "SOL/USDT", "ADA/USDT", "BNB/USDT"],
+      "pairs": [
+        "ETH/USDT",
+        "DOGE/USDT",
+        "PEPE/USDT",
+        "SOL/USDT",
+        "ADA/USDT",
+        "BNB/USDT"
+      ],
       "strategies": [
-        {"name": "sma_cross", "patterns": ["sma_cross"]}
+        {
+          "name": "sma_cross",
+          "patterns": [
+            "sma_cross"
+          ]
+        }
       ],
       "params": {
         "tp_atr_multiplier": 0.6,
