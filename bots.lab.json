@@ -22,14 +22,14 @@
     ]
   },
   {
-    "bot_id": "lab-BTCUSDT-5m-hw33_bb_break-01",
-    "pair": "BTC/USDT",
+    "bot_id": "lab-CHZUSDT-5m-cur_sma50100-01",
+    "pair": "CHZ/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
+    "strategy": "cur_sma50100",
     "patterns": [
-      "bb_break"
+      "sma_cross"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -37,18 +37,20 @@
       "max_hold_candles": 6,
       "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
     }
   },
   {
-    "bot_id": "lab-ETHUSDT-5m-hw33_bb_break-01",
-    "pair": "ETH/USDT",
+    "bot_id": "lab-PEPEUSDT-5m-cur_sma50100-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
+    "strategy": "cur_sma50100",
     "patterns": [
-      "bb_break"
+      "sma_cross"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -56,18 +58,20 @@
       "max_hold_candles": 6,
       "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
     }
   },
   {
-    "bot_id": "lab-SOLUSDT-5m-hw33_bb_break-01",
-    "pair": "SOL/USDT",
+    "bot_id": "lab-TIAUSDT-5m-cur_sma50100-01",
+    "pair": "TIA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
+    "strategy": "cur_sma50100",
     "patterns": [
-      "bb_break"
+      "sma_cross"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -75,149 +79,18 @@
       "max_hold_candles": 6,
       "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
     }
   },
   {
-    "bot_id": "lab-XRPUSDT-5m-hw33_bb_break-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
-    "patterns": [
-      "bb_break"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-DOGEUSDT-5m-hw33_bb_break-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
-    "patterns": [
-      "bb_break"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-BNBUSDT-5m-hw33_bb_break-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
-    "patterns": [
-      "bb_break"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-ADAUSDT-5m-hw33_bb_break-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
-    "patterns": [
-      "bb_break"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-AVAXUSDT-5m-hw33_bb_break-01",
+    "bot_id": "lab-AVAXUSDT-5m-cur_sma50100-01",
     "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
-    "patterns": [
-      "bb_break"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-LINKUSDT-5m-hw33_bb_break-01",
-    "pair": "LINK/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
-    "patterns": [
-      "bb_break"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-LTCUSDT-5m-hw33_bb_break-01",
-    "pair": "LTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_bb_break",
-    "patterns": [
-      "bb_break"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-BTCUSDT-5m-hw33_sma_cross-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
+    "strategy": "cur_sma50100",
     "patterns": [
       "sma_cross"
     ],
@@ -227,111 +100,18 @@
       "max_hold_candles": 6,
       "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
     }
   },
   {
-    "bot_id": "lab-ETHUSDT-5m-hw33_sma_cross-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
-    "patterns": [
-      "sma_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-SOLUSDT-5m-hw33_sma_cross-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
-    "patterns": [
-      "sma_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-XRPUSDT-5m-hw33_sma_cross-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
-    "patterns": [
-      "sma_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-DOGEUSDT-5m-hw33_sma_cross-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
-    "patterns": [
-      "sma_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-BNBUSDT-5m-hw33_sma_cross-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
-    "patterns": [
-      "sma_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-ADAUSDT-5m-hw33_sma_cross-01",
+    "bot_id": "lab-ADAUSDT-5m-cur_sma50100-01",
     "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
+    "strategy": "cur_sma50100",
     "patterns": [
       "sma_cross"
     ],
@@ -341,16 +121,18 @@
       "max_hold_candles": 6,
       "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
     }
   },
   {
-    "bot_id": "lab-AVAXUSDT-5m-hw33_sma_cross-01",
-    "pair": "AVAX/USDT",
+    "bot_id": "lab-APTUSDT-5m-cur_sma50100-01",
+    "pair": "APT/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
+    "strategy": "cur_sma50100",
     "patterns": [
       "sma_cross"
     ],
@@ -360,16 +142,18 @@
       "max_hold_candles": 6,
       "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
     }
   },
   {
-    "bot_id": "lab-LINKUSDT-5m-hw33_sma_cross-01",
-    "pair": "LINK/USDT",
+    "bot_id": "lab-BTCUSDT-5m-cur_sma50100-01",
+    "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
+    "strategy": "cur_sma50100",
     "patterns": [
       "sma_cross"
     ],
@@ -379,16 +163,18 @@
       "max_hold_candles": 6,
       "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
     }
   },
   {
-    "bot_id": "lab-LTCUSDT-5m-hw33_sma_cross-01",
-    "pair": "LTC/USDT",
+    "bot_id": "lab-AAVEUSDT-5m-cur_sma50100-01",
+    "pair": "AAVE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_sma_cross",
+    "strategy": "cur_sma50100",
     "patterns": [
       "sma_cross"
     ],
@@ -398,18 +184,104 @@
       "max_hold_candles": 6,
       "trailing_enabled": false,
       "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
     }
   },
   {
-    "bot_id": "lab-BTCUSDT-5m-hw33_macd_rsi-01",
-    "pair": "BTC/USDT",
+    "bot_id": "lab-WLDUSDT-5m-cur_sma50100-01",
+    "pair": "WLD/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
+    "strategy": "cur_sma50100",
     "patterns": [
-      "macd_rsi"
+      "sma_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
+    }
+  },
+  {
+    "bot_id": "lab-SUIUSDT-5m-cur_sma50100-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_sma50100",
+    "patterns": [
+      "sma_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
+    }
+  },
+  {
+    "bot_id": "lab-XLMUSDT-5m-cur_sma50100-01",
+    "pair": "XLM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_sma50100",
+    "patterns": [
+      "sma_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
+    }
+  },
+  {
+    "bot_id": "lab-OPUSDT-5m-cur_sma50100-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_sma50100",
+    "patterns": [
+      "sma_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01,
+      "sma_cross_fast": 50,
+      "sma_cross_slow": 100
+    }
+  },
+  {
+    "bot_id": "lab-CHZUSDT-5m-cur_triple_mom-01",
+    "pair": "CHZ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -421,14 +293,14 @@
     }
   },
   {
-    "bot_id": "lab-ETHUSDT-5m-hw33_macd_rsi-01",
-    "pair": "ETH/USDT",
+    "bot_id": "lab-PEPEUSDT-5m-cur_triple_mom-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
+    "strategy": "cur_triple_mom",
     "patterns": [
-      "macd_rsi"
+      "triple_mom"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -440,14 +312,14 @@
     }
   },
   {
-    "bot_id": "lab-SOLUSDT-5m-hw33_macd_rsi-01",
-    "pair": "SOL/USDT",
+    "bot_id": "lab-TIAUSDT-5m-cur_triple_mom-01",
+    "pair": "TIA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
+    "strategy": "cur_triple_mom",
     "patterns": [
-      "macd_rsi"
+      "triple_mom"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -459,88 +331,411 @@
     }
   },
   {
-    "bot_id": "lab-XRPUSDT-5m-hw33_macd_rsi-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
-    "patterns": [
-      "macd_rsi"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-DOGEUSDT-5m-hw33_macd_rsi-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
-    "patterns": [
-      "macd_rsi"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-BNBUSDT-5m-hw33_macd_rsi-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
-    "patterns": [
-      "macd_rsi"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-ADAUSDT-5m-hw33_macd_rsi-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
-    "patterns": [
-      "macd_rsi"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-AVAXUSDT-5m-hw33_macd_rsi-01",
+    "bot_id": "lab-AVAXUSDT-5m-cur_triple_mom-01",
     "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-ADAUSDT-5m-cur_triple_mom-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-APTUSDT-5m-cur_triple_mom-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-BTCUSDT-5m-cur_triple_mom-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-AAVEUSDT-5m-cur_triple_mom-01",
+    "pair": "AAVE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-WLDUSDT-5m-cur_triple_mom-01",
+    "pair": "WLD/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-SUIUSDT-5m-cur_triple_mom-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-XLMUSDT-5m-cur_triple_mom-01",
+    "pair": "XLM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-OPUSDT-5m-cur_triple_mom-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_triple_mom",
+    "patterns": [
+      "triple_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-CHZUSDT-5m-cur_mom_adx-01",
+    "pair": "CHZ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-PEPEUSDT-5m-cur_mom_adx-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-TIAUSDT-5m-cur_mom_adx-01",
+    "pair": "TIA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-AVAXUSDT-5m-cur_mom_adx-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-ADAUSDT-5m-cur_mom_adx-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-APTUSDT-5m-cur_mom_adx-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-BTCUSDT-5m-cur_mom_adx-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-AAVEUSDT-5m-cur_mom_adx-01",
+    "pair": "AAVE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-WLDUSDT-5m-cur_mom_adx-01",
+    "pair": "WLD/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-SUIUSDT-5m-cur_mom_adx-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-XLMUSDT-5m-cur_mom_adx-01",
+    "pair": "XLM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-OPUSDT-5m-cur_mom_adx-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_mom_adx",
+    "patterns": [
+      "mom_adx"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-CHZUSDT-5m-cur_macd_rsi-01",
+    "pair": "CHZ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_rsi",
     "patterns": [
       "macd_rsi"
     ],
@@ -554,12 +749,12 @@
     }
   },
   {
-    "bot_id": "lab-LINKUSDT-5m-hw33_macd_rsi-01",
-    "pair": "LINK/USDT",
+    "bot_id": "lab-PEPEUSDT-5m-cur_macd_rsi-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
+    "strategy": "cur_macd_rsi",
     "patterns": [
       "macd_rsi"
     ],
@@ -573,12 +768,12 @@
     }
   },
   {
-    "bot_id": "lab-LTCUSDT-5m-hw33_macd_rsi-01",
-    "pair": "LTC/USDT",
+    "bot_id": "lab-TIAUSDT-5m-cur_macd_rsi-01",
+    "pair": "TIA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_macd_rsi",
+    "strategy": "cur_macd_rsi",
     "patterns": [
       "macd_rsi"
     ],
@@ -592,147 +787,14 @@
     }
   },
   {
-    "bot_id": "lab-BTCUSDT-5m-hw33_macd_cross-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-ETHUSDT-5m-hw33_macd_cross-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-SOLUSDT-5m-hw33_macd_cross-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-XRPUSDT-5m-hw33_macd_cross-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-DOGEUSDT-5m-hw33_macd_cross-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-BNBUSDT-5m-hw33_macd_cross-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-ADAUSDT-5m-hw33_macd_cross-01",
-    "pair": "ADA/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-AVAXUSDT-5m-hw33_macd_cross-01",
+    "bot_id": "lab-AVAXUSDT-5m-cur_macd_rsi-01",
     "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "macd_cross"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -744,166 +806,14 @@
     }
   },
   {
-    "bot_id": "lab-LINKUSDT-5m-hw33_macd_cross-01",
-    "pair": "LINK/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-LTCUSDT-5m-hw33_macd_cross-01",
-    "pair": "LTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_macd_cross",
-    "patterns": [
-      "macd_cross"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-BTCUSDT-5m-hw33_mom_adx-01",
-    "pair": "BTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-ETHUSDT-5m-hw33_mom_adx-01",
-    "pair": "ETH/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-SOLUSDT-5m-hw33_mom_adx-01",
-    "pair": "SOL/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-XRPUSDT-5m-hw33_mom_adx-01",
-    "pair": "XRP/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-DOGEUSDT-5m-hw33_mom_adx-01",
-    "pair": "DOGE/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-BNBUSDT-5m-hw33_mom_adx-01",
-    "pair": "BNB/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-ADAUSDT-5m-hw33_mom_adx-01",
+    "bot_id": "lab-ADAUSDT-5m-cur_macd_rsi-01",
     "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "mom_adx"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -915,14 +825,14 @@
     }
   },
   {
-    "bot_id": "lab-AVAXUSDT-5m-hw33_mom_adx-01",
-    "pair": "AVAX/USDT",
+    "bot_id": "lab-APTUSDT-5m-cur_macd_rsi-01",
+    "pair": "APT/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "mom_adx"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -934,52 +844,14 @@
     }
   },
   {
-    "bot_id": "lab-LINKUSDT-5m-hw33_mom_adx-01",
-    "pair": "LINK/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-LTCUSDT-5m-hw33_mom_adx-01",
-    "pair": "LTC/USDT",
-    "timeframe_entry": "5m",
-    "timeframe_regime": "5m",
-    "max_active_buckets": 1,
-    "strategy": "hw33_mom_adx",
-    "patterns": [
-      "mom_adx"
-    ],
-    "params": {
-      "tp_atr_multiplier": 0.5,
-      "sl_atr_multiplier": 1.5,
-      "max_hold_candles": 6,
-      "trailing_enabled": false,
-      "volume_ratio_min": 1.1,
-      "max_loss_pct_per_trade": 0.01
-    }
-  },
-  {
-    "bot_id": "lab-BTCUSDT-5m-hw33_cci_mom-01",
+    "bot_id": "lab-BTCUSDT-5m-cur_macd_rsi-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "cci_mom"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -991,14 +863,14 @@
     }
   },
   {
-    "bot_id": "lab-ETHUSDT-5m-hw33_cci_mom-01",
-    "pair": "ETH/USDT",
+    "bot_id": "lab-AAVEUSDT-5m-cur_macd_rsi-01",
+    "pair": "AAVE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "cci_mom"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -1010,14 +882,14 @@
     }
   },
   {
-    "bot_id": "lab-SOLUSDT-5m-hw33_cci_mom-01",
-    "pair": "SOL/USDT",
+    "bot_id": "lab-WLDUSDT-5m-cur_macd_rsi-01",
+    "pair": "WLD/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "cci_mom"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -1029,14 +901,14 @@
     }
   },
   {
-    "bot_id": "lab-XRPUSDT-5m-hw33_cci_mom-01",
-    "pair": "XRP/USDT",
+    "bot_id": "lab-SUIUSDT-5m-cur_macd_rsi-01",
+    "pair": "SUI/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "cci_mom"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -1048,14 +920,14 @@
     }
   },
   {
-    "bot_id": "lab-DOGEUSDT-5m-hw33_cci_mom-01",
-    "pair": "DOGE/USDT",
+    "bot_id": "lab-XLMUSDT-5m-cur_macd_rsi-01",
+    "pair": "XLM/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "cci_mom"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -1067,14 +939,14 @@
     }
   },
   {
-    "bot_id": "lab-BNBUSDT-5m-hw33_cci_mom-01",
-    "pair": "BNB/USDT",
+    "bot_id": "lab-OPUSDT-5m-cur_macd_rsi-01",
+    "pair": "OP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_macd_rsi",
     "patterns": [
-      "cci_mom"
+      "macd_rsi"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -1086,14 +958,14 @@
     }
   },
   {
-    "bot_id": "lab-ADAUSDT-5m-hw33_cci_mom-01",
-    "pair": "ADA/USDT",
+    "bot_id": "lab-CHZUSDT-5m-cur_macd_cross-01",
+    "pair": "CHZ/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_macd_cross",
     "patterns": [
-      "cci_mom"
+      "macd_cross"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -1105,12 +977,221 @@
     }
   },
   {
-    "bot_id": "lab-AVAXUSDT-5m-hw33_cci_mom-01",
+    "bot_id": "lab-PEPEUSDT-5m-cur_macd_cross-01",
+    "pair": "PEPE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-TIAUSDT-5m-cur_macd_cross-01",
+    "pair": "TIA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-AVAXUSDT-5m-cur_macd_cross-01",
     "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-ADAUSDT-5m-cur_macd_cross-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-APTUSDT-5m-cur_macd_cross-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-BTCUSDT-5m-cur_macd_cross-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-AAVEUSDT-5m-cur_macd_cross-01",
+    "pair": "AAVE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-WLDUSDT-5m-cur_macd_cross-01",
+    "pair": "WLD/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-SUIUSDT-5m-cur_macd_cross-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-XLMUSDT-5m-cur_macd_cross-01",
+    "pair": "XLM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-OPUSDT-5m-cur_macd_cross-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_macd_cross",
+    "patterns": [
+      "macd_cross"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-CHZUSDT-5m-cur_cci_mom-01",
+    "pair": "CHZ/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
     "patterns": [
       "cci_mom"
     ],
@@ -1124,12 +1205,12 @@
     }
   },
   {
-    "bot_id": "lab-LINKUSDT-5m-hw33_cci_mom-01",
-    "pair": "LINK/USDT",
+    "bot_id": "lab-PEPEUSDT-5m-cur_cci_mom-01",
+    "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_cci_mom",
     "patterns": [
       "cci_mom"
     ],
@@ -1143,12 +1224,183 @@
     }
   },
   {
-    "bot_id": "lab-LTCUSDT-5m-hw33_cci_mom-01",
-    "pair": "LTC/USDT",
+    "bot_id": "lab-TIAUSDT-5m-cur_cci_mom-01",
+    "pair": "TIA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "hw33_cci_mom",
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-AVAXUSDT-5m-cur_cci_mom-01",
+    "pair": "AVAX/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-ADAUSDT-5m-cur_cci_mom-01",
+    "pair": "ADA/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-APTUSDT-5m-cur_cci_mom-01",
+    "pair": "APT/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-BTCUSDT-5m-cur_cci_mom-01",
+    "pair": "BTC/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-AAVEUSDT-5m-cur_cci_mom-01",
+    "pair": "AAVE/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-WLDUSDT-5m-cur_cci_mom-01",
+    "pair": "WLD/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-SUIUSDT-5m-cur_cci_mom-01",
+    "pair": "SUI/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-XLMUSDT-5m-cur_cci_mom-01",
+    "pair": "XLM/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
+    "patterns": [
+      "cci_mom"
+    ],
+    "params": {
+      "tp_atr_multiplier": 0.5,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 6,
+      "trailing_enabled": false,
+      "volume_ratio_min": 1.1,
+      "max_loss_pct_per_trade": 0.01
+    }
+  },
+  {
+    "bot_id": "lab-OPUSDT-5m-cur_cci_mom-01",
+    "pair": "OP/USDT",
+    "timeframe_entry": "5m",
+    "timeframe_regime": "5m",
+    "max_active_buckets": 1,
+    "strategy": "cur_cci_mom",
     "patterns": [
       "cci_mom"
     ],

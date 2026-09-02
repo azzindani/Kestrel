@@ -715,6 +715,14 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   dev 395 → 429. Forward-test arm, NOT an edge. Harness: `--intrabar`, `--atr-floor-bps`, bingx as
   2nd OHLCV source + on-disk OHLCV cache (okx rate-bans parallel sweeps; gate caps 5m at 10k candles).
   Pending: chain2 per-pair ATR-floor sensitivity (40/50/60) logs in `reports/iter68/` for the record.
+- **TIERS RE-SEATED (owner, 2026-09-02):** `scripts/build_curated_tiers.py` rewrote lab + staging from
+  the sim-parity cross-era ranking: six hiwin33 cells (`cur_sma50100` 60/64% pwin, `cur_triple_mom`
+  58/60, `cur_mom_adx` 57/60, `cur_macd_rsi` 58/60, `cur_macd_cross` 58/59, `cur_cci_mom` 59/57);
+  bb_break and sma_cross 9/21 dropped (weakest cross-era). Staging 72 → 41 (all 48 1h exp_* cells
+  removed — outside §13, not high-win live; pairs = sweep pairs not gross-negative in both eras).
+  Lab 62 → 74 (six cells × twelve best live-win pairs + the owner's two hand-added bots). Both
+  backfilled (576 5m candles per bot_id), all heartbeating, 0 errors. Nothing reaches 65%: a ranking,
+  not a promotion. All four slates were reset by the owner the same night (backup taken).
 - **CHECK STOP:** not met. Next materially-new angles: relative (percentile) ATR floor; an
   `rsi_revert_20_80` live pattern for a 10-pair points-only arm; a tick-level TP/SL check in
   simulation.py (owner call — changes forward-test continuity).
