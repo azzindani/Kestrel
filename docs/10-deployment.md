@@ -112,6 +112,7 @@ alongside.
 | `build_crypto_lab.py` | 120 bots — 3 entries × 4 exit modes × 10 symbols |
 | `build_bakeoff.py` | 48 bots — 8 strategy variants × 6 pairs |
 | `promote_to_staging.py` | reads `trades` (env=dev), selects cells that are BOTH win ≥ 50% AND net-positive (n ≥ 10), ranks by expectancy, writes the curated `bots.staging.json` (`staging-` prefix). Falls back to the lockbox-lead seed if no cell qualifies. |
+| `build_curated_tiers.py` | (2026-09-02, iter 68) REWRITES `bots.lab.json` + `bots.staging.json` from the sim-parity cross-era ranking embedded in its docstring: six hiwin33 cells (`cur_*` labels) — staging on the sweep pairs not gross-negative in both eras (41 bots), lab on the twelve best live-win pairs plus the owner's hand-added bots (74). New bot_ids ⇒ backfill (both tiers run on gate). |
 
 ## 4. Operational scripts (`scripts/*.sh` — FROZEN)
 
