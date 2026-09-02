@@ -28,6 +28,49 @@ compose (no profile)   compose --profile staging    (not provisioned)
 - **Phase 3 (prod)** — real money. Not provisioned, and gated by the §18 criteria (which
   require a validated edge — see [Go-Live](12-go-live.md)).
 
+### 1a. Current tier seating (iter 68, 2026-09-02) — what each tier holds and why
+
+The owner's four-tier model: **dev** = always-expanding data collection (any profile);
+**lab** = curated, sorted by observed win rate; **staging** = pre-prod, high-win design
+only; **prod** = empty until §18. On 2026-09-02 lab and staging were **re-seated from
+scratch** by `scripts/build_curated_tiers.py` on the first sim-accurate ranking the
+project has had (`algo_search.py --intrabar close --fees realistic --funding 0.01`, 5m,
+45-day recent window + prior-year lockbox, 10 pairs — see
+[Research §4d](09-backtesting-research.md#4d-the-fill-model-verdict-2026-09-01) for why
+the earlier 68-72% numbers were a fill artifact).
+
+**The ranking.** Every hiwin33 cell (tp 0.5 / sl 1.5 ATR) sits at 56-60% points-win in
+both eras with gross capture within a few bps of zero. Nothing reaches the 65% staging
+bar, so this is a ranking of what loses least and wins most often, **not a promotion**.
+
+| cell (hiwin33, 5m) | pwin recent | pwin lockbox | gross bps recent / lockbox | verdict |
+|---|--:|--:|--:|---|
+| `cur_sma50100` (sma_cross 50/100) | 60.0 | 64.0 | +4.37 / +0.97 | only cell gross-positive in both eras |
+| `cur_triple_mom` | 57.9 | 60.2 | −0.66 / +0.78 | seated |
+| `cur_mom_adx` | 56.8 | 60.0 | −0.89 / +0.48 | seated |
+| `cur_macd_rsi` | 57.7 | 59.6 | +2.95 / −1.12 | seated |
+| `cur_macd_cross` | 58.3 | 58.8 | +2.65 / −1.52 | seated |
+| `cur_cci_mom` | 59.2 | 56.9 | +1.70 / −2.18 | seated |
+| bb_break | 55.9 | 58.5 | −1.06 / −2.18 | dropped — weakest cross-era |
+| sma_cross 9/21 | 58.1 | 57.4 | −2.37 / −1.92 | dropped — dominated by 50/100 |
+| sma_cross 10/30 · 20/50 · 20/100 | 55-57 | 53-56 | −2 / −5..−6 | dropped |
+| all 1h `exp_*` cells (48 staging bots) | — | — | — | removed — outside the §13 minutes mandate; 8-day live legs not high-win |
+
+**The rosters.**
+
+| tier | before → after | cells | pair rule |
+|---|---|---|---|
+| staging | 72 → **41** | the six above | per cell, only the sweep pairs that were **not gross-negative in both eras** (lockbox-unfetchable ADA/AVAX/HYPE kept only where recent was positive) |
+| lab | 62 → **74** | the six above | six cells × the **twelve best live-win pairs** from the 8-day hw33 fleet (CHZ PEPE TIA AVAX ADA APT BTC AAVE WLD SUI XLM OP, ~300 trades/pair) + the owner's two hand-added lab bots kept verbatim |
+| dev | 395 → **429** | 1h base cohorts + hw33 ×6 + `sma50100_hw33` ×34 + surviving exp arms | unchanged policy: additive, everything that is not retired keeps collecting |
+
+Staging pairs rest on both backtest eras; the lab pair order rests on eight live days and
+is a sort key, not evidence of a pair edge. Both tiers run on the gate feed (compose
+overrides `.env.lab`'s `EXCHANGE=mock`); 113 new bot_ids were backfilled (576 5m
+candles each). All four slates were reset the same night (backups in `backups/`).
+Anything retired on the way is in `retired_strategies.json` and is blocked from
+re-deploy by `scripts/retired_ledger.py check`.
+
 ## 2. Container topology (`docker-compose.yml` — Phase 1)
 
 | Service | Image | Role | Limits |

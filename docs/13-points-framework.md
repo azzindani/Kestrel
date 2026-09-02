@@ -185,6 +185,13 @@ Readings:
 
 ## 5. The strategy program (proposed, ranked)
 
+> **Where this landed (2026-09-02):** the first sim-accurate cross-era ranking of the
+> hiwin cells, and the lab/staging rosters seated on it, are tabulated in
+> [Deployment §1a](10-deployment.md#1a-current-tier-seating-iter-68-2026-09-02--what-each-tier-holds-and-why).
+> Every cell sits at 56-60% in both eras; `ensemble_3of4` was retired (1h, PF 0.33) and
+> the live leads are now `sma_cross` 50/100, `triple_mom`, `mom_adx`, `macd_rsi`,
+> `macd_cross`, `cci_mom`.
+
 Entries stay the **five cross-era-validated leads** — `cci_mom`, `sma_cross`,
 `macd_cross`, `macd_rsi`, `ensemble_3of4` — plus specific revivals below. The innovation
 is **geometry + measurement**, not another indicator sweep (that space is exhausted and
