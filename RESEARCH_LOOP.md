@@ -285,6 +285,10 @@ hidden edge** — keep the no-edge framing; the cohort is a live testbed, not a 
 
 ## CURRENT COHORT
 
+- **ACTIVE — `sma50100_hw33` (iter 68, 2026-09-02): 34 bots**, sma_cross with per-bot SMA 50/100 on
+  the hiwin33 bracket, 5m, all SCALP_PAIRS, dev only. The ONLY cell gross-positive in BOTH eras under
+  sim-parity fills (+4.37 / +0.99 bps; $-negative both). Forward-test arm; retire at the n≥50 /
+  net<0 / PF<1 bar like everything else.
 - **RETIRED 2026-09-01 (iter 68, owner "reduce negative bots"):** `vwma_cross` ×34 (PF 0.46),
   `exp_sigxg`/`exp_wideg` sma_cross_gated ×20 (12 trades, 16.7%), every `ensemble_3of4` arm ×37
   across exp_ensemble/exp_hiwin/exp_hw43/exp_hw50/exp_hwsc/exp_sigx/exp_sigxr/exp_sigxtp (PF 0.33).
@@ -678,6 +682,42 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 68 — 2026-09-01/02 (OWNER "evaluate all transactions, reduce negative bots, record them so we don't use them again, learn from the data, deploy better" + "reset the balance")
+
+- **MEASURE (2026-08-24 → 09-01, all env):** dev 11,824 trades / −$277.86 / PF 0.59 / 49.9% win (444 bots);
+  lab 2,492 / −$54.70 / 0.58; staging 883 / −$19.54 / 0.59; prod empty. Every cohort gross-negative
+  before fees; fees ≈ double the loss. Exit mix: TP +$378 (5,394), SL −$528 (3,420), timeout −$127.
+- **RETIRE:** `vwma_cross` 5m ×34 (PF 0.46, −$82, the five worst bots fleet-wide), all `ensemble_3of4`
+  1h arms ×37 (35 trades, PF 0.33, six brackets), `sma_cross_gated` 1h ×20 (12 trades, 16.7%). dev
+  486 → 395, staging 96 → 72; trades kept; `retired_strategies.json` + `scripts/retired_ledger.py check`
+  now guard every bots file. exp_candidate.json drops the ensemble arms.
+- **LEARN (the headline):** the hw33 fleet (10,291 5m trades, six entries, one hiwin33 bracket) booked
+  53-55% win, not the sweep's 68-72%. `runner._check_exit` books a candle that spans both levels as a
+  TP (favourable extreme first); `simulation.py` sees the close only and fills at it (realized TP 32
+  bps vs 15 bracket, SL 60 vs 45, R/R 0.57). New `algo_search --intrabar close` = sim parity
+  (bb_break/hiwin33 50.5% vs live 53.9%). −EV under every fill model. Also: no stored indicator
+  bucket separates live winners from losers; ATR-bps is the only monotone feature (cost floor).
+- **SEARCH under sim-parity (59 algos × tight/medium/hiwin33 × 10 pairs, recent + lockbox, realistic
+  fees + funding):** 0/177 clear §30 in EITHER era. ADX-filtered MACD led recent (+7.69 bps gross) and
+  died in the lockbox (−0.79). `--atr-floor-bps 45` gave SIX $-positive cells in recent (first ever
+  under sim parity: cci_mom/medium +$0.0081, macd_rsi/hiwin33 +$0.0080 @ 63.9%) → lockbox 0/18,
+  leaders −$0.0136/−$0.0093 = the self-mined-gate signature. Both in `retired_strategies.json`.
+  Only both-era gross-positive pooled cell: `sma_cross_50_100/hiwin33` (+4.37 / +0.99 bps, pts+ 7/10
+  and 4/7 pairs, $-negative both, n 215/167). Points-joint-bar survivor in lockbox only:
+  rsi_revert_20_80/hiwin33 (67.8% pwin, +4.78 bps, n=143; recent +2.22, ~20 trades/pair) — watch.
+- **RESET (owner):** lean backup → dev + staging slates wiped (candles kept, lab untouched), VACUUM,
+  disk 94% → 90%. NOTE: host reset_dev.py can't reach the DB (port not published) — run in-container
+  or by SQL.
+- **APPLY:** `sma50100_hw33` cohort — sma_cross with per-bot `sma_cross_fast=50 / sma_cross_slow=100`
+  (params.json ranges widened to [5,50]/[15,100]; the 120-candle window caps slow at 100), hiwin33
+  bracket, 34 SCALP_PAIRS, dev only, ADDITIVE (no reset), 576 5m candles backfilled per new bot_id.
+  dev 395 → 429. Forward-test arm, NOT an edge. Harness: `--intrabar`, `--atr-floor-bps`, bingx as
+  2nd OHLCV source + on-disk OHLCV cache (okx rate-bans parallel sweeps; gate caps 5m at 10k candles).
+  Pending: chain2 per-pair ATR-floor sensitivity (40/50/60) logs in `reports/iter68/` for the record.
+- **CHECK STOP:** not met. Next materially-new angles: relative (percentile) ATR floor; an
+  `rsi_revert_20_80` live pattern for a 10-pair points-only arm; a tick-level TP/SL check in
+  simulation.py (owner call — changes forward-test continuity).
 
 ### Iteration 67 — 2026-07-24 (OWNER "do it all" — queued builds executed: rsi-cap REFUTED cross-era (the lockbox catches self-mined recency), funding-tilt NULL, owed sigexit DSR delivered (FAIL both eras) — and the iter-65 HARNESS-GATING DISCOVERY: the "best result on record" was measured trend-GATED by accident; gated form re-validated deliberately → `sma_cross_gated` deployed, dev 228 → 248)
 

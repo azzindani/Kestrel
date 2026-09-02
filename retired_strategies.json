@@ -52,6 +52,18 @@
   ],
   "refuted_designs": [
     {
+      "design": "ATR-floor entry gate (--atr-floor-bps 30/45) on the 5m bracket family",
+      "date": "2026-09-02",
+      "evidence": "Mined from the live hw33 fleet (gross $/trade monotone in ATR-bps). Floor 45, recent 45d, sim-parity fills, realistic fees + funding: SIX cells net-positive (cci_mom/medium +$0.0081 n=324, macd_rsi/hiwin33 +$0.0080 63.9% win n=158, macd_rsi/tight +$0.0068, macd_cross/medium +$0.0059, macd_cross/hiwin33 +$0.0056, cci_mom/hiwin33 +$0.0034). Prior-year lockbox, same gate: 0/18 positive, best cci_mom/hiwin33 -$0.0028; the recent leaders flipped to -$0.0136 / -$0.0093. Floor 30 negative in both eras. A raw bps floor also selects different market regimes per year (lockbox n collapsed to 64-237).",
+      "rule": "The self-mined-gate signature again (see --rsi-cap, --stretch-cap): a gate learned from our own recent trades improves the recent era and fails the lockbox. Untried variant that would be materially new: a RELATIVE floor (ATR percentile over the trailing window) rather than a raw bps level."
+    },
+    {
+      "design": "ADX-filtered MACD entries (macd_adx20/25, macd_rsi_adx20/25) at 5m",
+      "date": "2026-09-02",
+      "evidence": "Recent 45d under sim-parity fills: gross-positive leaders (macd_rsi_adx25/hiwin33 +7.69 bps 56.7% pwin n=319, macd_adx25/hiwin33 +5.99 bps n=576), clearing the 4 bps maker floor on gross capture. Prior-year lockbox: macd_rsi_adx25/hiwin33 -0.79 bps, macd_adx25 not positive, +EV on 1/7 pairs (PEPE only). Net-negative in dollars in both eras.",
+      "rule": "Era-specific. Do not deploy; ADX gating on MACD does not add cross-era selectivity."
+    },
+    {
       "design": "hiwin33 inverted bracket (tp 0.5 / sl 1.5 ATR) as a 70%-win-rate strategy",
       "date": "2026-09-01",
       "evidence": "hw33 fleet: 10,291 closed 5m trades across bb_break/cci_mom/mom_adx/sma_cross/macd_rsi/macd_cross = 53-55% win, PF 0.55-0.64, net -$260. The 68-72% win rate that justified the tier came from the backtest runner resolving a candle that spans both bracket levels as a take-profit (TP checked on the favourable extreme before SL on the adverse one). The sim checks the CLOSE only and fills at the close, so realized TP is ~2x the bracket (32 vs 15 bps) and realized SL ~1.4x (60 vs 45 bps): realized R/R 0.57, break-even win ~64%, actual 54%. algo_search --intrabar close reproduces the live numbers (bb_break 50.5%, R/R 0.58). Under EVERY fill model the bracket is -EV: tp_first -$0.012/trade, sl_first -$0.013, close -$0.014.",

@@ -324,15 +324,15 @@
   "sma_cross_fast": {
     "value": 9,
     "type": "int",
-    "range": [5, 20],
-    "description": "Fast SMA period for the sma_cross pattern (9/21 golden/death cross); entry fires when the fast SMA crosses the slow SMA.",
+    "range": [5, 50],
+    "description": "Fast SMA period for the sma_cross pattern (9/21 golden/death cross); entry fires when the fast SMA crosses the slow SMA. Range ceiling 20->50 (2026-09-01, iter 68) for the sma_cross_50_100 forward-test cohort — the only cell gross-positive in BOTH eras under sim-parity fills.",
     "impact": "lower = more responsive, more crosses (noisier); higher = fewer, slower crosses"
   },
   "sma_cross_slow": {
     "value": 21,
     "type": "int",
-    "range": [15, 50],
-    "description": "Slow SMA period for the sma_cross pattern; the fast SMA crossing this baseline triggers the trend-following entry.",
+    "range": [15, 100],
+    "description": "Slow SMA period for the sma_cross pattern; the fast SMA crossing this baseline triggers the trend-following entry. Range ceiling 50->100 (2026-09-01, iter 68) for the sma_cross_50_100 cohort; the 120-candle eval window caps it at 100 (needs slow+1 candles).",
     "impact": "lower = earlier crosses, more whipsaw; higher = later, higher-conviction trend confirmation"
   },
   "flow_gate_enabled": {
