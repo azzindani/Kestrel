@@ -92,6 +92,12 @@
       "date": "2026-09-19",
       "evidence": "scripts/check_leadlag.py on 9 alts vs BTC, three eras (lockbox A 90d off365, lockbox B 90d off180, recent 45d), trigger = BTC |5m return| above its trailing 2-day 95th percentile, trailing 2-day beta, forward 1/2/3/6 candles, gross bps before fees. big_btc -4.4..+2.3 bps, lag_resid -5.7..+2.3, over_resid -4.8..+7.9; the sign flips between eras for every variant, day-level |t| < 1 except one negative (-2.3). The best cell (over_resid k=2 +7.93 in lockbox A) is -4.12 in lockbox B and -1.14 recent.",
       "rule": "Cross-asset catch-up at 5m is already arbitraged inside the candle; do not build lead-lag entries on candle closes. It would need sub-second data and execution, which this stack does not have."
+    },
+    {
+      "design": "funding-rate cash-and-carry (long spot + short perp, same coin) as the profit engine",
+      "date": "2026-09-19",
+      "evidence": "scripts/backtest_funding_carry.py on Binance's public archive (futures fundingRate + 1h spot/perp klines), 33 scalp coins, perp 3x (capital 1.33x notional), basis + rebalance/liquidation costs, rules decided only on settled funding. Year A (2024-09..2025-08): best n9_in1bp_out0 +1.53%/yr on capital (maker; 31/33 coins +), always_on +1.15%; taker fees cut both to ~+0.2%. Year B (2025-09..2026-08): mean funding NEGATIVE (-0.44% of notional for always_on), every rule -0.95..+0.01%/yr. BingX's own funding over its last 333 days runs +0.34..+0.74 bp/8h (Binance -0.11..+0.29 over the same span), so a BingX-only carry would earn roughly 3-6%/yr on capital before execution frictions.",
+      "rule": "Carry is real but a low single-digit yield that goes to zero or negative in flat/bear years; it cannot fund the growth target. Revisit only as a parking yield for idle capital, and only with a spot leg (§13 owner amendment) and BingX-native funding history."
     }
   ]
 }
