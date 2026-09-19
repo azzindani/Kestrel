@@ -80,6 +80,12 @@
       "date": "2026-09-19",
       "evidence": "Mined from 23,878 live 5m trades (dev+lab+staging, 2026-09-02..09-19, hiwin33 bracket): hour 12 ran +13.8 bps gross @ 70.7% win (n=1,890, 12/16 days positive, peak 12:30-12:45 = US macro slot +23.1 bps), 21-23 +3.6, 03-05 -9.1; all seven entries shared the shape. An online no-lookahead hour gate lifted kept trades from -6.95 to ~0..+3.4 bps net. Prior-year lockbox (algo_search --days 90 --offset-days 365, DST-matched Jun-Sep 2025, sim-parity --intrabar close, realistic fees + funding, 7 entries x 9 pairs, 56k trades): hour 12 = -8.38 bps (5 of 7 entries negative there), 21-23 = -1.5/+1.4/-5.1, 03-05 ~ 0. The shape does not survive the lockbox. The 13-16 UTC overlap block, lifted for research only, shows nothing either (-3.3/+2.1/-5.2). reports/iter69/.",
       "rule": "Time-of-day is regime-specific at 5m as it was at 1h (iter 3). Do not deploy an hour gate mined from a live window: a few weeks of live data is one macro regime, and cross-pair correlation makes its trade count overstate the evidence (the unit of independence is the day, not the trade)."
+    },
+    {
+      "design": "adaptive selection for lab/staging: act only on slices whose trailing net expectancy (learned online from the ungated dev stream) is positive — i.e. an expectancy-keyed pattern memory",
+      "date": "2026-09-19",
+      "evidence": "scripts/study_adaptive_selection.py over algo_search --dump-trades (8 live entries x hiwin33, sim-parity close fills, realistic fees + funding): 8 keys (algo / algo_dir / algo_dir_sess / algo_pair / algo_pair_dir / algo_hour / pair / pair_dir) x 4 windows (last 30 / last 100 trades, trailing 2d / 7d) x min_n 20/50, strictly no-lookahead (only trades closed before the entry). Kept trades vs the ungated baseline over the same post-warm-up period: lockbox A (51,691 trades) best -5.3 bps vs -7.55; lockbox B (55,720) best -5.8 vs -8.38; recent (26,654) best -3.7 vs -6.65. 0 variants positive in ANY era; day-level t-stats -1.6 to -9.8. Live dev (17,532 trades, 17 days): every rule keeping more than 3% of trades stays negative (-1.4 to -4.1 bps).",
+      "rule": "A slice's recent record does not predict its next trades for this entry family, so no memory/learning gate can select winners from it. Do not rebuild pattern memory on expectancy as a profit lever; it only mutes activity. A learning loop needs an entry with persistent edge to learn from first."
     }
   ]
 }
