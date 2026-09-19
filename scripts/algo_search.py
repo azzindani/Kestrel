@@ -1982,6 +1982,13 @@ def main() -> None:
         help="research-only: lift the §22 13-16 UTC compression_breakout-only block so "
         "self-directing entries are measured over the US open (this process only)",
     )
+    ap.add_argument(
+        "--dump-trades",
+        default=None,
+        dest="dump_trades",
+        help="write every closed trade (IS+OOS, all combos) as JSONL to this path — the input "
+        "for offline studies of selection rules that learn online from the trade stream",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -2363,6 +2370,28 @@ def main() -> None:
                     pos += 1 if pm["avg_bps"] > 0 else 0
                     cells.append(f"{pair.split('/')[0]}:{pm['avg_bps']:+.1f}@{pm['win'] * 100:.0f}%(n{pm['n']})")
                 print(f"  {algo}/{exit_name}  [pts+ {pos}/{len(cells)} pairs]  " + "  ".join(cells), flush=True)
+
+    if args.dump_trades:
+        n_dumped = 0
+        with open(args.dump_trades, "w", encoding="utf-8") as fh:
+            for (algo, exit_name), d in pooled.items():
+                for t in d["ins"] + d["oos"]:
+                    notional = float(t["notional_usdt"]) or 1e-12
+                    row = {
+                        "algo": algo,
+                        "exit": exit_name,
+                        "pair": t["pair"],
+                        "direction": t["direction"],
+                        "entry_ts": int(t["entry_ts"]),
+                        "exit_ts": int(t["exit_ts"]),
+                        "close_reason": t["close_reason"],
+                        "gross_bps": _trade_points_bps(t),
+                        "net_bps": float(t["pnl_net_usdt"]) / notional * 10_000.0,
+                        "net_usdt": float(t["pnl_net_usdt"]),
+                    }
+                    fh.write(json.dumps(row) + "\n")
+                    n_dumped += 1
+        print(f"[dump-trades] wrote {n_dumped} trades to {args.dump_trades}", flush=True)
 
     if args.by_hour:
         # Pooled over every combo, IS+OOS: a time-of-day effect is market state, and in a

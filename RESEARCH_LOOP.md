@@ -716,6 +716,15 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   nothing in 17 days (0 memory rejections). Keying it on expectancy would be correct but, since every
   slice is negative, it would mute lab + staging almost entirely — an activity-vs-quality decision
   (§6), left to the owner.
+- **OWNER FOLLOW-UP "meaningful results in staging and lab, dev just let it be, grab profit":**
+  tested the tier model's own premise — lab/staging act only on slices whose trailing net
+  expectancy, learned online from the ungated stream, is positive. New `algo_search --dump-trades`
+  + `scripts/study_adaptive_selection.py` (8 keys × 4 windows × 2 min-n, strictly no-lookahead).
+  Kept trades: lockbox A best −5.3 bps (baseline −7.55), lockbox B best −5.8 (−8.38), recent best
+  −3.7 (−6.65); 0 variants positive in any era, day-level t −1.6..−9.8. Live dev agrees. Slice
+  performance has no persistence in this entry family → an expectancy-keyed pattern memory would
+  only mute activity. REFUTED, ledgered. The inert-memory bug above is therefore moot as a profit
+  lever.
 - **APPLY:** nothing deployed; no re-arrangement → no reset. OWNER RULE recorded: a fleet
   re-arrangement (new algorithms across tiers) ⇒ backup + balance reset of ALL envs, as the last step.
 - **CHECK STOP:** not met. The 5m entry family sits at gross ≈ 0 ± 3 bps in every era measured
