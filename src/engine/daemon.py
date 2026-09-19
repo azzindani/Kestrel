@@ -17,6 +17,7 @@ DI at startup:
 from __future__ import annotations
 
 import asyncio
+import dataclasses
 import os
 import signal
 import time
@@ -26,6 +27,8 @@ from typing import Optional
 from dotenv import load_dotenv
 
 from src.config import (
+    TIMEFRAME_MS,
+    XS_UNIVERSE,
     AppConfig,
     BucketState,
     Direction,
@@ -50,6 +53,7 @@ from src.risk import manager as risk
 from src.signal.detector import evaluate
 from src.signal.exits import indicator_exit_reason
 from src.signal.memory import memory_is_active
+from src.signal.patterns import cross_section_entry
 from src.viz.dashboard import Dashboard
 
 # Fleet-wide open-slot reservations, shared across every Daemon instance in this
@@ -60,6 +64,12 @@ from src.viz.dashboard import Dashboard
 # maker fill-wait) order placement itself.
 _fleet_slot_lock = asyncio.Lock()
 _fleet_slot_reservations: set[str] = set()
+
+# xs_rev cross-section read (iter 72): how long a bot waits for the rest of XS_UNIVERSE
+# to write the just-closed candle, and how often it re-reads. Feeds close within a few
+# seconds of each other; 30s leaves margin without delaying the next 5m close.
+_XS_WAIT_S = 30.0
+_XS_POLL_S = 2.0
 
 
 class Daemon:
@@ -344,6 +354,11 @@ class Daemon:
         if not candle_window:
             return
 
+        # Cross-section (xs_rev only): attach this pair's leader/laggard group entry to
+        # the latest candle so the pure pattern can read it (see _with_cross_section).
+        if "xs_rev" in (self.cfg.enabled_patterns or []):
+            candle_window[-1] = await self._with_cross_section(candle_window[-1])
+
         # Equity-scaled sizing: read the authoritative bucket equity from the DB
         # (§11) so position size compounds with realised PnL.
         sizing_state = await db.get_sizing_state(self.cfg.bot_id, self.cfg.env.value, self.cfg.bucket_size_usdt)
@@ -542,6 +557,41 @@ class Daemon:
     def _release_fleet_slot(self) -> None:
         """Release this bot's in-process slot reservation (no-op if none held)."""
         _fleet_slot_reservations.discard(self.cfg.bot_id)
+
+    async def _with_cross_section(self, latest):
+        """Return `latest` with xs_entry set from the XS_UNIVERSE cross-section (iter 72).
+
+        Shell half of xs_rev (§7): reads every universe pair's close now and
+        xs_lookback candles earlier, for this candle and the previous one, then calls
+        the pure cross_section_entry. Every pair is traded by several bots that close
+        at about the same moment, but each writes its candle when it processes the
+        close, so this waits — with an explicit deadline (§11), never blocking the loop
+        — until the whole universe has the current candle. On timeout it ranks what is
+        there; fewer than 2k+1 pairs gives xs_entry=None and the pattern stays flat.
+        """
+        step = TIMEFRAME_MS.get(latest.timeframe)
+        if step is None:
+            return dataclasses.replace(latest, xs_entry=None)
+        lookback = self.params.xs_lookback * step
+        ts_now, ts_prev = latest.ts, latest.ts - step
+        wanted = [ts_now, ts_now - lookback, ts_prev, ts_prev - lookback]
+        deadline = time.monotonic() + _XS_WAIT_S
+        while True:
+            closes = await db.load_closes_at(XS_UNIVERSE, latest.timeframe, wanted, self.cfg.env.value)
+            ready = sum(1 for p in XS_UNIVERSE if (p, ts_now) in closes)
+            if ready == len(XS_UNIVERSE) or time.monotonic() >= deadline:
+                break
+            await asyncio.sleep(_XS_POLL_S)
+
+        def snapshot(ts: int) -> dict[str, tuple[float, float]]:
+            return {
+                p: (closes[(p, ts)], closes[(p, ts - lookback)])
+                for p in XS_UNIVERSE
+                if (p, ts) in closes and (p, ts - lookback) in closes
+            }
+
+        entry = cross_section_entry(latest.pair, snapshot(ts_now), snapshot(ts_prev), self.params.xs_k)
+        return dataclasses.replace(latest, xs_entry=entry)
 
     async def _load_pattern_memories(self, candle_window) -> Optional[dict[str, dict | None]]:
         """Load this bot's pattern-memory rows for the current session/regime.

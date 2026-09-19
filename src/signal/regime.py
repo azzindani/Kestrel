@@ -118,6 +118,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "ker_trend",
                 "tsmom_z",
                 "turtle_soup",
+                "xs_rev",
             }
         ),
         Regime.VOLATILE: frozenset(
@@ -147,6 +148,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "ker_trend",
                 "tsmom_z",
                 "turtle_soup",
+                "xs_rev",
             }
         ),
         Regime.RANGING: frozenset(
@@ -174,6 +176,7 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "ker_trend",
                 "tsmom_z",
                 "turtle_soup",
+                "xs_rev",
             }
         ),
         Regime.QUIET: frozenset(),

@@ -60,6 +60,7 @@ SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
         "ker_trend",
         "tsmom_z",
         "turtle_soup",
+        "xs_rev",
     }
 )
 
@@ -1496,4 +1497,71 @@ def detect_turtle_soup(candles: Sequence[Candle], params: Params) -> Optional[Pa
         direction=Direction.SHORT if failed_up else Direction.LONG,
         confidence=0.78,
         details={"variant": "turtle_soup", "range_high": hi, "range_low": lo, "close": float(c.close)},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Iter 72 (2026-09-19, owner "build the cross-sectional one live too") — xs_rev.
+#
+# The first entry that looks ACROSS pairs. At each close XS_UNIVERSE is ranked by
+# its last-hour log return; a pair that ENTERS the leader group (top xs_k) is sold
+# and one that enters the laggard group (bottom xs_k) is bought — the short-horizon
+# cross-sectional reversal. Sim-parity sweep at hiwin33, gross bps recent / lockbox
+# A / lockbox B: -1.22 / -0.62 / -1.62 — consistent across eras, still under the
+# fee floor, so a dev forward test.
+#
+# Split per §7: the L3 daemon reads every universe pair's closes and calls the pure
+# cross_section_entry below, then hands the result to this pattern on the latest
+# candle (Candle.xs_entry, runtime-only). The pattern itself never does I/O.
+# cross_section_entry mirrors scripts/algo_search._build_xs_map step for step so the
+# live cohort trades the configuration that was backtested.
+# ---------------------------------------------------------------------------
+def _xs_groups(closes: dict[str, tuple[float, float]], k: int) -> Optional[dict[str, int]]:
+    """{pair: +1 leader / -1 laggard} from (close_now, close_lookback_ago), or None
+    when fewer than 2k+1 pairs have both closes (no meaningful cross-section)."""
+    rets = {p: math.log(now / then) for p, (now, then) in closes.items() if now > 0.0 and then > 0.0}
+    if k < 1 or len(rets) < 2 * k + 1:
+        return None
+    ranked = sorted(rets, key=rets.get)
+    return {p: -1 for p in ranked[:k]} | {p: 1 for p in ranked[-k:]}
+
+
+def cross_section_entry(
+    pair: str,
+    closes_now: dict[str, tuple[float, float]],
+    closes_prev: dict[str, tuple[float, float]],
+    k: int,
+) -> Optional[int]:
+    """Pure: did `pair` ENTER the leader (+1) or laggard (-1) group on this candle?
+
+    closes_now / closes_prev map each universe pair to (close, close xs_lookback
+    candles earlier) at this candle and at the previous one. Returns 0 when the pair
+    is in no group or was already in the same group last candle, and None when this
+    candle has no usable cross-section. An unusable previous cross-section counts as
+    "no groups", so every current group member is an entry — as in the harness.
+    """
+    now_groups = _xs_groups(closes_now, k)
+    if now_groups is None:
+        return None
+    prev_groups = _xs_groups(closes_prev, k) or {}
+    group = now_groups.get(pair)
+    if group is None or prev_groups.get(pair) == group:
+        return 0
+    return group
+
+
+@register("xs_rev")
+def detect_xs_rev(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Fade a pair on the candle it becomes one of the universe's last-hour leaders or laggards."""
+    if not candles:
+        return None
+    entry = candles[-1].xs_entry
+    if not entry:  # None (no cross-section supplied) or 0 (no group entry this candle)
+        return None
+
+    return PatternResult(
+        pattern=PatternType.XS_REV,
+        direction=Direction.SHORT if entry > 0 else Direction.LONG,
+        confidence=0.78,
+        details={"variant": "xs_rev", "group": "leader" if entry > 0 else "laggard"},
     )
