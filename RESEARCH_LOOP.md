@@ -703,8 +703,13 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   `--intrabar close --fees realistic --funding 0.01`, 7 entries × 9 pairs): hour 12 = **−8.38 bps**
   (5/7 entries negative), 21-23 −1.5/+1.4/−5.1, 03-05 ≈ 0; 13-15 UTC −3.3/+2.1/−5.2. Refuted →
   `retired_strategies.json` refuted_designs. Same lockbox: 0/7 entries clear §30 or the points bar
-  (best triple_mom +0.52 bps gross, $-negative on 9/9 pairs). Lockbox B (off180) and the recent-era
-  harness-parity run: `reports/iter69/`.
+  (best triple_mom +0.52 bps gross, $-negative on 9/9 pairs). Lockbox B (90d ending 2026-03-23,
+  winter — US macro slot at 13:30 UTC): hour 12 −0.40, hour 13 −5.58, 21-23 −4.6/−5.5/−4.8; 0/7
+  entries clear (best sma_cross +0.08). Recent era (45d ending 2026-09-19, overlaps the live window):
+  hour 12 +1.72, 21-23 +1.7/+1.6/+2.5, 03-07 −2.8..−9.2 — the harness reproduces the live sign in the
+  live regime and both lockboxes do not, so the refutation is about the regime, not the harness.
+  Only hour 14 is gross-positive in all three eras (+2.1/+2.3/+1.0 bps): under the ~5 bps fee floor
+  and inside the §22 blocked window — not deployable. Logs: `reports/iter69/` (gitignored).
 - **LEARNING LOOP IS INERT (bug, not fixed — owner call):** `memory.should_suppress` fires only below
   a 35% win rate. Under the hiwin33 bracket every (pattern, dir, session, regime) slice wins 47-61%
   while every slice with n≥100 has negative avg_pnl_pct, so lab/staging memory has suppressed
