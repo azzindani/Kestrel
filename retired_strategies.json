@@ -98,6 +98,12 @@
       "date": "2026-09-19",
       "evidence": "scripts/backtest_funding_carry.py on Binance's public archive (futures fundingRate + 1h spot/perp klines), 33 scalp coins, perp 3x (capital 1.33x notional), basis + rebalance/liquidation costs, rules decided only on settled funding. Year A (2024-09..2025-08): best n9_in1bp_out0 +1.53%/yr on capital (maker; 31/33 coins +), always_on +1.15%; taker fees cut both to ~+0.2%. Year B (2025-09..2026-08): mean funding NEGATIVE (-0.44% of notional for always_on), every rule -0.95..+0.01%/yr. BingX's own funding over its last 333 days runs +0.34..+0.74 bp/8h (Binance -0.11..+0.29 over the same span), so a BingX-only carry would earn roughly 3-6%/yr on capital before execution frictions.",
       "rule": "Carry is real but a low single-digit yield that goes to zero or negative in flat/bear years; it cannot fund the growth target. Revisit only as a parking yield for idle capital, and only with a spot leg (§13 owner amendment) and BingX-native funding history."
+    },
+    {
+      "design": "ker_trend (Kaufman efficiency-ratio trend entry) at 5m, any bracket",
+      "date": "2026-09-19",
+      "evidence": "Iter 71 sim-parity sweep (10 pairs, realistic fees + funding): hiwin33 -7.30 / -1.50 / -5.11 bps gross (recent / lockbox A / lockbox B), tight -9.07 / -5.81 / -7.05, medium -9.15 / -5.11 / -7.73 — the worst of the four new entries in every era and 2-4x the live fleet's ~-2 bps. Registered in patterns.py (kept for the record) but NOT deployed.",
+      "rule": "A straight-line run on 5m closes is already priced by the time the efficiency ratio confirms it; do not deploy ker_trend. Keep the code only as a documented negative."
     }
   ]
 }

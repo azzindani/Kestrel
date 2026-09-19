@@ -55,6 +55,10 @@ class TestRegistry:
             "sma_cross_gated",
             "bb_break",
             "vwma_cross",
+            "vr_adaptive",
+            "ker_trend",
+            "tsmom_z",
+            "turtle_soup",
         }
         assert expected == set(registry.keys())
 

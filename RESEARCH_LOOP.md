@@ -683,6 +683,36 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 71 — 2026-09-19 (OWNER "find new algorithm ideas and test them in dev, add more strategies" + "rearrange and reset")
+
+- **NEW LIVE PATTERNS (src/signal/patterns.py, own PatternType, SELF_DIRECTING, all non-QUIET
+  regimes, params.json contracts, tests/unit/signal/test_iter71_patterns.py):** `vr_adaptive`
+  (variance-ratio regime switch: follow the k-candle move when VR >= 1.25, fade when <= 0.75),
+  `ker_trend` (Kaufman efficiency ratio crossing 0.5), `tsmom_z` (12-candle return z vs its own
+  vol crossing 2), `turtle_soup` (pierce the prior 20-candle high/low, close back inside → fade).
+  Harness-only probe: `xs_rev` / `xs_mom` (cross-sectional last-hour rank among the swept pairs,
+  first cross-pair entries in the project).
+- **SWEEP (sim-parity `--intrabar close`, realistic fees + funding, hiwin33/tight/medium, 10 pairs;
+  gross bps recent / lockbox A / lockbox B):** turtle_soup/hiwin33 **+0.74 / −1.44 / −0.69** (worst
+  era −1.44 — the most era-robust cell ever measured; every current cur_* cell's worst era is
+  −2.9..−3.9); vr_adaptive/hiwin33 −2.96 / −1.94 / −1.55; tsmom_z/hiwin33 +0.08 / −3.07 / −6.43;
+  ker_trend −7.3 / −1.5 / −5.1 at best (every bracket worse) → ledgered, not deployed; xs_rev/hiwin33
+  −1.22 / −0.62 / −1.62 (consistent, research-only until the daemon gets a cross-pair input);
+  xs_mom sign-flips. Nothing clears the ~5 bps fee floor: forward tests, not edges.
+- **DEPLOY + RE-ARRANGE:** dev 429 → 531 (`hw33_turtle_soup`, `hw33_vr_adaptive`, `hw33_tsmom_z` ×
+  34 SCALP_PAIRS via the new additive `scripts/add_dev_cohort.py`); lab 74 → 74 (`cur_macd_rsi`,
+  weakest worst-era cell −3.87, swapped for `cur_turtle_soup` on lab's 12 pairs —
+  build_curated_tiers.py gained `_LAB_CELLS` so staging's output is byte-identical); staging 41
+  unchanged. 114 new bot_ids backfilled (576 5m candles each, gate).
+- **RESET (owner rule: re-arrangement ⇒ all envs):** lean backup
+  `backups/kestrel-lean-20260919T030846Z.dump` (940 MB, verified), daemons stopped gracefully
+  (0 open positions), TRUNCATE trades/signals/events/trade_context/pattern_memory + heartbeats;
+  candles kept (2.79M). Restart: 646/646 heartbeating, 0 errors.
+- **INCIDENT (fixed):** the first `docker compose build` copied `backups/` (15 GB of daily pg
+  dumps) into the build context and filled the disk (99%) for under a minute; `docker builder
+  prune -af` freed 26 GB, fleet unaffected (no errors, no restarts). `.dockerignore` now excludes
+  `backups/` and `reports/`. Disk after reset 79%.
+
 ### Iteration 70 — 2026-09-19 (OWNER "yes run the funding carry backtest" — after "i wont move to prod until we see profits and raised up balance")
 
 - **BUILT:** `scripts/backtest_funding_carry.py` — long spot + short perp on the same coin, perp 3x

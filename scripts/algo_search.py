@@ -578,6 +578,57 @@ def _wick_revert(C: Sequence[Candle], p: Params) -> Optional[Direction]:
     return None
 
 
+# --- cross-sectional (iter 71) -----------------------------------------------
+# The first entries that look ACROSS pairs rather than at one pair's own candles:
+# at each close, rank the swept pairs by their last-hour log return. A pair that
+# ENTERS the bottom-k (top-k) group is a candidate. xs_rev trades the documented
+# short-horizon cross-sectional reversal (buy the laggards, sell the leaders); xs_mom
+# the opposite. The rank map is built in main() from every swept pair before the
+# per-pair loop (_build_xs_map), so an entry sees only ranks computed from closes up
+# to its own candle. Research-only: going live needs a cross-pair daemon input.
+_XS_MAP: dict[str, dict[int, int]] = {}  # pair -> candle ts -> +1 entered top-k / -1 entered bottom-k
+_XS_LOOKBACK = 12
+_XS_K = 2
+
+
+def _build_xs_map(raw_by_pair: dict[str, list[list]]) -> None:
+    closes = {p: {int(r[0]): float(r[4]) for r in rows if float(r[4]) > 0} for p, rows in raw_by_pair.items()}
+    step = 300_000
+    all_ts = sorted(set().union(*[set(c) for c in closes.values()])) if closes else []
+    prev_group: dict[str, int] = {}
+    for ts in all_ts:
+        rets = {}
+        for p, c in closes.items():
+            then = c.get(ts - _XS_LOOKBACK * step)
+            if ts in c and then:
+                rets[p] = math.log(c[ts] / then)
+        if len(rets) < 2 * _XS_K + 1:
+            prev_group = {}
+            continue
+        ranked = sorted(rets, key=rets.get)
+        group = {p: -1 for p in ranked[:_XS_K]} | {p: 1 for p in ranked[-_XS_K:]}
+        for p, g in group.items():
+            if prev_group.get(p) != g:
+                _XS_MAP.setdefault(p, {})[ts] = g
+        prev_group = group
+
+
+@_algo("xs_rev", PatternType.ANOMALY_FADE)
+def _xs_rev(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    g = _XS_MAP.get(C[-1].pair, {}).get(int(C[-1].ts))
+    if g is None:
+        return None
+    return Direction.SHORT if g > 0 else Direction.LONG  # sell the leader, buy the laggard
+
+
+@_algo("xs_mom", PatternType.MOMENTUM_CONTINUATION)
+def _xs_mom(C: Sequence[Candle], p: Params) -> Optional[Direction]:
+    g = _XS_MAP.get(C[-1].pair, {}).get(int(C[-1].ts))
+    if g is None:
+        return None
+    return Direction.LONG if g > 0 else Direction.SHORT
+
+
 # --- momentum / breakout -----------------------------------------------------
 @_algo("bb_break", PatternType.COMPRESSION_BREAKOUT)
 def _bb_break(C: Sequence[Candle], p: Params) -> Optional[Direction]:
@@ -2119,6 +2170,21 @@ def main() -> None:
             print(f"[btc-gate] BTC state map: {len(btc_state)} candles", flush=True)
         except Exception as exc:  # noqa: BLE001 — gate degrades to off, main sweep unaffected
             print(f"[btc-gate] BTC fetch failed ({type(exc).__name__}) — gate disabled", flush=True)
+
+    if any(a.startswith("xs_") for a in algos):
+        # Cross-sectional ranks need every pair's closes before the per-pair loop.
+        raw_by_pair: dict[str, list[list]] = {}
+        for pair in pairs:
+            try:
+                raw_by_pair[pair] = fetch(pair, args.tf, args.days)[1]
+            except Exception as exc:  # noqa: BLE001 — a missing pair just leaves the cross-section
+                print(f"[xs] {pair}: fetch failed ({type(exc).__name__}) — not ranked", flush=True)
+        _build_xs_map(raw_by_pair)
+        print(
+            f"[xs] cross-section over {len(raw_by_pair)} pairs, lookback {_XS_LOOKBACK} candles, k={_XS_K}: "
+            f"{sum(len(v) for v in _XS_MAP.values())} group entries",
+            flush=True,
+        )
 
     for pi, pair in enumerate(pairs, 1):
         try:

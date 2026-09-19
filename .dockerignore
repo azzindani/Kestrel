@@ -12,3 +12,8 @@ kestrel.log
 # The runtime stage doesn't copy tests/ from the builder (Dockerfile stage 2
 # only COPYs src/, params.json, pyproject.toml, scripts/), so tests never
 # ship in the final image.
+# Data directories never belong in the build context (2026-09-19: backups/ held 15 GB
+# of daily pg dumps and a `docker compose build` filled the host disk copying them).
+# The Dockerfile only COPYs src/, params.json, pyproject.toml and scripts/.
+backups/
+reports/

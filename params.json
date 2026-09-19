@@ -335,6 +335,76 @@
     "description": "Slow SMA period for the sma_cross pattern; the fast SMA crossing this baseline triggers the trend-following entry. Range ceiling 50->100 (2026-09-01, iter 68) for the sma_cross_50_100 cohort; the 120-candle eval window caps it at 100 (needs slow+1 candles).",
     "impact": "lower = earlier crosses, more whipsaw; higher = later, higher-conviction trend confirmation"
   },
+  "vr_lookback": {
+    "value": 96,
+    "type": "int",
+    "range": [48, 110],
+    "description": "Candles of 1-candle log returns used to estimate the variance ratio for vr_adaptive (iter 71). The 120-candle eval window caps it at 110 (needs lookback+k+1 candles with k <= 12, minus warm-up slack).",
+    "impact": "lower = faster regime read, noisier VR; higher = steadier VR, slower to notice a regime change"
+  },
+  "vr_k": {
+    "value": 6,
+    "type": "int",
+    "range": [2, 12],
+    "description": "Aggregation horizon k (candles) for vr_adaptive: VR(k) = Var(k-candle returns) / (k x Var(1-candle returns)); the entry trades the latest k-candle move.",
+    "impact": "lower = reads short-horizon autocorrelation and trades small moves; higher = longer-horizon trend/reversion and bigger moves"
+  },
+  "vr_band": {
+    "value": 0.25,
+    "type": "float",
+    "range": [0.05, 0.6],
+    "description": "Dead band around VR=1 for vr_adaptive: follow the k-candle move when VR >= 1 + band, fade it when VR <= 1 - band, stay flat in between.",
+    "impact": "lower = trades in weaker regimes, more entries; higher = only clear trending/reverting regimes, fewer entries"
+  },
+  "vr_move_atr": {
+    "value": 1.0,
+    "type": "float",
+    "range": [0.3, 3.0],
+    "description": "Minimum size of the latest k-candle move, in ATR14 units, before vr_adaptive acts on it (stops it re-entering on noise while the regime condition merely holds).",
+    "impact": "lower = more entries on smaller moves; higher = only decisive moves, fewer entries"
+  },
+  "ker_period": {
+    "value": 20,
+    "type": "int",
+    "range": [8, 60],
+    "description": "Lookback for the Kaufman efficiency ratio in ker_trend (iter 71): |close[t] - close[t-n]| / sum |close[i] - close[i-1]|.",
+    "impact": "lower = reacts to short clean bursts; higher = requires a longer straight-line run"
+  },
+  "ker_min": {
+    "value": 0.5,
+    "type": "float",
+    "range": [0.2, 0.9],
+    "description": "Efficiency-ratio threshold for ker_trend; the entry fires on the candle the ratio first reaches it, in the direction of the net move.",
+    "impact": "lower = more, choppier trend entries; higher = only very clean trends, fewer entries"
+  },
+  "tsmom_lookback": {
+    "value": 12,
+    "type": "int",
+    "range": [3, 48],
+    "description": "Return lookback (candles) for tsmom_z (iter 71): z = log(close[t]/close[t-n]) / (1-candle return stdev x sqrt(n)).",
+    "impact": "lower = short bursts; higher = longer momentum horizon"
+  },
+  "tsmom_vol_window": {
+    "value": 96,
+    "type": "int",
+    "range": [24, 106],
+    "description": "Candles of 1-candle log returns used for the volatility that scales tsmom_z. The 120-candle eval window caps lookback + window.",
+    "impact": "lower = vol adapts faster (z jumps less in vol spikes); higher = steadier vol baseline"
+  },
+  "tsmom_z_min": {
+    "value": 2.0,
+    "type": "float",
+    "range": [1.0, 4.0],
+    "description": "Z threshold for tsmom_z; fires on the candle |z| first reaches it, in the direction of the lookback return.",
+    "impact": "lower = more, weaker momentum entries; higher = only unusually strong moves, fewer entries"
+  },
+  "soup_lookback": {
+    "value": 20,
+    "type": "int",
+    "range": [5, 100],
+    "description": "Prior-range lookback for turtle_soup (iter 71): a candle whose high pierces the prior n-candle high but closes back below it is a short (mirror for lows).",
+    "impact": "lower = fades minor swing points, more entries; higher = only failed breaks of major ranges, fewer entries"
+  },
   "flow_gate_enabled": {
     "value": false,
     "type": "bool",
