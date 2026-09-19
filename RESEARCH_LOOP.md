@@ -683,6 +683,23 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 70 — 2026-09-19 (OWNER "yes run the funding carry backtest" — after "i wont move to prod until we see profits and raised up balance")
+
+- **BUILT:** `scripts/backtest_funding_carry.py` — long spot + short perp on the same coin, perp 3x
+  (capital 1.33x notional), funding accrues from the settlement AFTER the decision, basis P&L,
+  rebalance / liquidation costs on rallies, taker (spot 0.10 + perp 0.05 + 0.03 slip per leg) and
+  maker fee sets. Data: Binance public archive (the futures REST API is now geo-blocked from this
+  host; `data.binance.vision` is not). Two separate years, 33 scalp coins (HYPE has no archive).
+- **RESULT:** Year A 2024-09..2025-08 best +1.53%/yr on capital (3-day avg funding >= 1 bp in, < 0
+  out, maker; 31/33 coins +); always-on +1.15%; taker fees cut both to ~+0.2%. Year B
+  2025-09..2026-08: average funding NEGATIVE, every rule −0.95..+0.01%/yr. Switching rules on 24h
+  funding churn fees away (−4..−6%/yr). BingX's own funding over its last 333 days is higher than
+  Binance's (+0.34..+0.74 vs −0.11..+0.29 bp/8h) → a BingX-only carry ≈ 3-6%/yr on capital.
+- **VERDICT:** real but a low single-digit yield that turns negative in flat/bear years — not a
+  growth engine. Ledgered in `refuted_designs` as a profit lever (parking-yield note kept).
+- **APPLY:** nothing deployed (would need a spot leg = §13 owner amendment + spot/transfer execution
+  code in the frozen execution layer).
+
 ### Iteration 69 — 2026-09-19 (OWNER "time for algorithm and strategy review, all environment suffer losses")
 
 - **MEASURE (2026-09-02 reset → 09-19, 17 days):** dev 18,687 trades / −$311.40 (gross −$111.64,
