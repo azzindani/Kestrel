@@ -1522,7 +1522,7 @@ def _xs_groups(closes: dict[str, tuple[float, float]], k: int) -> Optional[dict[
     rets = {p: math.log(now / then) for p, (now, then) in closes.items() if now > 0.0 and then > 0.0}
     if k < 1 or len(rets) < 2 * k + 1:
         return None
-    ranked = sorted(rets, key=rets.get)
+    ranked = sorted(rets, key=lambda p: rets[p])
     return {p: -1 for p in ranked[:k]} | {p: 1 for p in ranked[-k:]}
 
 
