@@ -75,7 +75,22 @@ _CELLS: dict[str, tuple[str, dict[str, Any]]] = {
     "cur_macd_rsi": ("macd_rsi", {}),
     "cur_macd_cross": ("macd_cross", {}),
     "cur_cci_mom": ("cci_mom", {}),
+    # iter 71 (2026-09-19): the most era-robust cell measured — worst era -1.44 bps gross
+    # (recent +0.74 / lockbox A -1.44 / lockbox B -0.69, hiwin33, sim-parity) against
+    # -2.9..-3.9 for every other cur_* cell. Lab only; it replaced cur_macd_rsi there.
+    "cur_turtle_soup": ("turtle_soup", {}),
 }
+
+# lab's cell list (iter 71: cur_macd_rsi, the weakest worst-era cell at -3.87 bps, swapped
+# for cur_turtle_soup). Staging keeps its own cells via _STAGING_PAIRS.
+_LAB_CELLS: list[str] = [
+    "cur_sma50100",
+    "cur_triple_mom",
+    "cur_mom_adx",
+    "cur_turtle_soup",
+    "cur_macd_cross",
+    "cur_cci_mom",
+]
 
 # staging: per cell, the sweep pairs not gross-negative in both eras (see docstring).
 _STAGING_PAIRS: dict[str, list[str]] = {
@@ -116,7 +131,7 @@ def build_staging() -> list[dict[str, Any]]:
 
 def build_lab(existing: list[dict[str, Any]]) -> list[dict[str, Any]]:
     kept = [b for b in existing if b["bot_id"] in _LAB_KEEP_IDS]
-    return kept + [_bot("lab", sym, label) for label in _CELLS for sym in _LAB_PAIRS]
+    return kept + [_bot("lab", sym, label) for label in _LAB_CELLS for sym in _LAB_PAIRS]
 
 
 def _load(path: str) -> list[dict[str, Any]]:
@@ -134,6 +149,12 @@ def _save(path: str, bots: list[dict[str, Any]]) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument(
+        "--new-out",
+        default=os.path.join(_ROOT, "reports", "iter68", "new_tier_bots.json"),
+        dest="new_out",
+        help="where to write the bots whose bot_id is new (the backfill list)",
+    )
     args = ap.parse_args()
 
     lab_path = os.path.join(_ROOT, "bots.lab.json")
@@ -144,12 +165,14 @@ def main() -> int:
 
     print(f"staging: {len(old_stg)} -> {len(stg)}   lab: {len(old_lab)} -> {len(lab)}   new bot_ids: {len(new_ids)}")
     for label in _CELLS:
-        print(f"  {label:16} staging={len(_STAGING_PAIRS[label]):2d}  lab={len(_LAB_PAIRS):2d}")
+        n_stg = len(_STAGING_PAIRS.get(label, []))
+        n_lab = len(_LAB_PAIRS) if label in _LAB_CELLS else 0
+        print(f"  {label:16} staging={n_stg:2d}  lab={n_lab:2d}")
     if args.dry_run:
         return 0
     _save(lab_path, lab)
     _save(stg_path, stg)
-    new_path = os.path.join(_ROOT, "reports", "iter68", "new_tier_bots.json")
+    new_path = args.new_out
     os.makedirs(os.path.dirname(new_path), exist_ok=True)
     _save(new_path, [b for b in lab + stg if b["bot_id"] in set(new_ids)])
     print(f"wrote {lab_path}, {stg_path}; backfill list -> {new_path}")

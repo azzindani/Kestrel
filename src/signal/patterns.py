@@ -13,6 +13,8 @@ Public API:
 from __future__ import annotations
 
 import datetime
+import math
+import statistics
 from typing import Callable, Optional, Sequence
 
 from src.config import Candle, Direction, Params, PatternResult, PatternType
@@ -54,6 +56,10 @@ SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
         "ensemble_state",
         "bb_break",
         "vwma_cross",
+        "vr_adaptive",
+        "ker_trend",
+        "tsmom_z",
+        "turtle_soup",
     }
 )
 
@@ -1324,4 +1330,170 @@ def detect_vwma_cross(candles: Sequence[Candle], params: Params) -> Optional[Pat
         direction=direction,
         confidence=0.78,  # full-size band, matching the other momentum patterns
         details={"variant": "vwma_cross", "vwma": round(now, 8), "close": close_now},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Iter 71 (2026-09-19) — owner "find new algorithm ideas and test them in dev, add
+# more strategies". Four mechanisms neither the registry nor the 59-algo harness
+# had covered. Each is self-directing (it sets its own direction), permitted in
+# every non-QUIET regime like the rest of the self-directing set, and deployed as
+# a dev forward test. Backtest priors live in RESEARCH_LOOP.md iter 71; none of
+# them is an edge until it survives the lockbox AND the forward test.
+# ---------------------------------------------------------------------------
+def _closes(candles: Sequence[Candle], n: int) -> Optional[list[float]]:
+    """Last n closes, or None when the window is short or holds a non-positive price."""
+    if len(candles) < n:
+        return None
+    out = [float(c.close) for c in candles[-n:]]
+    return out if min(out) > 0.0 else None
+
+
+def _log_returns(closes: Sequence[float]) -> list[float]:
+    return [math.log(closes[i] / closes[i - 1]) for i in range(1, len(closes))]
+
+
+@register("vr_adaptive")
+def detect_vr_adaptive(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Follow the latest k-candle move in a trending regime, fade it in a reverting one.
+
+    The variance ratio VR(k) = Var(k-candle returns) / (k x Var(1-candle returns)) is 1
+    for a random walk, above 1 when returns have been positively autocorrelated
+    (trending) and below 1 when negatively autocorrelated (mean-reverting). Unlike
+    ADX, it measures the regime of the return process itself, per pair.
+    """
+    lookback, k = params.vr_lookback, params.vr_k
+    if k < 2 or k > lookback:
+        return None
+    closes = _closes(candles, lookback + 1)
+    atr = candles[-1].atr14 if candles else None
+    if closes is None or atr is None or atr <= 0.0:
+        return None
+
+    returns = _log_returns(closes)
+    var1 = statistics.pvariance(returns)
+    if var1 <= 0.0:
+        return None
+    sums_k = [sum(returns[i - k + 1 : i + 1]) for i in range(k - 1, len(returns))]
+    vr = statistics.pvariance(sums_k) / (k * var1)
+
+    move = closes[-1] - closes[-1 - k]
+    if abs(move) < params.vr_move_atr * float(atr):
+        return None
+    with_move = Direction.LONG if move > 0 else Direction.SHORT
+    against_move = Direction.SHORT if move > 0 else Direction.LONG
+
+    if vr >= 1.0 + params.vr_band:
+        direction, mode = with_move, "follow"
+    elif vr <= 1.0 - params.vr_band:
+        direction, mode = against_move, "fade"
+    else:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.VR_ADAPTIVE,
+        direction=direction,
+        confidence=0.78,
+        details={"variant": f"vr_adaptive_{mode}", "vr": round(vr, 4), "move_atr": round(abs(move) / float(atr), 3)},
+    )
+
+
+def _efficiency_ratio(closes: Sequence[float]) -> Optional[float]:
+    path = sum(abs(closes[i] - closes[i - 1]) for i in range(1, len(closes)))
+    return abs(closes[-1] - closes[0]) / path if path > 0.0 else None
+
+
+@register("ker_trend")
+def detect_ker_trend(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter on the candle price starts travelling in a straight line.
+
+    Kaufman's efficiency ratio is |net move| / path length over ker_period candles:
+    1 means every candle moved the same way, near 0 means the path was all chop.
+    Edge-triggered (fires when it first reaches ker_min) so a bot does not re-enter on
+    every candle of the same clean run.
+    """
+    n = params.ker_period
+    closes = _closes(candles, n + 2)
+    if closes is None:
+        return None
+    er_now = _efficiency_ratio(closes[1:])
+    er_prev = _efficiency_ratio(closes[:-1])
+    if er_now is None or er_prev is None or not (er_prev < params.ker_min <= er_now):
+        return None
+    net = closes[-1] - closes[1]
+    if net == 0.0:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.KER_TREND,
+        direction=Direction.LONG if net > 0 else Direction.SHORT,
+        confidence=0.78,
+        details={"variant": "ker_trend", "er": round(er_now, 4), "er_prev": round(er_prev, 4)},
+    )
+
+
+def _tsmom_z(closes: Sequence[float], lookback: int, vol_window: int) -> Optional[float]:
+    """z of the lookback log return in units of the 1-candle return stdev x sqrt(lookback)."""
+    returns = _log_returns(closes[-(vol_window + 1) :])
+    if len(returns) < 2:
+        return None
+    sigma = statistics.stdev(returns)
+    if sigma <= 0.0:
+        return None
+    return math.log(closes[-1] / closes[-1 - lookback]) / (sigma * math.sqrt(lookback))
+
+
+@register("tsmom_z")
+def detect_tsmom_z(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Follow a move that is unusually large for this pair's own recent volatility.
+
+    Scaling the lookback return by realised volatility makes the threshold mean the
+    same thing on BTC and on PEPE, and in quiet and wild hours. Edge-triggered on the
+    candle |z| first reaches tsmom_z_min.
+    """
+    lookback, window = params.tsmom_lookback, params.tsmom_vol_window
+    closes = _closes(candles, max(lookback, window) + 2)
+    if closes is None:
+        return None
+    z_now = _tsmom_z(closes, lookback, window)
+    z_prev = _tsmom_z(closes[:-1], lookback, window)
+    if z_now is None or z_prev is None:
+        return None
+    if not (abs(z_prev) < params.tsmom_z_min <= abs(z_now)):
+        return None
+
+    return PatternResult(
+        pattern=PatternType.TSMOM_Z,
+        direction=Direction.LONG if z_now > 0 else Direction.SHORT,
+        confidence=0.78,
+        details={"variant": "tsmom_z", "z": round(z_now, 3)},
+    )
+
+
+@register("turtle_soup")
+def detect_turtle_soup(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Fade a breakout that failed on the same candle.
+
+    The candle trades through the prior soup_lookback-candle high (low) — running the
+    stops parked there — then closes back inside the range. Distinct from a plain
+    new-high fade: it needs the rejection close, not just the new extreme. An outside
+    candle that pierces both sides is ambiguous and ignored.
+    """
+    n = params.soup_lookback
+    if len(candles) < n + 1:
+        return None
+    c = candles[-1]
+    prior = candles[-(n + 1) : -1]
+    hi = max(float(x.high) for x in prior)
+    lo = min(float(x.low) for x in prior)
+    failed_up = float(c.high) > hi and float(c.close) < hi
+    failed_down = float(c.low) < lo and float(c.close) > lo
+    if failed_up == failed_down:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.TURTLE_SOUP,
+        direction=Direction.SHORT if failed_up else Direction.LONG,
+        confidence=0.78,
+        details={"variant": "turtle_soup", "range_high": hi, "range_low": lo, "close": float(c.close)},
     )

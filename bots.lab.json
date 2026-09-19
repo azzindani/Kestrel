@@ -730,14 +730,14 @@
     }
   },
   {
-    "bot_id": "lab-CHZUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-CHZUSDT-5m-cur_turtle_soup-01",
     "pair": "CHZ/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -749,14 +749,14 @@
     }
   },
   {
-    "bot_id": "lab-PEPEUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-PEPEUSDT-5m-cur_turtle_soup-01",
     "pair": "PEPE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -768,14 +768,14 @@
     }
   },
   {
-    "bot_id": "lab-TIAUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-TIAUSDT-5m-cur_turtle_soup-01",
     "pair": "TIA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -787,14 +787,14 @@
     }
   },
   {
-    "bot_id": "lab-AVAXUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-AVAXUSDT-5m-cur_turtle_soup-01",
     "pair": "AVAX/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -806,14 +806,14 @@
     }
   },
   {
-    "bot_id": "lab-ADAUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-ADAUSDT-5m-cur_turtle_soup-01",
     "pair": "ADA/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -825,14 +825,14 @@
     }
   },
   {
-    "bot_id": "lab-APTUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-APTUSDT-5m-cur_turtle_soup-01",
     "pair": "APT/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -844,14 +844,14 @@
     }
   },
   {
-    "bot_id": "lab-BTCUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-BTCUSDT-5m-cur_turtle_soup-01",
     "pair": "BTC/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -863,14 +863,14 @@
     }
   },
   {
-    "bot_id": "lab-AAVEUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-AAVEUSDT-5m-cur_turtle_soup-01",
     "pair": "AAVE/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -882,14 +882,14 @@
     }
   },
   {
-    "bot_id": "lab-WLDUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-WLDUSDT-5m-cur_turtle_soup-01",
     "pair": "WLD/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -901,14 +901,14 @@
     }
   },
   {
-    "bot_id": "lab-SUIUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-SUIUSDT-5m-cur_turtle_soup-01",
     "pair": "SUI/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -920,14 +920,14 @@
     }
   },
   {
-    "bot_id": "lab-XLMUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-XLMUSDT-5m-cur_turtle_soup-01",
     "pair": "XLM/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,
@@ -939,14 +939,14 @@
     }
   },
   {
-    "bot_id": "lab-OPUSDT-5m-cur_macd_rsi-01",
+    "bot_id": "lab-OPUSDT-5m-cur_turtle_soup-01",
     "pair": "OP/USDT",
     "timeframe_entry": "5m",
     "timeframe_regime": "5m",
     "max_active_buckets": 1,
-    "strategy": "cur_macd_rsi",
+    "strategy": "cur_turtle_soup",
     "patterns": [
-      "macd_rsi"
+      "turtle_soup"
     ],
     "params": {
       "tp_atr_multiplier": 0.5,

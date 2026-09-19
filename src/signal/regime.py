@@ -114,6 +114,10 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "sma_cross_gated",
                 "bb_break",
                 "vwma_cross",
+                "vr_adaptive",
+                "ker_trend",
+                "tsmom_z",
+                "turtle_soup",
             }
         ),
         Regime.VOLATILE: frozenset(
@@ -139,6 +143,10 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "sma_cross_gated",
                 "bb_break",
                 "vwma_cross",
+                "vr_adaptive",
+                "ker_trend",
+                "tsmom_z",
+                "turtle_soup",
             }
         ),
         Regime.RANGING: frozenset(
@@ -162,6 +170,10 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "sma_cross_gated",
                 "bb_break",
                 "vwma_cross",
+                "vr_adaptive",
+                "ker_trend",
+                "tsmom_z",
+                "turtle_soup",
             }
         ),
         Regime.QUIET: frozenset(),

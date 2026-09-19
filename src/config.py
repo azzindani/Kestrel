@@ -88,6 +88,17 @@ class PatternType(str, Enum):
     # unknowingly ran under this gating (pre-iter-66b harness) and it was the
     # cross-era winner; the ungated form is era-inconsistent.
     SMA_CROSS_GATED = "sma_cross_gated"
+    # Iter 71 (2026-09-19, owner "find new algorithm ideas and test them in dev"):
+    # four mechanisms the registry and the 59-algo harness had never covered.
+    # Variance-ratio regime switch — follow a k-candle move when returns have been
+    # trending (VR > 1), fade it when they have been mean-reverting (VR < 1).
+    VR_ADAPTIVE = "vr_adaptive"
+    # Kaufman efficiency ratio — enter when price starts travelling in a straight line.
+    KER_TREND = "ker_trend"
+    # Volatility-scaled time-series momentum — the lookback return in units of its own vol.
+    TSMOM_Z = "tsmom_z"
+    # Failed-breakout reversal — a wick through the prior range that closes back inside.
+    TURTLE_SOUP = "turtle_soup"
 
 
 class SignalOutcome(str, Enum):
@@ -266,6 +277,27 @@ class Params:
     sma_cross_fast: int = 9
     sma_cross_slow: int = 21
 
+    # --- iter-71 entries (patterns.py: vr_adaptive / ker_trend / tsmom_z / turtle_soup) ---
+    # vr_adaptive: variance ratio VR(k) = Var(k-candle returns) / (k * Var(1-candle returns))
+    # over the last vr_lookback candles; it fires when the latest k-candle move is at least
+    # vr_move_atr ATRs, following it if VR >= 1 + vr_band and fading it if VR <= 1 - vr_band.
+    vr_lookback: int = 96
+    vr_k: int = 6
+    vr_band: float = 0.25
+    vr_move_atr: float = 1.0
+    # ker_trend: efficiency ratio |net move| / path length over ker_period candles; fires on
+    # the candle it first reaches ker_min, in the direction of the net move.
+    ker_period: int = 20
+    ker_min: float = 0.5
+    # tsmom_z: tsmom_lookback-candle log return / (1-candle return stdev over
+    # tsmom_vol_window * sqrt(lookback)); fires on the candle |z| first reaches tsmom_z_min.
+    tsmom_lookback: int = 12
+    tsmom_vol_window: int = 96
+    tsmom_z_min: float = 2.0
+    # turtle_soup: the candle pierces the prior soup_lookback-candle high (low) and closes
+    # back inside it -> short (long).
+    soup_lookback: int = 20
+
     # --- order-flow alignment gate (signal/detector.py; daemon supplies depth_imb5) ---
     # When enabled, a candidate entry is rejected unless the latest top-5 order-book
     # depth imbalance AGREES with the trade direction by at least flow_gate_min_imbalance
@@ -389,6 +421,16 @@ class Params:
             cci_period=(int(d["cci_period"]["value"]) if "cci_period" in d else 20),
             sma_cross_fast=(int(d["sma_cross_fast"]["value"]) if "sma_cross_fast" in d else 9),
             sma_cross_slow=(int(d["sma_cross_slow"]["value"]) if "sma_cross_slow" in d else 21),
+            vr_lookback=(int(d["vr_lookback"]["value"]) if "vr_lookback" in d else 96),
+            vr_k=(int(d["vr_k"]["value"]) if "vr_k" in d else 6),
+            vr_band=(float(d["vr_band"]["value"]) if "vr_band" in d else 0.25),
+            vr_move_atr=(float(d["vr_move_atr"]["value"]) if "vr_move_atr" in d else 1.0),
+            ker_period=(int(d["ker_period"]["value"]) if "ker_period" in d else 20),
+            ker_min=(float(d["ker_min"]["value"]) if "ker_min" in d else 0.5),
+            tsmom_lookback=(int(d["tsmom_lookback"]["value"]) if "tsmom_lookback" in d else 12),
+            tsmom_vol_window=(int(d["tsmom_vol_window"]["value"]) if "tsmom_vol_window" in d else 96),
+            tsmom_z_min=(float(d["tsmom_z_min"]["value"]) if "tsmom_z_min" in d else 2.0),
+            soup_lookback=(int(d["soup_lookback"]["value"]) if "soup_lookback" in d else 20),
             flow_gate_enabled=(bool(d["flow_gate_enabled"]["value"]) if "flow_gate_enabled" in d else False),
             flow_gate_min_imbalance=(
                 float(d["flow_gate_min_imbalance"]["value"]) if "flow_gate_min_imbalance" in d else 0.0
