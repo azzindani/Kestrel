@@ -65,7 +65,9 @@ from src.config import (
     Params,
     PatternResult,
     PatternType,
+    TradingSession,
     VolumeResult,
+    get_trading_session,
     load_params,
 )
 from src.signal.patterns import registry
@@ -1335,6 +1337,67 @@ def _install_atr_floor(floor_bps: float) -> None:
         registry[name] = _gate(registry[name])
 
 
+def _install_hours_gate(hours: frozenset[int]) -> None:
+    """Entry gate (2026-09-19, from the live 5m fleet): only fire when the signal
+    candle's UTC hour is in `hours`.
+
+    Mined from 23,878 closed 5m trades across dev/lab/staging (2026-09-02..09-19,
+    one constant hiwin33 bracket). Every one of the seven live entries ran the same
+    shape by entry hour — the effect is market state, not pattern:
+
+        12 UTC      +13.8 bps gross @ 70.7% win (n=1,890; 12 of 16 days positive)
+        21-23 UTC   +3.6
+        03-05 UTC   -9.1  (13 of 16 days negative)
+        rest        -3 .. -4
+
+    Self-mined from the recent era, so it MUST clear the prior-year lockbox before
+    any deploy (ledger rule). Iter 3 refuted time-of-day at 1h; this is the first
+    5m test. Wraps every registry entry (same shape as _install_atr_floor).
+    """
+
+    def _gate(fn: EntryFn) -> EntryFn:
+        def gated(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+            res = fn(candles, params)
+            if res is None:
+                return None
+            if (int(candles[-1].ts) // 3_600_000) % 24 not in hours:
+                return None
+            return res
+
+        return gated
+
+    for name in list(registry):
+        registry[name] = _gate(registry[name])
+
+
+def _install_open_overlap() -> None:
+    """Research-only bypass of the §22 overlap block (13-16 UTC compression_breakout only).
+
+    The detector narrows every candle in 13-16 UTC to compression_breakout, so no
+    backtest of a self-directing entry has ever seen the US equity open. The overlap
+    session's volume/confidence multipliers equal the US session's (0.9 / 1.0), so
+    mapping OVERLAP -> US changes exactly one thing: the pattern restriction. Same
+    runtime-patch precedent as --points (frozen files untouched; this process only).
+    """
+
+    def _session(ts_ms: int) -> TradingSession:
+        s = get_trading_session(ts_ms)
+        return TradingSession.US if s is TradingSession.OVERLAP else s
+
+    detector.get_trading_session = _session
+
+
+def _hour_table(trades: list[dict]) -> list[tuple[int, dict[str, float], float]]:
+    """(hour, points metrics, avg net $) per UTC entry hour, hours with trades only."""
+    by_hour: dict[int, list[dict]] = {}
+    for t in trades:
+        by_hour.setdefault((int(t["entry_ts"]) // 3_600_000) % 24, []).append(t)
+    return [
+        (h, _points_metrics(ts), sum(float(t["pnl_net_usdt"]) for t in ts) / len(ts))
+        for h, ts in sorted(by_hour.items())
+    ]
+
+
 def _install_rsi_cap(cap: float) -> None:
     """Iter 67 entry gate: block entries whose direction-ALIGNED RSI14 at the signal
     candle is already >= cap. Data-derived from archive mining of 1,311 of our OWN
@@ -1899,6 +1962,26 @@ def main() -> None:
         "execution/simulation.py does — the live fleet's 54%% vs the harness's 70%% on the "
         "hiwin33 bracket is entirely this switch.",
     )
+    ap.add_argument(
+        "--hours",
+        default=None,
+        help="entry gate (2026-09-19, mined from the live 5m fleet): comma list of UTC hours "
+        "the signal candle must fall in, e.g. '12,21,22,23'. Self-mined: lockbox first.",
+    )
+    ap.add_argument(
+        "--by-hour",
+        action="store_true",
+        dest="by_hour",
+        help="print pooled points + net$ per UTC entry hour (all trades, IS+OOS) — the "
+        "cross-era check on the live fleet's time-of-day shape",
+    )
+    ap.add_argument(
+        "--open-overlap",
+        action="store_true",
+        dest="open_overlap",
+        help="research-only: lift the §22 13-16 UTC compression_breakout-only block so "
+        "self-directing entries are measured over the US open (this process only)",
+    )
     args = ap.parse_args()
 
     load_dotenv()
@@ -1927,6 +2010,13 @@ def main() -> None:
     if args.atr_floor_bps > 0.0:
         _install_atr_floor(args.atr_floor_bps)
         print(f"[atr-floor] entry gate armed: ATR14 < {args.atr_floor_bps:g} bps of price blocks entry", flush=True)
+    if args.hours:
+        gate_hours = frozenset(int(h) for h in args.hours.split(",") if h.strip())
+        _install_hours_gate(gate_hours)
+        print(f"[hours] entry gate armed: signal candle UTC hour in {sorted(gate_hours)}", flush=True)
+    if args.open_overlap:
+        _install_open_overlap()
+        print("[open-overlap] §22 13-16 UTC block lifted for this process (research-only)", flush=True)
     if args.adversarial_gate > 0:
         _install_adversarial_gate(args.adversarial_gate)
         print(
@@ -2273,6 +2363,20 @@ def main() -> None:
                     pos += 1 if pm["avg_bps"] > 0 else 0
                     cells.append(f"{pair.split('/')[0]}:{pm['avg_bps']:+.1f}@{pm['win'] * 100:.0f}%(n{pm['n']})")
                 print(f"  {algo}/{exit_name}  [pts+ {pos}/{len(cells)} pairs]  " + "  ".join(cells), flush=True)
+
+    if args.by_hour:
+        # Pooled over every combo, IS+OOS: a time-of-day effect is market state, and in a
+        # lockbox run the whole window is unseen by the live data the hypothesis came from.
+        every = [t for d in pooled.values() for t in d["ins"] + d["oos"]]
+        print("\n=== BY UTC ENTRY HOUR (pooled all combos, IS+OOS; gross bps @ points-win, net $) ===", flush=True)
+        print(f"  {'hour':>4s} {'n':>6s} {'pwin%':>6s} {'avg_bps':>8s} {'net$/tr':>9s}", flush=True)
+        for h, pm, net in _hour_table(every):
+            print(f"  {h:4d} {pm['n']:6d} {pm['win'] * 100:6.1f} {pm['avg_bps']:+8.2f} {net:+9.4f}", flush=True)
+        for algo, exit_name in combos:
+            d = pooled[(algo, exit_name)]
+            cells = [f"{h}:{pm['avg_bps']:+.1f}(n{pm['n']})" for h, pm, _net in _hour_table(d["ins"] + d["oos"])]
+            if cells:
+                print(f"  {algo}/{exit_name}  " + "  ".join(cells), flush=True)
 
     if args.deflated_sharpe:
         min_n = 30

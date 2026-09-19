@@ -683,6 +683,39 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 69 — 2026-09-19 (OWNER "time for algorithm and strategy review, all environment suffer losses")
+
+- **MEASURE (2026-09-02 reset → 09-19, 17 days):** dev 18,687 trades / −$311.40 (gross −$111.64,
+  fees $200.05) / 54.7% win; lab 4,500 / −$66.23 (gross −$15.60); staging 1,849 / −$44.47
+  (gross −$19.39); prod empty. 5m average: gross −2.0 bps, fees 4.9 bps, net −7.0 bps per trade →
+  fees are ~2/3 of the loss, the entries' gross is the other third. Exit mix (5m dev): TP 54.6% at
+  +37.2 bps realized (bracket 16.7 — close-fill overshoot), SL 27.2% at −67.8 (bracket 50), timeout
+  18.0% at −22.5. Every 5m cohort in every tier is net-negative; PF 0.50-0.82.
+- **TIERS ARE NOISE, NOT RANKING:** the same six `cur_*` cells run gross +3.4..−1.6 bps in lab and
+  −1.4..−5.3 in staging; their order disagrees across dev / lab / staging / lockbox. No pair is
+  significantly positive (best ARB +6.7 ± 4.3). Long-vs-short gap (−0.3 vs −4.1 bps) = BTC +4.75%
+  drift over the window.
+- **LEAD MINED → REFUTED (time of day):** all seven entries shared one hour shape live — 12 UTC
+  +13.8 bps gross @ 70.7% (n=1,890, 12/16 days, peak 12:30-12:45 = US macro slot +23.1), 21-23 +3.6,
+  03-05 −9.1 (13/16 days negative). An online no-lookahead hour gate lifted kept trades from −6.95 to
+  ~0..+3.4 bps net. New harness switches `--hours`, `--by-hour`, `--open-overlap` (research-only lift
+  of the §22 13-16 UTC block, never measured before). Lockbox A (90d ending 2025-09-19, DST-matched,
+  `--intrabar close --fees realistic --funding 0.01`, 7 entries × 9 pairs): hour 12 = **−8.38 bps**
+  (5/7 entries negative), 21-23 −1.5/+1.4/−5.1, 03-05 ≈ 0; 13-15 UTC −3.3/+2.1/−5.2. Refuted →
+  `retired_strategies.json` refuted_designs. Same lockbox: 0/7 entries clear §30 or the points bar
+  (best triple_mom +0.52 bps gross, $-negative on 9/9 pairs). Lockbox B (off180) and the recent-era
+  harness-parity run: `reports/iter69/`.
+- **LEARNING LOOP IS INERT (bug, not fixed — owner call):** `memory.should_suppress` fires only below
+  a 35% win rate. Under the hiwin33 bracket every (pattern, dir, session, regime) slice wins 47-61%
+  while every slice with n≥100 has negative avg_pnl_pct, so lab/staging memory has suppressed
+  nothing in 17 days (0 memory rejections). Keying it on expectancy would be correct but, since every
+  slice is negative, it would mute lab + staging almost entirely — an activity-vs-quality decision
+  (§6), left to the owner.
+- **APPLY:** nothing deployed; no re-arrangement → no reset. OWNER RULE recorded: a fleet
+  re-arrangement (new algorithms across tiers) ⇒ backup + balance reset of ALL envs, as the last step.
+- **CHECK STOP:** not met. The 5m entry family sits at gross ≈ 0 ± 3 bps in every era measured
+  against a ~5 bps fee floor; no exit or selection change on that family has crossed it.
+
 ### Iteration 68 — 2026-09-01/02 (OWNER "evaluate all transactions, reduce negative bots, record them so we don't use them again, learn from the data, deploy better" + "reset the balance")
 
 - **MEASURE (2026-08-24 → 09-01, all env):** dev 11,824 trades / −$277.86 / PF 0.59 / 49.9% win (444 bots);

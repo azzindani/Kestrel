@@ -74,6 +74,12 @@
       "date": "2026-09-01",
       "evidence": "Live win rate is flat 49-58% across every bucket of every stored indicator; none separates winners from losers. Only ATR-in-bps of price is monotone (cost-floor mechanism) and it is under cross-era test as --atr-floor-bps.",
       "rule": "Do not spend another iteration on oscillator/trend-strength gates for the 5m bracket family."
+    },
+    {
+      "design": "UTC entry-hour gate on the 5m fleet (trade only 12 UTC / 21-23 UTC, skip Asia 03-05)",
+      "date": "2026-09-19",
+      "evidence": "Mined from 23,878 live 5m trades (dev+lab+staging, 2026-09-02..09-19, hiwin33 bracket): hour 12 ran +13.8 bps gross @ 70.7% win (n=1,890, 12/16 days positive, peak 12:30-12:45 = US macro slot +23.1 bps), 21-23 +3.6, 03-05 -9.1; all seven entries shared the shape. An online no-lookahead hour gate lifted kept trades from -6.95 to ~0..+3.4 bps net. Prior-year lockbox (algo_search --days 90 --offset-days 365, DST-matched Jun-Sep 2025, sim-parity --intrabar close, realistic fees + funding, 7 entries x 9 pairs, 56k trades): hour 12 = -8.38 bps (5 of 7 entries negative there), 21-23 = -1.5/+1.4/-5.1, 03-05 ~ 0. The shape does not survive the lockbox. The 13-16 UTC overlap block, lifted for research only, shows nothing either (-3.3/+2.1/-5.2). reports/iter69/.",
+      "rule": "Time-of-day is regime-specific at 5m as it was at 1h (iter 3). Do not deploy an hour gate mined from a live window: a few weeks of live data is one macro regime, and cross-pair correlation makes its trade count overstate the evidence (the unit of independence is the day, not the trade)."
     }
   ]
 }
