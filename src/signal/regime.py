@@ -119,6 +119,9 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "tsmom_z",
                 "turtle_soup",
                 "xs_rev",
+                "engulf_rev",
+                "obv_div",
+                "fvg_retest",
             }
         ),
         Regime.VOLATILE: frozenset(
@@ -149,6 +152,9 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "tsmom_z",
                 "turtle_soup",
                 "xs_rev",
+                "engulf_rev",
+                "obv_div",
+                "fvg_retest",
             }
         ),
         Regime.RANGING: frozenset(
@@ -177,6 +183,9 @@ def regime_permits_pattern(regime: Regime, pattern: str) -> bool:
                 "tsmom_z",
                 "turtle_soup",
                 "xs_rev",
+                "engulf_rev",
+                "obv_div",
+                "fvg_retest",
             }
         ),
         Regime.QUIET: frozenset(),

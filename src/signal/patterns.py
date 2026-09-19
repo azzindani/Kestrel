@@ -61,6 +61,9 @@ SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
         "tsmom_z",
         "turtle_soup",
         "xs_rev",
+        "engulf_rev",
+        "obv_div",
+        "fvg_retest",
     }
 )
 
@@ -1565,3 +1568,133 @@ def detect_xs_rev(candles: Sequence[Candle], params: Params) -> Optional[Pattern
         confidence=0.78,
         details={"variant": "xs_rev", "group": "leader" if entry > 0 else "laggard"},
     )
+
+
+# ---------------------------------------------------------------------------
+# Iter 73 (2026-09-19) — owner "add more strategies to dev". Three candle-structure
+# entries never tested here, each a dev forward test (priors: RESEARCH_LOOP iter 73).
+# ---------------------------------------------------------------------------
+@register("engulf_rev")
+def detect_engulf_rev(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Fade the move on an engulfing candle that prints at a local extreme.
+
+    Bearish: an up candle whose close is the highest close of the last engulf_run + 1
+    candles is fully engulfed by a down candle (open >= its close, close <= its open)
+    -> short. Bullish mirror at a local low -> long.
+    """
+    run = params.engulf_run
+    if len(candles) < run + 2:
+        return None
+    prev, cur = candles[-2], candles[-1]
+    window_closes = [float(c.close) for c in candles[-(run + 2) : -1]]  # run + 1 closes ending at prev
+    p_open, p_close = float(prev.open), float(prev.close)
+    c_open, c_close = float(cur.open), float(cur.close)
+
+    bearish = (
+        p_close > p_open
+        and c_close < c_open
+        and c_open >= p_close
+        and c_close <= p_open
+        and p_close >= max(window_closes)
+    )
+    bullish = (
+        p_close < p_open
+        and c_close > c_open
+        and c_open <= p_close
+        and c_close >= p_open
+        and p_close <= min(window_closes)
+    )
+    if bearish == bullish:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.ENGULF_REV,
+        direction=Direction.SHORT if bearish else Direction.LONG,
+        confidence=0.78,
+        details={"variant": "engulf_rev", "engulfed_close": p_close, "close": c_close},
+    )
+
+
+def _obv(candles: Sequence[Candle]) -> list[float]:
+    """On-balance volume over `candles`, starting at 0 (only its shape matters)."""
+    out = [0.0]
+    for i in range(1, len(candles)):
+        step = float(candles[i].close) - float(candles[i - 1].close)
+        vol = float(candles[i].volume)
+        out.append(out[-1] + (vol if step > 0 else -vol if step < 0 else 0.0))
+    return out
+
+
+@register("obv_div")
+def detect_obv_div(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Enter when volume breaks out before price does.
+
+    Long when on-balance volume makes a new obv_lookback-candle high while the close is
+    still below its own obv_lookback-candle high (accumulation price has not shown yet);
+    short on the mirror (OBV new low, close above its low). The breakout itself makes it
+    edge-like: it fires on the candle OBV first clears the prior range.
+    """
+    n = params.obv_lookback
+    if len(candles) < n + 2:
+        return None
+    window = candles[-(n + 2) :]
+    obv = _obv(window)
+    closes = [float(c.close) for c in window]
+    obv_now, obv_prior = obv[-1], obv[1:-1]  # prior n candles (skip the seed)
+    close_now, close_prior = closes[-1], closes[1:-1]
+
+    long_sig = obv_now > max(obv_prior) and close_now < max(close_prior)
+    short_sig = obv_now < min(obv_prior) and close_now > min(close_prior)
+    if long_sig == short_sig:
+        return None
+
+    return PatternResult(
+        pattern=PatternType.OBV_DIV,
+        direction=Direction.LONG if long_sig else Direction.SHORT,
+        confidence=0.78,
+        details={"variant": "obv_div", "obv": round(obv_now, 4), "close": close_now},
+    )
+
+
+@register("fvg_retest")
+def detect_fvg_retest(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Trade the FIRST retest of a fair-value gap in the direction of the move that left it.
+
+    Bullish gap at candle j: low[j] > high[j-2] — the impulse skipped the zone
+    [high[j-2], low[j]]. If no later candle has traded back into it, a candle whose low
+    enters the zone but closes at or above its bottom is the retest -> long. Bearish
+    mirror (high[j] < low[j-2]) -> short. Gaps older than fvg_max_age candles or
+    narrower than fvg_min_atr ATRs are ignored; the most recent qualifying gap wins.
+    """
+    age_max = params.fvg_max_age
+    cur = candles[-1] if candles else None
+    if cur is None or cur.atr14 is None or cur.atr14 <= 0.0 or len(candles) < age_max + 3:
+        return None
+    atr = float(cur.atr14)
+    last = len(candles) - 1
+    for j in range(last - 1, max(last - age_max, 2) - 1, -1):
+        hi2, lo2 = float(candles[j - 2].high), float(candles[j - 2].low)
+        hij, loj = float(candles[j].high), float(candles[j].low)
+        between = candles[j + 1 : last]
+        if loj > hi2 and loj - hi2 >= params.fvg_min_atr * atr:
+            # Bullish zone [hi2, loj]; untouched since j, touched now and held.
+            if all(float(c.low) > loj for c in between):
+                if float(cur.low) <= loj and float(cur.close) >= hi2:
+                    return PatternResult(
+                        pattern=PatternType.FVG_RETEST,
+                        direction=Direction.LONG,
+                        confidence=0.78,
+                        details={"variant": "fvg_retest", "zone": [hi2, loj], "age": last - j},
+                    )
+            return None  # most recent qualifying gap decides; an older one never overrides it
+        if hij < lo2 and lo2 - hij >= params.fvg_min_atr * atr:
+            if all(float(c.high) < hij for c in between):
+                if float(cur.high) >= hij and float(cur.close) <= lo2:
+                    return PatternResult(
+                        pattern=PatternType.FVG_RETEST,
+                        direction=Direction.SHORT,
+                        confidence=0.78,
+                        details={"variant": "fvg_retest", "zone": [hij, lo2], "age": last - j},
+                    )
+            return None
+    return None

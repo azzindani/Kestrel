@@ -683,6 +683,26 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 73 — 2026-09-19 (OWNER "add more strategies to dev")
+
+- **NEW LIVE PATTERNS (own PatternType, SELF_DIRECTING, all non-QUIET regimes, params.json
+  contracts, tests/unit/signal/test_iter73_patterns.py):** `engulf_rev` (engulfing candle at the
+  extreme close of the last engulf_run+1 candles → fade), `obv_div` (on-balance volume breaks its
+  20-candle high/low while close has not → follow the volume), `fvg_retest` (first retest of a
+  fair-value gap that holds → trade with the impulse; gaps ≤ 12 candles old, ≥ 0.3 ATR wide).
+  Plus two `xs_rev` lookback variants (6 = 30 min, 24 = 2 h) as per-bot `xs_lookback` overrides —
+  no code; `add_dev_cohort.py` gained range-checked `--param`, algo_search `--xs-lookback/--xs-k`.
+- **SWEEP (sim-parity, realistic fees + funding; gross bps recent / lockbox A / lockbox B, all
+  best at hiwin33):** xs_rev lb24 −0.85 / −1.41 / −1.70; obv_div −2.10 / −2.30 / −1.95 (the most
+  stable); xs_rev lb6 −1.13 / −2.60 / −1.41; fvg_retest −2.21 / −1.77 / −3.40; engulf_rev
+  −1.18 / −4.17 / −1.40. tight/medium worse for every entry. None broken, none clears the fee
+  floor → all five deployed as forward tests.
+- **DEPLOY (additive, no reset):** `hw33_engulf_rev`, `hw33_obv_div`, `hw33_fvg_retest` × 34
+  SCALP_PAIRS; `hw33_xs_rev6`, `hw33_xs_rev24` × 10 XS_UNIVERSE pairs. dev 541 → 663 (+122),
+  backfilled on gate, dev daemon recreated. Fleet 778 (dev 663 / lab 74 / staging 41).
+- **HOST NOTE:** disk swung 79% → 86% → 82% within ~30 min with Kestrel's DB at 4.6 GB — a
+  co-tenant's transient files, not the fleet. Watch it with the larger fleet.
+
 ### Iteration 72 — 2026-09-19 (OWNER "build the cross-sectional one live too")
 
 - **BUILT `xs_rev` LIVE — the first cross-pair entry.** At each 5m close XS_UNIVERSE (the ten

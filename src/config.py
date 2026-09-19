@@ -102,6 +102,13 @@ class PatternType(str, Enum):
     # Cross-sectional reversal (iter 72) — the first entry that looks ACROSS pairs: fade a
     # pair on the candle it enters the last-hour leader/laggard group of XS_UNIVERSE.
     XS_REV = "xs_rev"
+    # Iter 73 (2026-09-19, owner "add more strategies to dev"): three candle-structure
+    # entries never tested here. Engulfing reversal at a local extreme.
+    ENGULF_REV = "engulf_rev"
+    # On-balance volume makes a new high/low that price has not confirmed yet.
+    OBV_DIV = "obv_div"
+    # First retest of a fair-value gap (3-candle imbalance), traded with the impulse.
+    FVG_RETEST = "fvg_retest"
 
 
 class SignalOutcome(str, Enum):
@@ -332,6 +339,15 @@ class Params:
     # candles; the top xs_k are leaders, the bottom xs_k laggards.
     xs_lookback: int = 12
     xs_k: int = 2
+    # engulf_rev (iter 73): the engulfed candle's close must be the extreme close of the
+    # last engulf_run + 1 candles (the move ran into the reversal).
+    engulf_run: int = 3
+    # obv_div: OBV breaks its obv_lookback-candle high (low) while close does not.
+    obv_lookback: int = 20
+    # fvg_retest: the gap must be at most fvg_max_age candles old and at least
+    # fvg_min_atr ATRs wide.
+    fvg_max_age: int = 12
+    fvg_min_atr: float = 0.3
 
     # --- order-flow alignment gate (signal/detector.py; daemon supplies depth_imb5) ---
     # When enabled, a candidate entry is rejected unless the latest top-5 order-book
@@ -468,6 +484,10 @@ class Params:
             soup_lookback=(int(d["soup_lookback"]["value"]) if "soup_lookback" in d else 20),
             xs_lookback=(int(d["xs_lookback"]["value"]) if "xs_lookback" in d else 12),
             xs_k=(int(d["xs_k"]["value"]) if "xs_k" in d else 2),
+            engulf_run=(int(d["engulf_run"]["value"]) if "engulf_run" in d else 3),
+            obv_lookback=(int(d["obv_lookback"]["value"]) if "obv_lookback" in d else 20),
+            fvg_max_age=(int(d["fvg_max_age"]["value"]) if "fvg_max_age" in d else 12),
+            fvg_min_atr=(float(d["fvg_min_atr"]["value"]) if "fvg_min_atr" in d else 0.3),
             flow_gate_enabled=(bool(d["flow_gate_enabled"]["value"]) if "flow_gate_enabled" in d else False),
             flow_gate_min_imbalance=(
                 float(d["flow_gate_min_imbalance"]["value"]) if "flow_gate_min_imbalance" in d else 0.0

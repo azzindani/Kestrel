@@ -419,6 +419,34 @@
     "description": "Group size for xs_rev: the top k of XS_UNIVERSE (10 pairs) are leaders, the bottom k laggards; a pair entering either group is faded. Needs at least 2k+1 ranked pairs.",
     "impact": "lower = only the most extreme movers, fewer entries; higher = more pairs per group, more entries"
   },
+  "engulf_run": {
+    "value": 3,
+    "type": "int",
+    "range": [2, 10],
+    "description": "engulf_rev (iter 73): the engulfed candle's close must be the highest (lowest) close of the last engulf_run + 1 candles for a bearish (bullish) engulfing to count as a reversal at a local extreme.",
+    "impact": "lower = more reversals off minor swings; higher = only reversals ending longer runs, fewer entries"
+  },
+  "obv_lookback": {
+    "value": 20,
+    "type": "int",
+    "range": [10, 100],
+    "description": "obv_div (iter 73): window for the on-balance-volume breakout; fires when OBV breaks its prior obv_lookback-candle high (low) while close stays below its high (above its low).",
+    "impact": "lower = reacts to short volume bursts; higher = needs a volume breakout of a longer range"
+  },
+  "fvg_max_age": {
+    "value": 12,
+    "type": "int",
+    "range": [3, 48],
+    "description": "fvg_retest (iter 73): oldest fair-value gap (candles) whose first retest still counts.",
+    "impact": "lower = only fresh gaps; higher = also retests of older gaps, more entries"
+  },
+  "fvg_min_atr": {
+    "value": 0.3,
+    "type": "float",
+    "range": [0.0, 2.0],
+    "description": "fvg_retest: minimum gap width in ATR14 units (filters hairline gaps).",
+    "impact": "lower = more, smaller gaps; higher = only large imbalances, fewer entries"
+  },
   "flow_gate_enabled": {
     "value": false,
     "type": "bool",

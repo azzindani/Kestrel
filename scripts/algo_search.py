@@ -591,6 +591,12 @@ _XS_LOOKBACK = 12
 _XS_K = 2
 
 
+def _set_xs_shape(lookback: int, k: int) -> None:
+    """Set the cross-section ranking lookback and group size (--xs-lookback / --xs-k)."""
+    global _XS_LOOKBACK, _XS_K
+    _XS_LOOKBACK, _XS_K = lookback, k
+
+
 def _build_xs_map(raw_by_pair: dict[str, list[list]]) -> None:
     closes = {p: {int(r[0]): float(r[4]) for r in rows if float(r[4]) > 0} for p, rows in raw_by_pair.items()}
     step = 300_000
@@ -2034,6 +2040,20 @@ def main() -> None:
         "self-directing entries are measured over the US open (this process only)",
     )
     ap.add_argument(
+        "--xs-lookback",
+        type=int,
+        default=_XS_LOOKBACK,
+        dest="xs_lookback",
+        help="cross-sectional (xs_rev / xs_mom) ranking lookback in candles (live param xs_lookback)",
+    )
+    ap.add_argument(
+        "--xs-k",
+        type=int,
+        default=_XS_K,
+        dest="xs_k",
+        help="cross-sectional group size: top/bottom k of the swept pairs (live param xs_k)",
+    )
+    ap.add_argument(
         "--dump-trades",
         default=None,
         dest="dump_trades",
@@ -2172,6 +2192,7 @@ def main() -> None:
             print(f"[btc-gate] BTC fetch failed ({type(exc).__name__}) — gate disabled", flush=True)
 
     if any(a.startswith("xs_") for a in algos):
+        _set_xs_shape(args.xs_lookback, args.xs_k)
         # Cross-sectional ranks need every pair's closes before the per-pair loop.
         raw_by_pair: dict[str, list[list]] = {}
         for pair in pairs:
