@@ -60,6 +60,9 @@ class TestRegistry:
             "tsmom_z",
             "turtle_soup",
             "xs_rev",
+            "engulf_rev",
+            "obv_div",
+            "fvg_retest",
         }
         assert expected == set(registry.keys())
 

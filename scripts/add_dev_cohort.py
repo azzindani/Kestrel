@@ -41,8 +41,27 @@ BRACKETS = {
 _BASE_PARAMS = {"trailing_enabled": False, "volume_ratio_min": 1.1, "max_loss_pct_per_trade": 0.01}
 
 
-def cohort(label: str, pattern: str, bracket: str, pairs: list[str], timeframe: str) -> list[dict]:
-    params = {**BRACKETS[bracket], **_BASE_PARAMS}
+def parse_overrides(items: list[str], contract: dict) -> dict:
+    """--param key=value pairs, type-cast and range-checked against params.json (§25)."""
+    out: dict = {}
+    for item in items:
+        key, sep, raw = item.partition("=")
+        if not sep or key not in contract:
+            raise SystemExit(f"--param {item!r}: expected key=value with a key defined in params.json")
+        spec = contract[key]
+        kind = spec["type"]
+        value = int(raw) if kind == "int" else float(raw) if kind == "float" else raw.lower() == "true"
+        lo, hi = spec["range"]
+        if kind in ("int", "float") and not (lo <= value <= hi):
+            raise SystemExit(f"--param {key}={value} is outside its params.json range [{lo}, {hi}]")
+        out[key] = value
+    return out
+
+
+def cohort(
+    label: str, pattern: str, bracket: str, pairs: list[str], timeframe: str, overrides: dict | None = None
+) -> list[dict]:
+    params = {**BRACKETS[bracket], **_BASE_PARAMS, **(overrides or {})}
     return [
         {
             "bot_id": f"dev-{pair.replace('/', '')}-{timeframe}-{label}-01",
@@ -67,6 +86,12 @@ def main() -> None:
     ap.add_argument("--pairs", default=None, help="comma list (BTC/USDT); default = the 34 SCALP_PAIRS")
     ap.add_argument("--bots", default=os.path.join(_ROOT, "bots.json"))
     ap.add_argument("--new-out", required=True, dest="new_out", help="append the new bots here (for backfill)")
+    ap.add_argument(
+        "--param",
+        action="append",
+        default=[],
+        help="per-bot params.json override key=value (repeatable; range-checked)",
+    )
     ap.add_argument("--dry-run", action="store_true", dest="dry_run")
     args = ap.parse_args()
 
@@ -81,7 +106,9 @@ def main() -> None:
     with open(args.bots, encoding="utf-8") as fh:
         fleet = json.load(fh)
     existing = {b["bot_id"] for b in fleet}
-    new = cohort(args.label, args.pattern, args.bracket, pairs, args.timeframe)
+    with open(os.path.join(_ROOT, "params.json"), encoding="utf-8") as fh:
+        overrides = parse_overrides(args.param, json.load(fh))
+    new = cohort(args.label, args.pattern, args.bracket, pairs, args.timeframe, overrides)
     clash = [b["bot_id"] for b in new if b["bot_id"] in existing]
     if clash:
         raise SystemExit(f"{len(clash)} bot_id(s) already in {args.bots}, e.g. {clash[0]} — refusing")
