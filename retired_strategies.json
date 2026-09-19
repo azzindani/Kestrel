@@ -86,6 +86,12 @@
       "date": "2026-09-19",
       "evidence": "scripts/study_adaptive_selection.py over algo_search --dump-trades (8 live entries x hiwin33, sim-parity close fills, realistic fees + funding): 8 keys (algo / algo_dir / algo_dir_sess / algo_pair / algo_pair_dir / algo_hour / pair / pair_dir) x 4 windows (last 30 / last 100 trades, trailing 2d / 7d) x min_n 20/50, strictly no-lookahead (only trades closed before the entry). Kept trades vs the ungated baseline over the same post-warm-up period: lockbox A (51,691 trades) best -5.3 bps vs -7.55; lockbox B (55,720) best -5.8 vs -8.38; recent (26,654) best -3.7 vs -6.65. 0 variants positive in ANY era; day-level t-stats -1.6 to -9.8. Live dev (17,532 trades, 17 days): every rule keeping more than 3% of trades stays negative (-1.4 to -4.1 bps).",
       "rule": "A slice's recent record does not predict its next trades for this entry family, so no memory/learning gate can select winners from it. Do not rebuild pattern memory on expectancy as a profit lever; it only mutes activity. A learning loop needs an entry with persistent edge to learn from first."
+    },
+    {
+      "design": "BTC -> alt lead-lag at 5m (trade the alt in BTC's direction after a big BTC candle; catch-up of under-reacting alts; fade of over-reacting alts)",
+      "date": "2026-09-19",
+      "evidence": "scripts/check_leadlag.py on 9 alts vs BTC, three eras (lockbox A 90d off365, lockbox B 90d off180, recent 45d), trigger = BTC |5m return| above its trailing 2-day 95th percentile, trailing 2-day beta, forward 1/2/3/6 candles, gross bps before fees. big_btc -4.4..+2.3 bps, lag_resid -5.7..+2.3, over_resid -4.8..+7.9; the sign flips between eras for every variant, day-level |t| < 1 except one negative (-2.3). The best cell (over_resid k=2 +7.93 in lockbox A) is -4.12 in lockbox B and -1.14 recent.",
+      "rule": "Cross-asset catch-up at 5m is already arbitraged inside the candle; do not build lead-lag entries on candle closes. It would need sub-second data and execution, which this stack does not have."
     }
   ]
 }

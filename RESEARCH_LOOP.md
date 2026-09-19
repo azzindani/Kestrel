@@ -725,6 +725,13 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   performance has no persistence in this entry family → an expectancy-keyed pattern memory would
   only mute activity. REFUTED, ledgered. The inert-memory bug above is therefore moot as a profit
   lever.
+- **LEAD-LAG (first cross-asset return test, `scripts/check_leadlag.py`):** big BTC 5m candle →
+  alts' next 1-6 candles, plus under/over-reaction vs trailing beta. Every variant −5.7..+7.9 bps
+  gross with the sign flipping between eras; the one lockbox-A standout (+7.93) is −4.12 in lockbox
+  B. REFUTED — the catch-up happens inside the candle.
+- **CAPACITY (owner asked about 1K bots):** CPU/RAM are not the limit (dev daemon 322 MiB / ~3% CPU
+  for 429 bots). Disk is: 89% used, DB 11 GB (trade_context 6.1 GB, candles 2.9 GB — both stored
+  per bot_id / per trade), and disk-full has killed the fleet three times.
 - **APPLY:** nothing deployed; no re-arrangement → no reset. OWNER RULE recorded: a fleet
   re-arrangement (new algorithms across tiers) ⇒ backup + balance reset of ALL envs, as the last step.
 - **CHECK STOP:** not met. The 5m entry family sits at gross ≈ 0 ± 3 bps in every era measured
