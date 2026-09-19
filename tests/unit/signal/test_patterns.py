@@ -59,6 +59,7 @@ class TestRegistry:
             "ker_trend",
             "tsmom_z",
             "turtle_soup",
+            "xs_rev",
         }
         assert expected == set(registry.keys())
 

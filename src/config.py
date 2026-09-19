@@ -99,6 +99,9 @@ class PatternType(str, Enum):
     TSMOM_Z = "tsmom_z"
     # Failed-breakout reversal — a wick through the prior range that closes back inside.
     TURTLE_SOUP = "turtle_soup"
+    # Cross-sectional reversal (iter 72) — the first entry that looks ACROSS pairs: fade a
+    # pair on the candle it enters the last-hour leader/laggard group of XS_UNIVERSE.
+    XS_REV = "xs_rev"
 
 
 class SignalOutcome(str, Enum):
@@ -183,6 +186,34 @@ class Candle:
 
     # DB primary key (None before persistence)
     id: Optional[int] = None
+
+    # Cross-section context (iter 72) — RUNTIME ONLY, never persisted (write_candle lists
+    # its columns explicitly). The L3 daemon sets it on the latest candle for bots that
+    # enable xs_rev, from the pure patterns.cross_section_entry: +1 = this pair just
+    # entered the last-hour LEADER group of XS_UNIVERSE, -1 = the LAGGARD group, 0 = no
+    # entry this candle, None = no cross-section available (explicit absence).
+    xs_entry: Optional[int] = None
+
+
+# Milliseconds per candle for each supported timeframe.
+TIMEFRAME_MS: dict[str, int] = {"1m": 60_000, "5m": 300_000, "15m": 900_000, "1h": 3_600_000, "4h": 14_400_000}
+
+# The pairs xs_rev ranks against each other (iter 72): exactly the ten pairs the
+# cross-sectional backtest ranked (scripts/build_lab.PAIRS), so the live cohort runs the
+# validated configuration. A universe change is a new cohort, not a param tweak — the
+# group size xs_k is only meaningful relative to this list's length.
+XS_UNIVERSE: tuple[str, ...] = (
+    "BTC/USDT",
+    "ETH/USDT",
+    "SOL/USDT",
+    "DOGE/USDT",
+    "PEPE/USDT",
+    "HYPE/USDT",
+    "XRP/USDT",
+    "BNB/USDT",
+    "ADA/USDT",
+    "AVAX/USDT",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -297,6 +328,10 @@ class Params:
     # turtle_soup: the candle pierces the prior soup_lookback-candle high (low) and closes
     # back inside it -> short (long).
     soup_lookback: int = 20
+    # xs_rev (iter 72): rank XS_UNIVERSE by the log return over the last xs_lookback
+    # candles; the top xs_k are leaders, the bottom xs_k laggards.
+    xs_lookback: int = 12
+    xs_k: int = 2
 
     # --- order-flow alignment gate (signal/detector.py; daemon supplies depth_imb5) ---
     # When enabled, a candidate entry is rejected unless the latest top-5 order-book
@@ -431,6 +466,8 @@ class Params:
             tsmom_vol_window=(int(d["tsmom_vol_window"]["value"]) if "tsmom_vol_window" in d else 96),
             tsmom_z_min=(float(d["tsmom_z_min"]["value"]) if "tsmom_z_min" in d else 2.0),
             soup_lookback=(int(d["soup_lookback"]["value"]) if "soup_lookback" in d else 20),
+            xs_lookback=(int(d["xs_lookback"]["value"]) if "xs_lookback" in d else 12),
+            xs_k=(int(d["xs_k"]["value"]) if "xs_k" in d else 2),
             flow_gate_enabled=(bool(d["flow_gate_enabled"]["value"]) if "flow_gate_enabled" in d else False),
             flow_gate_min_imbalance=(
                 float(d["flow_gate_min_imbalance"]["value"]) if "flow_gate_min_imbalance" in d else 0.0

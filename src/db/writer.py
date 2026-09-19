@@ -508,6 +508,31 @@ async def get_latest_order_flow(pair: str, max_age_ms: int, now_ms: int) -> Opti
     return float(row["depth_imb5"])
 
 
+async def load_closes_at(
+    pairs: tuple[str, ...], timeframe: str, ts_list: list[int], env: str
+) -> dict[tuple[str, int], float]:
+    """Close of each (pair, candle ts) present in `candles` for this env — the xs_rev
+    cross-section read (iter 72). Every pair is traded by several bots, each writing the
+    same feed candle under its own bot_id; any one of them will do. Missing entries are
+    simply absent from the result (the caller decides whether the cross-section is usable).
+    Served by idx_candles_lookup (pair, timeframe, ts DESC).
+    """
+    async with acquire() as conn:
+        rows = await conn.fetch(
+            """
+            SELECT DISTINCT ON (pair, ts) pair, ts, close
+            FROM candles
+            WHERE pair = ANY($1::text[]) AND timeframe = $2 AND ts = ANY($3::bigint[]) AND env = $4
+            ORDER BY pair, ts, id DESC
+            """,
+            list(pairs),
+            timeframe,
+            ts_list,
+            env,
+        )
+    return {(r["pair"], int(r["ts"])): float(r["close"]) for r in rows}
+
+
 async def load_pattern_memory(pattern: str, direction: str, session: str, regime: str) -> Optional[dict]:
     """Load a pattern_memory row or return None if not found."""
     async with acquire() as conn:

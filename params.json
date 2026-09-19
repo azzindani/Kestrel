@@ -405,6 +405,20 @@
     "description": "Prior-range lookback for turtle_soup (iter 71): a candle whose high pierces the prior n-candle high but closes back below it is a short (mirror for lows).",
     "impact": "lower = fades minor swing points, more entries; higher = only failed breaks of major ranges, fewer entries"
   },
+  "xs_lookback": {
+    "value": 12,
+    "type": "int",
+    "range": [3, 48],
+    "description": "Return lookback (candles) for the xs_rev cross-section (iter 72): XS_UNIVERSE is ranked by log(close[t] / close[t - n]) at every close.",
+    "impact": "lower = ranks on the last few candles' noise; higher = ranks on longer relative moves"
+  },
+  "xs_k": {
+    "value": 2,
+    "type": "int",
+    "range": [1, 4],
+    "description": "Group size for xs_rev: the top k of XS_UNIVERSE (10 pairs) are leaders, the bottom k laggards; a pair entering either group is faded. Needs at least 2k+1 ranked pairs.",
+    "impact": "lower = only the most extreme movers, fewer entries; higher = more pairs per group, more entries"
+  },
   "flow_gate_enabled": {
     "value": false,
     "type": "bool",

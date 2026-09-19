@@ -683,6 +683,25 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 72 — 2026-09-19 (OWNER "build the cross-sectional one live too")
+
+- **BUILT `xs_rev` LIVE — the first cross-pair entry.** At each 5m close XS_UNIVERSE (the ten
+  backtested pairs, `src/config.py`) is ranked by 12-candle log return; a pair that ENTERS the
+  top-2 is faded short, one entering the bottom-2 is bought. Split per §7: `db.load_closes_at`
+  (L3, `idx_candles_lookup`, ~35 ms) → `daemon._with_cross_section` waits up to 30 s (2 s
+  polls, never blocking the loop) for the universe to write the just-closed candle → pure
+  `patterns.cross_section_entry` → runtime-only `Candle.xs_entry` → `@register("xs_rev")`.
+  No schema change (the field is never persisted). New params `xs_lookback` 12 [3,48],
+  `xs_k` 2 [1,4]; own PatternType; SELF_DIRECTING; all non-QUIET regimes.
+- **PARITY:** `cross_section_entry` vs the harness's `_build_xs_map` on 3,980 synthetic
+  (pair, candle) points incl. a data gap: 0 mismatches. Live DB: all 40 closes returned, 22
+  group entries over the last 24 candles (~9% of pair-candles, the backtest rate).
+- **PRIOR:** hiwin33 gross −1.22 / −0.62 / −1.62 bps (recent / lockbox A / lockbox B) —
+  consistent, under the fee floor. Forward test.
+- **DEPLOY (additive, no reset — the all-env reset ran an hour earlier in iter 71):**
+  `hw33_xs_rev` × 10 universe pairs, dev 531 → 541, backfilled, dev daemon recreated on the new
+  image (lab/staging untouched). 656/656 heartbeating, 0 errors.
+
 ### Iteration 71 — 2026-09-19 (OWNER "find new algorithm ideas and test them in dev, add more strategies" + "rearrange and reset")
 
 - **NEW LIVE PATTERNS (src/signal/patterns.py, own PatternType, SELF_DIRECTING, all non-QUIET
