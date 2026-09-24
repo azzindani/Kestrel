@@ -665,6 +665,13 @@ class AppConfig:
     # pings flood Telegram (trade open/close + non-connection CRITICAL still send).
     telegram_suppress_connection: bool = False
 
+    # Telegram master switch. False ⇒ the notifier never opens an HTTP client, so
+    # every alert is a no-op (events-table logging is unaffected). Unlike a
+    # placeholder token, this skips the network entirely — a bogus token makes each
+    # awaited trade open/close alert burn 3 failed requests + ~3s of retry backoff on
+    # the trade path. TELEGRAM_ENABLED=false to mute; absent ⇒ True (§27 behavior).
+    telegram_enabled: bool = True
+
     # Execution cost model. False (default) = TAKER: market fills with taker fee +
     # slippage on every entry and exit (the live-safe model). True = MAKER: model
     # post-only LIMIT fills — entries and take-profit exits pay the maker fee with
@@ -764,6 +771,7 @@ class AppConfig:
             log_level=m["LOG_LEVEL"].upper(),
             feed_mode=(m.get("FEED_MODE") or "ws").lower(),
             telegram_suppress_connection=(m.get("TELEGRAM_SUPPRESS_CONNECTION") or "").lower() in ("1", "true", "yes"),
+            telegram_enabled=(m.get("TELEGRAM_ENABLED") or "true").lower() in ("1", "true", "yes"),
             maker_execution=(m.get("MAKER_EXECUTION") or "").lower() in ("1", "true", "yes"),
             funding_rate_8h_pct=float(m.get("FUNDING_RATE_8H_PCT") or 0.0),
             max_open_positions_fleet=int(m.get("MAX_OPEN_POSITIONS_FLEET") or 0),
