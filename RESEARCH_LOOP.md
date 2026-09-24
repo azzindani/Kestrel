@@ -207,7 +207,20 @@ verified green.** The whole point is that Grafana visibly changes every iteratio
             '{"event":"research_loop_iteration","iteration":<N>,"deployed":<bool>,"reset":<bool>,...}'::jsonb);
     ```
     (via `docker compose exec -T postgres psql -U kestrel -d kestrel -c "..."`).
-10b. **PHASE-2 STAGING MAINTENANCE — ⚠ PINNED BY OWNER, REVISED 2026-07-24 (iter 66, owner:
+10b. **LAB + STAGING MAINTENANCE — AUTOMATED (iter 74, 2026-09-24, owner "the bots can be
+    promoted and demoted dynamically").** `scripts/tier_promoter.py` runs daily at 05:15 UTC
+    (systemd `kestrel-tier-promoter.timer`, units in `infra/systemd/`). It scores every minutes
+    RECIPE (pattern × tf × params, pooled across pairs and tiers) by PAIRED DIRECTIONAL SKILL —
+    replay the bracket in the signal's side and the opposite side at the same candle, half the
+    difference — and moves recipes dev → lab (n≥150, t≥2.5, both halves >0, gross >0) → staging
+    (≥3 days in lab, same bar on post-lab trades only, t≥2.0), demotes on t<1 (staging) / t<0
+    (lab), 7-day cooldown, high-win bracket designs only (tp/sl ≤ 0.5, owner tier rule). Never
+    prod. State: `tier_ledger.json`; every move is an events row. The loop does NOT hand-edit
+    bots.lab.json / bots.staging.json any more — commit whatever the timer changed, and use
+    `python3 scripts/tier_promoter.py run --dry-run` to preview. Why not bot PnL: per-bot net bps
+    did not persist across halves of the iter-74 slate (Spearman −0.08, top quintile +16 → −10);
+    recipe skill did (+0.72). The manual protocol below is SUPERSEDED (kept for history).
+    **(superseded) PHASE-2 STAGING MAINTENANCE — ⚠ PINNED BY OWNER, REVISED 2026-07-24 (iter 66, owner:
     "staged bots and dev bots are different usage, dev is for unlimited test. staged is for high
     winning rate bots"): STAGING = HIGH-WIN ARMS ONLY.** Admission needs BOTH (a) cross-era
     backtest evidence AND (b) a high-win DESIGN profile (validated points win ≥65% — the
@@ -682,6 +695,41 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 ## ITERATION LOG
 
 <!-- newest first; each firing appends one entry -->
+
+### Iteration 74 — 2026-09-24 (OWNER "5 days bleeding, win rate decent but profit negative" + "bots promoted and demoted dynamically between the environment" → "do it all … then reset the balance")
+
+- **MEASURE (5-day slate since the 09-19 reset):** dev 10,385 trades 57.4% win −$118.75 (gross −$28.95,
+  fees $89.92) · lab 1,285 59.1% −$9.05 · staging 429 55.2% −$6.10. TP +$0.064 vs SL −$0.154: at
+  hw33's payoff break-even is ~64% win. Cost ≈ 7 bps/trade (maker entry + 43% of exits at taker+slip).
+- **RANDOM-ENTRY NULL (replica of simulation.check_exits, 100% close_reason agreement with the DB):**
+  random time + direction under hw33 → 61.3% win, +0.36 bps gross, −6.65 net; the fleet's signals →
+  60.9%, +0.52, −6.46. The win rate is the bracket, not the entries.
+- **PAIRED DIRECTIONAL SKILL** (same-candle replay, signal side vs opposite side, /2): tsmom_z +17.6
+  bps (t 2.86, n 200, both halves +, net +10.7) · turtle_soup +6.0 (t 3.01, n 1,085, both halves +,
+  net −1.7 — the cost eats it) · obv_div −3.5 (t −2.0) · the other ten ≈ 0. 13 patterns tested.
+- **PERSISTENCE (what decides the promotion design):** per-BOT net bps, first half vs second half:
+  Spearman −0.08, best quintile +16 → −10 bps, worst −35 → −0.2 (median 15 trades/bot, std 87 bps).
+  Per-PATTERN skill: Spearman +0.72. ⇒ promote recipes on pooled skill, never bots on PnL.
+- **BUILT `scripts/tier_promoter.py`** (35 unit tests) + `infra/systemd/kestrel-tier-promoter.{service,timer}`
+  (daily 05:15 UTC). Rules in step 10b. First run: staging −cci_mom (t −0.61, out of lab too),
+  −macd_rsi/−mom_adx/−triple_mom/−sma50100 (t 0.2–0.96, back to lab) · turtle_soup lab→staging (t 3.79,
+  n 1,503) · tsmom_z dev→lab (t 2.86). Lab 74 → 86, staging 41 → 16 (macd_cross + turtle_soup).
+- **TIMEOUT-AS-MAKER EXIT (owner option 3) — NOT BUILT:** 17.9% of trades time out; a resting exit at
+  the timeout close trades through next candle 90% of the time, but the 10% that don't are the adverse
+  ones → realistic saving ≈ +0.5 bps/trade fleet-wide. Not worth a frozen live.py change.
+- **TURTLE_SOUP WIDE BRACKETS (owner option 2):** the live replay put tp2/sl3 at +10.6 bps net — in-sample
+  (60 brackets × 5 days). Sim-parity sweep, gross bps recent / lockbox A (off 365) / lockbox B (off 180),
+  90d lockboxes on the 09-19 cached windows: hiwin33 −0.15 / −1.44 / −0.69 · wide2x3_h24 +2.19 / −0.27 /
+  +2.37 (sl 3.0 is outside the §26 range) · wide2x2_h24 +1.98 / −0.87 / +2.24 · every other wide form
+  worse. Net $ negative in EVERY era for every bracket. tsmom_z/hiwin33 +0.81 / −3.07 / −6.43 — its live
+  skill has no historical support; the promoter demotes it if it fades. Reports: reports/iter74/.
+- **DEPLOY:** `w2x2_turtle_soup` × 34 SCALP_PAIRS in dev (tp 2 / sl 2 / hold 24) as a forward test —
+  dev-only by the high-win tier rule. dev 663 → 697.
+- **RESET (owner):** pg-backup's in-flight dump stopped (it would have blocked TRUNCATE) and restarted
+  after; daemons stopped gracefully (17 s); lean backup `backups/kestrel-lean-20260924T111629Z.dump`
+  (784 MB, full read + 12,160/12,160 trades verified); TRUNCATE trades/signals/events/trade_context/
+  pattern_memory/heartbeats; candles (3.12M) + microstructure (3.97M) kept; 32 new lab/staging bots
+  backfilled; all tiers up, 765/765 heartbeating before the dev cohort add.
 
 ### Iteration 73 — 2026-09-19 (OWNER "add more strategies to dev")
 

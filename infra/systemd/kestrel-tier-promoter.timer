@@ -1,0 +1,11 @@
+# 05:15 UTC daily — after the 03:00 pg-backup dump (~70-95 min) and the 03:00 janitor sweep.
+[Unit]
+Description=Daily Kestrel tier review
+
+[Timer]
+OnCalendar=*-*-* 05:15:00 UTC
+Persistent=true
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

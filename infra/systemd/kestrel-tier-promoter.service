@@ -1,0 +1,18 @@
+# Daily tier review: moves strategy recipes dev -> lab -> staging (and back) on live
+# paired-skill evidence, backfills any new bots and restarts only the tiers that changed.
+# See scripts/tier_promoter.py. Never touches prod.
+#
+# Install:  ln -sf /root/Kestrel/infra/systemd/kestrel-tier-promoter.{service,timer} /etc/systemd/system/
+#           systemctl daemon-reload && systemctl enable --now kestrel-tier-promoter.timer
+# Pause:    systemctl disable --now kestrel-tier-promoter.timer
+[Unit]
+Description=Kestrel tier promoter (dev/lab/staging re-seat on live evidence)
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root/Kestrel
+ExecStart=/usr/bin/python3 scripts/tier_promoter.py run
+Nice=10
+TimeoutStartSec=45min

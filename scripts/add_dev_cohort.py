@@ -36,6 +36,7 @@ BRACKETS = {
     "hiwin33": {"tp_atr_multiplier": 0.5, "sl_atr_multiplier": 1.5, "max_hold_candles": 6},
     "tight": {"tp_atr_multiplier": 1.4, "sl_atr_multiplier": 1.0, "max_hold_candles": 4},
     "medium": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 1.0, "max_hold_candles": 6},
+    "wide2x2_h24": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 2.0, "max_hold_candles": 24},
 }
 # Fleet-wide per-bot defaults every current 5m dev cohort carries.
 _BASE_PARAMS = {"trailing_enabled": False, "volume_ratio_min": 1.1, "max_loss_pct_per_trade": 0.01}
