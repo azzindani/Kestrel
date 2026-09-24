@@ -35,10 +35,13 @@ class TelegramNotifier:
         self._token = cfg.telegram_token
         self._chat_id = cfg.telegram_chat_id
         self._url = _TELEGRAM_API.format(token=self._token)
+        self._enabled = cfg.telegram_enabled
         self._client: Optional[httpx.AsyncClient] = None
 
     async def start(self) -> None:
-        self._client = httpx.AsyncClient(timeout=_TIMEOUT)
+        # Disabled ⇒ no client, so send() returns immediately (no network I/O).
+        if self._enabled:
+            self._client = httpx.AsyncClient(timeout=_TIMEOUT)
 
     async def stop(self) -> None:
         if self._client:
