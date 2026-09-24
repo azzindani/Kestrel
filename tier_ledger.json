@@ -1,0 +1,174 @@
+{
+  "_doc": "scripts/tier_promoter.py state: when each recipe entered lab/staging (unix ms; 0 = seeded, all evidence counts) and every move. Recipe = pattern \u00d7 tf \u00d7 params.",
+  "recipes": {
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"sma_cross_fast\": 50, \"sma_cross_slow\": 100, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"sma_cross\", \"tf\": \"5m\"}": {
+      "label": "cur_sma50100",
+      "lab_since": 0,
+      "staging_since": null,
+      "last_move": 1790248461822
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"cci_mom\", \"tf\": \"5m\"}": {
+      "label": "cur_cci_mom",
+      "lab_since": null,
+      "staging_since": null,
+      "last_move": 1790248461822
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"macd_cross\", \"tf\": \"5m\"}": {
+      "label": "cur_macd_cross",
+      "lab_since": 0,
+      "staging_since": 0,
+      "last_move": null
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"macd_rsi\", \"tf\": \"5m\"}": {
+      "label": "cur_macd_rsi",
+      "lab_since": 1790248461822,
+      "staging_since": null,
+      "last_move": 1790248461822
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"mom_adx\", \"tf\": \"5m\"}": {
+      "label": "cur_mom_adx",
+      "lab_since": 0,
+      "staging_since": null,
+      "last_move": 1790248461822
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"triple_mom\", \"tf\": \"5m\"}": {
+      "label": "cur_triple_mom",
+      "lab_since": 0,
+      "staging_since": null,
+      "last_move": 1790248461822
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"tsmom_z\", \"tf\": \"5m\"}": {
+      "label": "cur_tsmom_z",
+      "lab_since": 1790248461822,
+      "staging_since": null,
+      "last_move": 1790248461822
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"turtle_soup\", \"tf\": \"5m\"}": {
+      "label": "cur_turtle_soup",
+      "lab_since": 0,
+      "staging_since": 1790248461822,
+      "last_move": 1790248461822
+    }
+  },
+  "history": [
+    {
+      "ts": 1790248461822,
+      "label": "cur_sma50100",
+      "kind": "demote",
+      "src": "staging",
+      "dst": "lab",
+      "reason": "staging t<1.0: n=169 skill=+4.14bps t=+0.96 halves=+3.2/+5.1",
+      "evidence": {
+        "n": 169,
+        "skill_bps": 4.137254869311985,
+        "skill_t": 0.9568848901846414,
+        "skill_h1": 3.19032079011994,
+        "skill_h2": 5.073048547572358,
+        "gross_bps": 8.812495773665287,
+        "net_bps": 4.074030610400673
+      }
+    },
+    {
+      "ts": 1790248461822,
+      "label": "cur_cci_mom",
+      "kind": "demote",
+      "src": "staging",
+      "dst": "dev",
+      "reason": "staging t<1.0: n=1238 skill=-1.12bps t=-0.61 halves=-0.8/-1.4",
+      "evidence": {
+        "n": 1238,
+        "skill_bps": -1.124200059539233,
+        "skill_t": -0.6139091005043866,
+        "skill_h1": -0.8207576482342022,
+        "skill_h2": -1.4276424708442634,
+        "gross_bps": -3.821732412922341,
+        "net_bps": -8.762370643765168
+      }
+    },
+    {
+      "ts": 1790248461822,
+      "label": "cur_macd_rsi",
+      "kind": "demote",
+      "src": "staging",
+      "dst": "lab",
+      "reason": "staging t<1.0: n=607 skill=+1.84bps t=+0.73 halves=+1.7/+2.0",
+      "evidence": {
+        "n": 607,
+        "skill_bps": 1.8446534837768052,
+        "skill_t": 0.7254594482622645,
+        "skill_h1": 1.674159239773283,
+        "skill_h2": 2.0145868914513683,
+        "gross_bps": 0.8380739835525719,
+        "net_bps": -4.017464426428081
+      }
+    },
+    {
+      "ts": 1790248461822,
+      "label": "cur_mom_adx",
+      "kind": "demote",
+      "src": "staging",
+      "dst": "lab",
+      "reason": "staging t<1.0: n=921 skill=+1.59bps t=+0.63 halves=+2.4/+0.8",
+      "evidence": {
+        "n": 921,
+        "skill_bps": 1.5898409689535122,
+        "skill_t": 0.6291233950808561,
+        "skill_h1": 2.4273903814442783,
+        "skill_h2": 0.7541083664681495,
+        "gross_bps": -1.685675872933859,
+        "net_bps": -6.565447513579085
+      }
+    },
+    {
+      "ts": 1790248461822,
+      "label": "cur_triple_mom",
+      "kind": "demote",
+      "src": "staging",
+      "dst": "lab",
+      "reason": "staging t<1.0: n=214 skill=+1.09bps t=+0.21 halves=+3.4/-1.2",
+      "evidence": {
+        "n": 214,
+        "skill_bps": 1.0926327129753792,
+        "skill_t": 0.20862772689032316,
+        "skill_h1": 3.3519805991593623,
+        "skill_h2": -1.166715173208604,
+        "gross_bps": -5.061584876874956,
+        "net_bps": -9.937743284134559
+      }
+    },
+    {
+      "ts": 1790248461822,
+      "label": "cur_turtle_soup",
+      "kind": "promote",
+      "src": "lab",
+      "dst": "staging",
+      "reason": "lab\u2192staging: n=1503 skill=+6.43bps t=+3.79 halves=+7.7/+5.1",
+      "evidence": {
+        "n": 1503,
+        "skill_bps": 6.430414066650278,
+        "skill_t": 3.7942813722977746,
+        "skill_h1": 7.724368041411993,
+        "skill_h2": 5.13818077536564,
+        "gross_bps": 3.017343072884894,
+        "net_bps": -1.7038811453453122
+      }
+    },
+    {
+      "ts": 1790248461822,
+      "label": "cur_tsmom_z",
+      "kind": "promote",
+      "src": "dev",
+      "dst": "lab",
+      "reason": "dev\u2192lab: n=200 skill=+17.60bps t=+2.86 halves=+16.1/+19.1",
+      "evidence": {
+        "n": 200,
+        "skill_bps": 17.602583572080547,
+        "skill_t": 2.857924752274011,
+        "skill_h1": 16.058890036951667,
+        "skill_h2": 19.14627710720943,
+        "gross_bps": 16.7896097484967,
+        "net_bps": 12.0896097484967
+      }
+    }
+  ]
+}

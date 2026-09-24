@@ -1103,6 +1103,18 @@ EXITS = {
     "hiwin43": {"tp_atr_multiplier": 0.6, "sl_atr_multiplier": 1.4, "max_hold_candles": 4},
     "hiwin33": {"tp_atr_multiplier": 0.5, "sl_atr_multiplier": 1.5, "max_hold_candles": 6},
     "scratch": {"tp_atr_multiplier": 0.5, "sl_atr_multiplier": 2.0, "max_hold_candles": 3},
+    # WIDE brackets (iter 74, 2026-09-24): turtle_soup picks direction live (+6 bps vs the
+    # opposite side, t 3.0) but hiwin33's 0.5-ATR target is smaller than the ~7 bps cost.
+    # A replay of its 1,503 live entries put these at +6..+11 bps net; the lockbox decides.
+    "wide2x3_h12": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 3.0, "max_hold_candles": 12},
+    "wide2x3_h24": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 3.0, "max_hold_candles": 24},
+    "wide15x3_h12": {"tp_atr_multiplier": 1.5, "sl_atr_multiplier": 3.0, "max_hold_candles": 12},
+    "wide2x15_h12": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 1.5, "max_hold_candles": 12},
+    # sl 3.0 sits outside params.json's sl_atr_multiplier range [0.5, 2.0] (CLAUDE.md §26),
+    # so only these in-range forms are deployable without an owner amendment.
+    "wide2x15_h24": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 1.5, "max_hold_candles": 24},
+    "wide2x2_h12": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 2.0, "max_hold_candles": 12},
+    "wide2x2_h24": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 2.0, "max_hold_candles": 24},
     # INDICATOR-BASED exits (owner idea 2026-07-24, iter 65): close on the SIGNAL's
     # own state, not a price bracket. The entry's indicator reversing (MACD crossing
     # back / SMA death-cross / CCI losing its sign / ensemble majority decaying) is
