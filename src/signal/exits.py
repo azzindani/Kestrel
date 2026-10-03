@@ -42,6 +42,9 @@ _MACD_FAMILY = ("macd_cross", "macd_rsi", "macd_state")
 _SMA_FAMILY = ("sma_cross", "sma_state", "sma_cross_gated")
 _CCI_FAMILY = ("cci_mom", "cci_state")
 _ENSEMBLE_FAMILY = ("ensemble_3of4", "ensemble_state")
+# xs_mom (iter 75): the "indicator" is the pair's group in the daily cross-section, which
+# the daemon attaches to the decision candle (Candle.xs_group).
+_XS_MOM_FAMILY = ("xs_mom",)
 
 
 def indicator_exit_reason(
@@ -65,6 +68,14 @@ def indicator_exit_reason(
     if mode == "sigexit_rsi" and latest.rsi14 is not None:
         if (long and latest.rsi14 >= 70.0) or (not long and latest.rsi14 <= 30.0):
             return REASON_INDICATOR_TP
+
+    if pattern in _XS_MOM_FAMILY:
+        # Hold while the pair is still a leader (long) / laggard (short). xs_group is None
+        # on every candle but the day's decision candle, and when the cross-section is
+        # too thin to rank: no evidence either way, so hold.
+        if latest.xs_group is None:
+            return None
+        return REASON_SIGNAL_EXIT if latest.xs_group != (1 if long else -1) else None
 
     if pattern in _MACD_FAMILY or pattern in _ENSEMBLE_FAMILY:
         macd_state = _macd_up(candles, params)

@@ -60,6 +60,7 @@ class TestRegistry:
             "tsmom_z",
             "turtle_soup",
             "xs_rev",
+            "xs_mom",
             "engulf_rev",
             "obv_div",
             "fvg_retest",
