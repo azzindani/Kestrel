@@ -68,7 +68,7 @@ def _norm_pair(pair: str) -> str:
 def _canonical(entry: dict) -> dict:
     """Behavioural config only — the bot_id label is deliberately excluded."""
     params = entry.get("params", {}) or {}
-    return {
+    canon = {
         "pair": _norm_pair(str(entry.get("pair", ""))),
         "timeframe_entry": str(entry.get("timeframe_entry", "")),
         "timeframe_regime": str(entry.get("timeframe_regime", "")),
@@ -77,6 +77,11 @@ def _canonical(entry: dict) -> dict:
         "max_active_buckets": int(entry.get("max_active_buckets", 1)),
         "params": {k: params[k] for k in sorted(params)},
     }
+    # Per-bot leverage (iter 75) is behaviour too; keyed only when present so every
+    # fingerprint recorded before it existed stays valid.
+    if "leverage" in entry:
+        canon["leverage"] = int(entry["leverage"])
+    return canon
 
 
 def _fingerprint(canon: dict) -> str:

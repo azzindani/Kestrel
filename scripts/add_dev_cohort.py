@@ -37,6 +37,23 @@ BRACKETS = {
     "tight": {"tp_atr_multiplier": 1.4, "sl_atr_multiplier": 1.0, "max_hold_candles": 4},
     "medium": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 1.0, "max_hold_candles": 6},
     "wide2x2_h24": {"tp_atr_multiplier": 2.0, "sl_atr_multiplier": 2.0, "max_hold_candles": 24},
+    # xs_mom (iter 75, backtest_xs_momentum.py --bots "DEPLOYED" rows): a catastrophe stop
+    # only (0.25 is clamped to 0.7 / leverage = 23.3% at the cohort's 3x), the group-exit
+    # rule as the real exit, and either no take-profit or a 10% one. Needs --leverage 3.
+    "xsmom_notp": {
+        "tp_sl_pct_enabled": True,
+        "tp_pct": 1.0,
+        "sl_pct": 0.25,
+        "max_hold_candles": 48,
+        "indicator_exit_mode": "sigexit",
+    },
+    "xsmom_tp10": {
+        "tp_sl_pct_enabled": True,
+        "tp_pct": 0.10,
+        "sl_pct": 0.25,
+        "max_hold_candles": 48,
+        "indicator_exit_mode": "sigexit",
+    },
 }
 # Fleet-wide per-bot defaults every current 5m dev cohort carries.
 _BASE_PARAMS = {"trailing_enabled": False, "volume_ratio_min": 1.1, "max_loss_pct_per_trade": 0.01}
@@ -60,9 +77,18 @@ def parse_overrides(items: list[str], contract: dict) -> dict:
 
 
 def cohort(
-    label: str, pattern: str, bracket: str, pairs: list[str], timeframe: str, overrides: dict | None = None
+    label: str,
+    pattern: str,
+    bracket: str,
+    pairs: list[str],
+    timeframe: str,
+    overrides: dict | None = None,
+    leverage: int | None = None,
 ) -> list[dict]:
     params = {**BRACKETS[bracket], **_BASE_PARAMS, **(overrides or {})}
+    # Per-bot leverage (config.load_bot_configs) is written only when asked for, so a
+    # cohort without it keeps inheriting the fleet-wide LEVERAGE.
+    extra = {} if leverage is None else {"leverage": leverage}
     return [
         {
             "bot_id": f"dev-{pair.replace('/', '')}-{timeframe}-{label}-01",
@@ -73,6 +99,7 @@ def cohort(
             "strategy": label,
             "patterns": [pattern],
             "params": dict(params),
+            **extra,
         }
         for pair in pairs
     ]
@@ -93,6 +120,12 @@ def main() -> None:
         default=[],
         help="per-bot params.json override key=value (repeatable; range-checked)",
     )
+    ap.add_argument(
+        "--leverage",
+        type=int,
+        default=None,
+        help="per-bot isolated leverage (owner-authorized cohorts only; default = fleet LEVERAGE)",
+    )
     ap.add_argument("--dry-run", action="store_true", dest="dry_run")
     args = ap.parse_args()
 
@@ -109,7 +142,7 @@ def main() -> None:
     existing = {b["bot_id"] for b in fleet}
     with open(os.path.join(_ROOT, "params.json"), encoding="utf-8") as fh:
         overrides = parse_overrides(args.param, json.load(fh))
-    new = cohort(args.label, args.pattern, args.bracket, pairs, args.timeframe, overrides)
+    new = cohort(args.label, args.pattern, args.bracket, pairs, args.timeframe, overrides, args.leverage)
     clash = [b["bot_id"] for b in new if b["bot_id"] in existing]
     if clash:
         raise SystemExit(f"{len(clash)} bot_id(s) already in {args.bots}, e.g. {clash[0]} — refusing")

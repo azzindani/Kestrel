@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import asyncio
 import dataclasses
+import math
 import os
 import signal
 import time
@@ -28,6 +29,7 @@ from dotenv import load_dotenv
 
 from src.config import (
     TIMEFRAME_MS,
+    XS_MOM_UNIVERSE,
     XS_UNIVERSE,
     AppConfig,
     BucketState,
@@ -53,7 +55,7 @@ from src.risk import manager as risk
 from src.signal.detector import evaluate
 from src.signal.exits import indicator_exit_reason
 from src.signal.memory import memory_is_active
-from src.signal.patterns import cross_section_entry
+from src.signal.patterns import cross_section_entry, cross_section_group, xs_mom_decision_candle
 from src.viz.dashboard import Dashboard
 
 # Fleet-wide open-slot reservations, shared across every Daemon instance in this
@@ -70,6 +72,9 @@ _fleet_slot_reservations: set[str] = set()
 # seconds of each other; 30s leaves margin without delaying the next 5m close.
 _XS_WAIT_S = 30.0
 _XS_POLL_S = 2.0
+# xs_mom (iter 75): rank only when at least this share of XS_MOM_UNIVERSE has both closes —
+# below it the cross-section is a different, smaller ranking than the one backtested.
+_XS_MOM_QUORUM = 0.8
 
 
 class Daemon:
@@ -324,6 +329,8 @@ class Daemon:
             if position is not None:
                 history = await db.load_recent_candles(self.cfg.bot_id, candle.pair, candle.timeframe, limit=120)
                 window = [_row_to_candle(r) for r in history]
+                if window and "xs_mom" in self.cfg.enabled_patterns:
+                    window[-1] = await self._with_xs_group(window[-1])
                 direction = Direction.LONG if position["direction"] == "long" else Direction.SHORT
                 reason = indicator_exit_reason(window, direction, self.cfg.enabled_patterns[0], self.params)
                 if reason:
@@ -358,6 +365,8 @@ class Daemon:
         # the latest candle so the pure pattern can read it (see _with_cross_section).
         if "xs_rev" in (self.cfg.enabled_patterns or []):
             candle_window[-1] = await self._with_cross_section(candle_window[-1])
+        if "xs_mom" in (self.cfg.enabled_patterns or []):
+            candle_window[-1] = await self._with_xs_group(candle_window[-1])
 
         # Equity-scaled sizing: read the authoritative bucket equity from the DB
         # (§11) so position size compounds with realised PnL.
@@ -592,6 +601,38 @@ class Daemon:
 
         entry = cross_section_entry(latest.pair, snapshot(ts_now), snapshot(ts_prev), self.params.xs_k)
         return dataclasses.replace(latest, xs_entry=entry)
+
+    async def _with_xs_group(self, latest):
+        """Return `latest` with xs_group set from the XS_MOM_UNIVERSE cross-section (iter 75).
+
+        Shell half of xs_mom (§7). Only the day's decision candle is ranked
+        (xs_mom_decision_candle); on every other candle xs_group stays None, so the
+        pattern stays flat and the group-exit rule holds. On the decision candle it
+        reads every universe pair's close now and xs_mom_lookback candles earlier and
+        calls the pure cross_section_group, waiting — with an explicit deadline (§11),
+        never blocking the loop — until the whole universe has written the candle. Short
+        of the quorum the result is None: no entry and no exit on a partial ranking.
+        """
+        step = TIMEFRAME_MS.get(latest.timeframe)
+        if step is None or not xs_mom_decision_candle(latest.ts, self.params.xs_mom_eval_hour):
+            return dataclasses.replace(latest, xs_group=None)
+        ts_now, ts_then = latest.ts, latest.ts - self.params.xs_mom_lookback * step
+        deadline = time.monotonic() + _XS_WAIT_S
+        while True:
+            closes = await db.load_closes_at(XS_MOM_UNIVERSE, latest.timeframe, [ts_now, ts_then], self.cfg.env.value)
+            ready = sum(1 for p in XS_MOM_UNIVERSE if (p, ts_now) in closes)
+            if ready == len(XS_MOM_UNIVERSE) or time.monotonic() >= deadline:
+                break
+            await asyncio.sleep(_XS_POLL_S)
+
+        snapshot = {
+            p: (closes[(p, ts_now)], closes[(p, ts_then)])
+            for p in XS_MOM_UNIVERSE
+            if (p, ts_now) in closes and (p, ts_then) in closes
+        }
+        min_pairs = math.ceil(_XS_MOM_QUORUM * len(XS_MOM_UNIVERSE))
+        group = cross_section_group(latest.pair, snapshot, self.params.xs_mom_groups, min_pairs)
+        return dataclasses.replace(latest, xs_group=group)
 
     async def _load_pattern_memories(self, candle_window) -> Optional[dict[str, dict | None]]:
         """Load this bot's pattern-memory rows for the current session/regime.

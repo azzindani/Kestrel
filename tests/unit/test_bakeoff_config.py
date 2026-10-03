@@ -98,3 +98,37 @@ def test_plain_bot_defaults_to_global_strategy(tmp_path):
     assert c.strategy == "default"
     assert c.enabled_patterns is None
     assert c.params is None
+
+
+# --- Per-bot leverage (iter 75, owner-authorized for the xs_mom cohort) ---------------
+
+
+def _bot(**extra) -> dict:
+    return {"bot_id": "dev-BTCUSDT-4h-xsmom28-01", "pair": "BTC/USDT", "strategy": "xsmom28", **extra}
+
+
+def test_per_bot_leverage_overrides_the_fleet_leverage(tmp_path):
+    base, params = _base(), load_params("params.json")
+    (c,) = load_bot_configs(_write(tmp_path, [_bot(leverage=3)]), base, params)
+    assert c.leverage == 3
+    assert base.leverage == 20  # the base config is untouched
+
+
+def test_bot_without_leverage_inherits_the_fleet_leverage(tmp_path):
+    base, params = _base(), load_params("params.json")
+    (c,) = load_bot_configs(_write(tmp_path, [_bot()]), base, params)
+    assert c.leverage == 20
+
+
+def test_per_bot_leverage_is_isolated_to_that_bot(tmp_path):
+    base, params = _base(), load_params("params.json")
+    bots = [_bot(leverage=3), {"bot_id": "dev-ETHUSDT-5m-hw33_sma_cross-01", "pair": "ETH/USDT", "strategy": "s"}]
+    a, b = load_bot_configs(_write(tmp_path, bots), base, params)
+    assert (a.leverage, b.leverage) == (3, 20)
+
+
+@pytest.mark.parametrize("bad", [0, 51, -3, "3", 2.5, True, None])
+def test_invalid_per_bot_leverage_is_rejected(tmp_path, bad):
+    base, params = _base(), load_params("params.json")
+    with pytest.raises(ValueError, match="leverage"):
+        load_bot_configs(_write(tmp_path, [_bot(leverage=bad)]), base, params)

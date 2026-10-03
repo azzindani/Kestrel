@@ -268,15 +268,15 @@
   "tp_pct": {
     "value": 0.05,
     "type": "float",
-    "range": [0.005, 0.10],
-    "description": "Take-profit distance as a fraction of entry price when tp_sl_pct_enabled (e.g. 0.05 = 5%). With trailing on, this is the fallback target the trail replaces.",
+    "range": [0.005, 1.0],
+    "description": "Take-profit distance as a fraction of entry price when tp_sl_pct_enabled (e.g. 0.05 = 5%). With trailing on, this is the fallback target the trail replaces. Upper bound widened 0.10 -> 1.0 (iter 75, owner-authorized 2026-10-03): the xs_mom cohort holds multi-day momentum positions whose target must sit beyond reach (1.0 = effectively no take-profit).",
     "impact": "higher = larger targets, lower win rate but higher reward:risk per win"
   },
   "sl_pct": {
     "value": 0.025,
     "type": "float",
-    "range": [0.0025, 0.05],
-    "description": "Stop-loss distance as a fraction of entry price when tp_sl_pct_enabled (e.g. 0.025 = 2.5%). Reward:risk = tp_pct/sl_pct. Detector clamps this inside 0.7/leverage so liquidation never front-runs the stop.",
+    "range": [0.0025, 0.25],
+    "description": "Stop-loss distance as a fraction of entry price when tp_sl_pct_enabled (e.g. 0.025 = 2.5%). Reward:risk = tp_pct/sl_pct. Detector clamps this inside 0.7/leverage so liquidation never front-runs the stop. Upper bound widened 0.05 -> 0.25 (iter 75, owner-authorized 2026-10-03 for the xs_mom cohort only): a catastrophe stop far outside daily noise; it only takes effect with that cohort's 3x per-bot leverage, at 20x the clamp still holds it to 3.5%.",
     "impact": "lower = tighter stops (more SL hits, smaller per-loss); must stay well below 1/leverage or the clamp tightens it further"
   },
   "seasonal_entry_hour_start": {
@@ -418,6 +418,27 @@
     "range": [1, 4],
     "description": "Group size for xs_rev: the top k of XS_UNIVERSE (10 pairs) are leaders, the bottom k laggards; a pair entering either group is faded. Needs at least 2k+1 ranked pairs.",
     "impact": "lower = only the most extreme movers, fewer entries; higher = more pairs per group, more entries"
+  },
+  "xs_mom_lookback": {
+    "value": 168,
+    "type": "int",
+    "range": [24, 336],
+    "description": "Return lookback (candles) for the xs_mom cross-section (iter 75): once a day XS_MOM_UNIVERSE (34 pairs) is ranked by close[t] / close[t - n]. On 4h candles 168 = 28 days, 84 = 14 days.",
+    "impact": "lower = follows shorter relative moves, more turnover; higher = slower, steadier groups"
+  },
+  "xs_mom_groups": {
+    "value": 3,
+    "type": "int",
+    "range": [2, 5],
+    "description": "Group divisor for xs_mom: the top 1/n of XS_MOM_UNIVERSE by lookback return is held long and the bottom 1/n short (3 = thirds, as backtested); a position closes when its pair leaves the group.",
+    "impact": "lower = more pairs held, weaker average rank; higher = only the extreme leaders/laggards, fewer positions"
+  },
+  "xs_mom_eval_hour": {
+    "value": 12,
+    "type": "int",
+    "range": [0, 23],
+    "description": "UTC OPEN hour of the one candle per day on which xs_mom ranks, enters and exits (must be a candle boundary of the bot's timeframe; on 4h: 0/4/8/12/16/20). 12 = the 12:00-16:00 candle, the day's highest-volume one, so the volume gate passes most often.",
+    "impact": "changes only the time of day the daily decision is taken"
   },
   "engulf_run": {
     "value": 3,

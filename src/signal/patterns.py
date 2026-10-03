@@ -61,6 +61,7 @@ SELF_DIRECTING_PATTERNS: frozenset[str] = COUNTER_TREND_PATTERNS | frozenset(
         "tsmom_z",
         "turtle_soup",
         "xs_rev",
+        "xs_mom",
         "engulf_rev",
         "obv_div",
         "fvg_retest",
@@ -1567,6 +1568,75 @@ def detect_xs_rev(candles: Sequence[Candle], params: Params) -> Optional[Pattern
         direction=Direction.SHORT if entry > 0 else Direction.LONG,
         confidence=0.78,
         details={"variant": "xs_rev", "group": "leader" if entry > 0 else "laggard"},
+    )
+
+
+# ---------------------------------------------------------------------------
+# Iter 75 (2026-10-03, owner "yes do it all") — xs_mom: multi-week cross-pair momentum.
+#
+# The horizon ladder (scripts/backtest_xs_momentum.py) shows the cross-pair rank is a
+# sub-cost REVERSAL at minutes (xs_rev) and turns into MOMENTUM at multi-day lookbacks,
+# where one unit of turnover earns several times its cost. Once a day XS_MOM_UNIVERSE is
+# ranked by its xs_mom_lookback return; the top 1/xs_mom_groups is held long and the
+# bottom 1/xs_mom_groups short, and a position is closed when the pair leaves its group
+# (signal/exits.py). Bot-by-bot on 7 years of daily closes: positive in every era
+# (+6.9..+11.7 %/yr on cohort capital in 2025-26), win rate 44-46 %, fat right tail.
+#
+# It only survives with room: at the fleet's 20x isolated buckets and ATR stops half the
+# positions are stopped out within two days (-9.2 / +4.4 %/yr). The cohort therefore
+# runs at 3x isolated leverage with a ~23 % catastrophe stop — owner-authorized for this
+# cohort only (per-bot `leverage` in bots.json + pct brackets).
+#
+# Split per §7, like xs_rev: the L3 daemon reads the universe's closes and calls the
+# pure cross_section_group on the ONE candle per day that decides
+# (xs_mom_decision_candle); the pattern reads Candle.xs_group. Both mirror
+# backtest_xs_momentum.bot_trades step for step.
+# ---------------------------------------------------------------------------
+def xs_mom_decision_candle(ts_ms: int, eval_hour: int) -> bool:
+    """Pure: is this the day's decision candle — the one that OPENS at eval_hour UTC?"""
+    return (ts_ms // 3_600_000) % 24 == eval_hour
+
+
+def cross_section_group(
+    pair: str,
+    closes: dict[str, tuple[float, float]],
+    groups: int,
+    min_pairs: int,
+) -> Optional[int]:
+    """Pure: which momentum group `pair` is in — +1 leader, -1 laggard, 0 neither.
+
+    closes maps each universe pair to (close, close xs_mom_lookback candles earlier).
+    Pairs are ordered by that return; the bottom 1/groups are laggards and the top
+    1/groups leaders (integer arithmetic, so thirds of 34 are 11 and 12 exactly as in
+    the backtest's percentile rank). Returns None when `pair` has no return or fewer
+    than min_pairs do — a thin cross-section is not a ranking.
+    """
+    rets = {p: now / then - 1.0 for p, (now, then) in closes.items() if now > 0.0 and then > 0.0}
+    n = len(rets)
+    if groups < 2 or pair not in rets or n < max(min_pairs, groups):
+        return None
+    ordinal = 1 + sum(1 for r in rets.values() if r < rets[pair])  # 1 = weakest return
+    if ordinal * groups <= n:
+        return -1
+    if ordinal * groups >= n * (groups - 1):
+        return 1
+    return 0
+
+
+@register("xs_mom")
+def detect_xs_mom(candles: Sequence[Candle], params: Params) -> Optional[PatternResult]:
+    """Follow the cross-section: long a multi-week leader, short a multi-week laggard."""
+    if not candles:
+        return None
+    group = candles[-1].xs_group
+    if not group:  # None (not a decision candle / no cross-section) or 0 (in neither group)
+        return None
+
+    return PatternResult(
+        pattern=PatternType.XS_MOM,
+        direction=Direction.LONG if group > 0 else Direction.SHORT,
+        confidence=0.78,
+        details={"variant": "xs_mom", "group": "leader" if group > 0 else "laggard"},
     )
 
 

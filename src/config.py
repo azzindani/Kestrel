@@ -102,6 +102,9 @@ class PatternType(str, Enum):
     # Cross-sectional reversal (iter 72) — the first entry that looks ACROSS pairs: fade a
     # pair on the candle it enters the last-hour leader/laggard group of XS_UNIVERSE.
     XS_REV = "xs_rev"
+    # Cross-pair momentum (iter 75) — hold the universe's multi-week leaders long and its
+    # laggards short; decided once a day, exits when the pair leaves its group.
+    XS_MOM = "xs_mom"
     # Iter 73 (2026-09-19, owner "add more strategies to dev"): three candle-structure
     # entries never tested here. Engulfing reversal at a local extreme.
     ENGULF_REV = "engulf_rev"
@@ -201,6 +204,13 @@ class Candle:
     # entry this candle, None = no cross-section available (explicit absence).
     xs_entry: Optional[int] = None
 
+    # Cross-section context for xs_mom (iter 75) — RUNTIME ONLY, same contract as
+    # xs_entry. Set by the L3 daemon from the pure patterns.cross_section_group on the
+    # ONE candle per day that takes the decision: +1 = this pair is in the leader group
+    # of XS_MOM_UNIVERSE by its xs_mom_lookback return, -1 = the laggard group, 0 =
+    # neither, None = not a decision candle / no usable cross-section (hold, no entry).
+    xs_group: Optional[int] = None
+
 
 # Milliseconds per candle for each supported timeframe.
 TIMEFRAME_MS: dict[str, int] = {"1m": 60_000, "5m": 300_000, "15m": 900_000, "1h": 3_600_000, "4h": 14_400_000}
@@ -220,6 +230,47 @@ XS_UNIVERSE: tuple[str, ...] = (
     "BNB/USDT",
     "ADA/USDT",
     "AVAX/USDT",
+)
+
+# The pairs xs_mom ranks against each other (iter 75): the 34 scalp pairs the backtest
+# ranked (scripts/build_momentum_lab.SCALP_PAIRS — a unit test pins the two lists
+# together). The group size is a fraction of this list, so a universe change is a new
+# cohort, not a param tweak.
+XS_MOM_UNIVERSE: tuple[str, ...] = (
+    "BTC/USDT",
+    "ETH/USDT",
+    "SOL/USDT",
+    "XRP/USDT",
+    "BNB/USDT",
+    "DOGE/USDT",
+    "ADA/USDT",
+    "AVAX/USDT",
+    "HYPE/USDT",
+    "PEPE/USDT",
+    "LINK/USDT",
+    "DOT/USDT",
+    "ATOM/USDT",
+    "NEAR/USDT",
+    "LTC/USDT",
+    "BCH/USDT",
+    "TRX/USDT",
+    "SUI/USDT",
+    "FIL/USDT",
+    "OP/USDT",
+    "ARB/USDT",
+    "APT/USDT",
+    "INJ/USDT",
+    "UNI/USDT",
+    "GALA/USDT",
+    "CHZ/USDT",
+    "ETC/USDT",
+    "APE/USDT",
+    "XLM/USDT",
+    "AAVE/USDT",
+    "FET/USDT",
+    "SEI/USDT",
+    "TIA/USDT",
+    "WLD/USDT",
 )
 
 
@@ -339,6 +390,12 @@ class Params:
     # candles; the top xs_k are leaders, the bottom xs_k laggards.
     xs_lookback: int = 12
     xs_k: int = 2
+    # xs_mom (iter 75): once a day, on the candle that OPENS at xs_mom_eval_hour UTC,
+    # rank XS_MOM_UNIVERSE by the return over the last xs_mom_lookback candles. The top
+    # 1/xs_mom_groups are held long, the bottom 1/xs_mom_groups short.
+    xs_mom_lookback: int = 168
+    xs_mom_groups: int = 3
+    xs_mom_eval_hour: int = 12
     # engulf_rev (iter 73): the engulfed candle's close must be the extreme close of the
     # last engulf_run + 1 candles (the move ran into the reversal).
     engulf_run: int = 3
@@ -484,6 +541,9 @@ class Params:
             soup_lookback=(int(d["soup_lookback"]["value"]) if "soup_lookback" in d else 20),
             xs_lookback=(int(d["xs_lookback"]["value"]) if "xs_lookback" in d else 12),
             xs_k=(int(d["xs_k"]["value"]) if "xs_k" in d else 2),
+            xs_mom_lookback=(int(d["xs_mom_lookback"]["value"]) if "xs_mom_lookback" in d else 168),
+            xs_mom_groups=(int(d["xs_mom_groups"]["value"]) if "xs_mom_groups" in d else 3),
+            xs_mom_eval_hour=(int(d["xs_mom_eval_hour"]["value"]) if "xs_mom_eval_hour" in d else 12),
             engulf_run=(int(d["engulf_run"]["value"]) if "engulf_run" in d else 3),
             obv_lookback=(int(d["obv_lookback"]["value"]) if "obv_lookback" in d else 20),
             fvg_max_age=(int(d["fvg_max_age"]["value"]) if "fvg_max_age" in d else 12),
@@ -871,6 +931,10 @@ def load_params(path: str) -> Params:
     return Params.from_dict(raw)
 
 
+# Upper bound for a per-bot leverage override — the top of the §13 leverage range.
+_MAX_BOT_LEVERAGE = 50
+
+
 def load_bot_configs(path: str, base: "AppConfig", base_params: "Optional[Params]" = None) -> "list[AppConfig]":
     """Load bots.json and return one AppConfig per bot entry.
 
@@ -879,17 +943,21 @@ def load_bot_configs(path: str, base: "AppConfig", base_params: "Optional[Params
 
     Per-bot overridable fields:
         bot_id, pair, timeframe_entry, timeframe_regime, max_active_buckets
+        leverage  — isolated-margin leverage for this bot only (owner-authorized
+                    2026-10-03 for the xs_mom cohort, 3x: a multi-day position needs
+                    its liquidation price far outside daily noise). Absent ⇒ the
+                    fleet-wide LEVERAGE from .env, as for every other bot.
 
     Per-bot strategy (multi-bot bake-off; 'params' override requires base_params):
         strategy  — label for grouping/reporting (also encode it into bot_id)
         patterns  — list of enabled pattern names; None ⇒ all registered patterns
         params    — dict of params.json overrides (e.g. {"tp_atr_multiplier": 2.4})
 
-    Shared fields inherited from base .env: exchange, api_*, db_*, leverage,
-    bucket_size_usdt, telegram_*, log_level, env.
+    Shared fields inherited from base .env: exchange, api_*, db_*, leverage (unless
+    overridden per bot), bucket_size_usdt, telegram_*, log_level, env.
 
-    Raises ValueError if an entry is missing 'bot_id'/'pair' or names an
-    unknown params override key.
+    Raises ValueError if an entry is missing 'bot_id'/'pair', names an unknown
+    params override key, or carries a leverage that is not an integer in 1..50.
     """
     import dataclasses
 
@@ -926,6 +994,12 @@ def load_bot_configs(path: str, base: "AppConfig", base_params: "Optional[Params
         patterns = entry.get("patterns")
         enabled = tuple(patterns) if patterns else None
 
+        leverage = entry.get("leverage", base.leverage)
+        if isinstance(leverage, bool) or not isinstance(leverage, int) or not 1 <= leverage <= _MAX_BOT_LEVERAGE:
+            raise ValueError(
+                f"bots.json entry {i} leverage must be an integer in 1..{_MAX_BOT_LEVERAGE}, got {leverage!r}"
+            )
+
         configs.append(
             dataclasses.replace(
                 base,
@@ -934,6 +1008,7 @@ def load_bot_configs(path: str, base: "AppConfig", base_params: "Optional[Params
                 timeframe_entry=entry.get("timeframe_entry", base.timeframe_entry),
                 timeframe_regime=entry.get("timeframe_regime", base.timeframe_regime),
                 max_active_buckets=int(entry.get("max_active_buckets", base.max_active_buckets)),
+                leverage=leverage,
                 params=bot_params,
                 enabled_patterns=enabled,
                 strategy=entry.get("strategy", "default"),

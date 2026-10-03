@@ -390,6 +390,18 @@ def _wilder_atr_frac(high: np.ndarray, low: np.ndarray, close: np.ndarray, perio
     return out
 
 
+def group_sides(past: np.ndarray, frac: float) -> np.ndarray:
+    """+1 for the top `frac` of the row by return, -1 for the bottom `frac`, 0 otherwise.
+
+    Exact at the boundary (rank 22 of 33 IS in the top third), which a bare float compare
+    against 1 - 1/3 is not — the live rule (patterns.cross_section_group) uses integer
+    arithmetic, and a unit test pins the two together.
+    """
+    rk = _rank_pct(past)
+    eps = 1e-9
+    return np.where(rk <= frac + eps, -1, np.where(rk >= 1.0 - frac - eps, 1, 0))
+
+
 def bot_trades(
     ts: np.ndarray,
     high: np.ndarray,
@@ -406,6 +418,8 @@ def bot_trades(
     max_loss_pct: float,
     vol_min: Optional[float],
     leverage: float = 20.0,
+    tp_pct: Optional[float] = None,
+    sl_pct: Optional[float] = None,
 ) -> list[tuple[int, int, int, int, float, float, float, str]]:
     """Replay one bot per pair. Returns (pair idx, entry bar, exit bar, side, notional/equity, gross bps, net bps, reason)."""
     T, N = close.shape
@@ -417,8 +431,7 @@ def bot_trades(
             continue
         past = close[t] / close[t - lookback] - 1.0
         past[seen[t] < lookback + 1] = np.nan
-        rk = _rank_pct(past)
-        group[t] = np.where(rk >= 1.0 - frac, 1, 0) - np.where(rk <= frac, 1, 0)
+        group[t] = group_sides(past, frac)
     vma = np.full((T, N), np.nan)
     csum = np.nancumsum(volume, axis=0)
     vma[19:] = (csum[19:] - np.vstack([np.zeros((1, N)), csum[:-20]])) / 20.0
@@ -438,6 +451,8 @@ def bot_trades(
                 continue
             entry, tp, sl = close[t, j], tp_atr * atr[t], sl_atr * atr[t]
             liq = 1.0 / leverage - 0.005  # isolated margin, mmr 0.5% (§17)
+            if sl_pct is not None:  # pct brackets: detector clamps the stop to 0.7 / leverage
+                tp, sl = (tp_pct if tp_pct is not None else tp), min(sl_pct, 0.7 / leverage)
             stop = min(sl, liq)
             notional = min(leverage, max_loss_pct / stop)
             k, done = t, None
@@ -516,6 +531,25 @@ def part_bots() -> None:
                 f"{mix:>11s} | {cap.sum() / len(names) / days * 36500:6.1f} | {(cap.sum() + fpay.sum()) / len(names) / days * 36500:6.1f} | {t_m:5.2f}"
             )
 
+    print(
+        "  -- DEPLOYED (iter 75 dev cohort): 3x isolated, pct stop 0.25 -> 23.3%, hold 48, group exit, volume gate --"
+    )
+    live = dict(
+        frac=1 / 3,
+        eval_hour=12,
+        tp_atr=99.0,
+        sl_atr=99.0,
+        max_hold=48,
+        max_loss_pct=0.20,
+        vol_min=1.1,
+        leverage=3.0,
+        sl_pct=0.25,
+    )
+    report("xsmom28   (28d, no take-profit)", lookback=168, tp_pct=1.0, **live)
+    report("xsmom14   (14d, no take-profit)", lookback=84, tp_pct=1.0, **live)
+    report("xsmom28tp (28d, 10% take-profit)", lookback=168, tp_pct=0.10, **live)
+    report("xsmom14tp (14d, 10% take-profit)", lookback=84, tp_pct=0.10, **live)
+    print("  -- the same rule at the fleet's standard risk geometry --")
     base = dict(frac=1 / 3, eval_hour=12, tp_atr=3.0, sl_atr=2.0, max_hold=48, max_loss_pct=0.04, vol_min=1.1)
     report("L28d tp3/sl2 hold48 eval12", lookback=168, **base)
     report("L14d tp3/sl2 hold48 eval12", lookback=84, **base)
