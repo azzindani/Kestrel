@@ -804,9 +804,26 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   (disk 87% → 80%). Dry run of yesterday's decision candle through the live path inside the
   container: 34/34 pairs ranked, 12 long / 11 short, 18 of 23 signals per arm pass the gates (4
   volume, 2 quiet-regime), stops 23.3% away at 3×.
+- **OWNER (15:05 UTC): "if you deploy everything, we can afford 1K bots, and dont forget balance
+  reset"** →
+  - *Group-size check (deployed risk settings; return on cohort capital %/yr):* top/bottom FIFTH
+    (xs_mom_groups 5 → 7 longs / 6 shorts of 34) — 7-year daily, explore / recent / old: 28d no-TP
+    +16.4 / +2.6 / +53.1 · 28d TP10 +9.6 / +0.7 / +34.6 · 14d no-TP +18.7 / +6.1 / +42.1 · 14d TP10
+    +7.6 / +5.5 / +30.0 (12/12 positive); 2-year 4h: 28d no-TP **+10.2 / +9.1** · 28d TP10 +5.4 /
+    +11.6 · 14d no-TP −0.5 / +16.2 · 14d TP10 −0.6 / +18.6. Halves are weaker (2-year 28d no-TP −0.6 /
+    +3.4) → not deployed.
+  - *Added (additive):* `xsmom28q`, `xsmom14q`, `xsmom28qtp` × 34 pairs = 102 bots (same 3× / 23%
+    stop / group exit), backfilled 73,440 4h candles. **dev 833 → 935; fleet 993** (lab 50, staging 8)
+    — inside the owner's ~1K budget; the promoter can still grow lab/staging past it.
+  - *ALL-ENV BALANCE RESET (last step, owner rule):* slate before — dev 24,229 trades −$325.32 · lab
+    2,742 −$36.12 · staging 533 −$6.99, 0 open positions, no pg_dump in flight. Tiers stopped
+    gracefully (6 s) → lean backup `backups/kestrel-lean-20261003T152239Z.dump` (1,029 MB, 6m40s;
+    27,504 / 27,504 trades read back, 7 tables) → `TRUNCATE trade_context, events, signals, trades,
+    pattern_memory, heartbeats` → candles (3.80M) + microstructure (4.30M) kept → all three tiers up
+    on the new image 15:30 UTC, 935 + 50 + 8 heartbeating, 0 errors.
 - **KNOWN LIMITS:** a dev restart closes the cohort's open positions (re-entry at the next 16:00 UTC
   decision, ~11 bps + a day flat each time); the 8-day max_hold forces a round trip on long holds;
-  expected size ≈ +5..+10%/yr on the cohort's $1,360 of paper buckets — the dev total stays dominated
+  expected size ≈ +5..+10%/yr on the cohort's $2,380 of paper buckets (238 bots) — the dev total stays dominated
   by the 5m cohorts' cost bill. Promoter rules and the 1h dev cohort (136 bots, −25..−57 bps/trade)
   still left for the owner.
 
