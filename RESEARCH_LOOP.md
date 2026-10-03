@@ -696,6 +696,53 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 75 — 2026-10-03 (OWNER "good win rate but we suffer losses" → "i want to see profits … use math, functions, algorithm, formula" → "dont train ML model")
+
+- **MEASURE (09-24 reset → 10-03, 9 days):** dev 24,123 trades 56.7% win −$323.18 · lab 2,731 57.5%
+  −$36.10 · staging 529 61.8% −$6.90; 23–28% of bots net-positive. Per trade (bps of notional): price
+  edge before costs dev −0.8 / lab +0.1 / staging +2.5, slippage 2.3, fees 4.9 — dev edge +$2.84 vs
+  cost $326.20: **the loss is the cost bill.** hw33 (85% of trades): avg win +$0.062 vs loss −$0.112 →
+  break-even 64–66% win.
+- **LIVE-SEMANTICS REPLAY (trade_context 'during' candles):** live.py rests the TP as a limit (fills on
+  touch at tp_price); the sim fills at the candle close (realised 2.0× the TP distance, SL 1.44×).
+  Replayed with live rules: win 70.8% dev / 71.0% lab / 75.0% staging, net −8.5 / −9.9 / −6.0 bps per
+  trade (sim −7.0 / −7.0 / −4.3). The 70% win target is reachable by construction and still loses;
+  the sim-vs-live TP mismatch stays an owner decision (changes every forward number, §18.4).
+- **REFUTED THIS ITERATION (5m, all on 2 years × 34 pairs of Binance futures 5m klines, eras fixed
+  up-front: explore 2025-10..2026-06, lockA 2024-10..2025-09, lockB 2026-07..09):**
+  - *Pattern confluence (live trades):* 2 agreeing patterns −0.6 bps, 3 agreeing −1.9, vs −0.3 alone.
+  - *Shock scan:* large mean forward returns after ≥5σ idiosyncratic moves are outliers (median 0,
+    day-clustered t < 1.5).
+  - *Pump fade (pre-registered: short a 3-bar ≥8σ pump, tp1/sl2/hold12, sim-parity exits):* explore
+    +29.4 bps net, lockA −12.6, lockB −7.3.
+  - *Gradient-boosted predictor (41 OHLCV features, train 2025-10..2026-03, test 2026-04..06):*
+    IC 0.0025 (15 min) / −0.0005 (30 min); top 0.5% of predictions +6 bps before costs, t ≈ 1.
+    **Owner: no more ML models.** (An uncapped first run OOM'd the shared host 13:04 UTC: dev+staging
+    restarted, 51 paper positions orphaned, −$0.25. Host-side research now runs under
+    `systemd-run --scope -p MemoryMax=…`.)
+- **THE HORIZON LADDER.** Cross-pair rank (long top third / short bottom third), gross profit **per unit
+  traded** vs cost per unit (taker+slip 9 bps, maker ~3). One-off run on the 5m klines (not in the
+  script): at 5m/15m rebalancing it is **−0.4..−1.0 bps in all three eras (t −5..−10)** — the
+  cross-pair *reversal* behind xs_rev is real but 5–10× under cost. `scripts/backtest_xs_momentum.py
+  --ladder` (new; futures 1h cache, 2024-11..2025-09 / 2025-10..2026-09): 1h rebalance / 4h lookback
+  −0.09 / −0.30, still nothing; the sign turns to *momentum* at multi-day lookbacks — 4h / 14d +5.2 /
+  +11.2; 1d / 14d +7.2 / +36.4; 1d / 28d +9.4 / +31.0.
+- **FIRST COST-CLEARING RESULT IN THE PROJECT — daily cross-pair momentum, 7 years of daily closes, 33
+  coins, unlevered, gross exposure 1.** Gross is positive in all three eras for every variant (24/24
+  cells). Explore-era best = 28-day lookback, daily rebalance: maker-cost net (3 bps per unit traded)
+  explore 2022-24 +33.6%/yr Sharpe 1.58 · untouched recent 2025-26 **+15.1%/yr Sharpe 0.90 (t 1.2)** ·
+  untouched old 2020-21 +58.2%/yr Sharpe 1.77; max drawdown −10..−25%. By year 2020 +79 / +61 / +24 /
+  +60 / +30 / 2025 +19 / 2026 YTD +7 — every year positive, and **fading**. Under the §13 cost model
+  (9 bps per unit + 3 bps/day funding always charged) the same rule nets +17.3 / −1.0 / +41.6.
+  Futures prices with ACTUAL funding, last two years: funding cost only −0.1..−1.9%/yr; maker net
+  +6.0%/yr then +21.9%/yr, taker +0.6 / +16.9. Weekly rebalancing is worse than daily.
+- **CAVEATS:** today's liquid pairs only (survivorship); ~60% of months positive, so a true edge of this
+  size takes months to show; it is +1–2%/month unlevered, not the §6 target; daily candles are outside
+  the minutes-only §13 design.
+- **APPLY:** nothing deployed. Deploying a daily (or 4h) cross-pair cohort, even in dev, breaks §13
+  ("✗ hours … ✗ deployed") → **owner decision.** Promoter rules and the 1h dev cohort (136 bots,
+  −25..−57 bps/trade) also left for the owner.
+
 ### Iteration 74 — 2026-09-24 (OWNER "5 days bleeding, win rate decent but profit negative" + "bots promoted and demoted dynamically between the environment" → "do it all … then reset the balance")
 
 - **MEASURE (5-day slate since the 09-19 reset):** dev 10,385 trades 57.4% win −$118.75 (gross −$28.95,
