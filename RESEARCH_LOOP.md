@@ -739,9 +739,30 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 - **CAVEATS:** today's liquid pairs only (survivorship); ~60% of months positive, so a true edge of this
   size takes months to show; it is +1–2%/month unlevered, not the §6 target; daily candles are outside
   the minutes-only §13 design.
-- **APPLY:** nothing deployed. Deploying a daily (or 4h) cross-pair cohort, even in dev, breaks §13
-  ("✗ hours … ✗ deployed") → **owner decision.** Promoter rules and the 1h dev cohort (136 bots,
-  −25..−57 bps/trade) also left for the owner.
+- **OWNER (same day): "do it … add more bots … no ML because i still use the hardware"** → cohort
+  authorized in dev; the per-bot form was checked BEFORE building it, and it does not survive the
+  fleet's risk geometry (`scripts/backtest_xs_momentum.py --bots`: one bot per pair, 4h candles, one
+  decision candle per day, the sim's close-resolved exits + costs + volume gate; return on cohort
+  capital %/yr, 2024-11..2025-09 / 2025-10..2026-09):
+  - *As the fleet would run it (20× isolated, tp 3 / sl 2 ATR, hold 48):* **−9.2 / +4.4** (28d),
+    −6.0 / +8.4 (14d). 47–52% of exits are stops and the average hold is 2.3 days, not ~8: a 2-ATR(4h)
+    stop is 3–4% and the 20× liquidation is 4.5%, inside one day's noise for an alt.
+  - *Liquidation only, notional 1× the bucket, tp 3:* 20× −10.0 / +2.7 · 10× −13.7 / +7.2 · 5× +1.3 /
+    +4.9 · 3× +1.9 / +7.6 · 1× +0.2 / +9.5. No setting inside the existing ranges (leverage 10–50×,
+    sl ≤ 2 ATR or sl_pct ≤ 5%) is positive in both eras.
+  - *Bare rule replayed bot-by-bot on the 7-year daily closes (no stop, buy-and-hold legs, equal size,
+    11 bps round trip):* 28d lookback +35.0%/yr (t 2.5) explore · **+6.9%/yr (t 0.9) recent** ·
+    +117.5%/yr old; 14d +28.9 / +11.7 (t 1.9) / +66.3. Positive in every era, win rate 44–46%, and
+    fat-tailed: the five best trades are 56–109% of an era's profit (a 3×daily-ATR take-profit cuts
+    that to 24–44% and nets +9.3 / +10.0 / +46.4).
+  - A replay bug found on the way: positions still open at the end of the data were dropped, which
+    removed the biggest winners (NEAR/ARB/UNI longs in the 2026-09 rally); they are now marked to the
+    last close. The portfolio numbers above were unaffected.
+- **APPLY:** nothing deployed. The effect needs ~3× isolated leverage and a catastrophe stop of ~25%
+  for this cohort — both outside the owner-locked §13 ranges (20×, range 10–50×; sl ≤ 2 ATR / 5%) →
+  **§4 owner decision.** Expected size if granted: roughly +7..+12%/yr on the cohort's own capital at
+  the recent rate. Promoter rules and the 1h dev cohort (136 bots, −25..−57 bps/trade) also left for
+  the owner.
 
 ### Iteration 74 — 2026-09-24 (OWNER "5 days bleeding, win rate decent but profit negative" + "bots promoted and demoted dynamically between the environment" → "do it all … then reset the balance")
 

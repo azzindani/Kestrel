@@ -24,13 +24,18 @@ PARTS.
   B  the last two years on futures 1h closes with the ACTUAL funding each leg paid or
      received (data.binance.vision, the cache backtest_funding_carry.py already fills).
   --ladder  gross bps per unit traded for 1h / 4h / 1d rebalancing on the Part-B data.
+  --bots    the form the fleet would trade: one bot per pair on 4h candles, one decision
+            candle per day, the sim's close-resolved exits, costs, volume gate and
+            isolated-margin liquidation. Verdict (iter 75): at 20x with ATR stops half the
+            positions are stopped out inside two days and the effect is gone; it needs
+            ~3x leverage and no tight stop.
 
 CAVEATS. The universe is today's liquid pairs (survivorship); a coin enters once it has
 90 daily closes. A month is positive ~60% of the time: a real edge of this size still
 takes months to show.
 
 Run (host, numpy only; keep it under a memory cap on the shared host):
-  systemd-run --scope -p MemoryMax=1200M python3 scripts/backtest_xs_momentum.py [--ladder]
+  systemd-run --scope -p MemoryMax=1200M python3 scripts/backtest_xs_momentum.py [--ladder | --bots]
 """
 
 from __future__ import annotations
@@ -42,6 +47,7 @@ import os
 import sys
 import time
 import urllib.request
+from typing import Optional
 
 import numpy as np
 
@@ -311,13 +317,241 @@ def part_b(ladder: bool) -> None:
             print(f"  {tag:9s} | {lb * step // _HOUR:6d}h  | " + " | ".join(cells))
 
 
+# ---------------------------------------------------------------------------
+# BOT FORM — what the fleet would actually trade (one bot per pair, 4h candles).
+#
+# The daemon has no 1d timeframe, so the daily decision is taken on ONE 4h close per
+# day (the candle opening at `eval_hour` UTC). Everything the live pipeline does to an
+# entry is replayed: the volume-confirm gate (volume_ratio >= volume_ratio_min x the
+# session multiplier), ATR brackets resolved on the 4h CLOSE and filled at the close
+# (SimulationExecution.check_exits), the 20x isolated liquidation distance, the
+# max_hold timeout, fixed-fractional risk sizing, and the sim's costs (maker entry
+# 2 bps, maker TP 2 bps, every other exit taker 4 + slippage 5). The group-exit rule
+# ("no longer a leader / laggard at the daily close") is the indicator exit.
+# ---------------------------------------------------------------------------
+_H4 = 4 * _HOUR
+_SESSION_VOL_MULT = {0: 1.2, 4: 1.2, 8: 1.0, 12: 1.0, 16: 0.9, 20: 0.9}  # by 4h candle open hour (§22)
+_COST_IN, _COST_TP, _COST_MKT = 2.0, 2.0, 9.0
+
+
+def _fut_ohlcv_4h(
+    pair: str, months: list[tuple[int, int]]
+) -> tuple[dict[int, tuple[float, float, float, float]], dict]:
+    """({4h open ts: (high, low, close, volume)}, {UTC day: funding}) built from the cached 1h futures klines."""
+    for fut in _fut_symbol(pair):
+        bars: dict[int, list[float]] = {}
+        funding: dict[int, float] = {}
+        for y, m in months:
+            tag = f"{y}-{m:02d}"
+            kb = _download(
+                f"{_ARCHIVE}/futures/um/monthly/klines/{fut}/1h/{fut}-1h-{tag}.zip",
+                f"{_FUND_CACHE}/fut/{fut}-1h-{tag}.zip",
+            )
+            if kb:
+                for r in sorted(_csv_rows(kb), key=lambda r: int(r[0])):
+                    key = _ms(r[0]) // _H4 * _H4
+                    hi, lo, cl, vol = float(r[2]), float(r[3]), float(r[4]), float(r[5])
+                    b = bars.get(key)
+                    if b is None:
+                        bars[key] = [hi, lo, cl, vol]
+                    else:
+                        b[0], b[1], b[2], b[3] = max(b[0], hi), min(b[1], lo), cl, b[3] + vol
+            fb = _download(
+                f"{_ARCHIVE}/futures/um/monthly/fundingRate/{fut}/{fut}-fundingRate-{tag}.zip",
+                f"{_FUND_CACHE}/fut/{fut}-fundingRate-{tag}.zip",
+            )
+            if fb:
+                for r in _csv_rows(fb):
+                    day = _ms(r[0]) // _DAY * _DAY
+                    funding[day] = funding.get(day, 0.0) + float(r[2])
+        if bars:
+            return {k: (v[0], v[1], v[2], v[3]) for k, v in bars.items()}, funding
+    return {}, {}
+
+
+def _wilder_atr_frac(high: np.ndarray, low: np.ndarray, close: np.ndarray, period: int = 14) -> np.ndarray:
+    """ATR(period, Wilder) as a fraction of the close — signal/indicators.compute_atr on a full series."""
+    out = np.full(len(close), np.nan)
+    atr = np.nan
+    seed: list[float] = []
+    for t in range(1, len(close)):
+        if not (np.isfinite(high[t]) and np.isfinite(close[t - 1])):
+            atr, seed = np.nan, []
+            continue
+        tr = max(high[t] - low[t], abs(high[t] - close[t - 1]), abs(low[t] - close[t - 1]))
+        if np.isnan(atr):
+            seed.append(tr)
+            if len(seed) == period:
+                atr = sum(seed) / period
+        else:
+            atr = (atr * (period - 1) + tr) / period
+        if np.isfinite(atr):
+            out[t] = atr / close[t]
+    return out
+
+
+def bot_trades(
+    ts: np.ndarray,
+    high: np.ndarray,
+    low: np.ndarray,
+    close: np.ndarray,
+    volume: np.ndarray,
+    *,
+    lookback: int,
+    frac: float,
+    eval_hour: int,
+    tp_atr: float,
+    sl_atr: float,
+    max_hold: int,
+    max_loss_pct: float,
+    vol_min: Optional[float],
+    leverage: float = 20.0,
+) -> list[tuple[int, int, int, int, float, float, float, str]]:
+    """Replay one bot per pair. Returns (pair idx, entry bar, exit bar, side, notional/equity, gross bps, net bps, reason)."""
+    T, N = close.shape
+    is_eval = (ts // _HOUR) % 24 == eval_hour
+    seen = np.cumsum(np.isfinite(close), axis=0)
+    group = np.zeros((T, N), dtype=np.int8)
+    for t in np.flatnonzero(is_eval):
+        if t < lookback:
+            continue
+        past = close[t] / close[t - lookback] - 1.0
+        past[seen[t] < lookback + 1] = np.nan
+        rk = _rank_pct(past)
+        group[t] = np.where(rk >= 1.0 - frac, 1, 0) - np.where(rk <= frac, 1, 0)
+    vma = np.full((T, N), np.nan)
+    csum = np.nancumsum(volume, axis=0)
+    vma[19:] = (csum[19:] - np.vstack([np.zeros((1, N)), csum[:-20]])) / 20.0
+    vratio = volume / vma
+    gate = (
+        np.ones(T) if vol_min is None else np.array([vol_min * _SESSION_VOL_MULT[int(h)] for h in (ts // _HOUR) % 24])
+    )
+    out = []
+    for j in range(N):
+        atr = _wilder_atr_frac(high[:, j], low[:, j], close[:, j])
+        t = 0
+        while t < T - 1:
+            side = int(group[t, j])
+            ok = side != 0 and np.isfinite(atr[t]) and (vol_min is None or vratio[t, j] >= gate[t])
+            if not ok:
+                t += 1
+                continue
+            entry, tp, sl = close[t, j], tp_atr * atr[t], sl_atr * atr[t]
+            liq = 1.0 / leverage - 0.005  # isolated margin, mmr 0.5% (§17)
+            stop = min(sl, liq)
+            notional = min(leverage, max_loss_pct / stop)
+            k, done = t, None
+            while done is None and k < T - 1:
+                k += 1
+                if not np.isfinite(close[k, j]):
+                    continue
+                mv = side * (close[k, j] / entry - 1.0)
+                if mv >= tp:
+                    done = (mv * 1e4, _COST_TP, "take_profit")
+                elif mv <= -stop:
+                    done = (mv * 1e4, _COST_MKT, "stop_loss" if sl <= liq else "liquidated")
+                elif k - t >= max_hold:
+                    done = (mv * 1e4, _COST_MKT, "timeout")
+                elif is_eval[k] and group[k, j] != side:
+                    done = (mv * 1e4, _COST_MKT, "signal_exit")
+            if done is None:  # still open at the end of the data: mark it to the last close
+                last = k
+                while last > t and not np.isfinite(close[last, j]):
+                    last -= 1
+                if last == t:
+                    break
+                k, done = last, (side * (close[last, j] / entry - 1.0) * 1e4, _COST_MKT, "open")
+            out.append((j, t, k, side, notional, done[0], done[0] - _COST_IN - done[1], done[2]))
+            t = k + 1  # the daemon returns after a close: the next entry is a later candle
+    return out
+
+
+def part_bots() -> None:
+    months = [(2024, m) for m in range(10, 13)] + [(2025, m) for m in range(1, 13)] + [(2026, m) for m in range(1, 10)]
+    bars, fund = {}, {}
+    for pair in SCALP_PAIRS:
+        base = pair.split("/")[0]
+        bars[base], fund[base] = _fut_ohlcv_4h(pair, months)
+    cols = [{b: {k: v[i] for k, v in s.items()} for b, s in bars.items()} for i in range(4)]
+    ts, high, names = _matrix(cols[0], _H4)
+    _, low, _ = _matrix(cols[1], _H4)
+    _, close, _ = _matrix(cols[2], _H4)
+    _, volume, _ = _matrix(cols[3], _H4)
+    day = ts // _DAY * _DAY
+    print(f"\nBOT FORM — one bot per pair on 4h candles, {len(names)} pairs, sim costs, dev funding 0")
+    print(
+        "  config | era | trades | win% | net bps/trade | avg hold d | exits tp/sl/sig/to % | "
+        "return on cohort capital %/yr | + actual funding | t (monthly)"
+    )
+
+    def report(label: str, **kw) -> None:
+        trades = bot_trades(ts, high, low, close, volume, **kw)
+        for era, (a, b) in FUT_ERAS.items():
+            sel = [x for x in trades if _ts(a) <= ts[x[1]] < _ts(b)]
+            if len(sel) < 20:
+                print(f"  {label:34s} {era} | {len(sel)} trades")
+                continue
+            net = np.array([x[6] for x in sel])
+            hold = np.array([(x[2] - x[1]) / 6.0 for x in sel])
+            why = [x[7] for x in sel]
+            mix = "/".join(
+                f"{100 * sum(w in g for w in why) / len(why):.0f}"
+                for g in (("take_profit",), ("stop_loss", "liquidated"), ("signal_exit",), ("timeout",))
+            )
+            days = (_ts(b) - max(_ts(a), int(ts[0]))) / _DAY
+            cap = np.array([x[4] * x[6] / 1e4 for x in sel])  # P&L as a fraction of ONE bot's bucket
+            fpay = np.array(
+                [
+                    -x[3] * x[4] * sum(fund[names[x[0]]].get(int(d), 0.0) for d in np.unique(day[x[1] + 1 : x[2] + 1]))
+                    for x in sel
+                ]
+            )
+            month = np.array(
+                [_dt.datetime.fromtimestamp(ts[x[2]] / 1000, _dt.timezone.utc).strftime("%Y-%m") for x in sel]
+            )
+            monthly = np.array([cap[month == m].sum() for m in sorted(set(month))])
+            t_m = monthly.mean() / (monthly.std() / np.sqrt(len(monthly))) if monthly.std() > 0 else 0.0
+            print(
+                f"  {label:34s} {era} | {len(sel):5d} | {100 * (net > 0).mean():4.1f} | {net.mean():7.1f} | {hold.mean():5.1f} | "
+                f"{mix:>11s} | {cap.sum() / len(names) / days * 36500:6.1f} | {(cap.sum() + fpay.sum()) / len(names) / days * 36500:6.1f} | {t_m:5.2f}"
+            )
+
+    base = dict(frac=1 / 3, eval_hour=12, tp_atr=3.0, sl_atr=2.0, max_hold=48, max_loss_pct=0.04, vol_min=1.1)
+    report("L28d tp3/sl2 hold48 eval12", lookback=168, **base)
+    report("L14d tp3/sl2 hold48 eval12", lookback=84, **base)
+    report("L28d tp3/sl1.5", lookback=168, **{**base, "sl_atr": 1.5})
+    print("  -- what each piece of fleet machinery costs (L28d) --")
+    report("no volume gate", lookback=168, **{**base, "vol_min": None})
+    report("no TP cap (tp 99)", lookback=168, **{**base, "tp_atr": 99.0})
+    report("no gate, no TP, hold 400", lookback=168, **{**base, "vol_min": None, "tp_atr": 99.0, "max_hold": 400})
+    print("  -- room the positions need: no ATR stop, liquidation only, notional 1x the bucket (L28d, hold 48) --")
+    for lev in (20, 10, 5, 3, 2, 1):
+        wide = {**base, "sl_atr": 99.0, "leverage": float(lev), "max_loss_pct": 1.0 / lev - 0.005}
+        report(f"{lev}x isolated, tp3", lookback=168, **wide)
+        report(f"{lev}x isolated, no tp", lookback=168, **{**wide, "tp_atr": 99.0})
+    print("  -- consistency check: the bare portfolio rule replayed bot-by-bot (no gate / TP / stop / timeout) --")
+    bare = dict(frac=1 / 3, tp_atr=99.0, sl_atr=99.0, max_hold=10**6, max_loss_pct=0.995, vol_min=None, leverage=1.0)
+    for hour in (20, 12):
+        report(f"bare rule, decision candle {hour:02d}", lookback=168, eval_hour=hour, **bare)
+    report("bare rule 12 + volume gate", lookback=168, eval_hour=12, **{**bare, "vol_min": 1.1})
+    report("bare rule 12 + hold 48", lookback=168, eval_hour=12, **{**bare, "max_hold": 48})
+    report("bare rule 12 + tp 3 ATR", lookback=168, eval_hour=12, **{**bare, "tp_atr": 3.0})
+    print("  -- decision candle (4h open hour UTC), L28d --")
+    for hour in (0, 4, 8, 16, 20):
+        report(f"eval{hour:02d}", lookback=168, **{**base, "eval_hour": hour})
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument(
         "--ladder", action="store_true", help="also print gross bps per unit traded for 1h / 4h / 1d rebalancing"
     )
     ap.add_argument("--skip-a", action="store_true", help="skip the 7-year daily part (needs api.binance.com)")
+    ap.add_argument("--bots", action="store_true", help="only the per-bot 4h form the fleet would trade")
     args = ap.parse_args()
+    if args.bots:
+        part_bots()
+        return
     if not args.skip_a:
         part_a()
     part_b(args.ladder)
