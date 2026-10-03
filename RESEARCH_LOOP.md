@@ -821,6 +821,18 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
     27,504 / 27,504 trades read back, 7 tables) → `TRUNCATE trade_context, events, signals, trades,
     pattern_memory, heartbeats` → candles (3.80M) + microstructure (4.30M) kept → all three tiers up
     on the new image 15:30 UTC, 935 + 50 + 8 heartbeating, 0 errors.
+- **FIRST DECISION MISSED (16:00 UTC, found 16:09) — backfill bug, fixed (commit 90ac9cb).** No xs_mom
+  signal, trade or rejection event at the first decision. Cause: `backfill_history.py` stored the
+  still-forming 12:00–16:00 candle as closed (REST returns it as the last row); at the 15:30 restart
+  it became each CandleBuilder's `_last_ts`, so the real close at 16:00 was deduplicated away — never
+  evaluated, and the DB kept the partial close/volume (BTC 84,761 / 84,815 vs the true 84,863). I had
+  noticed the partial candle before the deploy and waved it through because `write_candle` upserts;
+  the dedupe sits in front of the write. Latent on every new-bot deploy (one lost 5m candle), fatal
+  only for a once-a-day decision candle. Fix: pure `closed_only()` drops any candle whose period has
+  not ended (3 tests); the 238 cohort bots' candles re-backfilled in place with the fixed script (no
+  restart). **First live decision is therefore 2026-10-04 16:00 UTC.** Weekend 4h volume is far under
+  its 20-candle average (BTC ratio ~0.2–0.3 on Saturday), so the volume gate will pass few entries
+  until Monday — that gate is in the backtest numbers.
 - **KNOWN LIMITS:** a dev restart closes the cohort's open positions (re-entry at the next 16:00 UTC
   decision, ~11 bps + a day flat each time); the 8-day max_hold forces a round trip on long holds;
   expected size ≈ +5..+10%/yr on the cohort's $2,380 of paper buckets (238 bots) — the dev total stays dominated
