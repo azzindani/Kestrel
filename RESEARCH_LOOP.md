@@ -743,12 +743,14 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   authorized in dev; the per-bot form was checked BEFORE building it, and it does not survive the
   fleet's risk geometry (`scripts/backtest_xs_momentum.py --bots`: one bot per pair, 4h candles, one
   decision candle per day, the sim's close-resolved exits + costs + volume gate; return on cohort
-  capital %/yr, 2024-11..2025-09 / 2025-10..2026-09):
-  - *As the fleet would run it (20× isolated, tp 3 / sl 2 ATR, hold 48):* **−9.2 / +4.4** (28d),
-    −6.0 / +8.4 (14d). 47–52% of exits are stops and the average hold is 2.3 days, not ~8: a 2-ATR(4h)
+  capital %/yr incl. actual funding, 2024-11..2025-09 / 2025-10..2026-09; numbers are from the final
+  script, after the two replay fixes noted below — the owner was first shown −9.2 / +4.4 for the first
+  row, same verdict):
+  - *As the fleet would run it (20× isolated, tp 3 / sl 2 ATR, hold 48):* **−5.3 / +3.6** (28d),
+    −4.9 / +7.3 (14d). 47–52% of exits are stops and the average hold is 2.3 days, not ~8: a 2-ATR(4h)
     stop is 3–4% and the 20× liquidation is 4.5%, inside one day's noise for an alt.
-  - *Liquidation only, notional 1× the bucket, tp 3:* 20× −10.0 / +2.7 · 10× −13.7 / +7.2 · 5× +1.3 /
-    +4.9 · 3× +1.9 / +7.6 · 1× +0.2 / +9.5. No setting inside the existing ranges (leverage 10–50×,
+  - *Liquidation only, notional 1× the bucket, tp 3:* 20× −5.6 / +1.8 · 10× −11.3 / +6.4 · 5× +4.1 /
+    +4.1 · 3× +4.8 / +6.9 · 1× +3.1 / +8.8. No setting inside the existing ranges (leverage 10–50×,
     sl ≤ 2 ATR or sl_pct ≤ 5%) is positive in both eras.
   - *Bare rule replayed bot-by-bot on the 7-year daily closes (no stop, buy-and-hold legs, equal size,
     11 bps round trip):* 28d lookback +35.0%/yr (t 2.5) explore · **+6.9%/yr (t 0.9) recent** ·
@@ -758,11 +760,55 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   - A replay bug found on the way: positions still open at the end of the data were dropped, which
     removed the biggest winners (NEAR/ARB/UNI longs in the 2026-09 rally); they are now marked to the
     last close. The portfolio numbers above were unaffected.
-- **APPLY:** nothing deployed. The effect needs ~3× isolated leverage and a catastrophe stop of ~25%
-  for this cohort — both outside the owner-locked §13 ranges (20×, range 10–50×; sl ≤ 2 ATR / 5%) →
-  **§4 owner decision.** Expected size if granted: roughly +7..+12%/yr on the cohort's own capital at
-  the recent rate. Promoter rules and the 1h dev cohort (136 bots, −25..−57 bps/trade) also left for
-  the owner.
+- **OWNER DECISION (asked: "3× isolated leverage and a stop about 25% away for this cohort only, in
+  dev, paper only?" → "yes do it all").** The effect needs ~3× isolated leverage and a catastrophe
+  stop of ~25% — both outside the §13 ranges (20×, range 10–50×; sl ≤ 2 ATR / 5%) — so it runs as an
+  owner-authorized exception for the `xsmom*` cohort only. **CLAUDE.md §13 still reads minutes-only /
+  20×: the owner has not been asked to amend it, so the exception lives here and in the code
+  comments until he does.**
+- **BUILT (commit 6a0d8fb, 49 new unit tests, full suite green, CI green):**
+  - `signal/patterns.py`: pure `cross_section_group` (integer thirds: 11 laggards / 12 leaders of 34)
+    + `xs_mom_decision_candle` + `@register("xs_mom")`; SELF_DIRECTING; all non-QUIET regimes; own
+    `PatternType.XS_MOM`.
+  - `signal/exits.py`: group-exit rule (long exits when no longer a leader, short when no longer a
+    laggard; holds on every non-decision candle). `engine/daemon.py`: `_with_xs_group` shell for both
+    entry and exit, 80% universe quorum, 30 s deadline.
+  - `config.py`: `Candle.xs_group` (runtime-only), `XS_MOM_UNIVERSE` (= the 34 SCALP_PAIRS, pinned by
+    a test), params `xs_mom_lookback` / `xs_mom_groups` / `xs_mom_eval_hour`, and a per-bot `leverage`
+    key in bots.json (integer 1..50; absent ⇒ fleet LEVERAGE — every existing bot unchanged).
+  - `params.json`: 3 new contracts; `sl_pct` upper bound 0.05 → 0.25 and `tp_pct` 0.10 → 1.0 (the stop
+    is still clamped to 0.7 / leverage, so at 20× nothing changes).
+  - The daemon has no 1d timeframe: the cohort trades 4h candles and decides on ONE candle a day, the
+    one opening 12:00 UTC (closes 16:00; session = London by candle ts, so the 13–16 overlap block
+    does not apply; the day's highest-volume candle, so the volume gate passes most often).
+  - A parity test caught a float quirk in the backtest's group boundary (`rk >= 1 - 1/3` drops rank
+    22 of 33); `group_sides` is now exact and pinned to the live rule for every universe size.
+- **DEPLOYED CONFIG, backtested exactly (`--bots` "DEPLOYED" rows; 3× isolated, pct stop 0.25 → 23.3%,
+  hold 48, group exit, volume gate, notional ≈ 0.86× the bucket; return on cohort capital %/yr,
+  2024-11..2025-09 / 2025-10..2026-09):** xsmom28 (28d, no TP) +5.6 / +0.9 · xsmom14 (14d, no TP)
+  −11.6 / +12.7 · xsmom28tp (28d, 10% TP) **+7.6 / +7.0** · xsmom14tp −1.0 / +14.7. Same risk settings
+  on the 7-year daily closes (explore / recent / old): xsmom28 +14.9 / −0.4 / +50.5 · xsmom14 +11.4 /
+  +10.3 / +29.7 · xsmom28tp +8.0 / +6.4 / +33.2 · xsmom14tp +1.3 / +10.2 / +16.6 (11 of 12 cells
+  positive; win 45–51%, above the 35% pattern-memory suppress line). All t-stats on the 2-year window
+  are under 2: a forward test of a lead with 7-year support, not a proven edge.
+  **Time-of-day sensitivity (the honest noise band):** the same four arms decided on the other five 4h
+  candles range −20.7..+7.6 in 2024-11..2025-09 (most cells negative; 12:00 is the best hour for the
+  TP arms) and −6.4..+14.7 in 2025-10..2026-09 (20 of 24 cells positive). 12:00 was chosen for the
+  volume gate before this table existed, but the first-era numbers above are partly that hour's luck.
+- **DEPLOY (additive, no reset):** 4 arms × 34 pairs = 136 bots (`dev-<PAIR>-4h-xsmom{28,14}{,tp}-01`,
+  `leverage: 3`, `max_loss_pct_per_trade 0.20`), dev 697 → 833. Order that matters: the watchdog
+  re-reads bots.json every heartbeat check and the OLD image rejects the new param keys, so bots.json
+  was swapped only at the restart — image built first, new bots backfilled with the new image in a
+  one-off `kestrel-research-backfill` container (97,920 4h candles, 120 days, gate), then swap +
+  `docker compose up -d kestrel`. 833/833 heartbeating, 0 errors; `docker builder prune` freed 18 GB
+  (disk 87% → 80%). Dry run of yesterday's decision candle through the live path inside the
+  container: 34/34 pairs ranked, 12 long / 11 short, 18 of 23 signals per arm pass the gates (4
+  volume, 2 quiet-regime), stops 23.3% away at 3×.
+- **KNOWN LIMITS:** a dev restart closes the cohort's open positions (re-entry at the next 16:00 UTC
+  decision, ~11 bps + a day flat each time); the 8-day max_hold forces a round trip on long holds;
+  expected size ≈ +5..+10%/yr on the cohort's $1,360 of paper buckets — the dev total stays dominated
+  by the 5m cohorts' cost bill. Promoter rules and the 1h dev cohort (136 bots, −25..−57 bps/trade)
+  still left for the owner.
 
 ### Iteration 74 — 2026-09-24 (OWNER "5 days bleeding, win rate decent but profit negative" + "bots promoted and demoted dynamically between the environment" → "do it all … then reset the balance")
 
