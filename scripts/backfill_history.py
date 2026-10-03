@@ -81,7 +81,19 @@ def fetch_quote_ohlcv(pair: str, timeframe: str, days: int, source: str = _DEFAU
             break
     # de-dup + convert volume to quote (USDT) to match the live WS feed
     seen = {int(r[0]): [int(r[0]), r[1], r[2], r[3], r[4], r[5] * r[4]] for r in rows}
-    return [seen[k] for k in sorted(seen)]
+    return closed_only([seen[k] for k in sorted(seen)], tf_ms, now_ms)
+
+
+def closed_only(rows: list[list], tf_ms: int, now_ms: int) -> list[list]:
+    """Pure: drop the candle that is still forming (its period has not ended by now_ms).
+
+    REST returns the in-progress candle as the last row. Stored as a closed candle it
+    becomes the CandleBuilder's `_last_ts` at the next daemon start, so the REAL close of
+    that candle is deduplicated away: the bot never evaluates it and the DB keeps the
+    partial close/volume. Harmless noise on 5m; on a daily-decision 4h cohort it cost the
+    whole first decision (iter 75, 2026-10-03).
+    """
+    return [r for r in rows if int(r[0]) + tf_ms <= now_ms]
 
 
 async def run(bots_path: str = "bots.json", source: str = _DEFAULT_SOURCE) -> None:
