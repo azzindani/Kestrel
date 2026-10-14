@@ -39,7 +39,10 @@ max_hold closes), so trailing / indicator exits are out of scope. Retired recipe
 never touched.
 
 State: tier_ledger.json (when each recipe entered each tier, and every move). The
-tier files are rewritten in place; each move is an events row (category 'system').
+tier files are rewritten in place; each move is an events row (category 'system'),
+and each run's 'tier_review' event carries the full scoreboard (every recipe's tier,
+evidence and blockers) that the Grafana "Tier Promotion" section reads. Recent ledger
+moves a slate reset wiped from events are re-inserted at their original ts each run.
 
 Run (host — evaluates inside the image, then backfills new bots and restarts only the
 tiers that changed):
@@ -88,6 +91,7 @@ MIN_DWELL_DAYS = 3
 COOLDOWN_DAYS = 7
 MAX_PROMOTIONS_PER_TIER = 3
 HIGH_WIN_MAX_TP_SL = 0.5  # hiwin33 0.33 · hiwin43 0.43 · hiwin50 0.5 · scratch 0.25
+EVENT_RETENTION_DAYS = 30  # cleanup.sh deletes events older than this (CLAUDE.md §19)
 
 # Target pair lists. Lab: the twelve best live-win pairs (build_curated_tiers). Staging:
 # a recipe's own lockbox-vetted list when build_curated_tiers has one, else the liquid core.
@@ -313,6 +317,80 @@ def decide(
         moves.append(Move(r, labels[r], "promote", "dev", "lab", f"dev→lab: {_fmt(ev)}", ev))
         promoted += 1
     return moves
+
+
+def blockers(recipe: str, ev: Evidence, t_min: float) -> list[str]:
+    """Every promotion condition this evidence fails (empty = it clears the bar)."""
+    out = []
+    if not high_win_design(recipe):
+        out.append(f"bracket tp/sl>{HIGH_WIN_MAX_TP_SL}")
+    if ev.n < MIN_N:
+        out.append(f"n {ev.n}<{MIN_N}")
+    if ev.skill_t < t_min:
+        out.append(f"t {ev.skill_t:+.2f}<{t_min}")
+    if ev.skill_h1 <= 0:
+        out.append("1st half skill≤0")
+    if ev.skill_h2 <= 0:
+        out.append("2nd half skill≤0")
+    if ev.gross_bps <= 0:
+        out.append("gross≤0")
+    return out
+
+
+def scoreboard(
+    tiers: dict[str, set[str]],
+    samples: dict[str, list[Sample]],
+    ledger: dict[str, LedgerEntry],
+    labels: dict[str, str],
+    retired: set[str],
+    moves: Sequence[Move],
+    now_ms: int,
+) -> list[dict[str, Any]]:
+    """One row per recipe: its tier, the evidence its next gate reads, and what blocks it.
+
+    Pure — mirrors decide(): dev recipes are judged on the whole window against the
+    lab bar; lab recipes on evidence since entering lab against the staging bar (and
+    the t<0 demotion line); staging recipes on evidence since entering staging against
+    the keep line.
+    """
+    moved = {m.recipe: m for m in moves}
+    rows = []
+    for r, label in labels.items():
+        e = ledger.get(r) or LedgerEntry(label=label)
+        cooled = e.last_move is not None and now_ms - e.last_move < COOLDOWN_DAYS * _DAY_MS
+        if r in tiers["staging"]:
+            tier, ev = "staging", summarize(_since(samples.get(r, []), e.staging_since))
+            gate, t_min = f"keep: t≥{T_KEEP_STAGING}", T_KEEP_STAGING
+            block = [f"t {ev.skill_t:+.2f}<{T_KEEP_STAGING}"] if ev.n >= MIN_N and ev.skill_t < T_KEEP_STAGING else []
+        elif r in tiers["lab"]:
+            tier, ev = "lab", summarize(_since(samples.get(r, []), e.lab_since))
+            gate, t_min = f"→staging: t≥{T_STAGING}", T_STAGING
+            block = blockers(r, ev, T_STAGING)
+            if e.lab_since is not None and now_ms - e.lab_since < MIN_DWELL_DAYS * _DAY_MS:
+                block.append(f"lab dwell<{MIN_DWELL_DAYS}d")
+        else:
+            tier, ev = "dev", summarize(samples.get(r, []))
+            gate, t_min = f"→lab: t≥{T_LAB}", T_LAB
+            block = blockers(r, ev, T_LAB)
+        if cooled:
+            block.append(f"cooldown {COOLDOWN_DAYS}d")
+        if r in retired:
+            block.append("retired")
+        m = moved.get(r)
+        status = f"{m.kind}d → {m.dst}" if m else ("eligible" if not block else "blocked")
+        rows.append(
+            {
+                "label": label,
+                "tier": tier,
+                "gate": gate,
+                "t_needed": t_min,
+                "status": status,
+                "blockers": "; ".join(block),
+                **asdict(ev),
+            }
+        )
+    order = {"staging": 0, "lab": 1, "dev": 2}
+    return sorted(rows, key=lambda row: (order[row["tier"]], -row["skill_t"]))
 
 
 def tier_label(recipe: str, bots_by_tier: dict[str, list[dict[str, Any]]]) -> str:
@@ -579,6 +657,57 @@ def score_trades(
     return out
 
 
+_EVENT_MATCH_MS = 3_600_000  # a ledger move and its live event row are written ~seconds apart
+
+
+def missing_move_events(
+    history: Sequence[dict[str, Any]], logged: Sequence[tuple[int, str, str, str, str]], since_ms: int
+) -> list[dict[str, Any]]:
+    """Ledger moves since since_ms with no events row. Pure.
+
+    A row matches on (message, label, src, dst) within _EVENT_MATCH_MS: the ledger
+    stamps a move at the run's start, the live event at write time, so exact-ts
+    matching would duplicate every move the run itself logged.
+    """
+    out = []
+    for h in history:
+        key = (f"tier_{h['kind']}d", h["label"], h["src"], h["dst"])
+        if h["ts"] < since_ms:
+            continue
+        if not any(row[1:] == key and abs(row[0] - int(h["ts"])) < _EVENT_MATCH_MS for row in logged):
+            out.append(h)
+    return out
+
+
+async def sync_move_events(env: str, history: Sequence[dict[str, Any]], now_ms: int) -> int:
+    """Re-insert recent ledger moves a reset wiped from events, at their original ts,
+    so the Grafana tier timeline survives slate resets (events retention is 30 days)."""
+    from src.db import connection as db_conn
+
+    since = now_ms - EVENT_RETENTION_DAYS * _DAY_MS
+    async with db_conn.acquire() as conn:
+        rows = await conn.fetch(
+            "SELECT ts, message, payload->>'label' AS label, payload->>'src' AS src, payload->>'dst' AS dst "
+            "FROM events WHERE bot_id = $1 AND message IN ('tier_promoted', 'tier_demoted') AND ts >= $2",
+            _BOT_ID,
+            since - _EVENT_MATCH_MS,
+        )
+        logged = [(int(r["ts"]), r["message"], r["label"], r["src"], r["dst"]) for r in rows]
+        todo = missing_move_events(history, logged, since)
+        for h in todo:
+            await conn.execute(
+                "INSERT INTO events (bot_id, session_id, env, ts, level, category, message, payload) "
+                "VALUES ($1, $2, $3, $4, 'INFO', 'system', $5, $6)",
+                _BOT_ID,
+                _SESSION,
+                env,
+                int(h["ts"]),
+                f"tier_{h['kind']}d",
+                json.dumps({k: h[k] for k in ("label", "src", "dst", "reason")} | dict(h["evidence"])),
+            )
+    return len(todo)
+
+
 async def evaluate(dry_run: bool) -> Plan:
     """Container shell: evidence → decisions → rewritten tier files + ledger + events."""
     from dotenv import load_dotenv
@@ -625,9 +754,11 @@ async def evaluate(dry_run: bool) -> Plan:
             for r, label in sorted(labels.items(), key=lambda kv: kv[1])
             if r in samples
         }
+        board = scoreboard(tiers, samples, entries, labels, retired_recipes(bots_by_tier), moves, now_ms)
         if not dry_run:
             for tier in plan.changed_tiers:
                 _save_json(os.path.join(_ROOT, _TIER_FILES[tier]), new_tiers[tier])
+            await sync_move_events(cfg.env.value, history, now_ms)
             history += [{"ts": now_ms, **{k: v for k, v in asdict(m).items() if k != "recipe"}} for m in moves]
             save_ledger(update_ledger(entries, moves, now_ms), history)
             for m in moves:
@@ -647,7 +778,13 @@ async def evaluate(dry_run: bool) -> Plan:
                 "INFO",
                 "system",
                 "tier_review",
-                {"moves": len(moves), "changed_tiers": plan.changed_tiers, "recipes_scored": len(review)},
+                {
+                    "moves": len(moves),
+                    "changed_tiers": plan.changed_tiers,
+                    "recipes_scored": len(review),
+                    "window_days": WINDOW_DAYS,
+                    "scoreboard": board,
+                },
             )
         os.makedirs(_PLAN_DIR, exist_ok=True)
         _save_json(
@@ -659,6 +796,7 @@ async def evaluate(dry_run: bool) -> Plan:
                 "changed_tiers": plan.changed_tiers,
                 "new_bots": plan.new_bots,
                 "review": review,
+                "scoreboard": board,
             },
         )
         return plan
