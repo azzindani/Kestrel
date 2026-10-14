@@ -554,8 +554,8 @@ _TIER_SB = (
     "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' "
     "AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), "
     "sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, "
-    "t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, "
-    "skill_h2 float8, gross_bps float8, net_bps float8)) "
+    "tf text, t_needed float8, min_n int, status text, blockers text, n int, net_bps float8, net_t float8, "
+    "net_h1 float8, net_h2 float8, gross_bps float8, skill_n int, skill_bps float8, skill_t float8, days int)) "
 )
 _TIER_MOVES = "FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted')"
 # live = heartbeat in the last 90s; control rows (e.g. staging-control-01) carry no strategy token
@@ -566,7 +566,7 @@ TH_T = {
         {"color": "red", "value": None},
         {"color": "orange", "value": 0},
         {"color": "yellow", "value": 1},
-        {"color": "green", "value": 2.5},
+        {"color": "green", "value": 2.0},
     ],
 }
 TH_ZERO_BAD_INV = {"mode": "absolute", "steps": [{"color": "red", "value": None}, {"color": "green", "value": 1}]}
@@ -605,10 +605,10 @@ stat(
     {"mode": "absolute", "steps": [{"color": "orange", "value": None}, {"color": "green", "value": 1}]},
 )
 stat(
-    "Best skill t (bar 2.5)",
+    "Best net-profit t (lab bar 2.0)",
     3,
     4,
-    _TIER_SB + "SELECT MAX(skill_t) AS v FROM sb",
+    _TIER_SB + "SELECT MAX(net_t) AS v FROM sb",
     thresholds=TH_T,
     decimals=2,
 )
@@ -621,24 +621,27 @@ stat(
     TH_BLUE,
 )
 bargauge(
-    "Directional skill t per strategy (green ≥ 2.5 = promotable to lab)",
+    "Net-profit t per strategy (green ≥ 2.0 = promotable to lab)",
     8,
     12,
     _TIER_SB
-    + "SELECT label || ' [' || tier || ']' AS metric, ROUND(skill_t::numeric,2) AS value FROM sb ORDER BY skill_t DESC",
+    + "SELECT label || ' [' || tier || ']' AS metric, ROUND(net_t::numeric,2) AS value FROM sb ORDER BY net_t DESC",
     thresholds=TH_T,
 )
 table(
     "Promotion Scoreboard — latest daily review (what each strategy needs next)",
     16,
     12,
-    _TIER_SB + "SELECT label AS strategy, tier, status, ROUND(skill_t::numeric,2) AS t, t_needed AS t_bar, gate, n, "
-    "ROUND(skill_bps::numeric,2) AS skill_bps, ROUND(skill_h1::numeric,1) AS half1, ROUND(skill_h2::numeric,1) AS half2, "
-    "ROUND(gross_bps::numeric,2) AS gross_bps, ROUND(net_bps::numeric,2) AS net_bps, blockers FROM sb "
-    "ORDER BY CASE tier WHEN 'staging' THEN 0 WHEN 'lab' THEN 1 ELSE 2 END, skill_t DESC",
+    _TIER_SB + "SELECT label AS strategy, tf, tier, status, ROUND(net_t::numeric,2) AS net_t, t_needed AS t_bar, "
+    "n, min_n, days, ROUND(net_bps::numeric,2) AS net_bps, ROUND(net_h1::numeric,1) AS half1, "
+    "ROUND(net_h2::numeric,1) AS half2, ROUND(gross_bps::numeric,2) AS gross_bps, "
+    "ROUND(skill_bps::numeric,2) AS skill_bps, gate, blockers FROM sb "
+    "ORDER BY CASE tier WHEN 'staging' THEN 0 WHEN 'lab' THEN 1 ELSE 2 END, net_t DESC",
     overrides=[
-        col_override("t", "none", th=TH_T),
+        col_override("net_t", "none", th=TH_T),
         col_override("net_bps", "none"),
+        col_override("half1", "none"),
+        col_override("half2", "none"),
         col_override("gross_bps", "none"),
         map_override(
             "tier",
@@ -674,7 +677,9 @@ table(
     9,
     "SELECT to_timestamp(ts/1000.0) AS time, CASE message WHEN 'tier_promoted' THEN 'PROMOTE' ELSE 'DEMOTE' END AS move, "
     "payload->>'label' AS strategy, (payload->>'src') || ' → ' || (payload->>'dst') AS path, "
-    "ROUND((payload->>'skill_t')::numeric,2) AS t, ROUND((payload->>'skill_bps')::numeric,2) AS skill_bps, "
+    "ROUND(COALESCE(payload->>'net_t', payload->>'skill_t')::numeric,2) AS t, "
+    "CASE WHEN payload ? 'net_t' THEN 'net' ELSE 'skill' END AS scored_on, "
+    "ROUND((payload->>'skill_bps')::numeric,2) AS skill_bps, "
     "(payload->>'n')::int AS n, ROUND((payload->>'net_bps')::numeric,2) AS net_bps, payload->>'reason' AS reason "
     + _TIER_MOVES
     + " ORDER BY ts DESC LIMIT 100",
@@ -2120,7 +2125,7 @@ dashboard = {
                     "rawSql": "SELECT to_timestamp(ts/1000.0) AS time, "
                     "CASE message WHEN 'tier_promoted' THEN '▲ PROMOTE ' ELSE '▼ DEMOTE ' END || (payload->>'label') "
                     "|| ' ' || (payload->>'src') || ' → ' || (payload->>'dst') || ' (t ' || "
-                    "ROUND((payload->>'skill_t')::numeric,2) || ')' AS text, "
+                    "ROUND(COALESCE(payload->>'net_t', payload->>'skill_t')::numeric,2) || ')' AS text, "
                     "message AS tags FROM public.events WHERE bot_id='tier-promoter' "
                     "AND message IN ('tier_promoted','tier_demoted') AND $__timeFilter(to_timestamp(ts/1000.0))",
                 },

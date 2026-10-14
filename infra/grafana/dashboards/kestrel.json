@@ -26,7 +26,7 @@
           "rawQuery": true,
           "format": "table",
           "refId": "Anno",
-          "rawSql": "SELECT to_timestamp(ts/1000.0) AS time, CASE message WHEN 'tier_promoted' THEN '\u25b2 PROMOTE ' ELSE '\u25bc DEMOTE ' END || (payload->>'label') || ' ' || (payload->>'src') || ' \u2192 ' || (payload->>'dst') || ' (t ' || ROUND((payload->>'skill_t')::numeric,2) || ')' AS text, message AS tags FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted') AND $__timeFilter(to_timestamp(ts/1000.0))"
+          "rawSql": "SELECT to_timestamp(ts/1000.0) AS time, CASE message WHEN 'tier_promoted' THEN '\u25b2 PROMOTE ' ELSE '\u25bc DEMOTE ' END || (payload->>'label') || ' ' || (payload->>'src') || ' \u2192 ' || (payload->>'dst') || ' (t ' || ROUND(COALESCE(payload->>'net_t', payload->>'skill_t')::numeric,2) || ')' AS text, message AS tags FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted') AND $__timeFilter(to_timestamp(ts/1000.0))"
         }
       }
     ]
@@ -1464,7 +1464,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, skill_h2 float8, gross_bps float8, net_bps float8)) SELECT COUNT(*) FILTER (WHERE status='eligible' AND tier<>'staging') AS v FROM sb",
+          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, tf text, t_needed float8, min_n int, status text, blockers text, n int, net_bps float8, net_t float8, net_h1 float8, net_h2 float8, gross_bps float8, skill_n int, skill_bps float8, skill_t float8, days int)) SELECT COUNT(*) FILTER (WHERE status='eligible' AND tier<>'staging') AS v FROM sb",
           "refId": "A"
         }
       ],
@@ -1499,7 +1499,7 @@
               },
               {
                 "color": "green",
-                "value": 2.5
+                "value": 2.0
               }
             ]
           },
@@ -1537,11 +1537,11 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, skill_h2 float8, gross_bps float8, net_bps float8)) SELECT MAX(skill_t) AS v FROM sb",
+          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, tf text, t_needed float8, min_n int, status text, blockers text, n int, net_bps float8, net_t float8, net_h1 float8, net_h2 float8, gross_bps float8, skill_n int, skill_bps float8, skill_t float8, days int)) SELECT MAX(net_t) AS v FROM sb",
           "refId": "A"
         }
       ],
-      "title": "Best skill t (bar 2.5)",
+      "title": "Best net-profit t (lab bar 2.0)",
       "type": "stat"
     },
     {
@@ -1633,7 +1633,7 @@
               },
               {
                 "color": "green",
-                "value": 2.5
+                "value": 2.0
               }
             ]
           }
@@ -1669,11 +1669,11 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, skill_h2 float8, gross_bps float8, net_bps float8)) SELECT label || ' [' || tier || ']' AS metric, ROUND(skill_t::numeric,2) AS value FROM sb ORDER BY skill_t DESC",
+          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, tf text, t_needed float8, min_n int, status text, blockers text, n int, net_bps float8, net_t float8, net_h1 float8, net_h2 float8, gross_bps float8, skill_n int, skill_bps float8, skill_t float8, days int)) SELECT label || ' [' || tier || ']' AS metric, ROUND(net_t::numeric,2) AS value FROM sb ORDER BY net_t DESC",
           "refId": "A"
         }
       ],
-      "title": "Directional skill t per strategy (green \u2265 2.5 = promotable to lab)",
+      "title": "Net-profit t per strategy (green \u2265 2.0 = promotable to lab)",
       "type": "bargauge"
     },
     {
@@ -1708,7 +1708,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "t"
+              "options": "net_t"
             },
             "properties": [
               {
@@ -1741,7 +1741,7 @@
                     },
                     {
                       "color": "green",
-                      "value": 2.5
+                      "value": 2.0
                     }
                   ]
                 }
@@ -1752,6 +1752,76 @@
             "matcher": {
               "id": "byName",
               "options": "net_bps"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "half1"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "half2"
             },
             "properties": [
               {
@@ -1941,7 +2011,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, skill_h2 float8, gross_bps float8, net_bps float8)) SELECT label AS strategy, tier, status, ROUND(skill_t::numeric,2) AS t, t_needed AS t_bar, gate, n, ROUND(skill_bps::numeric,2) AS skill_bps, ROUND(skill_h1::numeric,1) AS half1, ROUND(skill_h2::numeric,1) AS half2, ROUND(gross_bps::numeric,2) AS gross_bps, ROUND(net_bps::numeric,2) AS net_bps, blockers FROM sb ORDER BY CASE tier WHEN 'staging' THEN 0 WHEN 'lab' THEN 1 ELSE 2 END, skill_t DESC",
+          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, tf text, t_needed float8, min_n int, status text, blockers text, n int, net_bps float8, net_t float8, net_h1 float8, net_h2 float8, gross_bps float8, skill_n int, skill_bps float8, skill_t float8, days int)) SELECT label AS strategy, tf, tier, status, ROUND(net_t::numeric,2) AS net_t, t_needed AS t_bar, n, min_n, days, ROUND(net_bps::numeric,2) AS net_bps, ROUND(net_h1::numeric,1) AS half1, ROUND(net_h2::numeric,1) AS half2, ROUND(gross_bps::numeric,2) AS gross_bps, ROUND(skill_bps::numeric,2) AS skill_bps, gate, blockers FROM sb ORDER BY CASE tier WHEN 'staging' THEN 0 WHEN 'lab' THEN 1 ELSE 2 END, net_t DESC",
           "refId": "A"
         }
       ],
@@ -2045,7 +2115,7 @@
                     },
                     {
                       "color": "green",
-                      "value": 2.5
+                      "value": 2.0
                     }
                   ]
                 }
@@ -2082,7 +2152,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT to_timestamp(ts/1000.0) AS time, CASE message WHEN 'tier_promoted' THEN 'PROMOTE' ELSE 'DEMOTE' END AS move, payload->>'label' AS strategy, (payload->>'src') || ' \u2192 ' || (payload->>'dst') AS path, ROUND((payload->>'skill_t')::numeric,2) AS t, ROUND((payload->>'skill_bps')::numeric,2) AS skill_bps, (payload->>'n')::int AS n, ROUND((payload->>'net_bps')::numeric,2) AS net_bps, payload->>'reason' AS reason FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted') ORDER BY ts DESC LIMIT 100",
+          "rawSql": "SELECT to_timestamp(ts/1000.0) AS time, CASE message WHEN 'tier_promoted' THEN 'PROMOTE' ELSE 'DEMOTE' END AS move, payload->>'label' AS strategy, (payload->>'src') || ' \u2192 ' || (payload->>'dst') AS path, ROUND(COALESCE(payload->>'net_t', payload->>'skill_t')::numeric,2) AS t, CASE WHEN payload ? 'net_t' THEN 'net' ELSE 'skill' END AS scored_on, ROUND((payload->>'skill_bps')::numeric,2) AS skill_bps, (payload->>'n')::int AS n, ROUND((payload->>'net_bps')::numeric,2) AS net_bps, payload->>'reason' AS reason FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted') ORDER BY ts DESC LIMIT 100",
           "refId": "A"
         }
       ],
