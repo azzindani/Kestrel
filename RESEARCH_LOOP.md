@@ -696,6 +696,42 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### Iteration 76 — 2026-10-14 (OWNER "5 months, never profitable; promotion broken?" → "dev is trial and error, any algorithms, strategies and time ranges are permitted, I want to see profit" → "commit, push, CI, redeploy, reset all balance to 100")
+
+- **MEASURE (10-03 reset → 10-14):** dev 28,337 trades 56.4% win −$491 · lab 1,758 −$36 · staging 70
+  −$1.74. 5m pre-cost edge (gross + exit slippage) +0.21 bps, t 0.61 = zero; loss = the ~7 bps cost.
+- **PROMOTER WAS NOT BUGGY, IT WAS BLIND + AMNESIC:** 4 promotions since 09-24, every one reversed on
+  post-promotion data (tsmom_z +17.6→−6.9 skill bps …) → lab/staging drained to 0. It saw only 17 of
+  47 recipes (minutes + plain bracket + high-win), scored skill not profit (all 4 promoted recipes
+  were net-negative), and every reset erased its evidence (cci_mom 1h: −51, −37, then +29 bps).
+- **BOT SELECTION REFUTED (3 slates, 69k trades, reports/iter76/select_oos.py):** choosing bots / strat×
+  pair / ×hour / ×dir cells on past net → next slate ≈ fleet baseline (−5.8..−8.5 vs −7.6 bps); cell
+  rank-corr ≈ 0. Leads checked and killed: pair×hour (one TIA@16 day), macd_*@12 UTC (11/24 days +,
+  −3.6 bps ex-best-3-days, decaying, long-only drift).
+- **1h hiwin leads REFUTED:** cci_mom/macd_cross × hiwin33/43/50/scratch/medium, 1h, 365d, realistic +
+  funding, intrabar close: 0/10 combos OOS-positive (best cci_mom/hiwin33 −$0.0035/tr, 3/10 pairs).
+- **4h SEARCH — first broad cross-era result (61 algos × 6 exits × 10 pairs):** 129/354 combos +EV in
+  BOTH the recent year and the prior-year lockbox on ≥3/10 pairs; the common factor is the EXIT (hold
+  up to 24×4h with a 1.5-ATR stop, or a trailing stop) — the same entries on fixed brackets were the
+  June lockbox refutations. DSR still FAILS (0.04 / 0.26 at N=354). GOTCHA: the harness's sigexit rule
+  only knows family names, so `sma_cross_F_S/sigexit` never signal-exits = stop-or-24-candle-timeout;
+  also the harness bypasses the QUIET-regime block and the volume gate that live applies.
+- **DEPLOYED (dev, 4h, 34 pairs, 20×, 136 bots → dev 1,071):** t4h_sma2050_h24 (+0.103/+0.056 $/tr,
+  10/10 & 9/10 pairs) · t4h_sma2050_trail · t4h_sma1030_h24 · t4h_sma2050_w2x2 — all on the existing
+  sma_cross pattern, indicator exit off to match the validated stop-or-timeout exit.
+- **PROMOTER v2 (e1b639b + tests 431a592):** every tf/exit/bracket, net-profit t gates (lab 2.0,
+  staging 1.5 post-lab, demote lab < −1 / staging < 0), tf-scaled min n (150/100/60/40), drift-rider
+  block on replayable brackets, `tier_evidence.json` survives resets (seeded 09-19→10-14, 68k trades),
+  xs_* promote on their whole universe, leverage carried. Grafana "🪜 Tier Promotion" section + move
+  annotations (f433019).
+- **RESET (owner):** tiers stopped gracefully (151 dev positions closed, 0 orphaned) → evidence captured →
+  lean backup `backups/kestrel-lean-20261014T033026Z.dump` (30,417/30,417 trades read back) → nightly
+  pg_dump stopped (pg-backup container, partial file removed; it re-dumps on start) → TRUNCATE
+  trade_context, events, signals, trades, pattern_memory, heartbeats; candles 3.89M + microstructure
+  4.74M kept → 03:45 UTC all up: dev 1,071 + lab 2 heartbeating, 0 errors.
+- **KNOWN LIMIT:** the reset day's evidence keeps whichever of its pre/post-reset halves has more trades.
+  **NEXT:** judge the 4h cohort after ≥40 trades/recipe (≈2–3 weeks); the promoter does it daily.
+
 ### Iteration 75 — 2026-10-03 (OWNER "good win rate but we suffer losses" → "i want to see profits … use math, functions, algorithm, formula" → "dont train ML model")
 
 - **MEASURE (09-24 reset → 10-03, 9 days):** dev 24,123 trades 56.7% win −$323.18 · lab 2,731 57.5%
