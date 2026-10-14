@@ -544,6 +544,169 @@ stat(
 )
 
 # ════════════════════════════════════════════════════════════════════════════
+# 1b — Tier Promotion (scripts/tier_promoter.py · daily 05:15 UTC)
+# ════════════════════════════════════════════════════════════════════════════
+# Fleet-wide by design: the promoter moves recipes ACROSS phases, so these panels
+# ignore the Phase dropdown. Schema-qualified `public.<table>` is how a query opts
+# out of _scope_env (it only rewrites bare FROM/JOIN <table>).
+section("🪜 Tier Promotion — dev → lab → staging (all phases, ignores the Phase dropdown)")
+_TIER_SB = (
+    "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' "
+    "AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), "
+    "sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, "
+    "t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, "
+    "skill_h2 float8, gross_bps float8, net_bps float8)) "
+)
+_TIER_MOVES = "FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted')"
+# live = heartbeat in the last 90s; control rows (e.g. staging-control-01) carry no strategy token
+_LIVE_HB = f"FROM public.heartbeats WHERE ts >= {_NOW_MS} - 90000 AND split_part(bot_id,'-',4) <> ''"
+TH_T = {
+    "mode": "absolute",
+    "steps": [
+        {"color": "red", "value": None},
+        {"color": "orange", "value": 0},
+        {"color": "yellow", "value": 1},
+        {"color": "green", "value": 2.5},
+    ],
+}
+TH_ZERO_BAD_INV = {"mode": "absolute", "steps": [{"color": "red", "value": None}, {"color": "green", "value": 1}]}
+stat(
+    "Bots live — staging",
+    3,
+    4,
+    f"SELECT COUNT(*) AS v {_LIVE_HB} AND bot_id LIKE 'staging-%'",
+    "short",
+    TH_ZERO_BAD_INV,
+)
+stat("Bots live — lab", 3, 4, f"SELECT COUNT(*) AS v {_LIVE_HB} AND bot_id LIKE 'lab-%'", "short", TH_ZERO_BAD_INV)
+stat("Bots live — dev", 3, 4, f"SELECT COUNT(*) AS v {_LIVE_HB} AND bot_id LIKE 'dev-%'", "short", TH_BLUE)
+stat(
+    "Promotions (30d)",
+    3,
+    4,
+    f"SELECT COUNT(*) AS v {_TIER_MOVES} AND message='tier_promoted' AND ts >= {_NOW_MS} - 2592000000",
+    "short",
+    TH_GREEN,
+)
+stat(
+    "Demotions (30d)",
+    3,
+    4,
+    f"SELECT COUNT(*) AS v {_TIER_MOVES} AND message='tier_demoted' AND ts >= {_NOW_MS} - 2592000000",
+    "short",
+    TH_RED,
+)
+stat(
+    "Eligible to promote now",
+    3,
+    4,
+    _TIER_SB + "SELECT COUNT(*) FILTER (WHERE status='eligible' AND tier<>'staging') AS v FROM sb",
+    "short",
+    {"mode": "absolute", "steps": [{"color": "orange", "value": None}, {"color": "green", "value": 1}]},
+)
+stat(
+    "Best skill t (bar 2.5)",
+    3,
+    4,
+    _TIER_SB + "SELECT MAX(skill_t) AS v FROM sb",
+    thresholds=TH_T,
+    decimals=2,
+)
+stat(
+    "Last review",
+    3,
+    4,
+    "SELECT MAX(ts) AS v FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review'",
+    "dateTimeFromNow",
+    TH_BLUE,
+)
+bargauge(
+    "Directional skill t per strategy (green ≥ 2.5 = promotable to lab)",
+    8,
+    12,
+    _TIER_SB
+    + "SELECT label || ' [' || tier || ']' AS metric, ROUND(skill_t::numeric,2) AS value FROM sb ORDER BY skill_t DESC",
+    thresholds=TH_T,
+)
+table(
+    "Promotion Scoreboard — latest daily review (what each strategy needs next)",
+    16,
+    12,
+    _TIER_SB + "SELECT label AS strategy, tier, status, ROUND(skill_t::numeric,2) AS t, t_needed AS t_bar, gate, n, "
+    "ROUND(skill_bps::numeric,2) AS skill_bps, ROUND(skill_h1::numeric,1) AS half1, ROUND(skill_h2::numeric,1) AS half2, "
+    "ROUND(gross_bps::numeric,2) AS gross_bps, ROUND(net_bps::numeric,2) AS net_bps, blockers FROM sb "
+    "ORDER BY CASE tier WHEN 'staging' THEN 0 WHEN 'lab' THEN 1 ELSE 2 END, skill_t DESC",
+    overrides=[
+        col_override("t", "none", th=TH_T),
+        col_override("net_bps", "none"),
+        col_override("gross_bps", "none"),
+        map_override(
+            "tier",
+            {
+                "staging": {"color": "purple", "index": 0},
+                "lab": {"color": "blue", "index": 1},
+                "dev": {"color": "text", "index": 2},
+            },
+        ),
+        {
+            "matcher": {"id": "byName", "options": "status"},
+            "properties": [
+                {
+                    "id": "mappings",
+                    "value": [
+                        {"type": "value", "options": {"eligible": {"color": "green", "index": 0}}},
+                        {"type": "value", "options": {"blocked": {"color": "orange", "index": 1}}},
+                        {
+                            "type": "regex",
+                            "options": {"pattern": "^promoted.*", "result": {"color": "green", "index": 2}},
+                        },
+                        {"type": "regex", "options": {"pattern": "^demoted.*", "result": {"color": "red", "index": 3}}},
+                    ],
+                },
+                {"id": "custom.cellOptions", "value": {"type": "color-text"}},
+            ],
+        },
+    ],
+)
+table(
+    "Tier Moves — promotions & demotions (last 30 days)",
+    16,
+    9,
+    "SELECT to_timestamp(ts/1000.0) AS time, CASE message WHEN 'tier_promoted' THEN 'PROMOTE' ELSE 'DEMOTE' END AS move, "
+    "payload->>'label' AS strategy, (payload->>'src') || ' → ' || (payload->>'dst') AS path, "
+    "ROUND((payload->>'skill_t')::numeric,2) AS t, ROUND((payload->>'skill_bps')::numeric,2) AS skill_bps, "
+    "(payload->>'n')::int AS n, ROUND((payload->>'net_bps')::numeric,2) AS net_bps, payload->>'reason' AS reason "
+    + _TIER_MOVES
+    + " ORDER BY ts DESC LIMIT 100",
+    overrides=[
+        map_override("move", {"PROMOTE": {"color": "green", "index": 0}, "DEMOTE": {"color": "red", "index": 1}}),
+        col_override("t", "none", th=TH_T),
+    ],
+)
+bargauge(
+    "Live bots per tier × strategy",
+    8,
+    9,
+    f"SELECT split_part(bot_id,'-',1) || ' · ' || split_part(bot_id,'-',4) AS metric, COUNT(*) AS value {_LIVE_HB} "
+    "AND split_part(bot_id,'-',1) IN ('lab','staging') GROUP BY 1 ORDER BY 1",
+    "short",
+    TH_BLUE,
+)
+ts(
+    "Daily net PnL by tier (dev · lab · staging)",
+    24,
+    8,
+    "SELECT date_trunc('day', to_timestamp(exit_ts/1000.0)) AS \"time\", env AS metric, SUM(pnl_net_usdt) AS net "
+    "FROM public.trades WHERE exit_ts IS NOT NULL AND env IN ('dev','lab','staging') "
+    "AND close_reason <> 'orphaned_crash_recovery' "
+    "AND to_timestamp(exit_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1,2 ORDER BY 1",
+    unit="currencyUSD",
+    fmt="time_series",
+    bars=True,
+    fill=60,
+)
+
+# ════════════════════════════════════════════════════════════════════════════
 # 12 — Per-Bot / Pair Breakdown
 # ════════════════════════════════════════════════════════════════════════════
 section("🏆 Per-Bot & Per-Pair Breakdown")
@@ -1942,7 +2105,26 @@ dashboard = {
                 "iconColor": "rgba(0, 211, 255, 1)",
                 "name": "Annotations & Alerts",
                 "type": "dashboard",
-            }
+            },
+            {
+                # every tier move as a marker on the time-series panels (green ▲ promote, red ▼ demote)
+                "datasource": DS,
+                "enable": True,
+                "hide": False,
+                "iconColor": "purple",
+                "name": "Tier moves",
+                "target": {
+                    "rawQuery": True,
+                    "format": "table",
+                    "refId": "Anno",
+                    "rawSql": "SELECT to_timestamp(ts/1000.0) AS time, "
+                    "CASE message WHEN 'tier_promoted' THEN '▲ PROMOTE ' ELSE '▼ DEMOTE ' END || (payload->>'label') "
+                    "|| ' ' || (payload->>'src') || ' → ' || (payload->>'dst') || ' (t ' || "
+                    "ROUND((payload->>'skill_t')::numeric,2) || ')' AS text, "
+                    "message AS tags FROM public.events WHERE bot_id='tier-promoter' "
+                    "AND message IN ('tier_promoted','tier_demoted') AND $__timeFilter(to_timestamp(ts/1000.0))",
+                },
+            },
         ]
     },
     "editable": True,

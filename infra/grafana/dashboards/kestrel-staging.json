@@ -12,6 +12,22 @@
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
         "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "postgres",
+          "uid": "kestrel-db"
+        },
+        "enable": true,
+        "hide": false,
+        "iconColor": "purple",
+        "name": "Tier moves",
+        "target": {
+          "rawQuery": true,
+          "format": "table",
+          "refId": "Anno",
+          "rawSql": "SELECT to_timestamp(ts/1000.0) AS time, CASE message WHEN 'tier_promoted' THEN '\u25b2 PROMOTE ' ELSE '\u25bc DEMOTE ' END || (payload->>'label') || ' ' || (payload->>'src') || ' \u2192 ' || (payload->>'dst') || ' (t ' || ROUND((payload->>'skill_t')::numeric,2) || ')' AS text, message AS tags FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted') AND $__timeFilter(to_timestamp(ts/1000.0))"
+        }
       }
     ]
   },
@@ -811,7 +827,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -1074,7 +1090,7 @@
       },
       "id": 18,
       "panels": [],
-      "title": "\ud83c\udfc6 Per-Bot & Per-Pair Breakdown",
+      "title": "\ud83e\ude9c Tier Promotion \u2014 dev \u2192 lab \u2192 staging (all phases, ignores the Phase dropdown)",
       "type": "row"
     },
     {
@@ -1092,8 +1108,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
               }
             ]
           },
@@ -1131,11 +1151,11 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS v FROM (SELECT * FROM heartbeats WHERE bot_id LIKE '${env}-%') heartbeats",
+          "rawSql": "SELECT COUNT(*) AS v FROM public.heartbeats WHERE ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 90000 AND split_part(bot_id,'-',4) <> '' AND bot_id LIKE 'staging-%'",
           "refId": "A"
         }
       ],
-      "title": "Bots Registered",
+      "title": "Bots live \u2014 staging",
       "type": "stat"
     },
     {
@@ -1153,8 +1173,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
               }
             ]
           },
@@ -1192,11 +1216,11 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS v FROM (SELECT * FROM heartbeats WHERE bot_id LIKE '${env}-%') heartbeats WHERE ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 90000",
+          "rawSql": "SELECT COUNT(*) AS v FROM public.heartbeats WHERE ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 90000 AND split_part(bot_id,'-',4) <> '' AND bot_id LIKE 'lab-%'",
           "refId": "A"
         }
       ],
-      "title": "Bots Alive (90s)",
+      "title": "Bots live \u2014 lab",
       "type": "stat"
     },
     {
@@ -1253,6 +1277,1159 @@
           },
           "format": "table",
           "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM public.heartbeats WHERE ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 90000 AND split_part(bot_id,'-',4) <> '' AND bot_id LIKE 'dev-%'",
+          "refId": "A"
+        }
+      ],
+      "title": "Bots live \u2014 dev",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 9,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted') AND message='tier_promoted' AND ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 2592000000",
+          "refId": "A"
+        }
+      ],
+      "title": "Promotions (30d)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted') AND message='tier_demoted' AND ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 2592000000",
+          "refId": "A"
+        }
+      ],
+      "title": "Demotions (30d)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 15,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, skill_h2 float8, gross_bps float8, net_bps float8)) SELECT COUNT(*) FILTER (WHERE status='eligible' AND tier<>'staging') AS v FROM sb",
+          "refId": "A"
+        }
+      ],
+      "title": "Eligible to promote now",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2.5
+              }
+            ]
+          },
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 18,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, skill_h2 float8, gross_bps float8, net_bps float8)) SELECT MAX(skill_t) AS v FROM sb",
+          "refId": "A"
+        }
+      ],
+      "title": "Best skill t (bar 2.5)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "dateTimeFromNow"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 21,
+        "y": 14,
+        "w": 3,
+        "h": 4
+      },
+      "id": 26,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT MAX(ts) AS v FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review'",
+          "refId": "A"
+        }
+      ],
+      "title": "Last review",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2.5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 8,
+        "h": 12
+      },
+      "id": 27,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, skill_h2 float8, gross_bps float8, net_bps float8)) SELECT label || ' [' || tier || ']' AS metric, ROUND(skill_t::numeric,2) AS value FROM sb ORDER BY skill_t DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Directional skill t per strategy (green \u2265 2.5 = promotable to lab)",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "t"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    },
+                    {
+                      "color": "green",
+                      "value": 2.5
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "net_bps"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "gross_bps"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tier"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "staging": {
+                        "color": "purple",
+                        "index": 0
+                      },
+                      "lab": {
+                        "color": "blue",
+                        "index": 1
+                      },
+                      "dev": {
+                        "color": "text",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "eligible": {
+                        "color": "green",
+                        "index": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "value",
+                    "options": {
+                      "blocked": {
+                        "color": "orange",
+                        "index": 1
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^promoted.*",
+                      "result": {
+                        "color": "green",
+                        "index": 2
+                      }
+                    }
+                  },
+                  {
+                    "type": "regex",
+                    "options": {
+                      "pattern": "^demoted.*",
+                      "result": {
+                        "color": "red",
+                        "index": 3
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 18,
+        "w": 16,
+        "h": 12
+      },
+      "id": 28,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "WITH r AS (SELECT payload FROM public.events WHERE bot_id='tier-promoter' AND message='tier_review' AND payload ? 'scoreboard' ORDER BY ts DESC LIMIT 1), sb AS (SELECT x.* FROM r, jsonb_to_recordset(r.payload->'scoreboard') AS x(label text, tier text, gate text, t_needed float8, status text, blockers text, n int, skill_bps float8, skill_t float8, skill_h1 float8, skill_h2 float8, gross_bps float8, net_bps float8)) SELECT label AS strategy, tier, status, ROUND(skill_t::numeric,2) AS t, t_needed AS t_bar, gate, n, ROUND(skill_bps::numeric,2) AS skill_bps, ROUND(skill_h1::numeric,1) AS half1, ROUND(skill_h2::numeric,1) AS half2, ROUND(gross_bps::numeric,2) AS gross_bps, ROUND(net_bps::numeric,2) AS net_bps, blockers FROM sb ORDER BY CASE tier WHEN 'staging' THEN 0 WHEN 'lab' THEN 1 ELSE 2 END, skill_t DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "Promotion Scoreboard \u2014 latest daily review (what each strategy needs next)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "move"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "PROMOTE": {
+                        "color": "green",
+                        "index": 0
+                      },
+                      "DEMOTE": {
+                        "color": "red",
+                        "index": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "t"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    },
+                    {
+                      "color": "green",
+                      "value": 2.5
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 30,
+        "w": 16,
+        "h": 9
+      },
+      "id": 29,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT to_timestamp(ts/1000.0) AS time, CASE message WHEN 'tier_promoted' THEN 'PROMOTE' ELSE 'DEMOTE' END AS move, payload->>'label' AS strategy, (payload->>'src') || ' \u2192 ' || (payload->>'dst') AS path, ROUND((payload->>'skill_t')::numeric,2) AS t, ROUND((payload->>'skill_bps')::numeric,2) AS skill_bps, (payload->>'n')::int AS n, ROUND((payload->>'net_bps')::numeric,2) AS net_bps, payload->>'reason' AS reason FROM public.events WHERE bot_id='tier-promoter' AND message IN ('tier_promoted','tier_demoted') ORDER BY ts DESC LIMIT 100",
+          "refId": "A"
+        }
+      ],
+      "title": "Tier Moves \u2014 promotions & demotions (last 30 days)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 30,
+        "w": 8,
+        "h": 9
+      },
+      "id": 30,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT split_part(bot_id,'-',1) || ' \u00b7 ' || split_part(bot_id,'-',4) AS metric, COUNT(*) AS value FROM public.heartbeats WHERE ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 90000 AND split_part(bot_id,'-',4) <> '' AND split_part(bot_id,'-',1) IN ('lab','staging') GROUP BY 1 ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Live bots per tier \u00d7 strategy",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD",
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 60,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 39,
+        "w": 24,
+        "h": 8
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT date_trunc('day', to_timestamp(exit_ts/1000.0)) AS \"time\", env AS metric, SUM(pnl_net_usdt) AS net FROM public.trades WHERE exit_ts IS NOT NULL AND env IN ('dev','lab','staging') AND close_reason <> 'orphaned_crash_recovery' AND to_timestamp(exit_ts/1000.0) BETWEEN $__timeFrom() AND $__timeTo() GROUP BY 1,2 ORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Daily net PnL by tier (dev \u00b7 lab \u00b7 staging)",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 47,
+        "w": 24,
+        "h": 1
+      },
+      "id": 32,
+      "panels": [],
+      "title": "\ud83c\udfc6 Per-Bot & Per-Pair Breakdown",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 48,
+        "w": 3,
+        "h": 4
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM (SELECT * FROM heartbeats WHERE bot_id LIKE '${env}-%') heartbeats",
+          "refId": "A"
+        }
+      ],
+      "title": "Bots Registered",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 3,
+        "y": 48,
+        "w": 3,
+        "h": 4
+      },
+      "id": 34,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) AS v FROM (SELECT * FROM heartbeats WHERE bot_id LIKE '${env}-%') heartbeats WHERE ts >= (EXTRACT(EPOCH FROM NOW())*1000)::BIGINT - 90000",
+          "refId": "A"
+        }
+      ],
+      "title": "Bots Alive (90s)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "kestrel-db"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 48,
+        "w": 3,
+        "h": 4
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "11.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "kestrel-db"
+          },
+          "format": "table",
+          "rawQuery": true,
           "rawSql": "SELECT COUNT(DISTINCT bot_id) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades",
           "refId": "A"
         }
@@ -1286,11 +2463,11 @@
       },
       "gridPos": {
         "x": 9,
-        "y": 14,
+        "y": 48,
         "w": 3,
         "h": 4
       },
-      "id": 22,
+      "id": 36,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -1427,11 +2604,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 14,
+        "y": 48,
         "w": 12,
         "h": 8
       },
-      "id": 23,
+      "id": 37,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -1601,11 +2778,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 22,
+        "y": 56,
         "w": 12,
         "h": 8
       },
-      "id": 24,
+      "id": 38,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -1660,11 +2837,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 22,
+        "y": 56,
         "w": 12,
         "h": 7
       },
-      "id": 25,
+      "id": 39,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -1724,11 +2901,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 30,
+        "y": 64,
         "w": 12,
         "h": 7
       },
-      "id": 26,
+      "id": 40,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -1762,11 +2939,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 37,
+        "y": 71,
         "w": 24,
         "h": 1
       },
-      "id": 27,
+      "id": 41,
       "panels": [],
       "title": "\ud83c\udfaf Win-Rate Analytics",
       "type": "row"
@@ -1833,11 +3010,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 38,
+        "y": 72,
         "w": 24,
         "h": 7
       },
-      "id": 28,
+      "id": 42,
       "options": {
         "legend": {
           "calcs": [
@@ -1902,11 +3079,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 45,
+        "y": 79,
         "w": 8,
         "h": 7
       },
-      "id": 29,
+      "id": 43,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -1970,11 +3147,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 45,
+        "y": 79,
         "w": 8,
         "h": 7
       },
-      "id": 30,
+      "id": 44,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -2038,11 +3215,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 45,
+        "y": 79,
         "w": 8,
         "h": 7
       },
-      "id": 31,
+      "id": 45,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -2178,11 +3355,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 52,
+        "y": 86,
         "w": 12,
         "h": 8
       },
-      "id": 32,
+      "id": 46,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2317,11 +3494,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 52,
+        "y": 86,
         "w": 12,
         "h": 8
       },
-      "id": 33,
+      "id": 47,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -2354,11 +3531,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 60,
+        "y": 94,
         "w": 24,
         "h": 1
       },
-      "id": 34,
+      "id": 48,
       "panels": [],
       "title": "\ud83e\ude99 Position Sizing & Compounding (equity-scaled)",
       "type": "row"
@@ -2390,11 +3567,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 61,
+        "y": 95,
         "w": 4,
         "h": 4
       },
-      "id": 35,
+      "id": 49,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2418,7 +3595,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG(size_usdt),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG(size_usdt),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -2452,11 +3629,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 61,
+        "y": 95,
         "w": 4,
         "h": 4
       },
-      "id": 36,
+      "id": 50,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -2514,11 +3691,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 61,
+        "y": 95,
         "w": 4,
         "h": 4
       },
-      "id": 37,
+      "id": 51,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2542,7 +3719,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COALESCE(MAX(size_usdt),0) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT COALESCE(MAX(size_usdt),0) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -2576,11 +3753,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 61,
+        "y": 95,
         "w": 4,
         "h": 4
       },
-      "id": 38,
+      "id": 52,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2638,11 +3815,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 61,
+        "y": 95,
         "w": 4,
         "h": 4
       },
-      "id": 39,
+      "id": 53,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2666,7 +3843,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG(notional_usdt),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG(notional_usdt),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -2704,11 +3881,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 61,
+        "y": 95,
         "w": 4,
         "h": 4
       },
-      "id": 40,
+      "id": 54,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2796,11 +3973,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 65,
+        "y": 99,
         "w": 12,
         "h": 8
       },
-      "id": 41,
+      "id": 55,
       "options": {
         "legend": {
           "calcs": [
@@ -2888,11 +4065,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 65,
+        "y": 99,
         "w": 12,
         "h": 8
       },
-      "id": 42,
+      "id": 56,
       "options": {
         "legend": {
           "calcs": [
@@ -2964,11 +4141,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 73,
+        "y": 107,
         "w": 8,
         "h": 7
       },
-      "id": 43,
+      "id": 57,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -2992,7 +4169,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT size_usdt FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT size_usdt FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -3056,11 +4233,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 73,
+        "y": 107,
         "w": 8,
         "h": 7
       },
-      "id": 44,
+      "id": 58,
       "options": {
         "legend": {
           "calcs": [
@@ -3226,11 +4403,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 73,
+        "y": 107,
         "w": 8,
         "h": 7
       },
-      "id": 45,
+      "id": 59,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -3252,7 +4429,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT split_part(bot_id,'-',4) AS strategy, COUNT(*) AS trades, ROUND(AVG(size_usdt),2) AS avg_size, ROUND(MAX(size_usdt),2) AS max_size, ROUND(AVG(notional_usdt),2) AS avg_notional, ROUND(AVG(leverage),1) AS leverage FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL GROUP BY split_part(bot_id,'-',4) ORDER BY trades DESC",
+          "rawSql": "SELECT split_part(bot_id,'-',4) AS strategy, COUNT(*) AS trades, ROUND(AVG(size_usdt),2) AS avg_size, ROUND(MAX(size_usdt),2) AS max_size, ROUND(AVG(notional_usdt),2) AS avg_notional, ROUND(AVG(leverage),1) AS leverage FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery' GROUP BY split_part(bot_id,'-',4) ORDER BY trades DESC",
           "refId": "A"
         }
       ],
@@ -3284,11 +4461,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 80,
+        "y": 114,
         "w": 8,
         "h": 4
       },
-      "id": 46,
+      "id": 60,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3323,11 +4500,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 84,
+        "y": 118,
         "w": 24,
         "h": 1
       },
-      "id": 47,
+      "id": 61,
       "panels": [],
       "title": "\ud83e\udea4 Trailing-Close (ratchet exit) \u2014 live A/B vs fixed TP",
       "type": "row"
@@ -3367,11 +4544,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 85,
+        "y": 119,
         "w": 4,
         "h": 4
       },
-      "id": 48,
+      "id": 62,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3427,11 +4604,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 85,
+        "y": 119,
         "w": 4,
         "h": 4
       },
-      "id": 49,
+      "id": 63,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3493,11 +4670,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 85,
+        "y": 119,
         "w": 4,
         "h": 4
       },
-      "id": 50,
+      "id": 64,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3559,11 +4736,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 85,
+        "y": 119,
         "w": 4,
         "h": 4
       },
-      "id": 51,
+      "id": 65,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3620,11 +4797,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 85,
+        "y": 119,
         "w": 4,
         "h": 4
       },
-      "id": 52,
+      "id": 66,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3681,11 +4858,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 85,
+        "y": 119,
         "w": 4,
         "h": 4
       },
-      "id": 53,
+      "id": 67,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3747,11 +4924,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 89,
+        "y": 123,
         "w": 4,
         "h": 4
       },
-      "id": 54,
+      "id": 68,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -3813,11 +4990,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 89,
+        "y": 123,
         "w": 4,
         "h": 4
       },
-      "id": 55,
+      "id": 69,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4019,11 +5196,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 89,
+        "y": 123,
         "w": 12,
         "h": 8
       },
-      "id": 56,
+      "id": 70,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -4045,7 +5222,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT regexp_replace(split_part(bot_id,'-',4),'_t$','') AS strategy, CASE WHEN split_part(bot_id,'-',4) ~ '_t$' THEN 'trailing' ELSE 'fixed' END AS exit_policy, COUNT(*) AS trades, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS win_pct, ROUND(AVG(pnl_net_usdt),4) AS avg_net, ROUND(SUM(pnl_net_usdt),3) AS net, ROUND(AVG(hold_candles),1) AS avg_hold, ROUND(100.0*AVG((close_reason='trailing_stop')::int),1) AS trail_exit_pct FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL GROUP BY 1,2 ORDER BY 1,2",
+          "rawSql": "SELECT regexp_replace(split_part(bot_id,'-',4),'_t$','') AS strategy, CASE WHEN split_part(bot_id,'-',4) ~ '_t$' THEN 'trailing' ELSE 'fixed' END AS exit_policy, COUNT(*) AS trades, ROUND(100.0*AVG((pnl_net_usdt>0)::int),1) AS win_pct, ROUND(AVG(pnl_net_usdt),4) AS avg_net, ROUND(SUM(pnl_net_usdt),3) AS net, ROUND(AVG(hold_candles),1) AS avg_hold, ROUND(100.0*AVG((close_reason='trailing_stop')::int),1) AS trail_exit_pct FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery' GROUP BY 1,2 ORDER BY 1,2",
           "refId": "A"
         }
       ],
@@ -4077,11 +5254,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 97,
+        "y": 131,
         "w": 12,
         "h": 8
       },
-      "id": 57,
+      "id": 71,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -4168,11 +5345,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 97,
+        "y": 131,
         "w": 12,
         "h": 7
       },
-      "id": 58,
+      "id": 72,
       "options": {
         "legend": {
           "calcs": [
@@ -4261,11 +5438,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 105,
+        "y": 139,
         "w": 12,
         "h": 7
       },
-      "id": 59,
+      "id": 73,
       "options": {
         "legend": {
           "calcs": [
@@ -4300,11 +5477,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 112,
+        "y": 146,
         "w": 24,
         "h": 1
       },
-      "id": 60,
+      "id": 74,
       "panels": [],
       "title": "\ud83d\udcc8 Equity, Drawdown & Returns",
       "type": "row"
@@ -4366,11 +5543,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 113,
+        "y": 147,
         "w": 12,
         "h": 8
       },
-      "id": 61,
+      "id": 75,
       "options": {
         "legend": {
           "calcs": [
@@ -4458,11 +5635,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 113,
+        "y": 147,
         "w": 12,
         "h": 8
       },
-      "id": 62,
+      "id": 76,
       "options": {
         "legend": {
           "calcs": [
@@ -4551,11 +5728,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 121,
+        "y": 155,
         "w": 12,
         "h": 7
       },
-      "id": 63,
+      "id": 77,
       "options": {
         "legend": {
           "calcs": [
@@ -4644,11 +5821,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 121,
+        "y": 155,
         "w": 12,
         "h": 7
       },
-      "id": 64,
+      "id": 78,
       "options": {
         "legend": {
           "calcs": [
@@ -4713,11 +5890,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 128,
+        "y": 162,
         "w": 6,
         "h": 4
       },
-      "id": 65,
+      "id": 79,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4782,11 +5959,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 128,
+        "y": 162,
         "w": 6,
         "h": 4
       },
-      "id": 66,
+      "id": 80,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4843,11 +6020,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 128,
+        "y": 162,
         "w": 6,
         "h": 4
       },
-      "id": 67,
+      "id": 81,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4905,11 +6082,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 128,
+        "y": 162,
         "w": 3,
         "h": 4
       },
-      "id": 68,
+      "id": 82,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4967,11 +6144,11 @@
       },
       "gridPos": {
         "x": 21,
-        "y": 128,
+        "y": 162,
         "w": 3,
         "h": 4
       },
-      "id": 69,
+      "id": 83,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -5059,11 +6236,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 132,
+        "y": 166,
         "w": 24,
         "h": 6
       },
-      "id": 70,
+      "id": 84,
       "options": {
         "legend": {
           "calcs": [
@@ -5151,11 +6328,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 138,
+        "y": 172,
         "w": 12,
         "h": 7
       },
-      "id": 71,
+      "id": 85,
       "options": {
         "legend": {
           "calcs": [
@@ -5247,11 +6424,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 138,
+        "y": 172,
         "w": 12,
         "h": 7
       },
-      "id": 72,
+      "id": 86,
       "options": {
         "legend": {
           "calcs": [
@@ -5339,11 +6516,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 145,
+        "y": 179,
         "w": 24,
         "h": 7
       },
-      "id": 73,
+      "id": 87,
       "options": {
         "legend": {
           "calcs": [
@@ -5378,11 +6555,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 152,
+        "y": 186,
         "w": 24,
         "h": 1
       },
-      "id": 74,
+      "id": 88,
       "panels": [],
       "title": "\ud83d\udcb5 PnL Distribution & Outcomes",
       "type": "row"
@@ -5428,11 +6605,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 153,
+        "y": 187,
         "w": 8,
         "h": 8
       },
-      "id": 75,
+      "id": 89,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5456,7 +6633,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT pnl_net_usdt AS net_pnl FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT pnl_net_usdt AS net_pnl FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -5504,11 +6681,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 153,
+        "y": 187,
         "w": 8,
         "h": 8
       },
-      "id": 76,
+      "id": 90,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5532,7 +6709,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT pnl_pct AS pnl_pct FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT pnl_pct AS pnl_pct FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -5579,11 +6756,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 153,
+        "y": 187,
         "w": 8,
         "h": 8
       },
-      "id": 77,
+      "id": 91,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -5607,7 +6784,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT (CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0) AS r_multiple FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT (CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0) AS r_multiple FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -5639,11 +6816,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 161,
+        "y": 195,
         "w": 6,
         "h": 8
       },
-      "id": 78,
+      "id": 92,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -5707,11 +6884,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 161,
+        "y": 195,
         "w": 6,
         "h": 8
       },
-      "id": 79,
+      "id": 93,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -5773,11 +6950,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 161,
+        "y": 195,
         "w": 12,
         "h": 8
       },
-      "id": 80,
+      "id": 94,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -5799,7 +6976,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(MIN(pnl_net_usdt),4) AS min, ROUND(percentile_cont(0.10) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS p10, ROUND(percentile_cont(0.25) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS p25, ROUND(percentile_cont(0.50) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS median, ROUND(percentile_cont(0.75) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS p75, ROUND(percentile_cont(0.90) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS p90, ROUND(MAX(pnl_net_usdt),4) AS max FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(MIN(pnl_net_usdt),4) AS min, ROUND(percentile_cont(0.10) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS p10, ROUND(percentile_cont(0.25) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS p25, ROUND(percentile_cont(0.50) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS median, ROUND(percentile_cont(0.75) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS p75, ROUND(percentile_cont(0.90) WITHIN GROUP (ORDER BY pnl_net_usdt)::numeric,4) AS p90, ROUND(MAX(pnl_net_usdt),4) AS max FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -5836,11 +7013,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 169,
+        "y": 203,
         "w": 12,
         "h": 8
       },
-      "id": 81,
+      "id": 95,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -5863,7 +7040,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT 'Avg Win' AS metric, ROUND(AVG(pnl_net_usdt) FILTER (WHERE pnl_net_usdt>0),4) AS value FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL UNION ALL SELECT 'Avg Loss', ROUND(AVG(pnl_net_usdt) FILTER (WHERE pnl_net_usdt<=0),4) FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT 'Avg Win' AS metric, ROUND(AVG(pnl_net_usdt) FILTER (WHERE pnl_net_usdt>0),4) AS value FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery' UNION ALL SELECT 'Avg Loss', ROUND(AVG(pnl_net_usdt) FILTER (WHERE pnl_net_usdt<=0),4) FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -5972,11 +7149,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 169,
+        "y": 203,
         "w": 12,
         "h": 8
       },
-      "id": 82,
+      "id": 96,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6107,11 +7284,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 177,
+        "y": 211,
         "w": 12,
         "h": 8
       },
-      "id": 83,
+      "id": 97,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6144,11 +7321,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 185,
+        "y": 219,
         "w": 24,
         "h": 1
       },
-      "id": 84,
+      "id": 98,
       "panels": [],
       "title": "\ud83d\udccf Points Scoreboard (gross bps \u2014 docs/13)",
       "type": "row"
@@ -6187,11 +7364,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 186,
+        "y": 220,
         "w": 4,
         "h": 5
       },
-      "id": 85,
+      "id": 99,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6256,11 +7433,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 186,
+        "y": 220,
         "w": 4,
         "h": 5
       },
-      "id": 86,
+      "id": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6325,11 +7502,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 186,
+        "y": 220,
         "w": 4,
         "h": 5
       },
-      "id": 87,
+      "id": 101,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6393,11 +7570,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 186,
+        "y": 220,
         "w": 4,
         "h": 5
       },
-      "id": 88,
+      "id": 102,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6462,11 +7639,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 186,
+        "y": 220,
         "w": 4,
         "h": 5
       },
-      "id": 89,
+      "id": 103,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6530,11 +7707,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 186,
+        "y": 220,
         "w": 4,
         "h": 5
       },
-      "id": 90,
+      "id": 104,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6627,11 +7804,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 191,
+        "y": 225,
         "w": 24,
         "h": 7
       },
-      "id": 91,
+      "id": 105,
       "options": {
         "legend": {
           "calcs": [
@@ -6695,11 +7872,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 198,
+        "y": 232,
         "w": 12,
         "h": 8
       },
-      "id": 92,
+      "id": 106,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -6835,11 +8012,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 198,
+        "y": 232,
         "w": 12,
         "h": 8
       },
-      "id": 93,
+      "id": 107,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -6872,11 +8049,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 206,
+        "y": 240,
         "w": 24,
         "h": 1
       },
-      "id": 94,
+      "id": 108,
       "panels": [],
       "title": "\u2696\ufe0f Risk, Streaks & Expectancy",
       "type": "row"
@@ -6906,11 +8083,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 207,
+        "y": 241,
         "w": 4,
         "h": 4
       },
-      "id": 95,
+      "id": 109,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -6966,11 +8143,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 207,
+        "y": 241,
         "w": 4,
         "h": 4
       },
-      "id": 96,
+      "id": 110,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7035,11 +8212,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 207,
+        "y": 241,
         "w": 4,
         "h": 4
       },
-      "id": 97,
+      "id": 111,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7104,11 +8281,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 207,
+        "y": 241,
         "w": 4,
         "h": 4
       },
-      "id": 98,
+      "id": 112,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7169,11 +8346,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 207,
+        "y": 241,
         "w": 4,
         "h": 4
       },
-      "id": 99,
+      "id": 113,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7197,7 +8374,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -7239,11 +8416,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 207,
+        "y": 241,
         "w": 4,
         "h": 4
       },
-      "id": 100,
+      "id": 114,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7299,11 +8476,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 211,
+        "y": 245,
         "w": 12,
         "h": 8
       },
-      "id": 101,
+      "id": 115,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -7326,7 +8503,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT bucket AS metric, COUNT(*) AS value FROM (SELECT CASE WHEN r<=-1 THEN '1: \u2264 -1R (full stop)' WHEN r<0 THEN '2: -1..0R' WHEN r<1 THEN '3: 0..1R' WHEN r<2 THEN '4: 1..2R' ELSE '5: \u2265 2R' END AS bucket FROM (SELECT (CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0) AS r FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL) x WHERE r IS NOT NULL) y GROUP BY bucket ORDER BY bucket",
+          "rawSql": "SELECT bucket AS metric, COUNT(*) AS value FROM (SELECT CASE WHEN r<=-1 THEN '1: \u2264 -1R (full stop)' WHEN r<0 THEN '2: -1..0R' WHEN r<1 THEN '3: 0..1R' WHEN r<2 THEN '4: 1..2R' ELSE '5: \u2265 2R' END AS bucket FROM (SELECT (CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0) AS r FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery') x WHERE r IS NOT NULL) y GROUP BY bucket ORDER BY bucket",
           "refId": "A"
         }
       ],
@@ -7506,11 +8683,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 211,
+        "y": 245,
         "w": 12,
         "h": 8
       },
-      "id": 102,
+      "id": 116,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -7543,11 +8720,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 219,
+        "y": 253,
         "w": 24,
         "h": 1
       },
-      "id": 103,
+      "id": 117,
       "panels": [],
       "title": "\ud83d\udcd0 Trade Quality \u2014 R-multiple, excursion, duration",
       "type": "row"
@@ -7587,11 +8764,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 220,
+        "y": 254,
         "w": 4,
         "h": 4
       },
-      "id": 104,
+      "id": 118,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7615,7 +8792,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT 100.0*AVG((close_reason='take_profit')::int) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT 100.0*AVG((close_reason='take_profit')::int) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -7649,11 +8826,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 220,
+        "y": 254,
         "w": 4,
         "h": 4
       },
-      "id": 105,
+      "id": 119,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7677,7 +8854,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT 100.0*AVG((close_reason='stop_loss')::int) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT 100.0*AVG((close_reason='stop_loss')::int) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -7711,11 +8888,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 220,
+        "y": 254,
         "w": 4,
         "h": 4
       },
-      "id": 106,
+      "id": 120,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7739,7 +8916,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT 100.0*AVG((close_reason='timeout')::int) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT 100.0*AVG((close_reason='timeout')::int) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -7777,11 +8954,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 220,
+        "y": 254,
         "w": 4,
         "h": 4
       },
-      "id": 107,
+      "id": 121,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7805,7 +8982,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT 100.0*AVG((close_reason='liquidated')::int) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT 100.0*AVG((close_reason='liquidated')::int) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -7842,11 +9019,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 220,
+        "y": 254,
         "w": 4,
         "h": 4
       },
-      "id": 108,
+      "id": 122,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7870,7 +9047,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG((CASE WHEN direction='long' THEN exit_price-entry_price ELSE entry_price-exit_price END)/NULLIF(ABS(entry_price-sl_price),0)),3) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -7903,11 +9080,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 220,
+        "y": 254,
         "w": 4,
         "h": 4
       },
-      "id": 109,
+      "id": 123,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -7931,7 +9108,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG(ABS(tp_price-entry_price)/NULLIF(ABS(entry_price-sl_price),0)),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG(ABS(tp_price-entry_price)/NULLIF(ABS(entry_price-sl_price),0)),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -7964,11 +9141,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 224,
+        "y": 258,
         "w": 4,
         "h": 4
       },
-      "id": 110,
+      "id": 124,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8025,11 +9202,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 224,
+        "y": 258,
         "w": 4,
         "h": 4
       },
-      "id": 111,
+      "id": 125,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8085,11 +9262,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 224,
+        "y": 258,
         "w": 4,
         "h": 4
       },
-      "id": 112,
+      "id": 126,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8113,7 +9290,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG(hold_candles),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG(hold_candles),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -8146,11 +9323,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 224,
+        "y": 258,
         "w": 4,
         "h": 4
       },
-      "id": 113,
+      "id": 127,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8174,7 +9351,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG((exit_ts-entry_ts)/60000.0),1) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG((exit_ts-entry_ts)/60000.0),1) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -8207,11 +9384,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 224,
+        "y": 258,
         "w": 4,
         "h": 4
       },
-      "id": 114,
+      "id": 128,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8235,7 +9412,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG(fee_entry_usdt+COALESCE(fee_exit_usdt,0)),4) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG(fee_entry_usdt+COALESCE(fee_exit_usdt,0)),4) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -8276,11 +9453,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 224,
+        "y": 258,
         "w": 4,
         "h": 4
       },
-      "id": 115,
+      "id": 129,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8304,7 +9481,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG(ABS(entry_price-liquidation_price)/entry_price*100),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG(ABS(entry_price-liquidation_price)/entry_price*100),2) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -8351,11 +9528,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 228,
+        "y": 262,
         "w": 8,
         "h": 7
       },
-      "id": 116,
+      "id": 130,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -8379,7 +9556,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT hold_candles FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT hold_candles FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -8427,11 +9604,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 228,
+        "y": 262,
         "w": 8,
         "h": 7
       },
-      "id": 117,
+      "id": 131,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -8503,11 +9680,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 228,
+        "y": 262,
         "w": 8,
         "h": 7
       },
-      "id": 118,
+      "id": 132,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -8709,11 +9886,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 235,
+        "y": 269,
         "w": 24,
         "h": 8
       },
-      "id": 119,
+      "id": 133,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -8746,11 +9923,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 243,
+        "y": 277,
         "w": 24,
         "h": 1
       },
-      "id": 120,
+      "id": 134,
       "panels": [],
       "title": "\ud83d\udd2c Signal Funnel & Rejections",
       "type": "row"
@@ -8780,11 +9957,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 244,
+        "y": 278,
         "w": 4,
         "h": 4
       },
-      "id": 121,
+      "id": 135,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8840,11 +10017,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 244,
+        "y": 278,
         "w": 4,
         "h": 4
       },
-      "id": 122,
+      "id": 136,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8900,11 +10077,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 244,
+        "y": 278,
         "w": 4,
         "h": 4
       },
-      "id": 123,
+      "id": 137,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -8960,11 +10137,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 244,
+        "y": 278,
         "w": 4,
         "h": 4
       },
-      "id": 124,
+      "id": 138,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9022,11 +10199,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 244,
+        "y": 278,
         "w": 4,
         "h": 4
       },
-      "id": 125,
+      "id": 139,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9083,11 +10260,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 244,
+        "y": 278,
         "w": 4,
         "h": 4
       },
-      "id": 126,
+      "id": 140,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -9143,11 +10320,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 248,
+        "y": 282,
         "w": 12,
         "h": 8
       },
-      "id": 127,
+      "id": 141,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9202,11 +10379,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 248,
+        "y": 282,
         "w": 12,
         "h": 8
       },
-      "id": 128,
+      "id": 142,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9293,11 +10470,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 256,
+        "y": 290,
         "w": 24,
         "h": 7
       },
-      "id": 129,
+      "id": 143,
       "options": {
         "legend": {
           "calcs": [
@@ -9391,11 +10568,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 263,
+        "y": 297,
         "w": 24,
         "h": 7
       },
-      "id": 130,
+      "id": 144,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9428,11 +10605,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 270,
+        "y": 304,
         "w": 24,
         "h": 1
       },
-      "id": 131,
+      "id": 145,
       "panels": [],
       "title": "\ud83e\udde9 Pattern Analytics",
       "type": "row"
@@ -9578,11 +10755,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 271,
+        "y": 305,
         "w": 8,
         "h": 8
       },
-      "id": 132,
+      "id": 146,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9636,11 +10813,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 271,
+        "y": 305,
         "w": 8,
         "h": 8
       },
-      "id": 133,
+      "id": 147,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -9710,11 +10887,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 271,
+        "y": 305,
         "w": 8,
         "h": 8
       },
-      "id": 134,
+      "id": 148,
       "options": {
         "bucketOffset": 0,
         "combine": false,
@@ -9850,11 +11027,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 279,
+        "y": 313,
         "w": 24,
         "h": 8
       },
-      "id": 135,
+      "id": 149,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -9887,11 +11064,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 287,
+        "y": 321,
         "w": 24,
         "h": 1
       },
-      "id": 136,
+      "id": 150,
       "panels": [],
       "title": "\ud83c\udf0a Regime Analytics",
       "type": "row"
@@ -9921,11 +11098,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 288,
+        "y": 322,
         "w": 8,
         "h": 8
       },
-      "id": 137,
+      "id": 151,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -9994,11 +11171,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 288,
+        "y": 322,
         "w": 8,
         "h": 8
       },
-      "id": 138,
+      "id": 152,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10169,11 +11346,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 288,
+        "y": 322,
         "w": 8,
         "h": 8
       },
-      "id": 139,
+      "id": 153,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10206,11 +11383,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 296,
+        "y": 330,
         "w": 24,
         "h": 1
       },
-      "id": 140,
+      "id": 154,
       "panels": [],
       "title": "\ud83d\udcca Market & Indicators (live, per pair)",
       "type": "row"
@@ -10324,11 +11501,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 297,
+        "y": 331,
         "w": 24,
         "h": 9
       },
-      "id": 141,
+      "id": 155,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -10416,11 +11593,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 306,
+        "y": 340,
         "w": 12,
         "h": 8
       },
-      "id": 142,
+      "id": 156,
       "options": {
         "legend": {
           "calcs": [
@@ -10508,11 +11685,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 306,
+        "y": 340,
         "w": 12,
         "h": 8
       },
-      "id": 143,
+      "id": 157,
       "options": {
         "legend": {
           "calcs": [
@@ -10604,11 +11781,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 314,
+        "y": 348,
         "w": 12,
         "h": 8
       },
-      "id": 144,
+      "id": 158,
       "options": {
         "legend": {
           "calcs": [
@@ -10700,11 +11877,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 314,
+        "y": 348,
         "w": 12,
         "h": 8
       },
-      "id": 145,
+      "id": 159,
       "options": {
         "legend": {
           "calcs": [
@@ -10760,11 +11937,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 322,
+        "y": 356,
         "w": 8,
         "h": 7
       },
-      "id": 146,
+      "id": 160,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -10829,11 +12006,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 322,
+        "y": 356,
         "w": 8,
         "h": 7
       },
-      "id": 147,
+      "id": 161,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10897,11 +12074,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 322,
+        "y": 356,
         "w": 8,
         "h": 7
       },
-      "id": 148,
+      "id": 162,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -10935,11 +12112,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 329,
+        "y": 363,
         "w": 24,
         "h": 1
       },
-      "id": 149,
+      "id": 163,
       "panels": [],
       "title": "\ud83e\uddea HP-Tuning Lab (grid: TP\u00d7SL\u00d7hold)",
       "type": "row"
@@ -11085,11 +12262,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 330,
+        "y": 364,
         "w": 24,
         "h": 9
       },
-      "id": 150,
+      "id": 164,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11148,11 +12325,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 339,
+        "y": 373,
         "w": 8,
         "h": 7
       },
-      "id": 151,
+      "id": 165,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11212,11 +12389,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 339,
+        "y": 373,
         "w": 8,
         "h": 7
       },
-      "id": 152,
+      "id": 166,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11276,11 +12453,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 339,
+        "y": 373,
         "w": 8,
         "h": 7
       },
-      "id": 153,
+      "id": 167,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11483,11 +12660,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 346,
+        "y": 380,
         "w": 12,
         "h": 8
       },
-      "id": 154,
+      "id": 168,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11550,11 +12727,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 346,
+        "y": 380,
         "w": 12,
         "h": 8
       },
-      "id": 155,
+      "id": 169,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11588,11 +12765,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 354,
+        "y": 388,
         "w": 24,
         "h": 1
       },
-      "id": 156,
+      "id": 170,
       "panels": [],
       "title": "\ud83d\udd51 Session & Time-of-Day (UTC)",
       "type": "row"
@@ -11738,11 +12915,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 355,
+        "y": 389,
         "w": 12,
         "h": 8
       },
-      "id": 157,
+      "id": 171,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -11801,11 +12978,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 355,
+        "y": 389,
         "w": 12,
         "h": 8
       },
-      "id": 158,
+      "id": 172,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11865,11 +13042,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 363,
+        "y": 397,
         "w": 12,
         "h": 7
       },
-      "id": 159,
+      "id": 173,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11925,11 +13102,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 363,
+        "y": 397,
         "w": 12,
         "h": 7
       },
-      "id": 160,
+      "id": 174,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -11989,11 +13166,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 370,
+        "y": 404,
         "w": 12,
         "h": 7
       },
-      "id": 161,
+      "id": 175,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -12049,11 +13226,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 370,
+        "y": 404,
         "w": 12,
         "h": 7
       },
-      "id": 162,
+      "id": 176,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -12087,11 +13264,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 377,
+        "y": 411,
         "w": 24,
         "h": 1
       },
-      "id": 163,
+      "id": 177,
       "panels": [],
       "title": "\ud83d\udcb8 Fees & Costs",
       "type": "row"
@@ -12122,11 +13299,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 378,
+        "y": 412,
         "w": 4,
         "h": 4
       },
-      "id": 164,
+      "id": 178,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12183,11 +13360,11 @@
       },
       "gridPos": {
         "x": 4,
-        "y": 378,
+        "y": 412,
         "w": 4,
         "h": 4
       },
-      "id": 165,
+      "id": 179,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12211,7 +13388,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG(fee_entry_usdt+COALESCE(fee_exit_usdt,0)),4) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG(fee_entry_usdt+COALESCE(fee_exit_usdt,0)),4) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -12248,11 +13425,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 378,
+        "y": 412,
         "w": 4,
         "h": 4
       },
-      "id": 166,
+      "id": 180,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12276,7 +13453,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(COALESCE(SUM(pnl_gross_usdt),0),4) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(COALESCE(SUM(pnl_gross_usdt),0),4) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -12313,11 +13490,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 378,
+        "y": 412,
         "w": 4,
         "h": 4
       },
-      "id": 167,
+      "id": 181,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12341,7 +13518,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(COALESCE(SUM(pnl_net_usdt),0),4) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(COALESCE(SUM(pnl_net_usdt),0),4) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -12375,11 +13552,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 378,
+        "y": 412,
         "w": 4,
         "h": 4
       },
-      "id": 168,
+      "id": 182,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12403,7 +13580,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(100.0*SUM(fee_entry_usdt+COALESCE(fee_exit_usdt,0))/NULLIF(ABS(SUM(pnl_gross_usdt)),0),1) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(100.0*SUM(fee_entry_usdt+COALESCE(fee_exit_usdt,0))/NULLIF(ABS(SUM(pnl_gross_usdt)),0),1) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -12437,11 +13614,11 @@
       },
       "gridPos": {
         "x": 20,
-        "y": 378,
+        "y": 412,
         "w": 4,
         "h": 4
       },
-      "id": 169,
+      "id": 183,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -12465,7 +13642,7 @@
           },
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT ROUND(AVG((fee_entry_usdt+COALESCE(fee_exit_usdt,0))/NULLIF(size_usdt,0))*100,3) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL",
+          "rawSql": "SELECT ROUND(AVG((fee_entry_usdt+COALESCE(fee_exit_usdt,0))/NULLIF(size_usdt,0))*100,3) AS v FROM (SELECT * FROM trades WHERE env = '${env}') trades WHERE exit_ts IS NOT NULL AND close_reason != 'orphaned_crash_recovery'",
           "refId": "A"
         }
       ],
@@ -12530,11 +13707,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 382,
+        "y": 416,
         "w": 12,
         "h": 7
       },
-      "id": 170,
+      "id": 184,
       "options": {
         "legend": {
           "calcs": [
@@ -12622,11 +13799,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 382,
+        "y": 416,
         "w": 12,
         "h": 7
       },
-      "id": 171,
+      "id": 185,
       "options": {
         "legend": {
           "calcs": [
@@ -12661,11 +13838,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 389,
+        "y": 423,
         "w": 24,
         "h": 1
       },
-      "id": 172,
+      "id": 186,
       "panels": [],
       "title": "\ud83d\udcdc Trade History",
       "type": "row"
@@ -13011,11 +14188,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 390,
+        "y": 424,
         "w": 24,
         "h": 12
       },
-      "id": 173,
+      "id": 187,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -13048,11 +14225,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 402,
+        "y": 436,
         "w": 24,
         "h": 1
       },
-      "id": 174,
+      "id": 188,
       "panels": [],
       "title": "\ud83d\udccc Open Positions (live)",
       "type": "row"
@@ -13159,11 +14336,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 403,
+        "y": 437,
         "w": 24,
         "h": 8
       },
-      "id": 175,
+      "id": 189,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -13196,11 +14373,11 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 411,
+        "y": 445,
         "w": 24,
         "h": 1
       },
-      "id": 176,
+      "id": 190,
       "panels": [],
       "title": "\ud83e\ude7a Activity & Health",
       "type": "row"
@@ -13238,11 +14415,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 412,
+        "y": 446,
         "w": 6,
         "h": 4
       },
-      "id": 177,
+      "id": 191,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -13307,11 +14484,11 @@
       },
       "gridPos": {
         "x": 6,
-        "y": 412,
+        "y": 446,
         "w": 6,
         "h": 4
       },
-      "id": 178,
+      "id": 192,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -13375,11 +14552,11 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 412,
+        "y": 446,
         "w": 6,
         "h": 4
       },
-      "id": 179,
+      "id": 193,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -13443,11 +14620,11 @@
       },
       "gridPos": {
         "x": 18,
-        "y": 412,
+        "y": 446,
         "w": 6,
         "h": 4
       },
-      "id": 180,
+      "id": 194,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -13503,11 +14680,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 416,
+        "y": 450,
         "w": 8,
         "h": 7
       },
-      "id": 181,
+      "id": 195,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -13562,11 +14739,11 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 416,
+        "y": 450,
         "w": 8,
         "h": 7
       },
-      "id": 182,
+      "id": 196,
       "options": {
         "legend": {
           "displayMode": "list",
@@ -13630,11 +14807,11 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 416,
+        "y": 450,
         "w": 8,
         "h": 7
       },
-      "id": 183,
+      "id": 197,
       "options": {
         "displayMode": "gradient",
         "orientation": "horizontal",
@@ -13721,11 +14898,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 423,
+        "y": 457,
         "w": 24,
         "h": 7
       },
-      "id": 184,
+      "id": 198,
       "options": {
         "legend": {
           "calcs": [
@@ -13823,11 +15000,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 430,
+        "y": 464,
         "w": 24,
         "h": 8
       },
-      "id": 185,
+      "id": 199,
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -13929,11 +15106,11 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 438,
+        "y": 472,
         "w": 24,
         "h": 8
       },
-      "id": 186,
+      "id": 200,
       "options": {
         "cellHeight": "sm",
         "footer": {
