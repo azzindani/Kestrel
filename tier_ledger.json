@@ -3,9 +3,9 @@
   "recipes": {
     "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"sma_cross_fast\": 50, \"sma_cross_slow\": 100, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"sma_cross\", \"tf\": \"5m\"}": {
       "label": "cur_sma50100",
-      "lab_since": 0,
+      "lab_since": null,
       "staging_since": null,
-      "last_move": 1790248461822
+      "last_move": 1790918338311
     },
     "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"cci_mom\", \"tf\": \"5m\"}": {
       "label": "cur_cci_mom",
@@ -15,39 +15,51 @@
     },
     "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"macd_cross\", \"tf\": \"5m\"}": {
       "label": "cur_macd_cross",
-      "lab_since": 0,
-      "staging_since": 0,
-      "last_move": null
+      "lab_since": null,
+      "staging_since": null,
+      "last_move": 1790659138679
     },
     "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"macd_rsi\", \"tf\": \"5m\"}": {
       "label": "cur_macd_rsi",
-      "lab_since": 1790248461822,
+      "lab_since": null,
       "staging_since": null,
-      "last_move": 1790248461822
+      "last_move": 1791177569133
     },
     "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"mom_adx\", \"tf\": \"5m\"}": {
       "label": "cur_mom_adx",
-      "lab_since": 0,
+      "lab_since": null,
       "staging_since": null,
-      "last_move": 1790248461822
+      "last_move": 1790918338311
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"sma_cross\", \"tf\": \"5m\"}": {
+      "label": "cur_sma_cross",
+      "lab_since": null,
+      "staging_since": null,
+      "last_move": 1791609379448
     },
     "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"triple_mom\", \"tf\": \"5m\"}": {
       "label": "cur_triple_mom",
-      "lab_since": 0,
+      "lab_since": null,
       "staging_since": null,
-      "last_move": 1790248461822
+      "last_move": 1790918338311
     },
     "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"tsmom_z\", \"tf\": \"5m\"}": {
       "label": "cur_tsmom_z",
-      "lab_since": 1790248461822,
+      "lab_since": null,
       "staging_since": null,
-      "last_move": 1790248461822
+      "last_move": 1790918338311
     },
     "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"turtle_soup\", \"tf\": \"5m\"}": {
       "label": "cur_turtle_soup",
-      "lab_since": 0,
-      "staging_since": 1790248461822,
-      "last_move": 1790248461822
+      "lab_since": null,
+      "staging_since": null,
+      "last_move": 1791868660685
+    },
+    "{\"params\": {\"max_hold_candles\": 6, \"max_loss_pct_per_trade\": 0.01, \"sl_atr_multiplier\": 1.5, \"tp_atr_multiplier\": 0.5, \"trailing_enabled\": false, \"volume_ratio_min\": 1.1}, \"pattern\": \"vr_adaptive\", \"tf\": \"5m\"}": {
+      "label": "cur_vr_adaptive",
+      "lab_since": null,
+      "staging_since": null,
+      "last_move": 1791350137039
     }
   },
   "history": [
@@ -168,6 +180,210 @@
         "skill_h2": 19.14627710720943,
         "gross_bps": 16.7896097484967,
         "net_bps": 12.0896097484967
+      }
+    },
+    {
+      "ts": 1790659138679,
+      "label": "cur_macd_cross",
+      "kind": "demote",
+      "src": "staging",
+      "dst": "dev",
+      "reason": "staging t<1.0: n=529 skill=-0.44bps t=-0.16 halves=+9.9/-10.7",
+      "evidence": {
+        "n": 529,
+        "skill_bps": -0.4360832941602108,
+        "skill_t": -0.15743096050748648,
+        "skill_h1": 9.851937042784169,
+        "skill_h2": -10.68528091285197,
+        "gross_bps": -3.7912163289212657,
+        "net_bps": -8.690672308833
+      }
+    },
+    {
+      "ts": 1790659138679,
+      "label": "cur_vr_adaptive",
+      "kind": "promote",
+      "src": "dev",
+      "dst": "lab",
+      "reason": "dev\u2192lab: n=1598 skill=+5.58bps t=+3.87 halves=+1.4/+9.7",
+      "evidence": {
+        "n": 1598,
+        "skill_bps": 5.581975448671768,
+        "skill_t": 3.868822949593845,
+        "skill_h1": 1.4274155414714833,
+        "skill_h2": 9.736535355872054,
+        "gross_bps": 4.377919195974624,
+        "net_bps": -0.354246010533511
+      }
+    },
+    {
+      "ts": 1790918338311,
+      "label": "cur_sma50100",
+      "kind": "demote",
+      "src": "lab",
+      "dst": "dev",
+      "reason": "lab t<0.0: n=308 skill=-0.67bps t=-0.24 halves=+3.0/-4.3",
+      "evidence": {
+        "n": 308,
+        "skill_bps": -0.6724130199173783,
+        "skill_t": -0.24318115750482583,
+        "skill_h1": 2.9955039973969693,
+        "skill_h2": -4.340330037231726,
+        "gross_bps": -3.1249346369449795,
+        "net_bps": -8.021038533048877
+      }
+    },
+    {
+      "ts": 1790918338311,
+      "label": "cur_mom_adx",
+      "kind": "demote",
+      "src": "lab",
+      "dst": "dev",
+      "reason": "lab t<0.0: n=1513 skill=-4.62bps t=-2.99 halves=-4.1/-5.1",
+      "evidence": {
+        "n": 1513,
+        "skill_bps": -4.619105919321261,
+        "skill_t": -2.9872291977408807,
+        "skill_h1": -4.097511418044587,
+        "skill_h2": -5.140011392194663,
+        "gross_bps": -5.544691750618824,
+        "net_bps": -10.48983385240336
+      }
+    },
+    {
+      "ts": 1790918338311,
+      "label": "cur_triple_mom",
+      "kind": "demote",
+      "src": "lab",
+      "dst": "dev",
+      "reason": "lab t<0.0: n=276 skill=-4.48bps t=-1.13 halves=-4.3/-4.6",
+      "evidence": {
+        "n": 276,
+        "skill_bps": -4.479108888749102,
+        "skill_t": -1.132120539799577,
+        "skill_h1": -4.346688539600683,
+        "skill_h2": -4.611529237897522,
+        "gross_bps": -3.806571423875726,
+        "net_bps": -8.748600409382973
+      }
+    },
+    {
+      "ts": 1790918338311,
+      "label": "cur_tsmom_z",
+      "kind": "demote",
+      "src": "lab",
+      "dst": "dev",
+      "reason": "lab t<0.0: n=486 skill=-6.94bps t=-2.51 halves=-12.7/-1.2",
+      "evidence": {
+        "n": 486,
+        "skill_bps": -6.941118357892454,
+        "skill_t": -2.5080562402857347,
+        "skill_h1": -12.676374762758394,
+        "skill_h2": -1.205861953026512,
+        "gross_bps": -4.148306509533308,
+        "net_bps": -9.041310624759644
+      }
+    },
+    {
+      "ts": 1790918338311,
+      "label": "cur_sma_cross",
+      "kind": "promote",
+      "src": "dev",
+      "dst": "lab",
+      "reason": "dev\u2192lab: n=790 skill=+4.62bps t=+2.70 halves=+5.8/+3.4",
+      "evidence": {
+        "n": 790,
+        "skill_bps": 4.619351011745813,
+        "skill_t": 2.70430988476089,
+        "skill_h1": 5.819775015303195,
+        "skill_h2": 3.4189270081884313,
+        "gross_bps": 3.188904589412372,
+        "net_bps": -1.5908422460306657
+      }
+    },
+    {
+      "ts": 1791177569133,
+      "label": "cur_turtle_soup",
+      "kind": "demote",
+      "src": "staging",
+      "dst": "lab",
+      "reason": "staging t<1.0: n=599 skill=+1.07bps t=+0.76 halves=+4.3/-2.2",
+      "evidence": {
+        "n": 599,
+        "skill_bps": 1.0669980542402369,
+        "skill_t": 0.7647201525706089,
+        "skill_h1": 4.335807795053189,
+        "skill_h2": -2.1909156541033386,
+        "gross_bps": -0.20549904155736515,
+        "net_bps": -4.986920657339559
+      }
+    },
+    {
+      "ts": 1791177569133,
+      "label": "cur_macd_rsi",
+      "kind": "demote",
+      "src": "lab",
+      "dst": "dev",
+      "reason": "lab t<0.0: n=262 skill=-7.52bps t=-3.66 halves=-6.8/-8.2",
+      "evidence": {
+        "n": 262,
+        "skill_bps": -7.517917886701143,
+        "skill_t": -3.6620538453217604,
+        "skill_h1": -6.786935242209475,
+        "skill_h2": -8.248900531192813,
+        "gross_bps": -11.47812731599498,
+        "net_bps": -16.592631132788874
+      }
+    },
+    {
+      "ts": 1791350137039,
+      "label": "cur_vr_adaptive",
+      "kind": "demote",
+      "src": "lab",
+      "dst": "dev",
+      "reason": "lab t<0.0: n=1813 skill=-1.80bps t=-1.70 halves=+3.2/-6.8",
+      "evidence": {
+        "n": 1813,
+        "skill_bps": -1.8003511194632589,
+        "skill_t": -1.7044283628596182,
+        "skill_h1": 3.1569233556171645,
+        "skill_h2": -6.7521600218037925,
+        "gross_bps": -3.3229622997604684,
+        "net_bps": -8.110607087405256
+      }
+    },
+    {
+      "ts": 1791609379448,
+      "label": "cur_sma_cross",
+      "kind": "demote",
+      "src": "lab",
+      "dst": "dev",
+      "reason": "lab t<0.0: n=1012 skill=-1.36bps t=-1.10 halves=-2.0/-0.7",
+      "evidence": {
+        "n": 1012,
+        "skill_bps": -1.3563483040057756,
+        "skill_t": -1.0976722208695537,
+        "skill_h1": -2.0026630452026972,
+        "skill_h2": -0.7100335628088541,
+        "gross_bps": -3.1843627985709775,
+        "net_bps": -8.11914540726663
+      }
+    },
+    {
+      "ts": 1791868660685,
+      "label": "cur_turtle_soup",
+      "kind": "demote",
+      "src": "lab",
+      "dst": "dev",
+      "reason": "lab t<0.0: n=3090 skill=-0.58bps t=-0.74 halves=+1.8/-2.9",
+      "evidence": {
+        "n": 3090,
+        "skill_bps": -0.5812531352591535,
+        "skill_t": -0.7434088540127445,
+        "skill_h1": 1.7661302657429803,
+        "skill_h2": -2.9286365362612874,
+        "gross_bps": -1.5073997277344644,
+        "net_bps": -6.334584193753883
       }
     }
   ]
