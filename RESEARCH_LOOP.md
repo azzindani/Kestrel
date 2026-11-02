@@ -696,6 +696,32 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
 
 <!-- newest first; each firing appends one entry -->
 
+### ARCHIVED — 2026-11-02 (OWNER "this project is not worth to keep" → "back up to my hugging face as public dataset" → "clean up everything, just leave the project repo and env variables, so we can build up and recover everything later")
+
+- **FINAL MEASURE (10-14 reset → 11-02, 19 days):** dev 52,255 closed trades, 55.7% win, −$885 net
+  (gross −$318). Every day negative. 5m −$825 · 1h −$25 · xs_mom −$22 (344 real closes) · 4h trend
+  −$12 (123 real closes, 90 stop-outs, 11 liquidations: at 20× a 1.5-ATR 4h stop can sit past the
+  ~4.5% liquidation line). Restarts on 10-15 / 10-17 / 10-31 orphan-closed ~170–210 open positions
+  each (`orphaned_crash_recovery`), half of xs_mom's sample. All-time (all slates, Jun 24 → Nov 2):
+  167,164 trades, 55.2% win, −$2,748 net (gross −$949, fees $1,801), net-negative in every tier and
+  timeframe. The slow cohorts never reached a verdict.
+- **DATA:** published as the public Hugging Face dataset `Azzindani/kestrel` (CC BY 4.0, Parquet):
+  trades (all slates merged from the live DB + 11 backup snapshots, `source` column), signals,
+  candles, trade_context, microstructure, pattern_memory. Events and heartbeats were not published.
+- **TORN DOWN:** all Kestrel containers (dev, lab, staging, postgres, grafana, pg-backup,
+  microstructure recorder, pattern-memory, monitor-host, db-janitor), volumes `kestrel_pgdata` +
+  `kestrel_grafana_data`, images `kestrel-kestrel` + `grafana/grafana:11.3.0`, the
+  `kestrel-tier-promoter` systemd timer/service links, `backups/`, `reports/ohlcv_cache` and
+  `reports/funding_archive`. KEPT: this repo, `.env*`, `docker-compose.override.yml`, `reports/`
+  research outputs, and the empty `kestrel_net` network (caddy-router declares it `external`, so
+  removing it would break the router's next recreate).
+- **REBUILD:** `docker compose up -d --build` (one compose project brings up dev, lab, staging and
+  the aux services; fresh postgres, and the daemon applies the schema on start) →
+  `scripts/backfill_history.py --source gate` for candles → re-link the timer with
+  `systemctl link infra/systemd/kestrel-tier-promoter.{service,timer}` and
+  `systemctl enable --now kestrel-tier-promoter.timer`. Past trades can be read back from the HF
+  dataset; no loader into postgres exists yet.
+
 ### Iteration 76 — 2026-10-14 (OWNER "5 months, never profitable; promotion broken?" → "dev is trial and error, any algorithms, strategies and time ranges are permitted, I want to see profit" → "commit, push, CI, redeploy, reset all balance to 100")
 
 - **MEASURE (10-03 reset → 10-14):** dev 28,337 trades 56.4% win −$491 · lab 1,758 −$36 · staging 70
