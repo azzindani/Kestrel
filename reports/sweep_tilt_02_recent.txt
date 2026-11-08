@@ -1,0 +1,77 @@
+[funding] perp funding modeled: 0.01%/8h, always charged (v2.7)
+[points] risk Rule 3 R/R floor bypassed for this process (research-only; see docs/13 §9)
+[funding-tilt] entry gate armed: |rate| >= 0.02%/8h blocks the paying side (10/10 pairs mapped)
+[sigexit] indicator-based exits armed (signal_exit / indicator_tp reasons)
+=== Kestrel ALGORITHM SEARCH (1h, 365d, 20x, fees=realistic, regime=all) ===
+algos=5 exits=4 pairs=10 combos=20 backtests=200 cost/trade≈0.04%
+[1/10] BTC/USDT: src=okx candles=8760 (OOS=3504)
+[2/10] ETH/USDT: src=okx candles=8760 (OOS=3504)
+[3/10] SOL/USDT: src=okx candles=8760 (OOS=3504)
+[4/10] DOGE/USDT: src=okx candles=8760 (OOS=3504)
+[5/10] PEPE/USDT: src=okx candles=8760 (OOS=3504)
+  okx: 0 candles < 5256 required — skipping (capped/partial)
+[6/10] HYPE/USDT: src=gate candles=8760 (OOS=3504)
+[7/10] XRP/USDT: src=okx candles=8760 (OOS=3504)
+[8/10] BNB/USDT: src=okx candles=8760 (OOS=3504)
+[9/10] ADA/USDT: src=okx candles=8760 (OOS=3504)
+[10/10] AVAX/USDT: src=okx candles=8760 (OOS=3504)
+
+=== ALGO LEADERBOARD (out-of-sample, top 25) ===
+  algo             exit      n   win%      avg$      net$   R/R   expR   tp%   to%  clr%   IS→OOS
+  sma_cross        wide    837   46.7    0.0047     3.940  1.27   0.11    16    48    47  +0.0158
+  ensemble_3of4    sigexit_tp   309   75.7    0.0035     1.083  0.36   0.08    76     1    76  +0.0060
+  ensemble_3of4    sigexit   299   33.1    0.0018     0.526  2.08   0.08     0    20    33  +0.0160
+  ensemble_3of4    sigexit_rsi   301   41.9    0.0014     0.434  1.43   0.08     0     3    42  +0.0132
+  macd_rsi         sigexit_tp   919   70.4    0.0000     0.004  0.42   0.05    70     1    70  +0.0024
+  sma_cross        sigexit_rsi   869   39.5   -0.0002    -0.167  1.53   0.06     0     8    39  +0.0063
+  ensemble_3of4    wide    308   43.2   -0.0010    -0.294  1.29   0.04    18    44    43  +0.0098
+  macd_cross       sigexit_tp  1328   70.0   -0.0012    -1.547  0.41   0.03    70     1    70  +0.0011
+  sma_cross        sigexit_tp   869   70.9   -0.0014    -1.228  0.39   0.03    70     1    71  +0.0031
+  cci_mom          sigexit_tp  2008   70.9   -0.0023    -4.550  0.38   0.02    71     1    71  +0.0010
+  cci_mom          wide   1786   43.6   -0.0023    -4.085  1.22   0.03    15    48    44  +0.0049
+  cci_mom          sigexit_rsi  1655   39.0   -0.0025    -4.143  1.47   0.04     0     2    39  +0.0053
+  sma_cross        sigexit   869   33.5   -0.0049    -4.220  1.82   0.03     0    23    33  -0.0020
+  macd_rsi         sigexit_rsi   919   36.2   -0.0052    -4.744  1.56   0.01     0     1    36  +0.0005
+  macd_cross       sigexit_rsi  1328   35.2   -0.0055    -7.337  1.63  -0.00     0     5    35  -0.0002
+  macd_cross       sigexit  1328   31.4   -0.0063    -8.419  1.92  -0.01     0     9    31  -0.0034
+  macd_rsi         sigexit   919   30.9   -0.0067    -6.114  1.95  -0.00     0     5    31  -0.0040
+  macd_rsi         wide    874   42.8   -0.0070    -6.088  1.13  -0.02    14    47    43  -0.0007
+  cci_mom          sigexit  1517   31.2   -0.0075   -11.347  1.90  -0.01     0    13    31  -0.0041
+  macd_cross       wide   1207   42.4   -0.0080    -9.671  1.10  -0.04    12    49    42  -0.0014
+
+=== VERDICT (§30 OOS: win>55% · R/R≥1.2 · net>0 · n≥30) ===
+  algorithms clearing the bar: 0 / 20
+  best: sma_cross/wide avg=$0.0047/trade win=46.7% n=837 — no edge; cost floor dominates (consistent with the no-edge history)
+
+=== POINTS LEADERBOARD (gross bps of entry price — OOS pooled; docs/13 §2) ===
+  algo             exit        n  pwin%  avg_bps  med_bps  ptsPF  grossR   IS→OOS
+  ensemble_3of4    sigexit   299   34.4   +12.79   -66.75   1.17  +0.083   +45.18
+  sma_cross        wide      837   48.4   +12.73    -3.94   1.22  +0.108   +25.90
+  ensemble_3of4    sigexit_rsi   301   42.9    +9.31   -46.89   1.13  +0.076   +31.55
+  ensemble_3of4    sigexit_tp   309   75.7    +9.20   +42.03   1.28  +0.081    +7.16
+  sma_cross        sigexit_rsi   869   40.0    +7.23   -52.50   1.10  +0.063   +14.30
+  sma_cross        sigexit   869   34.1    +6.00   -72.90   1.08  +0.026    +9.95
+  macd_rsi         sigexit_tp   919   70.4    +5.26   +40.17   1.16  +0.046    +3.87
+  cci_mom          wide     1786   45.4    +4.61   -18.21   1.08  +0.032   +12.92
+  cci_mom          sigexit_rsi  1655   40.6    +4.37   -46.36   1.07  +0.036   +17.11
+  ensemble_3of4    wide      308   45.8    +3.83   -20.96   1.06  +0.045   +19.43
+  cci_mom          sigexit_tp  2008   70.9    +3.69   +41.49   1.11  +0.022    +3.15
+  macd_cross       sigexit_tp  1328   70.0    +3.31   +41.19   1.09  +0.035    +1.29
+  sma_cross        sigexit_tp   869   70.9    +1.65   +40.41   1.05  +0.030    +0.24
+  cci_mom          sigexit  1517   32.8    +1.29   -65.02   1.02  -0.007    +8.63
+  macd_rsi         sigexit   919   32.4    -2.67   -53.64   0.96  -0.002    +1.18
+  macd_rsi         sigexit_rsi   919   37.9    -2.85   -43.23   0.96  +0.010    +2.74
+  macd_rsi         wide      874   45.0    -3.68   -20.96   0.94  -0.021    +2.40
+  macd_cross       sigexit  1328   32.7    -4.74   -60.51   0.94  -0.013    -3.87
+  macd_cross       sigexit_rsi  1328   36.6    -5.47   -53.46   0.92  -0.004    -3.43
+  macd_cross       wide     1207   44.6    -8.01   -23.23   0.88  -0.044    -3.75
+
+=== POINTS VERDICT (§6.1 joint bar: pwin>=65% AND avg_bps>0 AND n>=30) ===
+  combos clearing the joint bar: 5 / 20
+  POINTS SURVIVOR: ensemble_3of4 / sigexit_tp — pwin 75.7% avg +9.20 bps (fee shelf: maker-viable) grossR +0.081 n=309
+  POINTS SURVIVOR: macd_rsi / sigexit_tp — pwin 70.4% avg +5.26 bps (fee shelf: maker-viable) grossR +0.046 n=919
+  POINTS SURVIVOR: cci_mom / sigexit_tp — pwin 70.9% avg +3.69 bps (fee shelf: signal-only (<4bps)) grossR +0.022 n=2008
+  POINTS SURVIVOR: macd_cross / sigexit_tp — pwin 70.0% avg +3.31 bps (fee shelf: signal-only (<4bps)) grossR +0.035 n=1328
+  POINTS SURVIVOR: sma_cross / sigexit_tp — pwin 70.9% avg +1.65 bps (fee shelf: signal-only (<4bps)) grossR +0.030 n=869
+
+wrote /root/Kestrel/reports/algo_search_20260724-145334.md  (+ _survivors.json: 0)

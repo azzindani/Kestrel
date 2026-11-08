@@ -1,0 +1,85 @@
+[funding] perp funding modeled: 0.01%/8h, always charged (v2.7)
+[points] risk Rule 3 R/R floor bypassed for this process (research-only; see docs/13 §9)
+[sigexit] indicator-based exits armed (signal_exit / indicator_tp reasons)
+=== Kestrel ALGORITHM SEARCH (1h, 365d, 20x, fees=realistic, regime=all) ===
+algos=5 exits=4 pairs=10 combos=20 backtests=200 cost/trade≈0.04%
+[1/10] BTC/USDT: src=okx candles=8760 (OOS=3504)
+[2/10] ETH/USDT: src=okx candles=8760 (OOS=3504)
+[3/10] SOL/USDT: src=okx candles=8760 (OOS=3504)
+[4/10] DOGE/USDT: src=okx candles=8760 (OOS=3504)
+[5/10] PEPE/USDT: src=okx candles=8760 (OOS=3504)
+  okx: 0 candles < 5256 required — skipping (capped/partial)
+[6/10] HYPE/USDT: src=gate candles=8760 (OOS=3504)
+[7/10] XRP/USDT: src=okx candles=8760 (OOS=3504)
+[8/10] BNB/USDT: src=okx candles=8760 (OOS=3504)
+[9/10] ADA/USDT: src=okx candles=8760 (OOS=3504)
+[10/10] AVAX/USDT: src=okx candles=8760 (OOS=3504)
+
+=== ALGO LEADERBOARD (out-of-sample, top 25) ===
+  algo             exit      n   win%      avg$      net$   R/R   expR   tp%   to%  clr%   IS→OOS
+  sma_cross        wide    840   46.6    0.0044     3.712  1.27   0.10    16    48    47  +0.0155
+  ensemble_3of4    sigexit_tp   311   75.2    0.0028     0.868  0.36   0.07    75     1    75  +0.0060
+  ensemble_3of4    sigexit   301   32.9    0.0012     0.348  2.08   0.08     0    20    33  +0.0161
+  ensemble_3of4    sigexit_rsi   303   41.9    0.0010     0.308  1.41   0.07     0     3    42  +0.0135
+  sma_cross        sigexit_rsi   872   39.6   -0.0001    -0.049  1.53   0.06     0     8    40  +0.0063
+  macd_rsi         sigexit_tp   931   70.1   -0.0003    -0.260  0.42   0.04    70     1    70  +0.0025
+  macd_cross       sigexit_tp  1341   69.9   -0.0013    -1.740  0.41   0.03    70     1    70  +0.0013
+  sma_cross        sigexit_tp   872   70.8   -0.0016    -1.373  0.39   0.03    70     1    71  +0.0029
+  ensemble_3of4    wide    310   42.9   -0.0016    -0.511  1.28   0.04    17    44    43  +0.0100
+  cci_mom          sigexit_tp  2032   70.7   -0.0025    -5.129  0.38   0.02    70     1    71  +0.0010
+  cci_mom          wide   1809   43.5   -0.0026    -4.772  1.21   0.03    15    47    43  +0.0048
+  cci_mom          sigexit_rsi  1675   39.0   -0.0028    -4.718  1.46   0.03     0     2    39  +0.0051
+  sma_cross        sigexit   872   33.4   -0.0051    -4.420  1.82   0.02     0    23    33  -0.0024
+  macd_rsi         sigexit_rsi   931   36.1   -0.0054    -5.050  1.56   0.01     0     1    36  +0.0004
+  macd_cross       sigexit_rsi  1341   35.2   -0.0056    -7.575  1.62  -0.01     0     5    35  -0.0002
+  macd_cross       sigexit  1341   31.4   -0.0064    -8.630  1.92  -0.01     0     9    31  -0.0035
+  macd_rsi         sigexit   931   30.8   -0.0067    -6.246  1.95  -0.00     0     5    31  -0.0040
+  macd_rsi         wide    885   42.9   -0.0070    -6.172  1.12  -0.02    14    47    43  -0.0005
+  cci_mom          sigexit  1529   31.1   -0.0078   -11.963  1.89  -0.01     0    13    31  -0.0043
+  macd_cross       wide   1215   42.5   -0.0079    -9.615  1.10  -0.04    12    49    43  -0.0012
+
+=== VERDICT (§30 OOS: win>55% · R/R≥1.2 · net>0 · n≥30) ===
+  algorithms clearing the bar: 0 / 20
+  best: sma_cross/wide avg=$0.0044/trade win=46.6% n=840 — no edge; cost floor dominates (consistent with the no-edge history)
+
+=== POINTS LEADERBOARD (gross bps of entry price — OOS pooled; docs/13 §2) ===
+  algo             exit        n  pwin%  avg_bps  med_bps  ptsPF  grossR   IS→OOS
+  sma_cross        wide      840   48.2   +12.11    -4.26   1.21  +0.105   +25.34
+  ensemble_3of4    sigexit   301   34.2   +11.43   -67.01   1.15  +0.075   +45.15
+  ensemble_3of4    sigexit_rsi   303   42.9    +8.72   -46.89   1.13  +0.073   +32.46
+  ensemble_3of4    sigexit_tp   311   75.2    +8.01   +42.01   1.24  +0.074    +7.25
+  sma_cross        sigexit_rsi   872   40.1    +7.29   -52.14   1.10  +0.064   +13.96
+  sma_cross        sigexit   872   33.9    +5.53   -72.90   1.07  +0.024    +8.79
+  macd_rsi         sigexit_tp   931   70.1    +4.65   +40.09   1.14  +0.043    +3.92
+  cci_mom          wide     1809   45.3    +3.74   -19.29   1.06  +0.027   +12.58
+  cci_mom          sigexit_rsi  1675   40.5    +3.53   -47.22   1.05  +0.031   +16.53
+  cci_mom          sigexit_tp  2032   70.7    +3.22   +41.49   1.09  +0.019    +3.03
+  macd_cross       sigexit_tp  1341   69.9    +2.96   +41.06   1.08  +0.033    +1.68
+  ensemble_3of4    wide      310   45.5    +2.57   -21.15   1.04  +0.038   +19.90
+  sma_cross        sigexit_tp   872   70.8    +1.28   +40.41   1.03  +0.028    +0.10
+  cci_mom          sigexit  1529   32.6    +0.38   -65.21   1.01  -0.012    +8.31
+  macd_rsi         sigexit   931   32.3    -3.15   -53.64   0.95  -0.003    +0.76
+  macd_rsi         sigexit_rsi   931   37.7    -3.44   -43.00   0.95  +0.007    +2.49
+  macd_rsi         wide      885   45.1    -4.14   -20.96   0.93  -0.022    +2.51
+  macd_cross       sigexit  1341   32.7    -4.94   -60.51   0.93  -0.013    -4.05
+  macd_cross       sigexit_rsi  1341   36.5    -5.75   -52.97   0.92  -0.006    -3.45
+  macd_cross       wide     1215   44.7    -8.10   -23.11   0.88  -0.043    -3.56
+
+=== POINTS VERDICT (§6.1 joint bar: pwin>=65% AND avg_bps>0 AND n>=30) ===
+  combos clearing the joint bar: 5 / 20
+  POINTS SURVIVOR: ensemble_3of4 / sigexit_tp — pwin 75.2% avg +8.01 bps (fee shelf: maker-viable) grossR +0.074 n=311
+  POINTS SURVIVOR: macd_rsi / sigexit_tp — pwin 70.1% avg +4.65 bps (fee shelf: maker-viable) grossR +0.043 n=931
+  POINTS SURVIVOR: cci_mom / sigexit_tp — pwin 70.7% avg +3.22 bps (fee shelf: signal-only (<4bps)) grossR +0.019 n=2032
+  POINTS SURVIVOR: macd_cross / sigexit_tp — pwin 69.9% avg +2.96 bps (fee shelf: signal-only (<4bps)) grossR +0.033 n=1341
+  POINTS SURVIVOR: sma_cross / sigexit_tp — pwin 70.8% avg +1.28 bps (fee shelf: signal-only (<4bps)) grossR +0.028 n=872
+
+=== DEFLATED SHARPE (stop-#2 multiple-testing test) ===
+  trials N=20 (combos ≥30 trades) · Var(trial Sharpe)=0.00114 · Sharpe spread [-0.087,+0.044]
+  BEST by Sharpe: ensemble_3of4/sigexit_tp — per-trade Sharpe +0.0442, T=311, skew -1.20, kurt 2.48
+  PSR(>0)=0.776  (P the true Sharpe is positive at all, BEFORE the data-mining haircut)
+  DSR @ N=20  : SR*=+0.0643 → DSR=0.365  [FAIL — within data-mining noise]
+  DSR @ N=60  : SR*=+0.0794 → DSR=0.273  [FAIL — within data-mining noise]
+  DSR @ N=200 : SR*=+0.0936 → DSR=0.199  [FAIL — within data-mining noise]
+  (stop-#2 'deflated Sharpe>0' ⇒ DSR>0.95: Sharpe beats the expected MAX of N random tries)
+
+wrote /root/Kestrel/reports/algo_search_20260724-143435.md  (+ _survivors.json: 0)

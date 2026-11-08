@@ -1,0 +1,13 @@
+{
+  "tag": "20260603-104842",
+  "days": 20,
+  "pairs": [
+    "BTC/USDT",
+    "ETH/USDT"
+  ],
+  "trades_by_cell": {
+    "t10s10h4": [],
+    "t10s10h8": [],
+    "t10s14h4": []
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "algo": "streak_go_3",
+    "exit": "tight",
+    "params": {
+      "tp_atr_multiplier": 1.4,
+      "sl_atr_multiplier": 1.0,
+      "max_hold_candles": 4
+    },
+    "oos": {
+      "total_trades": 109,
+      "win_rate": 0.5505,
+      "total_pnl_usdt": 13.2963
+    }
+  }
+]

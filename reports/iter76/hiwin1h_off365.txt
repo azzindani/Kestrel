@@ -1,0 +1,10 @@
+[funding] perp funding modeled: 0.01%/8h, always charged (v2.7)
+[points] risk Rule 3 R/R floor bypassed for this process (research-only; see docs/13 §9)
+[intrabar] exit resolution = close (tp_first = runner default)
+=== Kestrel ALGORITHM SEARCH (1h, 365d, 20x, fees=realistic, regime=all, LOCKBOX offset=365d) ===
+algos=2 exits=5 pairs=10 combos=10 backtests=100 cost/trade≈0.04%
+[1/10] BTC/USDT: src=okx candles=9000 (OOS=3600)
+[2/10] ETH/USDT: src=okx candles=9000 (OOS=3600)
+[3/10] SOL/USDT: src=okx candles=9000 (OOS=3600)
+[4/10] XRP/USDT: src=okx candles=9000 (OOS=3600)
+[5/10] DOGE/USDT: src=okx candles=9000 (OOS=3600)

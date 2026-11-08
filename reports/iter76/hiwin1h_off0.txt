@@ -1,0 +1,75 @@
+[funding] perp funding modeled: 0.01%/8h, always charged (v2.7)
+[points] risk Rule 3 R/R floor bypassed for this process (research-only; see docs/13 §9)
+[intrabar] exit resolution = close (tp_first = runner default)
+=== Kestrel ALGORITHM SEARCH (1h, 365d, 20x, fees=realistic, regime=all) ===
+algos=2 exits=5 pairs=10 combos=10 backtests=100 cost/trade≈0.04%
+[1/10] BTC/USDT: src=okx candles=8760 (OOS=3504)
+[2/10] ETH/USDT: src=okx candles=8760 (OOS=3504)
+[3/10] SOL/USDT: src=okx candles=8760 (OOS=3504)
+[4/10] XRP/USDT: src=okx candles=8760 (OOS=3504)
+[5/10] DOGE/USDT: src=okx candles=8760 (OOS=3504)
+[6/10] ADA/USDT: src=okx candles=8760 (OOS=3504)
+[7/10] AVAX/USDT: src=okx candles=8760 (OOS=3504)
+[8/10] LINK/USDT: src=okx candles=8760 (OOS=3504)
+[9/10] BNB/USDT: src=okx candles=8760 (OOS=3504)
+[10/10] LTC/USDT: src=okx candles=8760 (OOS=3504)
+
+=== ALGO LEADERBOARD (out-of-sample, top 25) ===
+  algo             exit      n   win%      avg$      net$   R/R   expR   tp%   to%  clr%   IS→OOS
+  cci_mom          hiwin33  1993   55.1   -0.0035    -7.040  0.73   0.01    51    29    55  +0.0001
+  cci_mom          hiwin43  2043   48.3   -0.0040    -8.212  0.94   0.01    41    42    48  +0.0005
+  cci_mom          scratch  2089   47.0   -0.0042    -8.762  0.92  -0.01    39    56    47  -0.0016
+  cci_mom          hiwin50  2047   47.8   -0.0049   -10.044  0.94   0.01    40    38    48  +0.0001
+  cci_mom          medium  1944   40.9   -0.0052   -10.199  1.28   0.02    17    47    41  +0.0036
+  macd_cross       scratch  1286   46.3   -0.0067    -8.625  0.85  -0.03    38    55    46  -0.0062
+  macd_cross       hiwin43  1288   46.0   -0.0102   -13.089  0.86  -0.06    39    43    46  -0.0069
+  macd_cross       hiwin33  1254   52.2   -0.0112   -14.011  0.65  -0.07    48    29    52  -0.0073
+  macd_cross       hiwin50  1307   45.8   -0.0113   -14.828  0.87  -0.06    39    39    46  -0.0086
+  macd_cross       medium  1291   39.5   -0.0153   -19.720  1.09  -0.11    13    49    40  -0.0061
+
+=== VERDICT (§30 OOS: win>55% · R/R≥1.2 · net>0 · n≥30) ===
+  algorithms clearing the bar: 0 / 10
+  best: cci_mom/hiwin33 avg=$-0.0035/trade win=55.1% n=1993 — no edge; cost floor dominates (consistent with the no-edge history)
+
+=== POINTS LEADERBOARD (gross bps of entry price — OOS pooled; docs/13 §2) ===
+  algo             exit        n  pwin%  avg_bps  med_bps  ptsPF  grossR   IS→OOS
+  cci_mom          medium   1944   43.6    -0.04   -21.80   1.00  +0.019    +1.72
+  cci_mom          hiwin33  1993   56.6    -0.61   +28.30   0.99  +0.013    -1.75
+  cci_mom          hiwin43  2043   50.4    -1.33    +0.68   0.97  +0.009    -2.58
+  cci_mom          hiwin50  2047   49.9    -1.47    -0.36   0.97  +0.007    -3.21
+  cci_mom          scratch  2089   48.6    -2.40    -2.36   0.94  -0.008    -3.82
+  macd_cross       scratch  1286   48.5    -6.53    -2.11   0.85  -0.029   -10.74
+  macd_cross       hiwin50  1307   47.9    -7.82    -5.98   0.84  -0.061   -11.31
+  macd_cross       hiwin43  1288   48.1    -8.55    -5.00   0.83  -0.056    -9.87
+  macd_cross       hiwin33  1254   53.4    -9.94   +19.33   0.82  -0.069    -9.36
+  macd_cross       medium   1291   41.7   -10.69   -28.05   0.82  -0.110    -9.16
+
+=== POINTS VERDICT (§6.1 joint bar: pwin>=65% AND avg_bps>0 AND n>=30) ===
+  combos clearing the joint bar: 0 / 10
+  best by avg_bps: cci_mom/medium — pwin 43.6% avg -0.04 bps n=1944 — joint bar NOT met
+
+=== PER-PAIR OOS avg$/trade (breadth check — +EV pair count per algo/exit) ===
+  cci_mom/hiwin33  [+EV 3/10 pairs]  BTC:+0.0021(n179)  ETH:-0.0030(n184)  SOL:-0.0054(n225)  XRP:+0.0043(n210)  DOGE:-0.0053(n210)  ADA:-0.0081(n204)  AVAX:+0.0015(n191)  LINK:-0.0047(n206)  BNB:-0.0043(n192)  LTC:-0.0119(n192)
+  cci_mom/hiwin43  [+EV 2/10 pairs]  BTC:-0.0019(n184)  ETH:-0.0048(n186)  SOL:-0.0032(n231)  XRP:+0.0043(n214)  DOGE:-0.0074(n215)  ADA:-0.0034(n213)  AVAX:+0.0005(n196)  LINK:-0.0057(n209)  BNB:-0.0037(n200)  LTC:-0.0154(n195)
+  cci_mom/hiwin50  [+EV 1/10 pairs]  BTC:-0.0027(n185)  ETH:-0.0073(n188)  SOL:-0.0019(n231)  XRP:+0.0036(n214)  DOGE:-0.0089(n215)  ADA:-0.0043(n213)  AVAX:-0.0010(n197)  LINK:-0.0071(n209)  BNB:-0.0046(n200)  LTC:-0.0158(n195)
+  cci_mom/medium  [+EV 1/10 pairs]  BTC:-0.0096(n177)  ETH:-0.0009(n180)  SOL:-0.0034(n220)  XRP:+0.0084(n203)  DOGE:-0.0124(n202)  ADA:-0.0083(n200)  AVAX:-0.0024(n189)  LINK:-0.0074(n196)  BNB:-0.0029(n189)  LTC:-0.0142(n188)
+  cci_mom/scratch  [+EV 1/10 pairs]  BTC:-0.0031(n187)  ETH:-0.0051(n193)  SOL:-0.0043(n236)  XRP:-0.0024(n220)  DOGE:-0.0055(n226)  ADA:-0.0019(n219)  AVAX:+0.0000(n196)  LINK:-0.0030(n213)  BNB:-0.0041(n202)  LTC:-0.0128(n197)
+  macd_cross/hiwin33  [+EV 1/10 pairs]  BTC:-0.0143(n105)  ETH:-0.0157(n122)  SOL:-0.0003(n118)  XRP:-0.0214(n136)  DOGE:-0.0090(n125)  ADA:-0.0114(n134)  AVAX:+0.0049(n131)  LINK:-0.0217(n115)  BNB:-0.0137(n127)  LTC:-0.0101(n141)
+  macd_cross/hiwin43  [+EV 1/10 pairs]  BTC:-0.0137(n106)  ETH:-0.0103(n126)  SOL:-0.0025(n122)  XRP:-0.0193(n141)  DOGE:-0.0095(n128)  ADA:-0.0083(n138)  AVAX:+0.0057(n132)  LINK:-0.0200(n123)  BNB:-0.0086(n128)  LTC:-0.0148(n144)
+  macd_cross/hiwin50  [+EV 1/10 pairs]  BTC:-0.0163(n107)  ETH:-0.0108(n127)  SOL:-0.0004(n125)  XRP:-0.0207(n144)  DOGE:-0.0114(n130)  ADA:-0.0124(n140)  AVAX:+0.0069(n133)  LINK:-0.0221(n126)  BNB:-0.0108(n129)  LTC:-0.0152(n146)
+  macd_cross/medium  [+EV 1/10 pairs]  BTC:-0.0113(n108)  ETH:-0.0148(n125)  SOL:-0.0058(n123)  XRP:-0.0287(n144)  DOGE:-0.0190(n127)  ADA:-0.0151(n137)  AVAX:+0.0038(n133)  LINK:-0.0260(n122)  BNB:-0.0256(n124)  LTC:-0.0099(n148)
+  macd_cross/scratch  [+EV 0/10 pairs]  BTC:-0.0097(n105)  ETH:-0.0107(n123)  SOL:-0.0013(n120)  XRP:-0.0139(n141)  DOGE:-0.0040(n131)  ADA:-0.0065(n138)  AVAX:-0.0009(n134)  LINK:-0.0109(n122)  BNB:-0.0054(n127)  LTC:-0.0043(n145)
+
+=== PER-PAIR OOS points (avg gross bps @ points-win% — breadth on the §6.1 bar) ===
+  cci_mom/hiwin33  [pts+ 5/10 pairs]  BTC:+2.6@61%(n179)  ETH:-1.5@53%(n184)  SOL:+0.1@57%(n225)  XRP:+13.2@63%(n210)  DOGE:-1.9@53%(n210)  ADA:-6.8@54%(n204)  AVAX:+7.9@59%(n191)  LINK:-6.1@56%(n206)  BNB:+1.3@57%(n192)  LTC:-15.3@52%(n192)
+  cci_mom/hiwin43  [pts+ 6/10 pairs]  BTC:+0.1@53%(n184)  ETH:-2.3@46%(n186)  SOL:+0.3@52%(n231)  XRP:+9.7@57%(n214)  DOGE:-5.7@47%(n215)  ADA:+1.6@53%(n213)  AVAX:+5.7@49%(n196)  LINK:-7.1@52%(n209)  BNB:+2.4@52%(n200)  LTC:-19.0@43%(n195)
+  cci_mom/hiwin50  [pts+ 5/10 pairs]  BTC:-1.5@52%(n185)  ETH:-3.2@46%(n188)  SOL:+2.1@52%(n231)  XRP:+9.6@56%(n214)  DOGE:-5.5@47%(n215)  ADA:+1.2@53%(n213)  AVAX:+4.5@49%(n197)  LINK:-7.7@51%(n209)  BNB:+2.0@51%(n200)  LTC:-17.6@43%(n195)
+  cci_mom/medium  [pts+ 5/10 pairs]  BTC:-3.3@43%(n177)  ETH:+2.2@43%(n180)  SOL:+5.3@43%(n220)  XRP:+17.7@48%(n203)  DOGE:-4.5@43%(n202)  ADA:-2.8@42%(n200)  AVAX:+1.9@43%(n189)  LINK:-9.3@40%(n196)  BNB:+4.4@48%(n189)  LTC:-13.6@43%(n188)
+  cci_mom/scratch  [pts+ 3/10 pairs]  BTC:-1.6@49%(n187)  ETH:-3.7@43%(n193)  SOL:-2.2@49%(n236)  XRP:+0.6@51%(n220)  DOGE:-5.6@47%(n226)  ADA:+2.3@49%(n219)  AVAX:+7.1@51%(n196)  LINK:-1.6@49%(n213)  BNB:-0.5@50%(n202)  LTC:-19.3@47%(n197)
+  macd_cross/hiwin33  [pts+ 1/10 pairs]  BTC:-6.9@50%(n105)  ETH:-18.5@53%(n122)  SOL:-1.2@61%(n118)  XRP:-25.1@46%(n136)  DOGE:-16.3@52%(n125)  ADA:-14.7@51%(n134)  AVAX:+18.9@56%(n131)  LINK:-24.5@49%(n115)  BNB:-4.0@59%(n127)  LTC:-7.7@57%(n141)
+  macd_cross/hiwin43  [pts+ 1/10 pairs]  BTC:-8.2@46%(n106)  ETH:-9.7@48%(n126)  SOL:-5.2@57%(n122)  XRP:-16.9@45%(n141)  DOGE:-14.1@45%(n128)  ADA:-10.8@49%(n138)  AVAX:+17.6@48%(n132)  LINK:-20.9@44%(n123)  BNB:-1.0@54%(n128)  LTC:-15.6@46%(n144)
+  macd_cross/hiwin50  [pts+ 1/10 pairs]  BTC:-8.4@46%(n107)  ETH:-6.9@48%(n127)  SOL:-2.6@57%(n125)  XRP:-16.3@43%(n144)  DOGE:-12.2@45%(n130)  ADA:-15.6@47%(n140)  AVAX:+18.1@49%(n133)  LINK:-17.8@45%(n126)  BNB:-1.3@53%(n129)  LTC:-13.6@47%(n146)
+  macd_cross/medium  [pts+ 1/10 pairs]  BTC:-3.8@45%(n108)  ETH:-11.3@43%(n125)  SOL:-10.1@46%(n123)  XRP:-29.6@34%(n144)  DOGE:-16.2@35%(n127)  ADA:-13.8@37%(n137)  AVAX:+17.7@47%(n133)  LINK:-21.0@39%(n122)  BNB:-11.8@40%(n124)  LTC:-5.8@49%(n148)
+  macd_cross/scratch  [pts+ 2/10 pairs]  BTC:-6.4@46%(n105)  ETH:-13.8@47%(n123)  SOL:-1.6@54%(n120)  XRP:-14.2@45%(n141)  DOGE:-6.2@47%(n131)  ADA:-11.0@46%(n138)  AVAX:+6.5@46%(n134)  LINK:-14.6@45%(n122)  BNB:+0.2@54%(n127)  LTC:-4.1@54%(n145)
+
+wrote /app/reports/algo_search_20261014-024608.md  (+ _survivors.json: 0)

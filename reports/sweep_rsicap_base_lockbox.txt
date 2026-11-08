@@ -1,0 +1,92 @@
+[funding] perp funding modeled: 0.01%/8h, always charged (v2.7)
+[points] risk Rule 3 R/R floor bypassed for this process (research-only; see docs/13 §9)
+[sigexit] indicator-based exits armed (signal_exit / indicator_tp reasons)
+=== Kestrel ALGORITHM SEARCH (1h, 365d, 20x, fees=realistic, regime=all, LOCKBOX offset=365d) ===
+algos=5 exits=4 pairs=10 combos=20 backtests=200 cost/trade≈0.04%
+[1/10] BTC/USDT: src=okx candles=9000 (OOS=3600)
+[2/10] ETH/USDT: src=okx candles=9000 (OOS=3600)
+[3/10] SOL/USDT: src=okx candles=9000 (OOS=3600)
+[4/10] DOGE/USDT: src=okx candles=9000 (OOS=3600)
+[5/10] PEPE/USDT: src=okx candles=9000 (OOS=3600)
+  okx: 0 candles < 5256 required — skipping (capped/partial)
+  gate: attempt 1/3 failed (BadRequest: gate {"label":"INVALID_PARAM_VALUE","message":"Candlestick too long ag)
+  gate: attempt 2/3 failed (BadRequest: gate {"label":"INVALID_PARAM_VALUE","message":"Candlestick too long ag)
+  gate: attempt 3/3 failed (BadRequest: gate {"label":"INVALID_PARAM_VALUE","message":"Candlestick too long ag)
+  kraken: attempt 1/3 failed (BadSymbol: kraken does not have market symbol HYPE/USDT)
+  kraken: attempt 2/3 failed (BadSymbol: kraken does not have market symbol HYPE/USDT)
+  kraken: attempt 3/3 failed (BadSymbol: kraken does not have market symbol HYPE/USDT)
+[6/10] HYPE/USDT: FETCH FAILED (RuntimeError: all exchanges failed to serve 365d; last error: kraken does not have m) — skipped
+[7/10] XRP/USDT: src=okx candles=9000 (OOS=3600)
+[8/10] BNB/USDT: src=okx candles=9000 (OOS=3600)
+[9/10] ADA/USDT: src=okx candles=9000 (OOS=3600)
+[10/10] AVAX/USDT: src=okx candles=9000 (OOS=3600)
+
+=== ALGO LEADERBOARD (out-of-sample, top 25) ===
+  algo             exit      n   win%      avg$      net$   R/R   expR   tp%   to%  clr%   IS→OOS
+  macd_rsi         sigexit   872   34.2    0.0172    14.988  2.45   0.20     0     6    34  +0.0111
+  sma_cross        sigexit   837   33.9    0.0098     8.189  2.25   0.16     0    23    34  +0.0104
+  cci_mom          sigexit  1426   30.6    0.0061     8.651  2.51   0.11     0    13    31  +0.0072
+  sma_cross        wide    796   48.0    0.0057     4.498  1.24   0.11    15    52    48  +0.0152
+  macd_cross       sigexit  1260   33.3    0.0055     6.981  2.20   0.11     0     9    33  +0.0080
+  macd_rsi         sigexit_rsi   872   40.1    0.0041     3.612  1.62   0.08     0     1    40  +0.0016
+  macd_rsi         wide    834   45.3    0.0041     3.388  1.31   0.09    18    45    45  +0.0064
+  macd_rsi         sigexit_tp   872   72.5    0.0031     2.682  0.43   0.07    72     1    72  +0.0040
+  sma_cross        sigexit_rsi   837   38.8    0.0022     1.804  1.64   0.09     0     8    39  +0.0075
+  sma_cross        sigexit_tp   837   71.6    0.0015     1.214  0.42   0.05    71     1    72  +0.0042
+  macd_cross       wide   1150   45.2    0.0007     0.781  1.23   0.06    15    47    45  +0.0059
+  ensemble_3of4    sigexit_tp   322   73.0    0.0002     0.073  0.37   0.04    73     1    73  -0.0004
+  cci_mom          wide   1697   43.3   -0.0007    -1.144  1.29   0.03    16    47    43  +0.0050
+  macd_cross       sigexit_rsi  1260   37.5   -0.0009    -1.129  1.64   0.03     0     4    37  +0.0043
+  macd_cross       sigexit_tp  1260   69.8   -0.0010    -1.260  0.42   0.03    70     1    70  +0.0017
+  cci_mom          sigexit_tp  1881   69.9   -0.0020    -3.689  0.40   0.02    70     1    70  +0.0007
+  cci_mom          sigexit_rsi  1570   37.3   -0.0021    -3.297  1.60   0.02     0     3    37  +0.0028
+  ensemble_3of4    wide    318   40.6   -0.0024    -0.762  1.40   0.03    19    39    41  +0.0000
+  ensemble_3of4    sigexit_rsi   315   40.3   -0.0053    -1.671  1.34   0.01     0     4    40  -0.0108
+  ensemble_3of4    sigexit   310   30.3   -0.0071    -2.188  2.08   0.02     0    16    30  -0.0349
+
+=== VERDICT (§30 OOS: win>55% · R/R≥1.2 · net>0 · n≥30) ===
+  algorithms clearing the bar: 0 / 20
+  best: macd_rsi/sigexit avg=$0.0172/trade win=34.2% n=872 — no edge; cost floor dominates (consistent with the no-edge history)
+  NOTE: 1 pair(s) skipped (fetch failed): HYPE/USDT
+
+=== POINTS LEADERBOARD (gross bps of entry price — OOS pooled; docs/13 §2) ===
+  algo             exit        n  pwin%  avg_bps  med_bps  ptsPF  grossR   IS→OOS
+  macd_rsi         sigexit   872   35.0   +28.18   -60.93   1.34  +0.200   +21.09
+  sma_cross        sigexit   837   34.8   +23.62   -66.31   1.27  +0.161   +25.14
+  sma_cross        wide      796   49.5   +19.96    -1.93   1.30  +0.109   +36.56
+  sma_cross        sigexit_rsi   837   39.4   +18.72   -52.73   1.23  +0.088   +28.79
+  macd_cross       sigexit  1260   34.1   +16.47   -66.18   1.18  +0.112   +22.37
+  macd_rsi         sigexit_rsi   872   40.9   +15.13   -43.55   1.20  +0.080   +11.28
+  macd_rsi         wide      834   46.5   +13.88   -16.32   1.18  +0.092   +13.62
+  ensemble_3of4    sigexit_rsi   315   41.6   +11.88   -55.36   1.14  +0.011    -1.40
+  ensemble_3of4    wide      318   41.2   +11.68   -43.43   1.14  +0.031    +8.09
+  macd_cross       wide     1150   46.7   +11.28   -12.89   1.15  +0.059   +16.50
+  ensemble_3of4    sigexit_tp   322   73.0   +11.26   +51.32   1.27  +0.044    -2.07
+  macd_rsi         sigexit_tp   872   72.5   +11.17   +51.70   1.28  +0.071    +5.02
+  sma_cross        sigexit_tp   837   71.7   +10.17   +49.12   1.26  +0.053    +7.29
+  cci_mom          sigexit  1426   31.8    +9.72   -72.04   1.11  +0.109   +12.39
+  macd_cross       sigexit_rsi  1260   38.3    +8.20   -54.79   1.10  +0.029   +17.21
+  ensemble_3of4    sigexit   310   31.3    +7.25   -81.38   1.07  +0.024   -30.91
+  macd_cross       sigexit_tp  1260   69.8    +5.45   +50.88   1.12  +0.029    +2.89
+  cci_mom          wide     1697   44.5    +3.46   -30.87   1.04  +0.034    +9.69
+  cci_mom          sigexit_rsi  1570   38.4    +1.98   -52.75   1.02  +0.018    +8.16
+  cci_mom          sigexit_tp  1881   69.9    +1.57   +50.09   1.03  +0.015    -0.12
+
+=== POINTS VERDICT (§6.1 joint bar: pwin>=65% AND avg_bps>0 AND n>=30) ===
+  combos clearing the joint bar: 5 / 20
+  POINTS SURVIVOR: ensemble_3of4 / sigexit_tp — pwin 73.0% avg +11.26 bps (fee shelf: maker-viable) grossR +0.044 n=322
+  POINTS SURVIVOR: macd_rsi / sigexit_tp — pwin 72.5% avg +11.17 bps (fee shelf: maker-viable) grossR +0.071 n=872
+  POINTS SURVIVOR: sma_cross / sigexit_tp — pwin 71.7% avg +10.17 bps (fee shelf: maker-viable) grossR +0.053 n=837
+  POINTS SURVIVOR: macd_cross / sigexit_tp — pwin 69.8% avg +5.45 bps (fee shelf: maker-viable) grossR +0.029 n=1260
+  POINTS SURVIVOR: cci_mom / sigexit_tp — pwin 69.9% avg +1.57 bps (fee shelf: signal-only (<4bps)) grossR +0.015 n=1881
+
+=== DEFLATED SHARPE (stop-#2 multiple-testing test) ===
+  trials N=20 (combos ≥30 trades) · Var(trial Sharpe)=0.00110 · Sharpe spread [-0.044,+0.075]
+  BEST by Sharpe: macd_rsi/sigexit — per-trade Sharpe +0.0749, T=872, skew +3.92, kurt 32.15
+  PSR(>0)=0.995  (P the true Sharpe is positive at all, BEFORE the data-mining haircut)
+  DSR @ N=20  : SR*=+0.0630 → DSR=0.658  [FAIL — within data-mining noise]
+  DSR @ N=60  : SR*=+0.0777 → DSR=0.462  [FAIL — within data-mining noise]
+  DSR @ N=200 : SR*=+0.0916 → DSR=0.284  [FAIL — within data-mining noise]
+  (stop-#2 'deflated Sharpe>0' ⇒ DSR>0.95: Sharpe beats the expected MAX of N random tries)
+
+wrote /root/Kestrel/reports/algo_search_20260724-143730.md  (+ _survivors.json: 0)

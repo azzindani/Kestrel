@@ -1,0 +1,16 @@
+[
+  {
+    "algo": "macd_rsi_adx20",
+    "exit": "wide",
+    "params": {
+      "tp_atr_multiplier": 3.0,
+      "sl_atr_multiplier": 1.5,
+      "max_hold_candles": 8
+    },
+    "oos": {
+      "total_trades": 182,
+      "win_rate": 0.5824,
+      "total_pnl_usdt": 5.3651
+    }
+  }
+]

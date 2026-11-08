@@ -1,0 +1,129 @@
+[funding] perp funding modeled: 0.01%/8h, always charged (v2.7)
+[points] risk Rule 3 R/R floor bypassed for this process (research-only; see docs/13 §9)
+=== Kestrel ALGORITHM SEARCH (1h, 365d, 20x, fees=realistic, regime=all) ===
+algos=5 exits=4 pairs=10 combos=20 backtests=200 cost/trade≈0.04%
+[1/10] BTC/USDT: src=okx candles=8760 (OOS=3504)
+[2/10] ETH/USDT: src=okx candles=8760 (OOS=3504)
+[3/10] SOL/USDT: src=okx candles=8760 (OOS=3504)
+[4/10] DOGE/USDT: src=okx candles=8760 (OOS=3504)
+[5/10] PEPE/USDT: src=okx candles=8760 (OOS=3504)
+  okx: 0 candles < 5256 required — skipping (capped/partial)
+[6/10] HYPE/USDT: src=gate candles=8760 (OOS=3504)
+[7/10] XRP/USDT: src=okx candles=8760 (OOS=3504)
+[8/10] BNB/USDT: src=okx candles=8760 (OOS=3504)
+[9/10] ADA/USDT: src=okx candles=8760 (OOS=3504)
+[10/10] AVAX/USDT: src=okx candles=8760 (OOS=3504)
+
+=== ALGO LEADERBOARD (out-of-sample, top 25) ===
+  algo             exit      n   win%      avg$      net$   R/R   expR   tp%   to%  clr%   IS→OOS
+  ensemble_3of4    hiwin50   313   66.8    0.0006     0.186  0.51   0.06    65    12    67  +0.0044
+  ensemble_3of4    hiwin43   312   67.6   -0.0006    -0.193  0.47   0.04    66    14    68  +0.0023
+  macd_rsi         hiwin50   921   65.1   -0.0011    -0.969  0.52   0.04    64    13    65  +0.0023
+  ensemble_3of4    scratch   312   71.2   -0.0013    -0.403  0.37   0.02    70    22    71  +0.0022
+  macd_rsi         hiwin33   910   74.2   -0.0013    -1.158  0.33   0.03    74     8    74  +0.0013
+  ensemble_3of4    hiwin33   312   74.7   -0.0014    -0.422  0.32   0.03    74     7    75  +0.0010
+  macd_rsi         scratch   904   69.4   -0.0014    -1.264  0.40   0.02    68    24    69  +0.0020
+  macd_rsi         hiwin43   913   66.0   -0.0019    -1.748  0.48   0.03    65    15    66  +0.0013
+  macd_cross       scratch  1270   67.9   -0.0020    -2.551  0.41   0.01    66    26    68  +0.0012
+  macd_cross       hiwin33  1275   73.6   -0.0022    -2.783  0.32   0.02    73     8    74  +0.0007
+  cci_mom          hiwin33  2061   72.9   -0.0023    -4.702  0.33   0.02    72     9    73  +0.0012
+  sma_cross        hiwin33   259   73.8   -0.0025    -0.642  0.32   0.02    73     7    74  +0.0010
+  macd_cross       hiwin50  1301   64.0   -0.0026    -3.377  0.51   0.02    63    14    64  +0.0008
+  cci_mom          scratch  2093   65.5   -0.0026    -5.464  0.44   0.00    64    29    66  +0.0010
+  sma_cross        scratch   259   67.2   -0.0029    -0.759  0.41   0.00    66    27    67  -0.0022
+  sma_cross        hiwin50   259   64.5   -0.0031    -0.811  0.50   0.02    61    16    64  -0.0023
+  sma_cross        hiwin43   259   64.9   -0.0032    -0.830  0.48   0.01    62    20    65  -0.0010
+  macd_cross       hiwin43  1281   65.0   -0.0033    -4.169  0.47   0.01    63    16    65  -0.0002
+  cci_mom          hiwin50  2079   61.9   -0.0045    -9.368  0.52  -0.00    60    16    62  -0.0004
+  cci_mom          hiwin43  2076   62.7   -0.0045    -9.242  0.49  -0.01    60    20    63  -0.0009
+
+=== VERDICT (§30 OOS: win>55% · R/R≥1.2 · net>0 · n≥30) ===
+  algorithms clearing the bar: 0 / 20
+  best: ensemble_3of4/hiwin50 avg=$0.0006/trade win=66.8% n=313 — no edge; cost floor dominates (consistent with the no-edge history)
+
+=== POINTS LEADERBOARD (gross bps of entry price — OOS pooled; docs/13 §2) ===
+  algo             exit        n  pwin%  avg_bps  med_bps  ptsPF  grossR   IS→OOS
+  ensemble_3of4    hiwin50   313   67.4    +5.02   +37.09   1.16  +0.058    +4.69
+  macd_rsi         hiwin33   910   74.3    +4.46   +34.75   1.15  +0.028    +3.26
+  macd_rsi         hiwin50   921   65.8    +4.39   +36.25   1.14  +0.039    +3.38
+  macd_rsi         scratch   904   70.0    +4.05   +31.61   1.15  +0.016    +5.02
+  cci_mom          hiwin33  2061   73.2    +3.52   +35.01   1.12  +0.016    +3.95
+  macd_rsi         hiwin43   913   66.7    +3.29   +36.77   1.10  +0.025    +2.60
+  ensemble_3of4    hiwin43   312   68.3    +3.26   +37.58   1.10  +0.040    +1.83
+  macd_cross       hiwin33  1275   73.6    +2.93   +35.36   1.09  +0.017    +1.68
+  ensemble_3of4    scratch   312   71.8    +2.82   +32.73   1.10  +0.017    +4.48
+  ensemble_3of4    hiwin33   312   74.7    +2.50   +34.53   1.08  +0.027    +1.05
+  macd_cross       hiwin50  1301   64.6    +2.05   +36.29   1.06  +0.024    +0.74
+  macd_cross       scratch  1270   68.9    +2.02   +31.89   1.07  +0.009    +2.41
+  sma_cross        hiwin50   259   64.9    +1.74   +35.59   1.05  +0.023    -8.66
+  cci_mom          scratch  2093   66.3    +1.59   +31.24   1.06  +0.001    +3.59
+  macd_cross       hiwin43  1281   65.6    +0.69   +37.09   1.02  +0.011    -0.55
+  cci_mom          hiwin50  2079   63.0    +0.54   +34.97   1.02  -0.000    -0.03
+  sma_cross        hiwin43   259   65.3    +0.53   +36.15   1.01  +0.014    -8.00
+  sma_cross        hiwin33   259   74.5    +0.21   +36.03   1.01  +0.016    -4.66
+  cci_mom          hiwin43  2076   63.8    -0.25   +35.59   0.99  -0.006    -0.72
+  sma_cross        scratch   259   68.7    -1.07   +33.02   0.97  +0.002    -7.57
+
+=== POINTS VERDICT (§6.1 joint bar: pwin>=65% AND avg_bps>0 AND n>=30) ===
+  combos clearing the joint bar: 15 / 20
+  POINTS SURVIVOR: ensemble_3of4 / hiwin50 — pwin 67.4% avg +5.02 bps (fee shelf: maker-viable) grossR +0.058 n=313
+  POINTS SURVIVOR: macd_rsi / hiwin33 — pwin 74.3% avg +4.46 bps (fee shelf: maker-viable) grossR +0.028 n=910
+  POINTS SURVIVOR: macd_rsi / hiwin50 — pwin 65.8% avg +4.39 bps (fee shelf: maker-viable) grossR +0.039 n=921
+  POINTS SURVIVOR: macd_rsi / scratch — pwin 70.0% avg +4.05 bps (fee shelf: maker-viable) grossR +0.016 n=904
+  POINTS SURVIVOR: cci_mom / hiwin33 — pwin 73.2% avg +3.52 bps (fee shelf: signal-only (<4bps)) grossR +0.016 n=2061
+  POINTS SURVIVOR: macd_rsi / hiwin43 — pwin 66.7% avg +3.29 bps (fee shelf: signal-only (<4bps)) grossR +0.025 n=913
+  POINTS SURVIVOR: ensemble_3of4 / hiwin43 — pwin 68.3% avg +3.26 bps (fee shelf: signal-only (<4bps)) grossR +0.040 n=312
+  POINTS SURVIVOR: macd_cross / hiwin33 — pwin 73.6% avg +2.93 bps (fee shelf: signal-only (<4bps)) grossR +0.017 n=1275
+  POINTS SURVIVOR: ensemble_3of4 / scratch — pwin 71.8% avg +2.82 bps (fee shelf: signal-only (<4bps)) grossR +0.017 n=312
+  POINTS SURVIVOR: ensemble_3of4 / hiwin33 — pwin 74.7% avg +2.50 bps (fee shelf: signal-only (<4bps)) grossR +0.027 n=312
+  POINTS SURVIVOR: macd_cross / scratch — pwin 68.9% avg +2.02 bps (fee shelf: signal-only (<4bps)) grossR +0.009 n=1270
+  POINTS SURVIVOR: cci_mom / scratch — pwin 66.3% avg +1.59 bps (fee shelf: signal-only (<4bps)) grossR +0.001 n=2093
+  POINTS SURVIVOR: macd_cross / hiwin43 — pwin 65.6% avg +0.69 bps (fee shelf: signal-only (<4bps)) grossR +0.011 n=1281
+  POINTS SURVIVOR: sma_cross / hiwin43 — pwin 65.3% avg +0.53 bps (fee shelf: signal-only (<4bps)) grossR +0.014 n=259
+  POINTS SURVIVOR: sma_cross / hiwin33 — pwin 74.5% avg +0.21 bps (fee shelf: signal-only (<4bps)) grossR +0.016 n=259
+
+=== PER-PAIR OOS avg$/trade (breadth check — +EV pair count per algo/exit) ===
+  cci_mom/hiwin33  [+EV 3/10 pairs]  BTC:-0.0015(n175)  ETH:+0.0015(n213)  SOL:-0.0048(n222)  DOGE:-0.0044(n223)  PEPE:-0.0061(n219)  HYPE:+0.0063(n204)  XRP:-0.0008(n204)  BNB:-0.0099(n208)  ADA:+0.0004(n195)  AVAX:-0.0027(n198)
+  cci_mom/hiwin43  [+EV 2/10 pairs]  BTC:-0.0046(n177)  ETH:-0.0029(n215)  SOL:-0.0100(n226)  DOGE:-0.0042(n223)  PEPE:-0.0080(n219)  HYPE:+0.0019(n206)  XRP:-0.0020(n204)  BNB:-0.0124(n210)  ADA:+0.0025(n198)  AVAX:-0.0036(n198)
+  cci_mom/hiwin50  [+EV 2/10 pairs]  BTC:-0.0046(n177)  ETH:-0.0032(n215)  SOL:-0.0085(n226)  DOGE:-0.0043(n223)  PEPE:-0.0083(n219)  HYPE:+0.0015(n206)  XRP:-0.0019(n204)  BNB:-0.0141(n211)  ADA:+0.0030(n199)  AVAX:-0.0035(n199)
+  cci_mom/scratch  [+EV 2/10 pairs]  BTC:-0.0032(n177)  ETH:-0.0013(n217)  SOL:-0.0041(n228)  DOGE:-0.0041(n225)  PEPE:-0.0049(n222)  HYPE:+0.0020(n207)  XRP:+0.0007(n203)  BNB:-0.0100(n212)  ADA:-0.0003(n203)  AVAX:-0.0000(n199)
+  ensemble_3of4/hiwin33  [+EV 7/10 pairs]  BTC:+0.0027(n28)  ETH:+0.0047(n32)  SOL:-0.0079(n30)  DOGE:+0.0043(n33)  PEPE:-0.0211(n32)  HYPE:-0.0064(n30)  XRP:+0.0003(n35)  BNB:+0.0008(n32)  ADA:+0.0060(n30)  AVAX:+0.0031(n30)
+  ensemble_3of4/hiwin43  [+EV 5/10 pairs]  BTC:+0.0091(n28)  ETH:-0.0029(n32)  SOL:-0.0036(n30)  DOGE:+0.0117(n33)  PEPE:-0.0233(n32)  HYPE:-0.0063(n30)  XRP:-0.0005(n35)  BNB:+0.0023(n32)  ADA:+0.0054(n30)  AVAX:+0.0027(n30)
+  ensemble_3of4/hiwin50  [+EV 5/10 pairs]  BTC:+0.0130(n28)  ETH:-0.0022(n32)  SOL:-0.0010(n30)  DOGE:+0.0157(n33)  PEPE:-0.0213(n32)  HYPE:-0.0066(n30)  XRP:+0.0033(n35)  BNB:+0.0038(n32)  ADA:-0.0025(n30)  AVAX:+0.0039(n31)
+  ensemble_3of4/scratch  [+EV 4/10 pairs]  BTC:-0.0016(n28)  ETH:-0.0023(n32)  SOL:-0.0082(n30)  DOGE:+0.0020(n33)  PEPE:-0.0120(n32)  HYPE:-0.0032(n30)  XRP:+0.0021(n35)  BNB:-0.0015(n32)  ADA:+0.0098(n30)  AVAX:+0.0018(n30)
+  macd_cross/hiwin33  [+EV 2/10 pairs]  BTC:-0.0034(n115)  ETH:-0.0047(n128)  SOL:-0.0031(n125)  DOGE:-0.0060(n128)  PEPE:-0.0029(n126)  HYPE:+0.0017(n155)  XRP:-0.0023(n129)  BNB:-0.0020(n132)  ADA:-0.0000(n115)  AVAX:+0.0003(n122)
+  macd_cross/hiwin43  [+EV 1/10 pairs]  BTC:-0.0035(n114)  ETH:-0.0048(n128)  SOL:-0.0004(n124)  DOGE:-0.0091(n130)  PEPE:-0.0058(n128)  HYPE:-0.0013(n157)  XRP:-0.0059(n129)  BNB:+0.0032(n132)  ADA:-0.0025(n117)  AVAX:-0.0027(n122)
+  macd_cross/hiwin50  [+EV 2/10 pairs]  BTC:-0.0014(n117)  ETH:-0.0035(n130)  SOL:+0.0038(n127)  DOGE:-0.0076(n132)  PEPE:-0.0051(n130)  HYPE:-0.0003(n157)  XRP:-0.0060(n130)  BNB:+0.0040(n134)  ADA:-0.0068(n117)  AVAX:-0.0039(n127)
+  macd_cross/scratch  [+EV 2/10 pairs]  BTC:-0.0017(n114)  ETH:-0.0061(n127)  SOL:-0.0028(n124)  DOGE:-0.0029(n128)  PEPE:-0.0032(n128)  HYPE:+0.0020(n151)  XRP:-0.0026(n130)  BNB:-0.0020(n130)  ADA:+0.0009(n117)  AVAX:-0.0024(n121)
+  macd_rsi/hiwin33  [+EV 3/10 pairs]  BTC:-0.0014(n82)  ETH:-0.0035(n94)  SOL:+0.0008(n85)  DOGE:-0.0017(n95)  PEPE:-0.0065(n100)  HYPE:+0.0015(n95)  XRP:-0.0017(n91)  BNB:-0.0038(n89)  ADA:+0.0058(n83)  AVAX:-0.0010(n96)
+  macd_rsi/hiwin43  [+EV 4/10 pairs]  BTC:-0.0017(n82)  ETH:-0.0021(n94)  SOL:+0.0030(n85)  DOGE:-0.0076(n95)  PEPE:-0.0097(n101)  HYPE:+0.0054(n96)  XRP:-0.0077(n91)  BNB:+0.0027(n89)  ADA:+0.0051(n84)  AVAX:-0.0047(n96)
+  macd_rsi/hiwin50  [+EV 5/10 pairs]  BTC:+0.0016(n83)  ETH:-0.0012(n95)  SOL:+0.0068(n86)  DOGE:-0.0066(n96)  PEPE:-0.0097(n102)  HYPE:+0.0071(n96)  XRP:-0.0075(n91)  BNB:+0.0046(n89)  ADA:+0.0017(n84)  AVAX:-0.0050(n99)
+  macd_rsi/scratch  [+EV 2/10 pairs]  BTC:-0.0019(n82)  ETH:-0.0057(n93)  SOL:-0.0008(n85)  DOGE:-0.0042(n93)  PEPE:-0.0051(n101)  HYPE:+0.0061(n94)  XRP:-0.0013(n91)  BNB:-0.0034(n87)  ADA:+0.0055(n83)  AVAX:-0.0023(n95)
+  sma_cross/hiwin33  [+EV 3/10 pairs]  BTC:-0.0017(n19)  ETH:-0.0025(n20)  SOL:-0.0147(n29)  DOGE:+0.0083(n28)  PEPE:+0.0029(n31)  HYPE:-0.0026(n32)  XRP:-0.0100(n20)  BNB:+0.0091(n25)  ADA:-0.0142(n23)  AVAX:-0.0022(n32)
+  sma_cross/hiwin43  [+EV 4/10 pairs]  BTC:-0.0038(n19)  ETH:+0.0018(n20)  SOL:-0.0124(n29)  DOGE:+0.0079(n28)  PEPE:-0.0071(n31)  HYPE:-0.0106(n32)  XRP:-0.0070(n20)  BNB:+0.0055(n25)  ADA:-0.0064(n23)  AVAX:+0.0018(n32)
+  sma_cross/hiwin50  [+EV 4/10 pairs]  BTC:-0.0038(n19)  ETH:+0.0039(n20)  SOL:-0.0132(n29)  DOGE:+0.0060(n28)  PEPE:-0.0062(n31)  HYPE:-0.0150(n32)  XRP:-0.0063(n20)  BNB:+0.0089(n25)  ADA:-0.0049(n23)  AVAX:+0.0027(n32)
+  sma_cross/scratch  [+EV 2/10 pairs]  BTC:-0.0022(n19)  ETH:-0.0065(n20)  SOL:-0.0136(n29)  DOGE:+0.0046(n28)  PEPE:-0.0041(n31)  HYPE:-0.0006(n32)  XRP:-0.0066(n20)  BNB:+0.0054(n25)  ADA:-0.0072(n23)  AVAX:-0.0003(n32)
+
+=== PER-PAIR OOS points (avg gross bps @ points-win% — breadth on the §6.1 bar) ===
+  cci_mom/hiwin33  [pts+ 8/10 pairs]  BTC:+1.4@76%(n175)  ETH:+7.8@77%(n213)  SOL:+2.6@71%(n222)  DOGE:+0.4@69%(n223)  PEPE:-3.3@68%(n219)  HYPE:+17.8@81%(n204)  XRP:+5.1@74%(n204)  BNB:-3.0@69%(n208)  ADA:+6.4@75%(n195)  AVAX:+0.6@72%(n198)
+  cci_mom/hiwin43  [pts+ 4/10 pairs]  BTC:-2.5@67%(n177)  ETH:+0.6@63%(n215)  SOL:-5.6@60%(n226)  DOGE:-0.1@63%(n223)  PEPE:-7.4@60%(n219)  HYPE:+6.7@69%(n206)  XRP:+3.8@66%(n204)  BNB:-5.7@58%(n210)  ADA:+10.1@70%(n198)  AVAX:-1.4@64%(n198)
+  cci_mom/hiwin50  [pts+ 5/10 pairs]  BTC:-1.6@66%(n177)  ETH:+0.1@63%(n215)  SOL:-2.2@60%(n226)  DOGE:+0.6@62%(n223)  PEPE:-5.5@59%(n219)  HYPE:+5.3@68%(n206)  XRP:+4.0@66%(n204)  BNB:-5.2@56%(n211)  ADA:+11.0@69%(n199)  AVAX:-0.2@63%(n199)
+  cci_mom/scratch  [pts+ 5/10 pairs]  BTC:-1.8@69%(n177)  ETH:+3.8@69%(n217)  SOL:-0.0@63%(n228)  DOGE:-1.7@63%(n225)  PEPE:-4.2@63%(n222)  HYPE:+12.2@71%(n207)  XRP:+6.6@71%(n203)  BNB:-6.8@58%(n212)  ADA:+4.5@68%(n203)  AVAX:+4.1@69%(n199)
+  ensemble_3of4/hiwin33  [pts+ 8/10 pairs]  BTC:+1.2@79%(n28)  ETH:+11.7@78%(n32)  SOL:+1.5@67%(n30)  DOGE:+15.8@82%(n33)  PEPE:-27.6@62%(n32)  HYPE:-5.4@73%(n30)  XRP:+2.5@74%(n35)  BNB:+6.5@78%(n32)  ADA:+9.1@77%(n30)  AVAX:+9.5@77%(n30)
+  ensemble_3of4/hiwin43  [pts+ 7/10 pairs]  BTC:+8.6@79%(n28)  ETH:-3.3@66%(n32)  SOL:+8.1@63%(n30)  DOGE:+23.6@79%(n33)  PEPE:-26.4@53%(n32)  HYPE:-4.2@63%(n30)  XRP:+2.8@71%(n35)  BNB:+7.4@72%(n32)  ADA:+8.2@70%(n30)  AVAX:+8.3@67%(n30)
+  ensemble_3of4/hiwin50  [pts+ 7/10 pairs]  BTC:+11.4@79%(n28)  ETH:-1.1@66%(n32)  SOL:+11.3@63%(n30)  DOGE:+25.6@79%(n33)  PEPE:-20.3@53%(n32)  HYPE:-2.0@63%(n30)  XRP:+6.6@71%(n35)  BNB:+8.6@72%(n32)  ADA:+1.4@63%(n30)  AVAX:+8.6@65%(n31)
+  ensemble_3of4/scratch  [pts+ 6/10 pairs]  BTC:-5.5@79%(n28)  ETH:+4.6@69%(n32)  SOL:-2.2@63%(n30)  DOGE:+13.2@73%(n33)  PEPE:-18.4@56%(n32)  HYPE:-2.8@73%(n30)  XRP:+3.8@80%(n35)  BNB:+3.7@75%(n32)  ADA:+21.2@77%(n30)  AVAX:+9.9@73%(n30)
+  macd_cross/hiwin33  [pts+ 6/10 pairs]  BTC:+2.7@75%(n115)  ETH:+1.5@71%(n128)  SOL:-0.8@72%(n125)  DOGE:-2.9@70%(n128)  PEPE:-0.8@71%(n126)  HYPE:+14.7@78%(n155)  XRP:-0.4@72%(n129)  BNB:+4.2@77%(n132)  ADA:+3.4@75%(n115)  AVAX:+5.1@75%(n122)
+  macd_cross/hiwin43  [pts+ 5/10 pairs]  BTC:+4.4@67%(n114)  ETH:-0.4@64%(n128)  SOL:+5.0@68%(n124)  DOGE:-9.4@60%(n130)  PEPE:-2.9@61%(n128)  HYPE:+4.8@68%(n157)  XRP:-2.8@64%(n129)  BNB:+8.9@73%(n132)  ADA:-1.9@66%(n117)  AVAX:+0.6@65%(n122)
+  macd_cross/hiwin50  [pts+ 5/10 pairs]  BTC:+6.5@67%(n117)  ETH:+1.8@64%(n130)  SOL:+10.0@69%(n127)  DOGE:-5.7@61%(n132)  PEPE:-1.3@60%(n130)  HYPE:+6.6@68%(n157)  XRP:-1.4@63%(n130)  BNB:+9.6@72%(n134)  ADA:-6.8@62%(n117)  AVAX:-0.3@62%(n127)
+  macd_cross/scratch  [pts+ 6/10 pairs]  BTC:+2.8@72%(n114)  ETH:-2.2@64%(n127)  SOL:-3.2@69%(n124)  DOGE:+1.5@64%(n128)  PEPE:-1.8@65%(n128)  HYPE:+13.9@74%(n151)  XRP:-2.2@69%(n130)  BNB:+2.6@75%(n130)  ADA:+5.8@72%(n117)  AVAX:+1.2@66%(n121)
+  macd_rsi/hiwin33  [pts+ 8/10 pairs]  BTC:+4.2@77%(n82)  ETH:+5.8@72%(n94)  SOL:+7.6@75%(n85)  DOGE:+3.8@74%(n95)  PEPE:-7.3@68%(n100)  HYPE:+13.9@78%(n95)  XRP:-1.0@73%(n91)  BNB:+3.9@74%(n89)  ADA:+10.3@80%(n83)  AVAX:+4.9@74%(n96)
+  macd_rsi/hiwin43  [pts+ 6/10 pairs]  BTC:+5.3@70%(n82)  ETH:+5.1@67%(n94)  SOL:+11.1@69%(n85)  DOGE:-7.9@61%(n95)  PEPE:-9.8@58%(n101)  HYPE:+20.7@73%(n96)  XRP:-7.1@64%(n91)  BNB:+8.6@73%(n89)  ADA:+10.6@70%(n84)  AVAX:-1.1@64%(n96)
+  macd_rsi/hiwin50  [pts+ 6/10 pairs]  BTC:+8.4@70%(n83)  ETH:+6.4@66%(n95)  SOL:+15.0@70%(n86)  DOGE:-5.4@61%(n96)  PEPE:-8.9@57%(n102)  HYPE:+20.0@72%(n96)  XRP:-4.5@63%(n91)  BNB:+9.8@73%(n89)  ADA:+6.0@67%(n84)  AVAX:-0.1@62%(n99)
+  macd_rsi/scratch  [pts+ 7/10 pairs]  BTC:+2.0@74%(n82)  ETH:+0.2@65%(n93)  SOL:+3.7@71%(n85)  DOGE:-0.9@66%(n93)  PEPE:-5.5@62%(n101)  HYPE:+24.2@80%(n94)  XRP:-1.4@71%(n91)  BNB:+2.1@72%(n87)  ADA:+14.4@76%(n83)  AVAX:+2.9@65%(n95)
+  sma_cross/hiwin33  [pts+ 5/10 pairs]  BTC:+5.7@74%(n19)  ETH:+2.7@75%(n20)  SOL:-14.2@66%(n29)  DOGE:+15.2@82%(n28)  PEPE:+10.1@77%(n31)  HYPE:-2.5@75%(n32)  XRP:-2.0@70%(n20)  BNB:+11.5@84%(n25)  ADA:-24.4@65%(n23)  AVAX:-1.4@75%(n32)
+  sma_cross/hiwin43  [pts+ 5/10 pairs]  BTC:-0.9@68%(n19)  ETH:+7.4@70%(n20)  SOL:-9.3@59%(n29)  DOGE:+10.9@71%(n28)  PEPE:-2.7@65%(n31)  HYPE:-9.9@59%(n32)  XRP:+2.3@60%(n20)  BNB:+9.9@76%(n25)  ADA:-8.6@61%(n23)  AVAX:+8.7@66%(n32)
+  sma_cross/hiwin50  [pts+ 7/10 pairs]  BTC:+0.5@68%(n19)  ETH:+9.1@70%(n20)  SOL:-7.8@59%(n29)  DOGE:+7.5@71%(n28)  PEPE:+0.2@65%(n31)  HYPE:-9.7@56%(n32)  XRP:+3.6@60%(n20)  BNB:+11.7@76%(n25)  ADA:-4.5@61%(n23)  AVAX:+10.0@66%(n32)
+  sma_cross/scratch  [pts+ 5/10 pairs]  BTC:+5.1@68%(n19)  ETH:-3.8@70%(n20)  SOL:-20.8@59%(n29)  DOGE:+9.4@71%(n28)  PEPE:-0.8@65%(n31)  HYPE:-1.2@72%(n32)  XRP:+1.4@65%(n20)  BNB:+9.3@84%(n25)  ADA:-13.9@57%(n23)  AVAX:+5.2@75%(n32)
+
+wrote /app/reports/algo_search_20260724-124831.md  (+ _survivors.json: 0)

@@ -1,0 +1,187 @@
+############## BTC/USDT 5m ##############
+=== Kestrel predictive-power scan (BTC/USDT 5m, 90d) ===
+  okx: attempt 1/3 failed (NetworkError: okx GET https://www.okx.com/api/v5/public/instruments?instType=SPOT)
+  okx: attempt 2/3 failed (NetworkError: okx GET https://www.okx.com/api/v5/public/instruments?instType=SPOT)
+  okx: attempt 3/3 failed (NetworkError: okx GET https://www.okx.com/api/v5/public/instruments?instType=SPOT)
+  gate: attempt 1/3 failed (BadRequest: gate {"label":"INVALID_PARAM_VALUE","message":"Candlestick too long ag)
+  gate: attempt 2/3 failed (BadRequest: gate {"label":"INVALID_PARAM_VALUE","message":"Candlestick too long ag)
+  gate: attempt 3/3 failed (BadRequest: gate {"label":"INVALID_PARAM_VALUE","message":"Candlestick too long ag)
+  kraken: 721 candles < 15552 required — skipping (capped/partial)
+Traceback (most recent call last):
+  File "/app/scripts/edge_scan.py", line 161, in <module>
+    main()
+  File "/app/scripts/edge_scan.py", line 66, in main
+    ex_used, rows = bt.fetch_ohlcv(cfg.pair, tf, args.days)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/scripts/backtest_real.py", line 92, in fetch_ohlcv
+    raise RuntimeError(f"all exchanges failed to serve {days}d; last error: {last_err}")
+RuntimeError: all exchanges failed to serve 90d; last error: kraken: only 721 candles (< 15552 required for 90d) — capped source
+  (run failed)
+
+############## BTC/USDT 1h ##############
+=== Kestrel predictive-power scan (BTC/USDT 1h, 90d) ===
+source=okx  usable candles=2159  cost_threshold=0.180% round-trip
+
+feature          IC@1   |Q5-Q1|@1   IC@4   |Q5-Q1|@4   IC@8   |Q5-Q1|@8 
+rsi14            +0.002    +0.008%  +0.021    +0.083%  +0.048    +0.183%
+volume_ratio     +0.026    +0.024%  +0.015    +0.087%  +0.028    +0.104%
+adx              -0.030    +0.002%  -0.065    -0.069%  -0.088    -0.137%
+bb_width         -0.017    -0.051%  -0.044    -0.184%  -0.063    -0.272%
+body_ratio       +0.015    +0.047%  +0.018    +0.073%  +0.041    +0.173%
+atr_pct          +0.004    +0.000%  -0.017    +0.006%  -0.044    -0.026%
+ema_spread       +0.004    +0.025%  +0.028    +0.113%  +0.048    +0.280%
+prior_ret1       -0.006    +0.001%  -0.053    -0.072%  -0.027    -0.025%
+
+baseline 4-candle move: mean|ret|=0.576%  std=0.827%  P(|move|>cost)=74.6%
+
+by prior-candle direction (mean 4-candle fwd return):
+  bearish    n=  1075  mean_fwd=+0.0080%
+  bullish    n=  1080  mean_fwd=-0.0438%
+
+hour-of-day extremes (UTC, mean 4-candle fwd return):
+  worst: h12=-0.1404%   best: h18=+0.1597%
+
+=== WALK-FORWARD (h=4, train 1295 / test 864) ===
+feature         train_IC  train_spread   test_IC  test_spread   consistent?
+rsi14           -0.013   +0.000%     +0.036   +0.099%     below-cost
+volume_ratio    +0.035   +0.128%     -0.018   +0.019%     below-cost
+adx             -0.022   -0.019%     -0.090   -0.151%     below-cost
+bb_width        -0.037   -0.178%     -0.068   -0.255%     below-cost
+body_ratio      +0.026   +0.052%     +0.005   +0.064%     below-cost
+atr_pct         +0.009   +0.039%     -0.057   -0.059%     sign-flip
+ema_spread      -0.041   -0.044%     +0.085   +0.257%     sign-flip
+prior_ret1      +0.002   -0.025%     -0.136   -0.145%     below-cost
+
+  features with edge surviving out-of-sample (same sign, both > cost): NONE
+
+=== VERDICT ===
+  strongest feature edge: ema_spread @h=8  |Q5-Q1|=0.280%  vs cost 0.180%
+
+  >>> POTENTIAL EDGE — strongest spread exceeds cost; worth modelling <<<
+  (caveat: overlapping forward windows inflate significance; magnitude vs cost is what matters)
+
+############## BTC/USDT 4h ##############
+=== Kestrel predictive-power scan (BTC/USDT 4h, 90d) ===
+source=okx  usable candles=539  cost_threshold=0.180% round-trip
+
+feature          IC@1   |Q5-Q1|@1   IC@4   |Q5-Q1|@4   IC@8   |Q5-Q1|@8 
+rsi14            +0.036    +0.003%  +0.068    +0.200%  +0.106    +0.274%
+volume_ratio     +0.022    +0.077%  -0.002    +0.008%  -0.103    -0.476%
+adx              -0.042    -0.122%  -0.079    -0.336%  -0.092    -0.449%
+bb_width         -0.071    -0.152%  -0.140    -0.188%  -0.148    -0.025%
+body_ratio       -0.018    -0.019%  -0.033    -0.045%  -0.051    -0.210%
+atr_pct          -0.022    -0.035%  -0.023    -0.127%  -0.013    -0.304%
+ema_spread       +0.032    +0.013%  +0.061    +0.020%  +0.079    +0.092%
+prior_ret1       -0.007    -0.009%  +0.010    +0.049%  +0.029    +0.137%
+
+baseline 4-candle move: mean|ret|=1.212%  std=1.649%  P(|move|>cost)=87.7%
+
+by prior-candle direction (mean 4-candle fwd return):
+  bearish    n=   272  mean_fwd=-0.0777%
+  bullish    n=   263  mean_fwd=-0.0545%
+
+hour-of-day extremes (UTC, mean 4-candle fwd return):
+  worst: h20=-0.1945%   best: h12=+0.0848%
+
+=== WALK-FORWARD (h=4, train 323 / test 216) ===
+feature         train_IC  train_spread   test_IC  test_spread   consistent?
+rsi14           -0.132   -0.556%     +0.149   +0.799%     sign-flip
+volume_ratio    +0.050   +0.417%     -0.076   -0.621%     sign-flip
+adx             -0.043   -0.485%     +0.020   +0.031%     sign-flip
+bb_width        -0.123   -0.593%     -0.136   +0.244%     sign-flip
+body_ratio      -0.016   +0.042%     -0.055   -0.168%     sign-flip
+atr_pct         -0.149   -0.649%     +0.026   +0.136%     sign-flip
+ema_spread      -0.147   -0.459%     +0.106   +0.491%     sign-flip
+prior_ret1      -0.014   -0.122%     +0.025   +0.280%     sign-flip
+
+  features with edge surviving out-of-sample (same sign, both > cost): NONE
+
+=== VERDICT ===
+  strongest feature edge: volume_ratio @h=8  |Q5-Q1|=0.476%  vs cost 0.180%
+
+  >>> POTENTIAL EDGE — strongest spread exceeds cost; worth modelling <<<
+  (caveat: overlapping forward windows inflate significance; magnitude vs cost is what matters)
+
+############## ETH/USDT 5m ##############
+=== Kestrel predictive-power scan (ETH/USDT 5m, 90d) ===
+source=okx  usable candles=25919  cost_threshold=0.180% round-trip
+
+feature          IC@1   |Q5-Q1|@1   IC@4   |Q5-Q1|@4   IC@8   |Q5-Q1|@8 
+rsi14            -0.003    -0.001%  -0.009    -0.008%  -0.004    -0.009%
+volume_ratio     -0.011    -0.005%  -0.009    -0.013%  -0.012    -0.033%
+adx              +0.002    -0.002%  +0.006    +0.005%  +0.012    +0.028%
+bb_width         +0.004    +0.003%  +0.008    +0.007%  +0.014    +0.005%
+body_ratio       -0.000    -0.001%  -0.000    +0.000%  -0.002    +0.000%
+atr_pct          +0.005    +0.001%  +0.012    -0.001%  +0.016    -0.003%
+ema_spread       -0.009    -0.001%  -0.016    +0.001%  -0.019    -0.001%
+prior_ret1       -0.006    -0.001%  -0.015    -0.015%  -0.012    -0.015%
+
+baseline 4-candle move: mean|ret|=0.216%  std=0.341%  P(|move|>cost)=40.4%
+
+by prior-candle direction (mean 4-candle fwd return):
+  bearish    n= 12996  mean_fwd=+0.0008%
+  bullish    n= 12919  mean_fwd=-0.0056%
+
+hour-of-day extremes (UTC, mean 4-candle fwd return):
+  worst: h13=-0.0385%   best: h19=+0.0320%
+
+=== WALK-FORWARD (h=4, train 15551 / test 10368) ===
+feature         train_IC  train_spread   test_IC  test_spread   consistent?
+rsi14           -0.008   -0.013%     -0.013   -0.005%     below-cost
+volume_ratio    -0.016   -0.011%     +0.002   -0.012%     below-cost
+adx             -0.012   -0.006%     +0.035   +0.027%     sign-flip
+bb_width        +0.010   +0.012%     +0.006   -0.005%     sign-flip
+body_ratio      -0.000   +0.002%     +0.001   -0.007%     sign-flip
+atr_pct         +0.019   +0.016%     +0.003   -0.027%     sign-flip
+ema_spread      -0.008   -0.007%     -0.033   +0.012%     sign-flip
+prior_ret1      -0.006   -0.015%     -0.029   -0.019%     below-cost
+
+  features with edge surviving out-of-sample (same sign, both > cost): NONE
+
+=== VERDICT ===
+  strongest feature edge: volume_ratio @h=8  |Q5-Q1|=0.033%  vs cost 0.180%
+
+  >>> NO EXPLOITABLE EDGE — no feature spread beats the cost threshold <<<
+  (caveat: overlapping forward windows inflate significance; magnitude vs cost is what matters)
+
+############## ETH/USDT 1h ##############
+=== Kestrel predictive-power scan (ETH/USDT 1h, 90d) ===
+source=okx  usable candles=2159  cost_threshold=0.180% round-trip
+
+feature          IC@1   |Q5-Q1|@1   IC@4   |Q5-Q1|@4   IC@8   |Q5-Q1|@8 
+rsi14            +0.002    +0.009%  +0.003    +0.009%  +0.008    +0.034%
+volume_ratio     +0.021    +0.034%  +0.031    +0.138%  +0.024    +0.215%
+adx              -0.031    -0.074%  -0.067    -0.205%  -0.090    -0.382%
+bb_width         -0.015    -0.047%  -0.040    -0.177%  -0.065    -0.287%
+body_ratio       -0.024    -0.043%  -0.000    +0.061%  +0.015    +0.154%
+atr_pct          -0.002    -0.005%  -0.028    -0.057%  -0.055    -0.098%
+ema_spread       +0.011    +0.023%  +0.027    +0.011%  +0.031    -0.038%
+prior_ret1       +0.001    +0.050%  -0.016    +0.061%  -0.001    +0.097%
+
+baseline 4-candle move: mean|ret|=0.754%  std=1.134%  P(|move|>cost)=77.4%
+
+by prior-candle direction (mean 4-candle fwd return):
+  bearish    n=  1080  mean_fwd=-0.0336%
+  bullish    n=  1075  mean_fwd=-0.0306%
+
+hour-of-day extremes (UTC, mean 4-candle fwd return):
+  worst: h11=-0.2041%   best: h18=+0.2588%
+
+=== WALK-FORWARD (h=4, train 1295 / test 864) ===
+feature         train_IC  train_spread   test_IC  test_spread   consistent?
+rsi14           -0.008   +0.023%     -0.024   -0.054%     sign-flip
+volume_ratio    +0.074   +0.275%     -0.041   -0.091%     sign-flip
+adx             -0.085   -0.240%     -0.019   -0.024%     below-cost
+bb_width        -0.027   -0.091%     -0.076   -0.248%     below-cost
+body_ratio      +0.015   +0.129%     -0.017   -0.010%     sign-flip
+atr_pct         +0.009   -0.115%     -0.084   -0.129%     below-cost
+ema_spread      -0.031   -0.156%     +0.075   +0.205%     sign-flip
+prior_ret1      +0.031   +0.061%     -0.096   -0.076%     sign-flip
+
+  features with edge surviving out-of-sample (same sign, both > cost): NONE
+
+=== VERDICT ===
+  strongest feature edge: adx @h=8  |Q5-Q1|=0.382%  vs cost 0.180%
+
+  >>> POTENTIAL EDGE — strongest spread exceeds cost; worth modelling <<<
+  (caveat: overlapping forward windows inflate significance; magnitude vs cost is what matters)

@@ -1,0 +1,120 @@
+[funding] perp funding modeled: 0.01%/8h, always charged (v2.7)
+[points] risk Rule 3 R/R floor bypassed for this process (research-only; see docs/13 §9)
+[sigexit] indicator-based exits armed (signal_exit / indicator_tp reasons)
+=== Kestrel ALGORITHM SEARCH (1h, 365d, 20x, fees=realistic, regime=all) ===
+algos=4 exits=4 pairs=10 combos=16 backtests=160 cost/trade≈0.04%
+[btc-gate] BTC state map: 8740 candles
+[1/10] BTC/USDT: src=okx candles=8760 (OOS=3504)
+[2/10] ETH/USDT: src=okx candles=8760 (OOS=3504)
+[3/10] SOL/USDT: src=okx candles=8760 (OOS=3504)
+[4/10] DOGE/USDT: src=okx candles=8760 (OOS=3504)
+[5/10] PEPE/USDT: src=okx candles=8760 (OOS=3504)
+  okx: 0 candles < 5256 required — skipping (capped/partial)
+[6/10] HYPE/USDT: src=gate candles=8760 (OOS=3504)
+[7/10] XRP/USDT: src=okx candles=8760 (OOS=3504)
+[8/10] BNB/USDT: src=okx candles=8760 (OOS=3504)
+[9/10] ADA/USDT: src=okx candles=8760 (OOS=3504)
+[10/10] AVAX/USDT: src=okx candles=8760 (OOS=3504)
+
+=== ALGO LEADERBOARD (out-of-sample, top 25) ===
+  algo             exit      n   win%      avg$      net$   R/R   expR   tp%   to%  clr%   IS→OOS
+  macd_state       sigexit_tp  9605   65.8   -0.0021   -20.079  0.44  -0.01    65     1    66  +0.0013
+  macd_state       hiwin33  9908   70.6   -0.0021   -21.060  0.34  -0.01    70     9    71  +0.0011
+  sma_state        sigexit_tp  9443   66.6   -0.0021   -20.055  0.42  -0.01    65     1    67  +0.0014
+  ensemble_state   sigexit_tp  8806   67.8   -0.0021   -18.477  0.41  -0.00    68     1    68  +0.0013
+  sma_state        hiwin33  9846   70.7   -0.0022   -21.356  0.34  -0.01    70    10    71  +0.0009
+  ensemble_state   hiwin33  9363   70.4   -0.0022   -20.580  0.34  -0.01    70    10    70  +0.0010
+  macd_state       sigexit_rsi  5193   37.6   -0.0031   -16.121  1.38  -0.02     0     3    38  +0.0029
+  cci_state        sigexit_tp  5595   69.3   -0.0031   -17.426  0.38  -0.00    69     1    69  +0.0001
+  cci_state        hiwin33  5968   70.6   -0.0032   -18.889  0.34  -0.01    70    10    71  -0.0002
+  sma_state        sigexit_rsi  5315   40.1   -0.0039   -20.813  1.18  -0.03     0     3    40  +0.0014
+  ensemble_state   sigexit_rsi  4886   37.6   -0.0039   -18.829  1.37  -0.03     0     3    38  +0.0014
+  cci_state        sigexit_rsi  3773   40.5   -0.0044   -16.753  1.19  -0.02     0     2    40  +0.0017
+  macd_state       sigexit  3130   31.0   -0.0060   -18.924  1.87  -0.02     0     8    31  -0.0008
+  sma_state        sigexit  3079   32.8   -0.0087   -26.839  1.58  -0.05     0    15    33  -0.0049
+  ensemble_state   sigexit  2660   28.2   -0.0093   -24.657  2.02  -0.05     0    17    28  -0.0064
+  cci_state        sigexit  1934   29.5   -0.0110   -21.312  1.86  -0.06     0    13    29  -0.0080
+
+=== VERDICT (§30 OOS: win>55% · R/R≥1.2 · net>0 · n≥30) ===
+  algorithms clearing the bar: 0 / 16
+  best: macd_state/sigexit_tp avg=$-0.0021/trade win=65.8% n=9605 — no edge; cost floor dominates (consistent with the no-edge history)
+
+=== POINTS LEADERBOARD (gross bps of entry price — OOS pooled; docs/13 §2) ===
+  algo             exit        n  pwin%  avg_bps  med_bps  ptsPF  grossR   IS→OOS
+  ensemble_state   sigexit_tp  8806   67.9    -0.54   +40.53   0.99  -0.004    -0.05
+  sma_state        sigexit_tp  9443   67.1    -0.89   +38.90   0.98  -0.007    +0.52
+  cci_state        sigexit_tp  5595   69.4    -0.98   +41.66   0.98  -0.004    -2.00
+  sma_state        hiwin33  9846   71.1    -1.02   +34.45   0.97  -0.009    -0.10
+  ensemble_state   hiwin33  9363   70.7    -1.38   +34.51   0.96  -0.011    -0.83
+  macd_state       sigexit_tp  9605   66.0    -1.52   +38.84   0.96  -0.009    -0.83
+  macd_state       hiwin33  9908   71.0    -1.84   +34.41   0.95  -0.013    -1.02
+  cci_state        hiwin33  5968   70.9    -1.85   +34.97   0.95  -0.011    -2.67
+  ensemble_state   sigexit_rsi  4886   40.3    -3.46   -24.85   0.94  -0.027    +2.94
+  cci_state        sigexit_rsi  3773   43.6    -3.86   -15.27   0.93  -0.023    +4.42
+  macd_state       sigexit_rsi  5193   40.4    -3.91   -22.98   0.93  -0.019    +2.94
+  macd_state       sigexit  3130   32.5    -4.26   -55.02   0.94  -0.023    -1.85
+  sma_state        sigexit_rsi  5315   43.3    -4.32   -14.35   0.92  -0.034    +3.16
+  ensemble_state   sigexit  2660   29.8    -5.44   -64.00   0.93  -0.053    -4.49
+  sma_state        sigexit  3079   34.9    -5.80   -52.83   0.92  -0.054    -1.51
+  cci_state        sigexit  1934   30.8    -6.71   -69.57   0.91  -0.056    -2.59
+
+=== POINTS VERDICT (§6.1 joint bar: pwin>=65% AND avg_bps>0 AND n>=30) ===
+  combos clearing the joint bar: 0 / 16
+  best by avg_bps: ensemble_state/sigexit_tp — pwin 67.9% avg -0.54 bps n=8806 — joint bar NOT met
+
+=== BTC-GATE (trades agreeing with BTC SMA9/21 state at entry — unfiltered vs gated) ===
+  algo             exit         n_all   avg_all  n_btc   avg_btc  bps_btc pwin_btc  kept%
+  macd_state       sigexit       3130   -0.0060   1377   -0.0064    -5.73    32.4%  44.0%
+  macd_state       sigexit_rsi   5193   -0.0031   3358   -0.0032    -4.97    43.5%  64.7%
+  macd_state       sigexit_tp    9605   -0.0021   6331   -0.0018    -0.86    65.7%  65.9%
+  macd_state       hiwin33       9908   -0.0021   6821   -0.0016    -0.65    71.6%  68.8%
+  sma_state        sigexit       3079   -0.0087   2214   -0.0080    -4.11    35.5%  71.9%
+  sma_state        sigexit_rsi   5315   -0.0039   4380   -0.0037    -3.30    44.3%  82.4%
+  sma_state        sigexit_tp    9443   -0.0021   7764   -0.0018    -0.00    67.9%  82.2%
+  sma_state        hiwin33       9846   -0.0022   8223   -0.0018    -0.20    71.5%  83.5%
+  cci_state        sigexit       1934   -0.0110   1232   -0.0114   -10.06    30.4%  63.7%
+  cci_state        sigexit_rsi   3773   -0.0044   2979   -0.0046    -5.56    44.7%  79.0%
+  cci_state        sigexit_tp    5595   -0.0031   4457   -0.0030    -1.04    69.6%  79.7%
+  cci_state        hiwin33       5968   -0.0032   4777   -0.0030    -1.92    71.3%  80.0%
+  ensemble_state   sigexit       2660   -0.0093   1479   -0.0080    -2.73    29.9%  55.6%
+  ensemble_state   sigexit_rsi   4886   -0.0039   3625   -0.0039    -3.65    42.5%  74.2%
+  ensemble_state   sigexit_tp    8806   -0.0021   6709   -0.0019    -0.25    68.3%  76.2%
+  ensemble_state   hiwin33       9363   -0.0022   7339   -0.0018    -0.43    71.4%  78.4%
+
+=== PER-PAIR OOS avg$/trade (breadth check — +EV pair count per algo/exit) ===
+  cci_state/hiwin33  [+EV 1/10 pairs]  BTC:-0.0029(n525)  ETH:-0.0022(n573)  SOL:-0.0055(n612)  DOGE:-0.0041(n606)  PEPE:-0.0048(n602)  HYPE:+0.0009(n669)  XRP:-0.0030(n624)  BNB:-0.0031(n574)  ADA:-0.0025(n620)  AVAX:-0.0049(n563)
+  cci_state/sigexit  [+EV 1/10 pairs]  BTC:-0.0050(n174)  ETH:-0.0047(n193)  SOL:-0.0133(n202)  DOGE:-0.0185(n197)  PEPE:-0.0184(n204)  HYPE:+0.0078(n193)  XRP:-0.0175(n193)  BNB:-0.0164(n196)  ADA:-0.0077(n191)  AVAX:-0.0153(n191)
+  cci_state/sigexit_rsi  [+EV 0/10 pairs]  BTC:-0.0028(n352)  ETH:-0.0027(n384)  SOL:-0.0059(n380)  DOGE:-0.0072(n347)  PEPE:-0.0067(n376)  HYPE:-0.0002(n416)  XRP:-0.0078(n386)  BNB:-0.0052(n374)  ADA:-0.0021(n402)  AVAX:-0.0045(n356)
+  cci_state/sigexit_tp  [+EV 1/10 pairs]  BTC:-0.0020(n502)  ETH:-0.0013(n538)  SOL:-0.0047(n572)  DOGE:-0.0046(n575)  PEPE:-0.0058(n558)  HYPE:+0.0006(n616)  XRP:-0.0026(n579)  BNB:-0.0035(n544)  ADA:-0.0014(n580)  AVAX:-0.0064(n531)
+  ensemble_state/hiwin33  [+EV 0/10 pairs]  BTC:-0.0017(n866)  ETH:-0.0020(n903)  SOL:-0.0033(n952)  DOGE:-0.0025(n936)  PEPE:-0.0033(n926)  HYPE:-0.0003(n1062)  XRP:-0.0017(n972)  BNB:-0.0022(n927)  ADA:-0.0024(n950)  AVAX:-0.0029(n869)
+  ensemble_state/sigexit  [+EV 1/10 pairs]  BTC:-0.0065(n261)  ETH:-0.0057(n270)  SOL:-0.0081(n272)  DOGE:-0.0175(n262)  PEPE:-0.0151(n280)  HYPE:+0.0040(n276)  XRP:-0.0108(n260)  BNB:-0.0106(n255)  ADA:-0.0094(n260)  AVAX:-0.0135(n264)
+  ensemble_state/sigexit_rsi  [+EV 0/10 pairs]  BTC:-0.0028(n479)  ETH:-0.0022(n505)  SOL:-0.0038(n488)  DOGE:-0.0070(n449)  PEPE:-0.0067(n478)  HYPE:-0.0007(n533)  XRP:-0.0042(n486)  BNB:-0.0050(n484)  ADA:-0.0023(n513)  AVAX:-0.0045(n471)
+  ensemble_state/sigexit_tp  [+EV 1/10 pairs]  BTC:-0.0015(n826)  ETH:-0.0018(n850)  SOL:-0.0024(n887)  DOGE:-0.0031(n889)  PEPE:-0.0037(n879)  HYPE:+0.0001(n1002)  XRP:-0.0012(n902)  BNB:-0.0025(n864)  ADA:-0.0014(n875)  AVAX:-0.0037(n832)
+  macd_state/hiwin33  [+EV 0/10 pairs]  BTC:-0.0015(n914)  ETH:-0.0019(n955)  SOL:-0.0030(n1011)  DOGE:-0.0027(n970)  PEPE:-0.0031(n986)  HYPE:-0.0002(n1127)  XRP:-0.0017(n1039)  BNB:-0.0021(n995)  ADA:-0.0033(n995)  AVAX:-0.0020(n916)
+  macd_state/sigexit  [+EV 1/10 pairs]  BTC:-0.0031(n292)  ETH:-0.0046(n294)  SOL:-0.0069(n324)  DOGE:-0.0116(n321)  PEPE:-0.0091(n331)  HYPE:+0.0031(n316)  XRP:-0.0078(n309)  BNB:-0.0059(n314)  ADA:-0.0064(n308)  AVAX:-0.0077(n321)
+  macd_state/sigexit_rsi  [+EV 0/10 pairs]  BTC:-0.0018(n496)  ETH:-0.0023(n506)  SOL:-0.0037(n514)  DOGE:-0.0053(n491)  PEPE:-0.0050(n513)  HYPE:-0.0006(n568)  XRP:-0.0039(n528)  BNB:-0.0034(n531)  ADA:-0.0023(n542)  AVAX:-0.0032(n504)
+  macd_state/sigexit_tp  [+EV 0/10 pairs]  BTC:-0.0013(n899)  ETH:-0.0015(n907)  SOL:-0.0022(n990)  DOGE:-0.0033(n948)  PEPE:-0.0031(n966)  HYPE:-0.0001(n1079)  XRP:-0.0017(n982)  BNB:-0.0024(n979)  ADA:-0.0025(n943)  AVAX:-0.0031(n912)
+  sma_state/hiwin33  [+EV 0/10 pairs]  BTC:-0.0016(n898)  ETH:-0.0020(n932)  SOL:-0.0024(n1006)  DOGE:-0.0025(n987)  PEPE:-0.0026(n986)  HYPE:-0.0003(n1113)  XRP:-0.0031(n1006)  BNB:-0.0022(n991)  ADA:-0.0021(n997)  AVAX:-0.0031(n930)
+  sma_state/sigexit  [+EV 1/10 pairs]  BTC:-0.0026(n296)  ETH:-0.0037(n293)  SOL:-0.0111(n324)  DOGE:-0.0152(n304)  PEPE:-0.0112(n340)  HYPE:+0.0028(n306)  XRP:-0.0125(n298)  BNB:-0.0086(n303)  ADA:-0.0062(n299)  AVAX:-0.0178(n316)
+  sma_state/sigexit_rsi  [+EV 0/10 pairs]  BTC:-0.0016(n520)  ETH:-0.0017(n536)  SOL:-0.0057(n545)  DOGE:-0.0058(n490)  PEPE:-0.0055(n532)  HYPE:-0.0008(n565)  XRP:-0.0057(n526)  BNB:-0.0040(n524)  ADA:-0.0023(n557)  AVAX:-0.0064(n520)
+  sma_state/sigexit_tp  [+EV 0/10 pairs]  BTC:-0.0009(n886)  ETH:-0.0015(n889)  SOL:-0.0029(n956)  DOGE:-0.0030(n963)  PEPE:-0.0028(n958)  HYPE:-0.0008(n1064)  XRP:-0.0022(n956)  BNB:-0.0021(n950)  ADA:-0.0015(n934)  AVAX:-0.0038(n887)
+
+=== PER-PAIR OOS points (avg gross bps @ points-win% — breadth on the §6.1 bar) ===
+  cci_state/hiwin33  [pts+ 3/10 pairs]  BTC:-1.5@71%(n525)  ETH:+0.5@72%(n573)  SOL:-5.4@68%(n612)  DOGE:-3.5@69%(n606)  PEPE:-8.7@68%(n602)  HYPE:+6.8@75%(n669)  XRP:-1.9@71%(n624)  BNB:+0.6@74%(n574)  ADA:-0.0@72%(n620)  AVAX:-6.5@69%(n563)
+  cci_state/sigexit  [pts+ 3/10 pairs]  BTC:+5.3@36%(n174)  ETH:+3.8@32%(n193)  SOL:-10.9@30%(n202)  DOGE:-21.0@28%(n197)  PEPE:-33.2@27%(n204)  HYPE:+16.6@34%(n193)  XRP:-5.4@31%(n193)  BNB:-3.5@31%(n196)  ADA:-3.3@29%(n191)  AVAX:-12.4@31%(n191)
+  cci_state/sigexit_rsi  [pts+ 1/10 pairs]  BTC:-0.9@45%(n352)  ETH:-0.0@44%(n384)  SOL:-6.2@43%(n380)  DOGE:-8.4@39%(n347)  PEPE:-13.5@40%(n376)  HYPE:-0.4@48%(n416)  XRP:-6.0@42%(n386)  BNB:-0.9@45%(n374)  ADA:+1.4@47%(n402)  AVAX:-4.6@40%(n356)
+  cci_state/sigexit_tp  [pts+ 6/10 pairs]  BTC:+0.2@72%(n502)  ETH:+2.9@71%(n538)  SOL:-2.5@68%(n572)  DOGE:-4.5@67%(n575)  PEPE:-8.8@66%(n558)  HYPE:+5.0@72%(n616)  XRP:+1.1@70%(n579)  BNB:+0.6@71%(n544)  ADA:+3.3@71%(n580)  AVAX:-7.9@66%(n531)
+  ensemble_state/hiwin33  [pts+ 4/10 pairs]  BTC:-0.3@70%(n866)  ETH:+0.3@71%(n903)  SOL:-2.6@69%(n952)  DOGE:-1.7@70%(n936)  PEPE:-9.5@68%(n926)  HYPE:+4.3@74%(n1062)  XRP:+0.4@72%(n972)  BNB:+0.7@73%(n927)  ADA:-0.1@72%(n950)  AVAX:-6.4@68%(n869)
+  ensemble_state/sigexit  [pts+ 2/10 pairs]  BTC:-0.3@30%(n261)  ETH:-3.7@29%(n270)  SOL:+0.3@31%(n272)  DOGE:-14.9@29%(n262)  PEPE:-32.9@25%(n280)  HYPE:+10.4@32%(n276)  XRP:-0.4@32%(n260)  BNB:-0.1@30%(n255)  ADA:-3.5@30%(n260)  AVAX:-8.2@29%(n264)
+  ensemble_state/sigexit_rsi  [pts+ 2/10 pairs]  BTC:-3.7@39%(n479)  ETH:-1.4@40%(n505)  SOL:-1.5@41%(n488)  DOGE:-7.8@37%(n449)  PEPE:-19.7@35%(n478)  HYPE:+0.3@46%(n533)  XRP:-0.2@40%(n486)  BNB:-1.5@41%(n484)  ADA:+3.2@45%(n513)  AVAX:-3.7@37%(n471)
+  ensemble_state/sigexit_tp  [pts+ 5/10 pairs]  BTC:-0.7@68%(n826)  ETH:+1.6@68%(n850)  SOL:-0.0@68%(n887)  DOGE:-1.7@67%(n889)  PEPE:-10.2@64%(n879)  HYPE:+4.1@71%(n1002)  XRP:+3.1@70%(n902)  BNB:+0.2@69%(n864)  ADA:+2.7@69%(n875)  AVAX:-5.4@65%(n832)
+  macd_state/hiwin33  [pts+ 2/10 pairs]  BTC:-0.8@71%(n914)  ETH:-0.7@71%(n955)  SOL:-4.2@69%(n1011)  DOGE:-4.1@69%(n970)  PEPE:-9.9@68%(n986)  HYPE:+5.0@74%(n1127)  XRP:-0.3@72%(n1039)  BNB:+0.3@73%(n995)  ADA:-1.6@71%(n995)  AVAX:-3.2@70%(n916)
+  macd_state/sigexit  [pts+ 3/10 pairs]  BTC:-0.8@32%(n292)  ETH:+0.6@31%(n294)  SOL:-9.0@31%(n324)  DOGE:-14.1@34%(n321)  PEPE:-19.7@29%(n331)  HYPE:+7.7@35%(n316)  XRP:-0.2@35%(n309)  BNB:+2.7@35%(n314)  ADA:-0.3@33%(n308)  AVAX:-7.8@31%(n321)
+  macd_state/sigexit_rsi  [pts+ 1/10 pairs]  BTC:-2.9@41%(n496)  ETH:-1.0@41%(n506)  SOL:-7.4@39%(n514)  DOGE:-9.9@40%(n491)  PEPE:-14.4@36%(n513)  HYPE:-0.1@45%(n568)  XRP:-1.5@41%(n528)  BNB:-0.2@41%(n531)  ADA:+1.1@42%(n542)  AVAX:-3.9@37%(n504)
+  macd_state/sigexit_tp  [pts+ 4/10 pairs]  BTC:-0.5@67%(n899)  ETH:+0.9@67%(n907)  SOL:-2.3@65%(n990)  DOGE:-4.1@65%(n948)  PEPE:-9.4@62%(n966)  HYPE:+3.8@69%(n1079)  XRP:+2.1@68%(n982)  BNB:-0.5@66%(n979)  ADA:+0.2@66%(n943)  AVAX:-6.3@63%(n912)
+  sma_state/hiwin33  [pts+ 6/10 pairs]  BTC:+0.2@71%(n898)  ETH:+0.7@71%(n932)  SOL:+0.0@71%(n1006)  DOGE:-2.6@70%(n987)  PEPE:-7.1@69%(n986)  HYPE:+4.1@74%(n1113)  XRP:-2.8@70%(n1006)  BNB:+1.1@74%(n991)  ADA:+0.2@72%(n997)  AVAX:-4.8@69%(n930)
+  sma_state/sigexit  [pts+ 4/10 pairs]  BTC:+4.4@38%(n296)  ETH:+2.4@35%(n293)  SOL:-7.7@35%(n324)  DOGE:-16.7@35%(n304)  PEPE:-25.6@33%(n340)  HYPE:+7.4@37%(n306)  XRP:-3.5@34%(n298)  BNB:-2.0@36%(n303)  ADA:+1.1@34%(n299)  AVAX:-14.3@32%(n316)
+  sma_state/sigexit_rsi  [pts+ 2/10 pairs]  BTC:-1.0@43%(n520)  ETH:+1.4@43%(n536)  SOL:-5.0@44%(n545)  DOGE:-9.2@41%(n490)  PEPE:-16.1@40%(n532)  HYPE:-1.1@48%(n565)  XRP:-4.8@42%(n526)  BNB:-2.5@44%(n524)  ADA:+2.5@48%(n557)  AVAX:-8.4@39%(n520)
+  sma_state/sigexit_tp  [pts+ 6/10 pairs]  BTC:+0.2@68%(n886)  ETH:+2.7@68%(n889)  SOL:-0.2@66%(n956)  DOGE:-3.2@65%(n963)  PEPE:-7.3@64%(n958)  HYPE:+0.4@69%(n1064)  XRP:+1.1@68%(n956)  BNB:+0.2@68%(n950)  ADA:+1.9@68%(n934)  AVAX:-4.8@65%(n887)
+
+wrote /app/reports/algo_search_20260724-141827.md  (+ _survivors.json: 0)

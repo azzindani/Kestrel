@@ -23,4 +23,10 @@ htmlcov/
 *.sqlite3
 .DS_Store
 docker-compose.override.yml
-reports/
+# reports/: the research evidence (md · json · txt · csv) is committed; raw
+# trade dumps, run logs, done-markers and data caches stay local.
+reports/**/*.jsonl
+reports/**/DONE
+reports/**/DUMP_DONE
+reports/ohlcv_cache/
+reports/funding_archive/

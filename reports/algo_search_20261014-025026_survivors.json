@@ -1,0 +1,16 @@
+[
+  {
+    "algo": "triple_mom",
+    "exit": "wide2x2_h24",
+    "params": {
+      "tp_atr_multiplier": 2.0,
+      "sl_atr_multiplier": 2.0,
+      "max_hold_candles": 24
+    },
+    "oos": {
+      "total_trades": 210,
+      "win_rate": 0.5619,
+      "total_pnl_usdt": 6.0246
+    }
+  }
+]

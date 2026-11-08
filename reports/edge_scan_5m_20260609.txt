@@ -1,0 +1,127 @@
+############## BTC/USDT 5m (25d) ##############
+=== Kestrel predictive-power scan (BTC/USDT 5m, 25d) ===
+source=okx  usable candles=7199  cost_threshold=0.180% round-trip
+
+feature          IC@1   |Q5-Q1|@1   IC@4   |Q5-Q1|@4   IC@8   |Q5-Q1|@8 
+rsi14            -0.017    -0.006%  -0.034    -0.022%  -0.047    -0.042%
+volume_ratio     -0.012    -0.002%  -0.014    -0.015%  -0.021    -0.039%
+adx              +0.008    +0.000%  +0.021    +0.003%  +0.040    +0.037%
+bb_width         +0.022    +0.000%  +0.047    +0.001%  +0.073    -0.000%
+body_ratio       -0.010    -0.005%  +0.002    +0.003%  +0.010    +0.016%
+atr_pct          +0.012    -0.003%  +0.026    -0.013%  +0.036    -0.025%
+ema_spread       -0.031    -0.005%  -0.059    -0.026%  -0.088    -0.063%
+prior_ret1       -0.029    -0.001%  -0.040    -0.021%  -0.026    -0.033%
+
+baseline 4-candle move: mean|ret|=0.182%  std=0.284%  P(|move|>cost)=33.5%
+
+by prior-candle direction (mean 4-candle fwd return):
+  bearish    n=  3627  mean_fwd=-0.0071%
+  bullish    n=  3568  mean_fwd=-0.0204%
+
+hour-of-day extremes (UTC, mean 4-candle fwd return):
+  worst: h13=-0.0940%   best: h20=+0.0719%
+
+=== WALK-FORWARD (h=4, train 4319 / test 2880) ===
+feature         train_IC  train_spread   test_IC  test_spread   consistent?
+rsi14           -0.022   -0.011%     -0.051   -0.043%     below-cost
+volume_ratio    -0.012   -0.004%     -0.018   -0.042%     below-cost
+adx             -0.023   -0.021%     +0.057   +0.057%     sign-flip
+bb_width        -0.013   +0.009%     +0.090   +0.060%     below-cost
+body_ratio      -0.024   -0.017%     +0.023   +0.036%     sign-flip
+atr_pct         -0.009   +0.007%     +0.066   +0.034%     below-cost
+ema_spread      -0.030   -0.008%     -0.072   -0.067%     below-cost
+prior_ret1      -0.026   -0.011%     -0.045   -0.029%     below-cost
+
+  features with edge surviving out-of-sample (same sign, both > cost): NONE
+
+=== VERDICT ===
+  strongest feature edge: ema_spread @h=8  |Q5-Q1|=0.063%  vs cost 0.180%
+
+  >>> NO EXPLOITABLE EDGE — no feature spread beats the cost threshold <<<
+  (caveat: overlapping forward windows inflate significance; magnitude vs cost is what matters)
+
+############## ETH/USDT 5m (25d) ##############
+=== Kestrel predictive-power scan (ETH/USDT 5m, 25d) ===
+source=okx  usable candles=7199  cost_threshold=0.180% round-trip
+
+feature          IC@1   |Q5-Q1|@1   IC@4   |Q5-Q1|@4   IC@8   |Q5-Q1|@8 
+rsi14            -0.009    -0.001%  -0.019    -0.012%  -0.024    -0.034%
+volume_ratio     +0.002    -0.000%  +0.002    -0.009%  -0.018    -0.034%
+adx              +0.016    +0.005%  +0.036    +0.028%  +0.064    +0.092%
+bb_width         +0.000    +0.001%  +0.006    +0.001%  +0.027    -0.013%
+body_ratio       -0.009    -0.010%  -0.007    -0.014%  +0.006    +0.007%
+atr_pct          +0.002    -0.008%  +0.005    -0.025%  +0.006    -0.044%
+ema_spread       -0.020    +0.005%  -0.039    +0.008%  -0.061    +0.013%
+prior_ret1       -0.020    +0.001%  -0.029    -0.020%  -0.012    -0.021%
+
+baseline 4-candle move: mean|ret|=0.235%  std=0.375%  P(|move|>cost)=41.6%
+
+by prior-candle direction (mean 4-candle fwd return):
+  bearish    n=  3644  mean_fwd=-0.0145%
+  bullish    n=  3551  mean_fwd=-0.0178%
+
+hour-of-day extremes (UTC, mean 4-candle fwd return):
+  worst: h13=-0.1199%   best: h20=+0.0770%
+
+=== WALK-FORWARD (h=4, train 4319 / test 2880) ===
+feature         train_IC  train_spread   test_IC  test_spread   consistent?
+rsi14           +0.003   +0.008%     -0.040   -0.033%     sign-flip
+volume_ratio    +0.021   +0.009%     -0.016   -0.052%     sign-flip
+adx             -0.015   -0.029%     +0.093   +0.134%     sign-flip
+bb_width        -0.031   -0.008%     +0.034   +0.035%     sign-flip
+body_ratio      -0.000   +0.003%     -0.013   -0.041%     sign-flip
+atr_pct         +0.011   +0.020%     +0.021   +0.021%     below-cost
+ema_spread      -0.006   +0.012%     -0.056   -0.037%     sign-flip
+prior_ret1      +0.003   -0.015%     -0.042   -0.019%     below-cost
+
+  features with edge surviving out-of-sample (same sign, both > cost): NONE
+
+=== VERDICT ===
+  strongest feature edge: adx @h=8  |Q5-Q1|=0.092%  vs cost 0.180%
+
+  >>> NO EXPLOITABLE EDGE — no feature spread beats the cost threshold <<<
+  (caveat: overlapping forward windows inflate significance; magnitude vs cost is what matters)
+
+############## SOL/USDT 5m (25d) ##############
+=== Kestrel predictive-power scan (SOL/USDT 5m, 25d) ===
+source=okx  usable candles=7199  cost_threshold=0.180% round-trip
+
+feature          IC@1   |Q5-Q1|@1   IC@4   |Q5-Q1|@4   IC@8   |Q5-Q1|@8 
+rsi14            -0.013    -0.003%  -0.040    -0.043%  -0.054    -0.079%
+volume_ratio     -0.007    -0.010%  -0.002    -0.019%  -0.000    -0.022%
+adx              +0.022    +0.012%  +0.049    +0.037%  +0.083    +0.104%
+bb_width         +0.025    +0.005%  +0.055    +0.020%  +0.096    +0.037%
+body_ratio       -0.005    -0.005%  +0.011    +0.016%  +0.013    +0.025%
+atr_pct          +0.019    -0.008%  +0.037    -0.021%  +0.048    -0.030%
+ema_spread       -0.044    -0.014%  -0.088    -0.054%  -0.131    -0.097%
+prior_ret1       -0.005    +0.012%  -0.029    -0.015%  -0.018    -0.024%
+
+baseline 4-candle move: mean|ret|=0.281%  std=0.435%  P(|move|>cost)=49.7%
+
+by prior-candle direction (mean 4-candle fwd return):
+  bearish    n=  3501  mean_fwd=-0.0139%
+  bullish    n=  3694  mean_fwd=-0.0199%
+
+hour-of-day extremes (UTC, mean 4-candle fwd return):
+  worst: h18=-0.1295%   best: h12=+0.0714%
+
+=== WALK-FORWARD (h=4, train 4319 / test 2880) ===
+feature         train_IC  train_spread   test_IC  test_spread   consistent?
+rsi14           -0.019   -0.001%     -0.061   -0.098%     below-cost
+volume_ratio    +0.014   +0.027%     -0.018   -0.097%     sign-flip
+adx             -0.012   -0.023%     +0.117   +0.151%     sign-flip
+bb_width        +0.020   +0.022%     +0.090   +0.076%     below-cost
+body_ratio      +0.012   -0.001%     +0.011   +0.041%     sign-flip
+atr_pct         +0.051   +0.039%     +0.064   +0.051%     below-cost
+ema_spread      -0.014   +0.010%     -0.121   -0.140%     sign-flip
+prior_ret1      -0.037   -0.033%     -0.026   -0.020%     below-cost
+
+  features with edge surviving out-of-sample (same sign, both > cost): NONE
+
+=== VERDICT ===
+  strongest feature edge: adx @h=8  |Q5-Q1|=0.104%  vs cost 0.180%
+
+  >>> NO EXPLOITABLE EDGE — no feature spread beats the cost threshold <<<
+  (caveat: overlapping forward windows inflate significance; magnitude vs cost is what matters)
+
+=== EDGE 5m BATCH DONE ===
