@@ -713,8 +713,8 @@ maker fees (confirmed big, already on in sim) · **leverage** (.env/§4, human-o
   `kestrel_grafana_data`, images `kestrel-kestrel` + `grafana/grafana:11.3.0`, the
   `kestrel-tier-promoter` systemd timer/service links, `backups/`, `reports/ohlcv_cache` and
   `reports/funding_archive`. KEPT: this repo, `.env*`, `docker-compose.override.yml`, `reports/`
-  research outputs, and the empty `kestrel_net` network (reverse-proxy declares it `external`, so
-  removing it would break the router's next recreate).
+  research outputs, and the empty `kestrel_net` network (a reverse proxy may declare it
+  `external`, and removing it would break that proxy's next recreate).
 - **REBUILD:** `docker compose up -d --build` (one compose project brings up dev, lab, staging and
   the aux services; fresh postgres, and the daemon applies the schema on start) →
   `scripts/backfill_history.py --source gate` for candles → re-link the timer with

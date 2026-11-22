@@ -112,14 +112,13 @@ instead.
 
 ## 8. Grafana
 
-A provisioned Grafana board at **`https://kestrel.example.com`** (login `admin` /
+A provisioned Grafana board at **`https://$KESTREL_DOMAIN`** (login `admin` /
 `.env GRAFANA_ADMIN_PASSWORD`). The board is **phase-aware** — a `$env` template variable
 switches between labs (`dev`), staging, and prod. A dedicated staging/live-ops board exists for
 quarantine monitoring.
 
-> **Known infra gotcha:** a shared `reverse-proxy` once routed `grafana:3000` ambiguously to a
-> *different* project's Grafana; the fix pins the explicit container name in the proxy config, and
-> bind-mounted proxy config edits require `docker restart reverse-proxy` (inode pin), not a reload.
+> **Known infra gotcha:** a reverse proxy shared with another project that also runs Grafana
+> can route `grafana:3000` to the wrong one; point the proxy at the explicit container name.
 
 ## 9. Lifecycle states
 

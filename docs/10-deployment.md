@@ -77,7 +77,7 @@ re-deploy by `scripts/retired_ledger.py check`.
 |---|---|---|---|
 | `postgres` | `postgres:16-alpine` | the single source of truth; `pgdata` volume; `pg_isready` healthcheck | 256m / 0.6 cpu |
 | `kestrel` | `kestrel-kestrel:latest` (built) | the daemon + watchdog (src **baked into the image**) | 320m / 0.6 cpu (raised in override) |
-| `grafana` | `grafana/grafana:11.3.0` | dashboards at `https://kestrel.example.com` | 256m / 0.4 cpu |
+| `grafana` | `grafana/grafana:11.3.0` | dashboards at `https://$KESTREL_DOMAIN` | 256m / 0.4 cpu |
 | `pg-backup` | `postgres:16-alpine` | `pg_dump` daily at 03:00 UTC, 7-day rotation | 64m / 0.1 cpu |
 
 **Delivery model (important operational distinction):**
